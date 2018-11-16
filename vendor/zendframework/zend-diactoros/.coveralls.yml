@@ -1,6 +1,0 @@
-coverage_clover: clover.xml
-json_path: coveralls-upload.json
-<<<<<<< HEAD
-src_dir: src
-=======
->>>>>>> git-aline/master/master
