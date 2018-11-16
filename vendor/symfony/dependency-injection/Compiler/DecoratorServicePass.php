@@ -11,26 +11,52 @@
 
 namespace Symfony\Component\DependencyInjection\Compiler;
 
+<<<<<<< HEAD
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Alias;
+=======
+use Symfony\Component\DependencyInjection\Alias;
+use Symfony\Component\DependencyInjection\ContainerBuilder;
+>>>>>>> git-aline/master/master
 
 /**
  * Overwrites a service but keeps the overridden one.
  *
  * @author Christophe Coevoet <stof@notk.org>
  * @author Fabien Potencier <fabien@symfony.com>
+<<<<<<< HEAD
+=======
+ * @author Diego Saint Esteben <diego@saintesteben.me>
+>>>>>>> git-aline/master/master
  */
 class DecoratorServicePass implements CompilerPassInterface
 {
     public function process(ContainerBuilder $container)
     {
+<<<<<<< HEAD
+=======
+        $definitions = new \SplPriorityQueue();
+        $order = PHP_INT_MAX;
+
+>>>>>>> git-aline/master/master
         foreach ($container->getDefinitions() as $id => $definition) {
             if (!$decorated = $definition->getDecoratedService()) {
                 continue;
             }
+<<<<<<< HEAD
             $definition->setDecoratedService(null);
 
             list($inner, $renamedId) = $decorated;
+=======
+            $definitions->insert(array($id, $definition), array($decorated[2], --$order));
+        }
+
+        foreach ($definitions as list($id, $definition)) {
+            list($inner, $renamedId) = $definition->getDecoratedService();
+
+            $definition->setDecoratedService(null);
+
+>>>>>>> git-aline/master/master
             if (!$renamedId) {
                 $renamedId = $id.'.inner';
             }
@@ -40,6 +66,7 @@ class DecoratorServicePass implements CompilerPassInterface
             if ($container->hasAlias($inner)) {
                 $alias = $container->getAlias($inner);
                 $public = $alias->isPublic();
+<<<<<<< HEAD
                 $container->setAlias($renamedId, new Alias((string) $alias, false));
             } else {
                 $definition = $container->getDefinition($inner);
@@ -49,6 +76,27 @@ class DecoratorServicePass implements CompilerPassInterface
             }
 
             $container->setAlias($inner, new Alias($id, $public));
+=======
+                $private = $alias->isPrivate();
+                $container->setAlias($renamedId, new Alias($container->normalizeId($alias), false));
+            } else {
+                $decoratedDefinition = $container->getDefinition($inner);
+                $definition->setTags(array_merge($decoratedDefinition->getTags(), $definition->getTags()));
+                if ($types = array_merge($decoratedDefinition->getAutowiringTypes(false), $definition->getAutowiringTypes(false))) {
+                    $definition->setAutowiringTypes($types);
+                }
+                $public = $decoratedDefinition->isPublic();
+                $private = $decoratedDefinition->isPrivate();
+                $decoratedDefinition->setPublic(false);
+                $decoratedDefinition->setTags(array());
+                if ($decoratedDefinition->getAutowiringTypes(false)) {
+                    $decoratedDefinition->setAutowiringTypes(array());
+                }
+                $container->setDefinition($renamedId, $decoratedDefinition);
+            }
+
+            $container->setAlias($inner, $id)->setPublic($public)->setPrivate($private);
+>>>>>>> git-aline/master/master
         }
     }
 }

@@ -20,6 +20,7 @@ class Reference
 {
     private $id;
     private $invalidBehavior;
+<<<<<<< HEAD
     private $strict;
 
     /**
@@ -41,6 +42,22 @@ class Reference
     /**
      * __toString.
      *
+=======
+
+    /**
+     * @param string $id              The service identifier
+     * @param int    $invalidBehavior The behavior when the service does not exist
+     *
+     * @see Container
+     */
+    public function __construct($id, $invalidBehavior = ContainerInterface::EXCEPTION_ON_INVALID_REFERENCE)
+    {
+        $this->id = (string) $id;
+        $this->invalidBehavior = $invalidBehavior;
+    }
+
+    /**
+>>>>>>> git-aline/master/master
      * @return string The service identifier
      */
     public function __toString()
@@ -57,6 +74,7 @@ class Reference
     {
         return $this->invalidBehavior;
     }
+<<<<<<< HEAD
 
     /**
      * Returns true when this Reference is strict.
@@ -67,4 +85,6 @@ class Reference
     {
         return $this->strict;
     }
+=======
+>>>>>>> git-aline/master/master
 }

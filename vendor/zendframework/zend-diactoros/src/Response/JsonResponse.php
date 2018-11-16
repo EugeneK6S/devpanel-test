@@ -3,7 +3,11 @@
  * Zend Framework (http://framework.zend.com/)
  *
  * @see       http://github.com/zendframework/zend-diactoros for the canonical source repository
+<<<<<<< HEAD
  * @copyright Copyright (c) 2015 Zend Technologies USA Inc. (http://www.zend.com)
+=======
+ * @copyright Copyright (c) 2015-2016 Zend Technologies USA Inc. (http://www.zend.com)
+>>>>>>> git-aline/master/master
  * @license   https://github.com/zendframework/zend-diactoros/blob/master/LICENSE.md New BSD License
  */
 
@@ -25,6 +29,20 @@ class JsonResponse extends Response
     use InjectContentTypeTrait;
 
     /**
+<<<<<<< HEAD
+=======
+     * Default flags for json_encode; value of:
+     *
+     * <code>
+     * JSON_HEX_TAG | JSON_HEX_APOS | JSON_HEX_AMP | JSON_HEX_QUOT | JSON_UNESCAPED_SLASHES
+     * </code>
+     *
+     * @const int
+     */
+    const DEFAULT_JSON_FLAGS = 79;
+
+    /**
+>>>>>>> git-aline/master/master
      * Create a JSON response with the given data.
      *
      * Default JSON encoding is performed with the following options, which
@@ -34,6 +52,10 @@ class JsonResponse extends Response
      * - JSON_HEX_APOS
      * - JSON_HEX_AMP
      * - JSON_HEX_QUOT
+<<<<<<< HEAD
+=======
+     * - JSON_UNESCAPED_SLASHES
+>>>>>>> git-aline/master/master
      *
      * @param mixed $data Data to convert to JSON.
      * @param int $status Integer status code for the response; 200 by default.
@@ -41,10 +63,22 @@ class JsonResponse extends Response
      * @param int $encodingOptions JSON encoding options to use.
      * @throws InvalidArgumentException if unable to encode the $data to JSON.
      */
+<<<<<<< HEAD
     public function __construct($data, $status = 200, array $headers = [], $encodingOptions = 15)
     {
         $body = new Stream('php://temp', 'wb+');
         $body->write($this->jsonEncode($data, $encodingOptions));
+=======
+    public function __construct(
+        $data,
+        $status = 200,
+        array $headers = [],
+        $encodingOptions = self::DEFAULT_JSON_FLAGS
+    ) {
+        $body = new Stream('php://temp', 'wb+');
+        $body->write($this->jsonEncode($data, $encodingOptions));
+        $body->rewind();
+>>>>>>> git-aline/master/master
 
         $headers = $this->injectContentType('application/json', $headers);
 

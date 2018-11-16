@@ -22,6 +22,7 @@ use Symfony\Component\Process\Process;
  */
 class UnixPipes extends AbstractPipes
 {
+<<<<<<< HEAD
     /** @var bool */
     private $ttyMode;
     /** @var bool */
@@ -40,6 +41,19 @@ class UnixPipes extends AbstractPipes
         } else {
             $this->inputBuffer = (string) $input;
         }
+=======
+    private $ttyMode;
+    private $ptyMode;
+    private $haveReadSupport;
+
+    public function __construct($ttyMode, $ptyMode, $input, $haveReadSupport)
+    {
+        $this->ttyMode = (bool) $ttyMode;
+        $this->ptyMode = (bool) $ptyMode;
+        $this->haveReadSupport = (bool) $haveReadSupport;
+
+        parent::__construct($input);
+>>>>>>> git-aline/master/master
     }
 
     public function __destruct()
@@ -52,7 +66,11 @@ class UnixPipes extends AbstractPipes
      */
     public function getDescriptors()
     {
+<<<<<<< HEAD
         if ($this->disableOutput) {
+=======
+        if (!$this->haveReadSupport) {
+>>>>>>> git-aline/master/master
             $nullstream = fopen('/dev/null', 'c');
 
             return array(
@@ -98,6 +116,7 @@ class UnixPipes extends AbstractPipes
      */
     public function readAndWrite($blocking, $close = false)
     {
+<<<<<<< HEAD
         // only stdin is left open, job has been done !
         // we can now close it
         if (1 === count($this->pipes) && array(0) === array_keys($this->pipes)) {
@@ -128,6 +147,19 @@ class UnixPipes extends AbstractPipes
 
         // let's have a look if something changed in streams
         if (false === $n = @stream_select($r, $w, $e, 0, $blocking ? Process::TIMEOUT_PRECISION * 1E6 : 0)) {
+=======
+        $this->unblock();
+        $w = $this->write();
+
+        $read = $e = array();
+        $r = $this->pipes;
+        unset($r[0]);
+
+        // let's have a look if something changed in streams
+        set_error_handler(array($this, 'handleError'));
+        if (($r || $w) && false === stream_select($r, $w, $e, 0, $blocking ? Process::TIMEOUT_PRECISION * 1E6 : 0)) {
+            restore_error_handler();
+>>>>>>> git-aline/master/master
             // if a system call has been interrupted, forget about it, let's try again
             // otherwise, an error occurred, let's reset pipes
             if (!$this->hasSystemCallBeenInterrupted()) {
@@ -136,15 +168,20 @@ class UnixPipes extends AbstractPipes
 
             return $read;
         }
+<<<<<<< HEAD
 
         // nothing has changed
         if (0 === $n) {
             return $read;
         }
+=======
+        restore_error_handler();
+>>>>>>> git-aline/master/master
 
         foreach ($r as $pipe) {
             // prior PHP 5.4 the array passed to stream_select is modified and
             // lose key association, we have to find back the key
+<<<<<<< HEAD
             $type = (false !== $found = array_search($pipe, $this->pipes)) ? $found : 'input';
             $data = '';
             while ('' !== $dataread = (string) fread($pipe, self::CHUNK_SIZE)) {
@@ -188,12 +225,32 @@ class UnixPipes extends AbstractPipes
             unset($this->pipes[0]);
         }
 
+=======
+            $read[$type = array_search($pipe, $this->pipes, true)] = '';
+
+            do {
+                $data = fread($pipe, self::CHUNK_SIZE);
+                $read[$type] .= $data;
+            } while (isset($data[0]) && ($close || isset($data[self::CHUNK_SIZE - 1])));
+
+            if (!isset($read[$type][0])) {
+                unset($read[$type]);
+            }
+
+            if ($close && feof($pipe)) {
+                fclose($pipe);
+                unset($this->pipes[$type]);
+            }
+        }
+
+>>>>>>> git-aline/master/master
         return $read;
     }
 
     /**
      * {@inheritdoc}
      */
+<<<<<<< HEAD
     public function areOpen()
     {
         return (bool) $this->pipes;
@@ -210,5 +267,18 @@ class UnixPipes extends AbstractPipes
     public static function create(Process $process, $input)
     {
         return new static($process->isTty(), $process->isPty(), $input, $process->isOutputDisabled());
+=======
+    public function haveReadSupport()
+    {
+        return $this->haveReadSupport;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function areOpen()
+    {
+        return (bool) $this->pipes;
+>>>>>>> git-aline/master/master
     }
 }

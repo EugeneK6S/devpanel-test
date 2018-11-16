@@ -23,8 +23,11 @@ namespace Symfony\Component\Validator\Mapping;
  *
  * The traversal strategy is ignored for arrays. Arrays are always iterated.
  *
+<<<<<<< HEAD
  * @since  2.1
  *
+=======
+>>>>>>> git-aline/master/master
  * @author Bernhard Schussek <bschussek@gmail.com>
  *
  * @see CascadingStrategy
@@ -49,6 +52,7 @@ class TraversalStrategy
     const TRAVERSE = 4;
 
     /**
+<<<<<<< HEAD
      * Specifies that nested instances of {@link \Traversable} should never be
      * iterated. Can be combined with {@link IMPLICIT} or {@link TRAVERSE}.
      *
@@ -59,6 +63,8 @@ class TraversalStrategy
     const STOP_RECURSION = 8;
 
     /**
+=======
+>>>>>>> git-aline/master/master
      * Not instantiable.
      */
     private function __construct()

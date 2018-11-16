@@ -16,6 +16,10 @@ namespace Symfony\Component\Serializer\Exception;
  *
  * @author Johannes M. Schmitt <schmittjoh@gmail.com>
  */
+<<<<<<< HEAD
 interface ExceptionInterface extends Exception
+=======
+interface ExceptionInterface
+>>>>>>> git-aline/master/master
 {
 }

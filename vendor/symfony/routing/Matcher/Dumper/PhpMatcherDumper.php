@@ -11,10 +11,17 @@
 
 namespace Symfony\Component\Routing\Matcher\Dumper;
 
+<<<<<<< HEAD
 use Symfony\Component\Routing\Route;
 use Symfony\Component\Routing\RouteCollection;
 use Symfony\Component\ExpressionLanguage\ExpressionLanguage;
 use Symfony\Component\ExpressionLanguage\ExpressionFunctionProviderInterface;
+=======
+use Symfony\Component\ExpressionLanguage\ExpressionFunctionProviderInterface;
+use Symfony\Component\ExpressionLanguage\ExpressionLanguage;
+use Symfony\Component\Routing\Route;
+use Symfony\Component\Routing\RouteCollection;
+>>>>>>> git-aline/master/master
 
 /**
  * PhpMatcherDumper creates a PHP class able to match URLs for a given set of routes.
@@ -63,16 +70,22 @@ use Symfony\Component\Routing\Exception\ResourceNotFoundException;
 use Symfony\Component\Routing\RequestContext;
 
 /**
+<<<<<<< HEAD
  * {$options['class']}.
  *
+=======
+>>>>>>> git-aline/master/master
  * This class has been auto-generated
  * by the Symfony Routing Component.
  */
 class {$options['class']} extends {$options['base_class']}
 {
+<<<<<<< HEAD
     /**
      * Constructor.
      */
+=======
+>>>>>>> git-aline/master/master
     public function __construct(RequestContext \$context)
     {
         \$this->context = \$context;
@@ -101,12 +114,27 @@ EOF;
         $code = rtrim($this->compileRoutes($this->getRoutes(), $supportsRedirections), "\n");
 
         return <<<EOF
+<<<<<<< HEAD
     public function match(\$pathinfo)
     {
         \$allow = array();
         \$pathinfo = rawurldecode(\$pathinfo);
         \$context = \$this->context;
         \$request = \$this->request;
+=======
+    public function match(\$rawPathinfo)
+    {
+        \$allow = array();
+        \$pathinfo = rawurldecode(\$rawPathinfo);
+        \$trimmedPathinfo = rtrim(\$pathinfo, '/');
+        \$context = \$this->context;
+        \$request = \$this->request ?: \$this->createRequest(\$pathinfo);
+        \$requestMethod = \$canonicalMethod = \$context->getMethod();
+
+        if ('HEAD' === \$requestMethod) {
+            \$canonicalMethod = 'GET';
+        }
+>>>>>>> git-aline/master/master
 
 $code
 
@@ -126,22 +154,34 @@ EOF;
     private function compileRoutes(RouteCollection $routes, $supportsRedirections)
     {
         $fetchedHost = false;
+<<<<<<< HEAD
 
+=======
+>>>>>>> git-aline/master/master
         $groups = $this->groupRoutesByHostRegex($routes);
         $code = '';
 
         foreach ($groups as $collection) {
             if (null !== $regex = $collection->getAttribute('host_regex')) {
                 if (!$fetchedHost) {
+<<<<<<< HEAD
                     $code .= "        \$host = \$this->context->getHost();\n\n";
+=======
+                    $code .= "        \$host = \$context->getHost();\n\n";
+>>>>>>> git-aline/master/master
                     $fetchedHost = true;
                 }
 
                 $code .= sprintf("        if (preg_match(%s, \$host, \$hostMatches)) {\n", var_export($regex, true));
             }
 
+<<<<<<< HEAD
             $tree = $this->buildPrefixTree($collection);
             $groupCode = $this->compilePrefixRoutes($tree, $supportsRedirections);
+=======
+            $tree = $this->buildStaticPrefixCollection($collection);
+            $groupCode = $this->compileStaticPrefixRoutes($tree, $supportsRedirections);
+>>>>>>> git-aline/master/master
 
             if (null !== $regex) {
                 // apply extra indention at each line (except empty ones)
@@ -153,6 +193,7 @@ EOF;
             }
         }
 
+<<<<<<< HEAD
         return $code;
     }
 
@@ -187,6 +228,61 @@ EOF;
         }
 
         if ($optimizable) {
+=======
+        // used to display the Welcome Page in apps that don't define a homepage
+        $code .= "        if ('/' === \$pathinfo && !\$allow) {\n";
+        $code .= "            throw new Symfony\Component\Routing\Exception\NoConfigurationException();\n";
+        $code .= "        }\n";
+
+        return $code;
+    }
+
+    private function buildStaticPrefixCollection(DumperCollection $collection)
+    {
+        $prefixCollection = new StaticPrefixCollection();
+
+        foreach ($collection as $dumperRoute) {
+            $prefix = $dumperRoute->getRoute()->compile()->getStaticPrefix();
+            $prefixCollection->addRoute($prefix, $dumperRoute);
+        }
+
+        $prefixCollection->optimizeGroups();
+
+        return $prefixCollection;
+    }
+
+    /**
+     * Generates PHP code to match a tree of routes.
+     *
+     * @param StaticPrefixCollection $collection           A StaticPrefixCollection instance
+     * @param bool                   $supportsRedirections Whether redirections are supported by the base class
+     * @param string                 $ifOrElseIf           either "if" or "elseif" to influence chaining
+     *
+     * @return string PHP code
+     */
+    private function compileStaticPrefixRoutes(StaticPrefixCollection $collection, $supportsRedirections, $ifOrElseIf = 'if')
+    {
+        $code = '';
+        $prefix = $collection->getPrefix();
+
+        if (!empty($prefix) && '/' !== $prefix) {
+            $code .= sprintf("    %s (0 === strpos(\$pathinfo, %s)) {\n", $ifOrElseIf, var_export($prefix, true));
+        }
+
+        $ifOrElseIf = 'if';
+
+        foreach ($collection->getItems() as $route) {
+            if ($route instanceof StaticPrefixCollection) {
+                $code .= $this->compileStaticPrefixRoutes($route, $supportsRedirections, $ifOrElseIf);
+                $ifOrElseIf = 'elseif';
+            } else {
+                $code .= $this->compileRoute($route[1]->getRoute(), $route[1]->getName(), $supportsRedirections, $prefix)."\n";
+                $ifOrElseIf = 'if';
+            }
+        }
+
+        if (!empty($prefix) && '/' !== $prefix) {
+>>>>>>> git-aline/master/master
             $code .= "    }\n\n";
             // apply extra indention at each line (except empty ones)
             $code = preg_replace('/^.{2,}$/m', '    $0', $code);
@@ -217,6 +313,7 @@ EOF;
         $hostMatches = false;
         $methods = $route->getMethods();
 
+<<<<<<< HEAD
         // GET and HEAD are equivalent
         if (in_array('GET', $methods) && !in_array('HEAD', $methods)) {
             $methods[] = 'HEAD';
@@ -230,13 +327,27 @@ EOF;
                 $hasTrailingSlash = true;
             } else {
                 $conditions[] = sprintf('$pathinfo === %s', var_export(str_replace('\\', '', $m['url']), true));
+=======
+        $supportsTrailingSlash = $supportsRedirections && (!$methods || \in_array('GET', $methods));
+        $regex = $compiledRoute->getRegex();
+
+        if (!\count($compiledRoute->getPathVariables()) && false !== preg_match('#^(.)\^(?P<url>.*?)\$\1#'.('u' === substr($regex, -1) ? 'u' : ''), $regex, $m)) {
+            if ($supportsTrailingSlash && '/' === substr($m['url'], -1)) {
+                $conditions[] = sprintf('%s === $trimmedPathinfo', var_export(rtrim(str_replace('\\', '', $m['url']), '/'), true));
+                $hasTrailingSlash = true;
+            } else {
+                $conditions[] = sprintf('%s === $pathinfo', var_export(str_replace('\\', '', $m['url']), true));
+>>>>>>> git-aline/master/master
             }
         } else {
             if ($compiledRoute->getStaticPrefix() && $compiledRoute->getStaticPrefix() !== $parentPrefix) {
                 $conditions[] = sprintf('0 === strpos($pathinfo, %s)', var_export($compiledRoute->getStaticPrefix(), true));
             }
 
+<<<<<<< HEAD
             $regex = $compiledRoute->getRegex();
+=======
+>>>>>>> git-aline/master/master
             if ($supportsTrailingSlash && $pos = strpos($regex, '/$')) {
                 $regex = substr($regex, 0, $pos).'/?$'.substr($regex, $pos + 2);
                 $hasTrailingSlash = true;
@@ -263,6 +374,7 @@ EOF;
 EOF;
 
         $gotoname = 'not_'.preg_replace('/[^A-Za-z0-9_]/', '', $name);
+<<<<<<< HEAD
         if ($methods) {
             if (1 === count($methods)) {
                 $code .= <<<EOF
@@ -284,31 +396,94 @@ EOF;
 
 EOF;
             }
+=======
+
+        // the offset where the return value is appended below, with indendation
+        $retOffset = 12 + \strlen($code);
+
+        // optimize parameters array
+        if ($matches || $hostMatches) {
+            $vars = array();
+            if ($hostMatches) {
+                $vars[] = '$hostMatches';
+            }
+            if ($matches) {
+                $vars[] = '$matches';
+            }
+            $vars[] = "array('_route' => '$name')";
+
+            $code .= sprintf(
+                "            \$ret = \$this->mergeDefaults(array_replace(%s), %s);\n",
+                implode(', ', $vars),
+                str_replace("\n", '', var_export($route->getDefaults(), true))
+            );
+        } elseif ($route->getDefaults()) {
+            $code .= sprintf("            \$ret = %s;\n", str_replace("\n", '', var_export(array_replace($route->getDefaults(), array('_route' => $name)), true)));
+        } else {
+            $code .= sprintf("            \$ret = array('_route' => '%s');\n", $name);
+>>>>>>> git-aline/master/master
         }
 
         if ($hasTrailingSlash) {
             $code .= <<<EOF
+<<<<<<< HEAD
             if (substr(\$pathinfo, -1) !== '/') {
                 return \$this->redirect(\$pathinfo.'/', '$name');
+=======
+            if ('/' === substr(\$pathinfo, -1)) {
+                // no-op
+            } elseif ('GET' !== \$canonicalMethod) {
+                goto $gotoname;
+            } else {
+                return array_replace(\$ret, \$this->redirect(\$rawPathinfo.'/', '$name'));
+>>>>>>> git-aline/master/master
             }
 
 
 EOF;
         }
 
+<<<<<<< HEAD
+=======
+        if ($methods) {
+            $methodVariable = \in_array('GET', $methods) ? '$canonicalMethod' : '$requestMethod';
+            $methods = implode("', '", $methods);
+        }
+
+>>>>>>> git-aline/master/master
         if ($schemes = $route->getSchemes()) {
             if (!$supportsRedirections) {
                 throw new \LogicException('The "schemes" requirement is only supported for URL matchers that implement RedirectableUrlMatcherInterface.');
             }
             $schemes = str_replace("\n", '', var_export(array_flip($schemes), true));
+<<<<<<< HEAD
             $code .= <<<EOF
             \$requiredSchemes = $schemes;
             if (!isset(\$requiredSchemes[\$this->context->getScheme()])) {
                 return \$this->redirect(\$pathinfo, '$name', key(\$requiredSchemes));
+=======
+            if ($methods) {
+                $code .= <<<EOF
+            \$requiredSchemes = $schemes;
+            \$hasRequiredScheme = isset(\$requiredSchemes[\$context->getScheme()]);
+            if (!in_array($methodVariable, array('$methods'))) {
+                if (\$hasRequiredScheme) {
+                    \$allow = array_merge(\$allow, array('$methods'));
+                }
+                goto $gotoname;
+            }
+            if (!\$hasRequiredScheme) {
+                if ('GET' !== \$canonicalMethod) {
+                    goto $gotoname;
+                }
+
+                return array_replace(\$ret, \$this->redirect(\$rawPathinfo, '$name', key(\$requiredSchemes)));
+>>>>>>> git-aline/master/master
             }
 
 
 EOF;
+<<<<<<< HEAD
         }
 
         // optimize parameters array
@@ -335,6 +510,41 @@ EOF;
         $code .= "        }\n";
 
         if ($methods) {
+=======
+            } else {
+                $code .= <<<EOF
+            \$requiredSchemes = $schemes;
+            if (!isset(\$requiredSchemes[\$context->getScheme()])) {
+                if ('GET' !== \$canonicalMethod) {
+                    goto $gotoname;
+                }
+
+                return array_replace(\$ret, \$this->redirect(\$rawPathinfo, '$name', key(\$requiredSchemes)));
+            }
+
+
+EOF;
+            }
+        } elseif ($methods) {
+            $code .= <<<EOF
+            if (!in_array($methodVariable, array('$methods'))) {
+                \$allow = array_merge(\$allow, array('$methods'));
+                goto $gotoname;
+            }
+
+
+EOF;
+        }
+
+        if ($hasTrailingSlash || $schemes || $methods) {
+            $code .= "            return \$ret;\n";
+        } else {
+            $code = substr_replace($code, 'return', $retOffset, 6);
+        }
+        $code .= "        }\n";
+
+        if ($hasTrailingSlash || $schemes || $methods) {
+>>>>>>> git-aline/master/master
             $code .= "        $gotoname:\n";
         }
 
@@ -353,7 +563,10 @@ EOF;
     private function groupRoutesByHostRegex(RouteCollection $routes)
     {
         $groups = new DumperCollection();
+<<<<<<< HEAD
 
+=======
+>>>>>>> git-aline/master/master
         $currentGroup = new DumperCollection();
         $currentGroup->setAttribute('host_regex', null);
         $groups->add($currentGroup);
@@ -371,6 +584,7 @@ EOF;
         return $groups;
     }
 
+<<<<<<< HEAD
     /**
      * Organizes the routes into a prefix tree.
      *
@@ -395,6 +609,8 @@ EOF;
         return $tree;
     }
 
+=======
+>>>>>>> git-aline/master/master
     private function getExpressionLanguage()
     {
         if (null === $this->expressionLanguage) {

@@ -11,6 +11,7 @@
 
 namespace Symfony\Component\DependencyInjection\Dumper;
 
+<<<<<<< HEAD
 use Symfony\Component\DependencyInjection\Definition;
 use Symfony\Component\DependencyInjection\Exception\ParameterNotFoundException;
 use Symfony\Component\DependencyInjection\Reference;
@@ -19,6 +20,15 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\ParameterBag\ParameterBag;
 use Symfony\Component\DependencyInjection\Scope;
+=======
+use Symfony\Component\DependencyInjection\Argument\ArgumentInterface;
+use Symfony\Component\DependencyInjection\ContainerBuilder;
+use Symfony\Component\DependencyInjection\Definition;
+use Symfony\Component\DependencyInjection\Exception\ParameterNotFoundException;
+use Symfony\Component\DependencyInjection\Parameter;
+use Symfony\Component\DependencyInjection\ParameterBag\ParameterBag;
+use Symfony\Component\DependencyInjection\Reference;
+>>>>>>> git-aline/master/master
 
 /**
  * GraphvizDumper dumps a service container as a graphviz file.
@@ -54,8 +64,11 @@ class GraphvizDumper extends Dumper
      *  * node.definition: The default options for services that are defined via service definition instances
      *  * node.missing: The default options for missing services
      *
+<<<<<<< HEAD
      * @param array $options An array of options
      *
+=======
+>>>>>>> git-aline/master/master
      * @return string The dot representation of the service container
      */
     public function dump(array $options = array())
@@ -83,7 +96,11 @@ class GraphvizDumper extends Dumper
             }
         }
 
+<<<<<<< HEAD
         return $this->startDot().$this->addNodes().$this->addEdges().$this->endDot();
+=======
+        return $this->container->resolveEnvPlaceholders($this->startDot().$this->addNodes().$this->addEdges().$this->endDot(), '__ENV_%s__');
+>>>>>>> git-aline/master/master
     }
 
     /**
@@ -113,7 +130,11 @@ class GraphvizDumper extends Dumper
         $code = '';
         foreach ($this->edges as $id => $edges) {
             foreach ($edges as $edge) {
+<<<<<<< HEAD
                 $code .= sprintf("  node_%s -> node_%s [label=\"%s\" style=\"%s\"];\n", $this->dotize($id), $this->dotize($edge['to']), $edge['name'], $edge['required'] ? 'filled' : 'dashed');
+=======
+                $code .= sprintf("  node_%s -> node_%s [label=\"%s\" style=\"%s\"%s];\n", $this->dotize($id), $this->dotize($edge['to']), $edge['name'], $edge['required'] ? 'filled' : 'dashed', $edge['lazy'] ? ' color="#9999ff"' : '');
+>>>>>>> git-aline/master/master
             }
         }
 
@@ -130,17 +151,26 @@ class GraphvizDumper extends Dumper
      *
      * @return array An array of edges
      */
+<<<<<<< HEAD
     private function findEdges($id, $arguments, $required, $name)
+=======
+    private function findEdges($id, array $arguments, $required, $name, $lazy = false)
+>>>>>>> git-aline/master/master
     {
         $edges = array();
         foreach ($arguments as $argument) {
             if ($argument instanceof Parameter) {
                 $argument = $this->container->hasParameter($argument) ? $this->container->getParameter($argument) : null;
+<<<<<<< HEAD
             } elseif (is_string($argument) && preg_match('/^%([^%]+)%$/', $argument, $match)) {
+=======
+            } elseif (\is_string($argument) && preg_match('/^%([^%]+)%$/', $argument, $match)) {
+>>>>>>> git-aline/master/master
                 $argument = $this->container->hasParameter($match[1]) ? $this->container->getParameter($match[1]) : null;
             }
 
             if ($argument instanceof Reference) {
+<<<<<<< HEAD
                 if (!$this->container->has((string) $argument)) {
                     $this->nodes[(string) $argument] = array('name' => $name, 'required' => $required, 'class' => '', 'attributes' => $this->options['node.missing']);
                 }
@@ -148,6 +178,21 @@ class GraphvizDumper extends Dumper
                 $edges[] = array('name' => $name, 'required' => $required, 'to' => $argument);
             } elseif (is_array($argument)) {
                 $edges = array_merge($edges, $this->findEdges($id, $argument, $required, $name));
+=======
+                $lazyEdge = $lazy;
+
+                if (!$this->container->has((string) $argument)) {
+                    $this->nodes[(string) $argument] = array('name' => $name, 'required' => $required, 'class' => '', 'attributes' => $this->options['node.missing']);
+                } elseif ('service_container' !== (string) $argument) {
+                    $lazyEdge = $lazy || $this->container->getDefinition((string) $argument)->isLazy();
+                }
+
+                $edges[] = array('name' => $name, 'required' => $required, 'to' => $argument, 'lazy' => $lazyEdge);
+            } elseif ($argument instanceof ArgumentInterface) {
+                $edges = array_merge($edges, $this->findEdges($id, $argument->getValues(), $required, $name, true));
+            } elseif (\is_array($argument)) {
+                $edges = array_merge($edges, $this->findEdges($id, $argument, $required, $name, $lazy));
+>>>>>>> git-aline/master/master
             }
         }
 
@@ -177,20 +222,31 @@ class GraphvizDumper extends Dumper
             } catch (ParameterNotFoundException $e) {
             }
 
+<<<<<<< HEAD
             $nodes[$id] = array('class' => str_replace('\\', '\\\\', $class), 'attributes' => array_merge($this->options['node.definition'], array('style' => ContainerInterface::SCOPE_PROTOTYPE !== $definition->getScope() ? 'filled' : 'dotted')));
+=======
+            $nodes[$id] = array('class' => str_replace('\\', '\\\\', $class), 'attributes' => array_merge($this->options['node.definition'], array('style' => $definition->isShared() ? 'filled' : 'dotted')));
+>>>>>>> git-aline/master/master
             $container->setDefinition($id, new Definition('stdClass'));
         }
 
         foreach ($container->getServiceIds() as $id) {
+<<<<<<< HEAD
             $service = $container->get($id);
 
+=======
+>>>>>>> git-aline/master/master
             if (array_key_exists($id, $container->getAliases())) {
                 continue;
             }
 
             if (!$container->hasDefinition($id)) {
+<<<<<<< HEAD
                 $class = ('service_container' === $id) ? get_class($this->container) : get_class($service);
                 $nodes[$id] = array('class' => str_replace('\\', '\\\\', $class), 'attributes' => $this->options['node.instance']);
+=======
+                $nodes[$id] = array('class' => str_replace('\\', '\\\\', \get_class($container->get($id))), 'attributes' => $this->options['node.instance']);
+>>>>>>> git-aline/master/master
             }
         }
 
@@ -205,9 +261,12 @@ class GraphvizDumper extends Dumper
         $container->setDefinitions($this->container->getDefinitions());
         $container->setAliases($this->container->getAliases());
         $container->setResources($this->container->getResources());
+<<<<<<< HEAD
         foreach ($this->container->getScopes() as $scope => $parentScope) {
             $container->addScope(new Scope($scope, $parentScope));
         }
+=======
+>>>>>>> git-aline/master/master
         foreach ($this->container->getExtensions() as $extension) {
             $container->registerExtension($extension);
         }
@@ -246,7 +305,11 @@ class GraphvizDumper extends Dumper
      *
      * @return string A comma separated list of attributes
      */
+<<<<<<< HEAD
     private function addAttributes($attributes)
+=======
+    private function addAttributes(array $attributes)
+>>>>>>> git-aline/master/master
     {
         $code = array();
         foreach ($attributes as $k => $v) {
@@ -263,7 +326,11 @@ class GraphvizDumper extends Dumper
      *
      * @return string A space separated list of options
      */
+<<<<<<< HEAD
     private function addOptions($options)
+=======
+    private function addOptions(array $options)
+>>>>>>> git-aline/master/master
     {
         $code = array();
         foreach ($options as $k => $v) {

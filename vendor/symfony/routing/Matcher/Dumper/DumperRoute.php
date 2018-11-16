@@ -22,6 +22,7 @@ use Symfony\Component\Routing\Route;
  */
 class DumperRoute
 {
+<<<<<<< HEAD
     /**
      * @var string
      */
@@ -35,6 +36,12 @@ class DumperRoute
     /**
      * Constructor.
      *
+=======
+    private $name;
+    private $route;
+
+    /**
+>>>>>>> git-aline/master/master
      * @param string $name  The route name
      * @param Route  $route The route
      */

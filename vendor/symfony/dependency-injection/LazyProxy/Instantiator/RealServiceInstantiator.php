@@ -28,6 +28,10 @@ class RealServiceInstantiator implements InstantiatorInterface
      */
     public function instantiateProxy(ContainerInterface $container, Definition $definition, $id, $realInstantiator)
     {
+<<<<<<< HEAD
         return call_user_func($realInstantiator);
+=======
+        return \call_user_func($realInstantiator);
+>>>>>>> git-aline/master/master
     }
 }

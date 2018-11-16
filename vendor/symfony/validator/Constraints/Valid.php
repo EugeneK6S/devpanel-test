@@ -12,7 +12,10 @@
 namespace Symfony\Component\Validator\Constraints;
 
 use Symfony\Component\Validator\Constraint;
+<<<<<<< HEAD
 use Symfony\Component\Validator\Exception\ConstraintDefinitionException;
+=======
+>>>>>>> git-aline/master/master
 
 /**
  * @Annotation
@@ -24,6 +27,7 @@ class Valid extends Constraint
 {
     public $traverse = true;
 
+<<<<<<< HEAD
     /**
      * @deprecated since version 2.5, to be removed in Symfony 3.0.
      */
@@ -43,5 +47,25 @@ class Valid extends Constraint
         }
 
         parent::__construct($options);
+=======
+    public function __get($option)
+    {
+        if ('groups' === $option) {
+            // when this is reached, no groups have been configured
+            return null;
+        }
+
+        return parent::__get($option);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function addImplicitGroupName($group)
+    {
+        if (null !== $this->groups) {
+            parent::addImplicitGroupName($group);
+        }
+>>>>>>> git-aline/master/master
     }
 }

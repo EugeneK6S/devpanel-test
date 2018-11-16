@@ -3,11 +3,22 @@
 /*
  * This file is part of Twig.
  *
+<<<<<<< HEAD
  * (c) 2010 Fabien Potencier
+=======
+ * (c) Fabien Potencier
+>>>>>>> git-aline/master/master
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
+<<<<<<< HEAD
+=======
+
+/**
+ * @final
+ */
+>>>>>>> git-aline/master/master
 class Twig_Extension_Optimizer extends Twig_Extension
 {
     protected $optimizers;
@@ -27,3 +38,8 @@ class Twig_Extension_Optimizer extends Twig_Extension
         return 'optimizer';
     }
 }
+<<<<<<< HEAD
+=======
+
+class_alias('Twig_Extension_Optimizer', 'Twig\Extension\OptimizerExtension', false);
+>>>>>>> git-aline/master/master

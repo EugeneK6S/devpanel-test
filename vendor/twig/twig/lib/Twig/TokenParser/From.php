@@ -3,7 +3,11 @@
 /*
  * This file is part of Twig.
  *
+<<<<<<< HEAD
  * (c) 2010 Fabien Potencier
+=======
+ * (c) Fabien Potencier
+>>>>>>> git-aline/master/master
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
@@ -15,6 +19,11 @@
  * <pre>
  *   {% from 'forms.html' import forms %}
  * </pre>
+<<<<<<< HEAD
+=======
+ *
+ * @final
+>>>>>>> git-aline/master/master
  */
 class Twig_TokenParser_From extends Twig_TokenParser
 {
@@ -46,7 +55,11 @@ class Twig_TokenParser_From extends Twig_TokenParser
 
         foreach ($targets as $name => $alias) {
             if ($this->parser->isReservedMacroName($name)) {
+<<<<<<< HEAD
                 throw new Twig_Error_Syntax(sprintf('"%s" cannot be an imported macro as it is a reserved keyword.', $name), $token->getLine(), $stream->getFilename());
+=======
+                throw new Twig_Error_Syntax(sprintf('"%s" cannot be an imported macro as it is a reserved keyword.', $name), $token->getLine(), $stream->getSourceContext());
+>>>>>>> git-aline/master/master
             }
 
             $this->parser->addImportedSymbol('function', $alias, 'get'.$name, $node->getNode('var'));
@@ -60,3 +73,8 @@ class Twig_TokenParser_From extends Twig_TokenParser
         return 'from';
     }
 }
+<<<<<<< HEAD
+=======
+
+class_alias('Twig_TokenParser_From', 'Twig\TokenParser\FromTokenParser', false);
+>>>>>>> git-aline/master/master

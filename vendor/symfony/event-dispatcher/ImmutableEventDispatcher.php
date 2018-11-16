@@ -18,6 +18,7 @@ namespace Symfony\Component\EventDispatcher;
  */
 class ImmutableEventDispatcher implements EventDispatcherInterface
 {
+<<<<<<< HEAD
     /**
      * The proxied dispatcher.
      *
@@ -30,6 +31,10 @@ class ImmutableEventDispatcher implements EventDispatcherInterface
      *
      * @param EventDispatcherInterface $dispatcher The proxied event dispatcher.
      */
+=======
+    private $dispatcher;
+
+>>>>>>> git-aline/master/master
     public function __construct(EventDispatcherInterface $dispatcher)
     {
         $this->dispatcher = $dispatcher;
@@ -86,6 +91,17 @@ class ImmutableEventDispatcher implements EventDispatcherInterface
     /**
      * {@inheritdoc}
      */
+<<<<<<< HEAD
+=======
+    public function getListenerPriority($eventName, $listener)
+    {
+        return $this->dispatcher->getListenerPriority($eventName, $listener);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+>>>>>>> git-aline/master/master
     public function hasListeners($eventName = null)
     {
         return $this->dispatcher->hasListeners($eventName);

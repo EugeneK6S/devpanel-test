@@ -24,6 +24,7 @@ class RemovePrivateAliasesPass implements CompilerPassInterface
 {
     /**
      * Removes private aliases from the ContainerBuilder.
+<<<<<<< HEAD
      *
      * @param ContainerBuilder $container
      */
@@ -34,11 +35,22 @@ class RemovePrivateAliasesPass implements CompilerPassInterface
 
         foreach ($container->getAliases() as $id => $alias) {
             if ($alias->isPublic()) {
+=======
+     */
+    public function process(ContainerBuilder $container)
+    {
+        foreach ($container->getAliases() as $id => $alias) {
+            if ($alias->isPublic() || $alias->isPrivate()) {
+>>>>>>> git-aline/master/master
                 continue;
             }
 
             $container->removeAlias($id);
+<<<<<<< HEAD
             $compiler->addLogMessage($formatter->formatRemoveService($this, $id, 'private alias'));
+=======
+            $container->log($this, sprintf('Removed service "%s"; reason: private alias.', $id));
+>>>>>>> git-aline/master/master
         }
     }
 }

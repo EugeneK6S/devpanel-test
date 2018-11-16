@@ -11,8 +11,13 @@
 
 namespace Symfony\Component\Console\Output;
 
+<<<<<<< HEAD
 use Symfony\Component\Console\Formatter\OutputFormatterInterface;
 use Symfony\Component\Console\Formatter\OutputFormatter;
+=======
+use Symfony\Component\Console\Formatter\OutputFormatter;
+use Symfony\Component\Console\Formatter\OutputFormatterInterface;
+>>>>>>> git-aline/master/master
 
 /**
  * Base class for output classes.
@@ -33,8 +38,11 @@ abstract class Output implements OutputInterface
     private $formatter;
 
     /**
+<<<<<<< HEAD
      * Constructor.
      *
+=======
+>>>>>>> git-aline/master/master
      * @param int                           $verbosity The verbosity level (one of the VERBOSITY constants in OutputInterface)
      * @param bool                          $decorated Whether to decorate messages
      * @param OutputFormatterInterface|null $formatter Output formatter instance (null to use default OutputFormatter)
@@ -94,21 +102,45 @@ abstract class Output implements OutputInterface
         return $this->verbosity;
     }
 
+<<<<<<< HEAD
+=======
+    /**
+     * {@inheritdoc}
+     */
+>>>>>>> git-aline/master/master
     public function isQuiet()
     {
         return self::VERBOSITY_QUIET === $this->verbosity;
     }
 
+<<<<<<< HEAD
+=======
+    /**
+     * {@inheritdoc}
+     */
+>>>>>>> git-aline/master/master
     public function isVerbose()
     {
         return self::VERBOSITY_VERBOSE <= $this->verbosity;
     }
 
+<<<<<<< HEAD
+=======
+    /**
+     * {@inheritdoc}
+     */
+>>>>>>> git-aline/master/master
     public function isVeryVerbose()
     {
         return self::VERBOSITY_VERY_VERBOSE <= $this->verbosity;
     }
 
+<<<<<<< HEAD
+=======
+    /**
+     * {@inheritdoc}
+     */
+>>>>>>> git-aline/master/master
     public function isDebug()
     {
         return self::VERBOSITY_DEBUG <= $this->verbosity;
@@ -117,14 +149,21 @@ abstract class Output implements OutputInterface
     /**
      * {@inheritdoc}
      */
+<<<<<<< HEAD
     public function writeln($messages, $type = self::OUTPUT_NORMAL)
     {
         $this->write($messages, true, $type);
+=======
+    public function writeln($messages, $options = self::OUTPUT_NORMAL)
+    {
+        $this->write($messages, true, $options);
+>>>>>>> git-aline/master/master
     }
 
     /**
      * {@inheritdoc}
      */
+<<<<<<< HEAD
     public function write($messages, $newline = false, $type = self::OUTPUT_NORMAL)
     {
         if (self::VERBOSITY_QUIET === $this->verbosity) {
@@ -133,6 +172,22 @@ abstract class Output implements OutputInterface
 
         $messages = (array) $messages;
 
+=======
+    public function write($messages, $newline = false, $options = self::OUTPUT_NORMAL)
+    {
+        $messages = (array) $messages;
+
+        $types = self::OUTPUT_NORMAL | self::OUTPUT_RAW | self::OUTPUT_PLAIN;
+        $type = $types & $options ?: self::OUTPUT_NORMAL;
+
+        $verbosities = self::VERBOSITY_QUIET | self::VERBOSITY_NORMAL | self::VERBOSITY_VERBOSE | self::VERBOSITY_VERY_VERBOSE | self::VERBOSITY_DEBUG;
+        $verbosity = $verbosities & $options ?: self::VERBOSITY_NORMAL;
+
+        if ($verbosity > $this->getVerbosity()) {
+            return;
+        }
+
+>>>>>>> git-aline/master/master
         foreach ($messages as $message) {
             switch ($type) {
                 case OutputInterface::OUTPUT_NORMAL:
@@ -143,8 +198,11 @@ abstract class Output implements OutputInterface
                 case OutputInterface::OUTPUT_PLAIN:
                     $message = strip_tags($this->formatter->format($message));
                     break;
+<<<<<<< HEAD
                 default:
                     throw new \InvalidArgumentException(sprintf('Unknown output type given (%s)', $type));
+=======
+>>>>>>> git-aline/master/master
             }
 
             $this->doWrite($message, $newline);

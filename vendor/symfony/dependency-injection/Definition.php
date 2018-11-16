@@ -11,6 +11,10 @@
 
 namespace Symfony\Component\DependencyInjection;
 
+<<<<<<< HEAD
+=======
+use Symfony\Component\DependencyInjection\Argument\BoundArgument;
+>>>>>>> git-aline/master/master
 use Symfony\Component\DependencyInjection\Exception\InvalidArgumentException;
 use Symfony\Component\DependencyInjection\Exception\OutOfBoundsException;
 
@@ -24,6 +28,7 @@ class Definition
     private $class;
     private $file;
     private $factory;
+<<<<<<< HEAD
     private $factoryClass;
     private $factoryMethod;
     private $factoryService;
@@ -44,11 +49,40 @@ class Definition
     /**
      * Constructor.
      *
+=======
+    private $shared = true;
+    private $deprecated = false;
+    private $deprecationTemplate;
+    private $properties = array();
+    private $calls = array();
+    private $instanceof = array();
+    private $autoconfigured = false;
+    private $configurator;
+    private $tags = array();
+    private $public = true;
+    private $private = true;
+    private $synthetic = false;
+    private $abstract = false;
+    private $lazy = false;
+    private $decoratedService;
+    private $autowired = false;
+    private $autowiringTypes = array();
+    private $changes = array();
+    private $bindings = array();
+    private $errors = array();
+
+    protected $arguments = array();
+
+    private static $defaultDeprecationTemplate = 'The "%service_id%" service is deprecated. You should stop using it, as it will soon be removed.';
+
+    /**
+>>>>>>> git-aline/master/master
      * @param string|null $class     The service class
      * @param array       $arguments An array of arguments to pass to the service constructor
      */
     public function __construct($class = null, array $arguments = array())
     {
+<<<<<<< HEAD
         $this->class = $class;
         $this->arguments = $arguments;
     }
@@ -96,11 +130,40 @@ class Definition
         @trigger_error(sprintf('%s(%s) is deprecated since version 2.6 and will be removed in 3.0. Use Definition::setFactory() instead.', __METHOD__, $factoryClass), E_USER_DEPRECATED);
 
         $this->factoryClass = $factoryClass;
+=======
+        if (null !== $class) {
+            $this->setClass($class);
+        }
+        $this->arguments = $arguments;
+    }
+
+    /**
+     * Returns all changes tracked for the Definition object.
+     *
+     * @return array An array of changes for this Definition
+     */
+    public function getChanges()
+    {
+        return $this->changes;
+    }
+
+    /**
+     * Sets the tracked changes for the Definition object.
+     *
+     * @param array $changes An array of changes for this Definition
+     *
+     * @return $this
+     */
+    public function setChanges(array $changes)
+    {
+        $this->changes = $changes;
+>>>>>>> git-aline/master/master
 
         return $this;
     }
 
     /**
+<<<<<<< HEAD
      * Gets the factory class.
      *
      * @return string|null The factory class name
@@ -132,6 +195,35 @@ class Definition
         $this->factoryMethod = $factoryMethod;
 
         return $this;
+=======
+     * Sets a factory.
+     *
+     * @param string|array $factory A PHP function or an array containing a class/Reference and a method to call
+     *
+     * @return $this
+     */
+    public function setFactory($factory)
+    {
+        $this->changes['factory'] = true;
+
+        if (\is_string($factory) && false !== strpos($factory, '::')) {
+            $factory = explode('::', $factory, 2);
+        }
+
+        $this->factory = $factory;
+
+        return $this;
+    }
+
+    /**
+     * Gets the factory.
+     *
+     * @return string|array The PHP function or an array containing a class/Reference and a method to call
+     */
+    public function getFactory()
+    {
+        return $this->factory;
+>>>>>>> git-aline/master/master
     }
 
     /**
@@ -139,6 +231,7 @@ class Definition
      *
      * @param null|string $id        The decorated service id, use null to remove decoration
      * @param null|string $renamedId The new decorated service id
+<<<<<<< HEAD
      *
      * @return Definition The current instance
      *
@@ -154,15 +247,41 @@ class Definition
             $this->decoratedService = null;
         } else {
             $this->decoratedService = array($id, $renamedId);
+=======
+     * @param int         $priority  The priority of decoration
+     *
+     * @return $this
+     *
+     * @throws InvalidArgumentException in case the decorated service id and the new decorated service id are equals
+     */
+    public function setDecoratedService($id, $renamedId = null, $priority = 0)
+    {
+        if ($renamedId && $id === $renamedId) {
+            throw new InvalidArgumentException(sprintf('The decorated service inner name for "%s" must be different than the service name itself.', $id));
+        }
+
+        $this->changes['decorated_service'] = true;
+
+        if (null === $id) {
+            $this->decoratedService = null;
+        } else {
+            $this->decoratedService = array($id, $renamedId, (int) $priority);
+>>>>>>> git-aline/master/master
         }
 
         return $this;
     }
 
     /**
+<<<<<<< HEAD
      * Gets the service that decorates this service.
      *
      * @return null|array An array composed of the decorated service id and the new id for it, null if no service is decorated
+=======
+     * Gets the service that this service is decorating.
+     *
+     * @return null|array An array composed of the decorated service id, the new id for it and the priority of decoration, null if no service is decorated
+>>>>>>> git-aline/master/master
      */
     public function getDecoratedService()
     {
@@ -170,6 +289,7 @@ class Definition
     }
 
     /**
+<<<<<<< HEAD
      * Gets the factory method.
      *
      * @return string|null The factory method name
@@ -220,14 +340,25 @@ class Definition
     }
 
     /**
+=======
+>>>>>>> git-aline/master/master
      * Sets the service class.
      *
      * @param string $class The service class
      *
+<<<<<<< HEAD
      * @return Definition The current instance
      */
     public function setClass($class)
     {
+=======
+     * @return $this
+     */
+    public function setClass($class)
+    {
+        $this->changes['class'] = true;
+
+>>>>>>> git-aline/master/master
         $this->class = $class;
 
         return $this;
@@ -246,9 +377,13 @@ class Definition
     /**
      * Sets the arguments to pass to the service constructor/factory method.
      *
+<<<<<<< HEAD
      * @param array $arguments An array of arguments
      *
      * @return Definition The current instance
+=======
+     * @return $this
+>>>>>>> git-aline/master/master
      */
     public function setArguments(array $arguments)
     {
@@ -257,6 +392,14 @@ class Definition
         return $this;
     }
 
+<<<<<<< HEAD
+=======
+    /**
+     * Sets the properties to define when creating the service.
+     *
+     * @return $this
+     */
+>>>>>>> git-aline/master/master
     public function setProperties(array $properties)
     {
         $this->properties = $properties;
@@ -264,11 +407,30 @@ class Definition
         return $this;
     }
 
+<<<<<<< HEAD
+=======
+    /**
+     * Gets the properties to define when creating the service.
+     *
+     * @return array
+     */
+>>>>>>> git-aline/master/master
     public function getProperties()
     {
         return $this->properties;
     }
 
+<<<<<<< HEAD
+=======
+    /**
+     * Sets a specific property.
+     *
+     * @param string $name
+     * @param mixed  $value
+     *
+     * @return $this
+     */
+>>>>>>> git-aline/master/master
     public function setProperty($name, $value)
     {
         $this->properties[$name] = $value;
@@ -281,7 +443,11 @@ class Definition
      *
      * @param mixed $argument An argument
      *
+<<<<<<< HEAD
      * @return Definition The current instance
+=======
+     * @return $this
+>>>>>>> git-aline/master/master
      */
     public function addArgument($argument)
     {
@@ -291,19 +457,41 @@ class Definition
     }
 
     /**
+<<<<<<< HEAD
      * Sets a specific argument.
      *
      * @param int   $index
      * @param mixed $argument
      *
      * @return Definition The current instance
+=======
+     * Replaces a specific argument.
+     *
+     * @param int|string $index
+     * @param mixed      $argument
+     *
+     * @return $this
+>>>>>>> git-aline/master/master
      *
      * @throws OutOfBoundsException When the replaced argument does not exist
      */
     public function replaceArgument($index, $argument)
     {
+<<<<<<< HEAD
         if ($index < 0 || $index > count($this->arguments) - 1) {
             throw new OutOfBoundsException(sprintf('The index "%d" is not in the range [0, %d].', $index, count($this->arguments) - 1));
+=======
+        if (0 === \count($this->arguments)) {
+            throw new OutOfBoundsException('Cannot replace arguments if none have been configured yet.');
+        }
+
+        if (\is_int($index) && ($index < 0 || $index > \count($this->arguments) - 1)) {
+            throw new OutOfBoundsException(sprintf('The index "%d" is not in the range [0, %d].', $index, \count($this->arguments) - 1));
+        }
+
+        if (!array_key_exists($index, $this->arguments)) {
+            throw new OutOfBoundsException(sprintf('The argument "%s" doesn\'t exist.', $index));
+>>>>>>> git-aline/master/master
         }
 
         $this->arguments[$index] = $argument;
@@ -312,6 +500,24 @@ class Definition
     }
 
     /**
+<<<<<<< HEAD
+=======
+     * Sets a specific argument.
+     *
+     * @param int|string $key
+     * @param mixed      $value
+     *
+     * @return $this
+     */
+    public function setArgument($key, $value)
+    {
+        $this->arguments[$key] = $value;
+
+        return $this;
+    }
+
+    /**
+>>>>>>> git-aline/master/master
      * Gets the arguments to pass to the service constructor/factory method.
      *
      * @return array The array of arguments
@@ -324,7 +530,11 @@ class Definition
     /**
      * Gets an argument to pass to the service constructor/factory method.
      *
+<<<<<<< HEAD
      * @param int $index
+=======
+     * @param int|string $index
+>>>>>>> git-aline/master/master
      *
      * @return mixed The argument value
      *
@@ -332,8 +542,13 @@ class Definition
      */
     public function getArgument($index)
     {
+<<<<<<< HEAD
         if ($index < 0 || $index > count($this->arguments) - 1) {
             throw new OutOfBoundsException(sprintf('The index "%d" is not in the range [0, %d].', $index, count($this->arguments) - 1));
+=======
+        if (!array_key_exists($index, $this->arguments)) {
+            throw new OutOfBoundsException(sprintf('The argument "%s" doesn\'t exist.', $index));
+>>>>>>> git-aline/master/master
         }
 
         return $this->arguments[$index];
@@ -342,9 +557,13 @@ class Definition
     /**
      * Sets the methods to call after service initialization.
      *
+<<<<<<< HEAD
      * @param array $calls An array of method calls
      *
      * @return Definition The current instance
+=======
+     * @return $this
+>>>>>>> git-aline/master/master
      */
     public function setMethodCalls(array $calls = array())
     {
@@ -362,14 +581,22 @@ class Definition
      * @param string $method    The method name to call
      * @param array  $arguments An array of arguments to pass to the method call
      *
+<<<<<<< HEAD
      * @return Definition The current instance
+=======
+     * @return $this
+>>>>>>> git-aline/master/master
      *
      * @throws InvalidArgumentException on empty $method param
      */
     public function addMethodCall($method, array $arguments = array())
     {
         if (empty($method)) {
+<<<<<<< HEAD
             throw new InvalidArgumentException(sprintf('Method name cannot be empty.'));
+=======
+            throw new InvalidArgumentException('Method name cannot be empty.');
+>>>>>>> git-aline/master/master
         }
         $this->calls[] = array($method, $arguments);
 
@@ -381,7 +608,11 @@ class Definition
      *
      * @param string $method The method name to remove
      *
+<<<<<<< HEAD
      * @return Definition The current instance
+=======
+     * @return $this
+>>>>>>> git-aline/master/master
      */
     public function removeMethodCall($method)
     {
@@ -424,11 +655,65 @@ class Definition
     }
 
     /**
+<<<<<<< HEAD
      * Sets tags for this definition.
      *
      * @param array $tags
      *
      * @return Definition the current instance
+=======
+     * Sets the definition templates to conditionally apply on the current definition, keyed by parent interface/class.
+     *
+     * @param $instanceof ChildDefinition[]
+     *
+     * @return $this
+     */
+    public function setInstanceofConditionals(array $instanceof)
+    {
+        $this->instanceof = $instanceof;
+
+        return $this;
+    }
+
+    /**
+     * Gets the definition templates to conditionally apply on the current definition, keyed by parent interface/class.
+     *
+     * @return ChildDefinition[]
+     */
+    public function getInstanceofConditionals()
+    {
+        return $this->instanceof;
+    }
+
+    /**
+     * Sets whether or not instanceof conditionals should be prepended with a global set.
+     *
+     * @param bool $autoconfigured
+     *
+     * @return $this
+     */
+    public function setAutoconfigured($autoconfigured)
+    {
+        $this->changes['autoconfigured'] = true;
+
+        $this->autoconfigured = $autoconfigured;
+
+        return $this;
+    }
+
+    /**
+     * @return bool
+     */
+    public function isAutoconfigured()
+    {
+        return $this->autoconfigured;
+    }
+
+    /**
+     * Sets tags for this definition.
+     *
+     * @return $this
+>>>>>>> git-aline/master/master
      */
     public function setTags(array $tags)
     {
@@ -465,7 +750,11 @@ class Definition
      * @param string $name       The tag name
      * @param array  $attributes An array of attributes
      *
+<<<<<<< HEAD
      * @return Definition The current instance
+=======
+     * @return $this
+>>>>>>> git-aline/master/master
      */
     public function addTag($name, array $attributes = array())
     {
@@ -491,6 +780,7 @@ class Definition
      *
      * @param string $name The tag name
      *
+<<<<<<< HEAD
      * @return Definition
      */
     public function clearTag($name)
@@ -498,6 +788,13 @@ class Definition
         if (isset($this->tags[$name])) {
             unset($this->tags[$name]);
         }
+=======
+     * @return $this
+     */
+    public function clearTag($name)
+    {
+        unset($this->tags[$name]);
+>>>>>>> git-aline/master/master
 
         return $this;
     }
@@ -505,7 +802,11 @@ class Definition
     /**
      * Clears the tags for this definition.
      *
+<<<<<<< HEAD
      * @return Definition The current instance
+=======
+     * @return $this
+>>>>>>> git-aline/master/master
      */
     public function clearTags()
     {
@@ -519,10 +820,19 @@ class Definition
      *
      * @param string $file A full pathname to include
      *
+<<<<<<< HEAD
      * @return Definition The current instance
      */
     public function setFile($file)
     {
+=======
+     * @return $this
+     */
+    public function setFile($file)
+    {
+        $this->changes['file'] = true;
+
+>>>>>>> git-aline/master/master
         $this->file = $file;
 
         return $this;
@@ -539,6 +849,7 @@ class Definition
     }
 
     /**
+<<<<<<< HEAD
      * Sets the scope of the service.
      *
      * @param string $scope Whether the service must be shared or not
@@ -548,11 +859,25 @@ class Definition
     public function setScope($scope)
     {
         $this->scope = $scope;
+=======
+     * Sets if the service must be shared or not.
+     *
+     * @param bool $shared Whether the service must be shared or not
+     *
+     * @return $this
+     */
+    public function setShared($shared)
+    {
+        $this->changes['shared'] = true;
+
+        $this->shared = (bool) $shared;
+>>>>>>> git-aline/master/master
 
         return $this;
     }
 
     /**
+<<<<<<< HEAD
      * Returns the scope of the service.
      *
      * @return string
@@ -560,6 +885,15 @@ class Definition
     public function getScope()
     {
         return $this->scope;
+=======
+     * Whether this service is shared.
+     *
+     * @return bool
+     */
+    public function isShared()
+    {
+        return $this->shared;
+>>>>>>> git-aline/master/master
     }
 
     /**
@@ -567,11 +901,22 @@ class Definition
      *
      * @param bool $boolean
      *
+<<<<<<< HEAD
      * @return Definition The current instance
      */
     public function setPublic($boolean)
     {
         $this->public = (bool) $boolean;
+=======
+     * @return $this
+     */
+    public function setPublic($boolean)
+    {
+        $this->changes['public'] = true;
+
+        $this->public = (bool) $boolean;
+        $this->private = false;
+>>>>>>> git-aline/master/master
 
         return $this;
     }
@@ -587,6 +932,7 @@ class Definition
     }
 
     /**
+<<<<<<< HEAD
      * Sets the synchronized flag of this service.
      *
      * @param bool $boolean
@@ -602,11 +948,28 @@ class Definition
         }
 
         $this->synchronized = (bool) $boolean;
+=======
+     * Sets if this service is private.
+     *
+     * When set, the "private" state has a higher precedence than "public".
+     * In version 3.4, a "private" service always remains publicly accessible,
+     * but triggers a deprecation notice when accessed from the container,
+     * so that the service can be made really private in 4.0.
+     *
+     * @param bool $boolean
+     *
+     * @return $this
+     */
+    public function setPrivate($boolean)
+    {
+        $this->private = (bool) $boolean;
+>>>>>>> git-aline/master/master
 
         return $this;
     }
 
     /**
+<<<<<<< HEAD
      * Whether this service is synchronized.
      *
      * @return bool
@@ -620,6 +983,15 @@ class Definition
         }
 
         return $this->synchronized;
+=======
+     * Whether this service is private.
+     *
+     * @return bool
+     */
+    public function isPrivate()
+    {
+        return $this->private;
+>>>>>>> git-aline/master/master
     }
 
     /**
@@ -627,10 +999,19 @@ class Definition
      *
      * @param bool $lazy
      *
+<<<<<<< HEAD
      * @return Definition The current instance
      */
     public function setLazy($lazy)
     {
+=======
+     * @return $this
+     */
+    public function setLazy($lazy)
+    {
+        $this->changes['lazy'] = true;
+
+>>>>>>> git-aline/master/master
         $this->lazy = (bool) $lazy;
 
         return $this;
@@ -652,7 +1033,11 @@ class Definition
      *
      * @param bool $boolean
      *
+<<<<<<< HEAD
      * @return Definition the current instance
+=======
+     * @return $this
+>>>>>>> git-aline/master/master
      */
     public function setSynthetic($boolean)
     {
@@ -678,7 +1063,11 @@ class Definition
      *
      * @param bool $boolean
      *
+<<<<<<< HEAD
      * @return Definition the current instance
+=======
+     * @return $this
+>>>>>>> git-aline/master/master
      */
     public function setAbstract($boolean)
     {
@@ -699,6 +1088,7 @@ class Definition
     }
 
     /**
+<<<<<<< HEAD
      * Sets a configurator to call after the service is fully initialized.
      *
      * @param callable $callable A PHP callable
@@ -708,6 +1098,78 @@ class Definition
     public function setConfigurator($callable)
     {
         $this->configurator = $callable;
+=======
+     * Whether this definition is deprecated, that means it should not be called
+     * anymore.
+     *
+     * @param bool   $status
+     * @param string $template Template message to use if the definition is deprecated
+     *
+     * @return $this
+     *
+     * @throws InvalidArgumentException when the message template is invalid
+     */
+    public function setDeprecated($status = true, $template = null)
+    {
+        if (null !== $template) {
+            if (preg_match('#[\r\n]|\*/#', $template)) {
+                throw new InvalidArgumentException('Invalid characters found in deprecation template.');
+            }
+
+            if (false === strpos($template, '%service_id%')) {
+                throw new InvalidArgumentException('The deprecation template must contain the "%service_id%" placeholder.');
+            }
+
+            $this->deprecationTemplate = $template;
+        }
+
+        $this->changes['deprecated'] = true;
+
+        $this->deprecated = (bool) $status;
+
+        return $this;
+    }
+
+    /**
+     * Whether this definition is deprecated, that means it should not be called
+     * anymore.
+     *
+     * @return bool
+     */
+    public function isDeprecated()
+    {
+        return $this->deprecated;
+    }
+
+    /**
+     * Message to use if this definition is deprecated.
+     *
+     * @param string $id Service id relying on this definition
+     *
+     * @return string
+     */
+    public function getDeprecationMessage($id)
+    {
+        return str_replace('%service_id%', $id, $this->deprecationTemplate ?: self::$defaultDeprecationTemplate);
+    }
+
+    /**
+     * Sets a configurator to call after the service is fully initialized.
+     *
+     * @param string|array $configurator A PHP callable
+     *
+     * @return $this
+     */
+    public function setConfigurator($configurator)
+    {
+        $this->changes['configurator'] = true;
+
+        if (\is_string($configurator) && false !== strpos($configurator, '::')) {
+            $configurator = explode('::', $configurator, 2);
+        }
+
+        $this->configurator = $configurator;
+>>>>>>> git-aline/master/master
 
         return $this;
     }
@@ -721,4 +1183,177 @@ class Definition
     {
         return $this->configurator;
     }
+<<<<<<< HEAD
+=======
+
+    /**
+     * Sets types that will default to this definition.
+     *
+     * @param string[] $types
+     *
+     * @return $this
+     *
+     * @deprecated since version 3.3, to be removed in 4.0.
+     */
+    public function setAutowiringTypes(array $types)
+    {
+        @trigger_error('Autowiring-types are deprecated since Symfony 3.3 and will be removed in 4.0. Use aliases instead.', E_USER_DEPRECATED);
+
+        $this->autowiringTypes = array();
+
+        foreach ($types as $type) {
+            $this->autowiringTypes[$type] = true;
+        }
+
+        return $this;
+    }
+
+    /**
+     * Is the definition autowired?
+     *
+     * @return bool
+     */
+    public function isAutowired()
+    {
+        return $this->autowired;
+    }
+
+    /**
+     * Enables/disables autowiring.
+     *
+     * @param bool $autowired
+     *
+     * @return $this
+     */
+    public function setAutowired($autowired)
+    {
+        $this->changes['autowired'] = true;
+
+        $this->autowired = (bool) $autowired;
+
+        return $this;
+    }
+
+    /**
+     * Gets autowiring types that will default to this definition.
+     *
+     * @return string[]
+     *
+     * @deprecated since version 3.3, to be removed in 4.0.
+     */
+    public function getAutowiringTypes(/*$triggerDeprecation = true*/)
+    {
+        if (1 > \func_num_args() || func_get_arg(0)) {
+            @trigger_error('Autowiring-types are deprecated since Symfony 3.3 and will be removed in 4.0. Use aliases instead.', E_USER_DEPRECATED);
+        }
+
+        return array_keys($this->autowiringTypes);
+    }
+
+    /**
+     * Adds a type that will default to this definition.
+     *
+     * @param string $type
+     *
+     * @return $this
+     *
+     * @deprecated since version 3.3, to be removed in 4.0.
+     */
+    public function addAutowiringType($type)
+    {
+        @trigger_error(sprintf('Autowiring-types are deprecated since Symfony 3.3 and will be removed in 4.0. Use aliases instead for "%s".', $type), E_USER_DEPRECATED);
+
+        $this->autowiringTypes[$type] = true;
+
+        return $this;
+    }
+
+    /**
+     * Removes a type.
+     *
+     * @param string $type
+     *
+     * @return $this
+     *
+     * @deprecated since version 3.3, to be removed in 4.0.
+     */
+    public function removeAutowiringType($type)
+    {
+        @trigger_error(sprintf('Autowiring-types are deprecated since Symfony 3.3 and will be removed in 4.0. Use aliases instead for "%s".', $type), E_USER_DEPRECATED);
+
+        unset($this->autowiringTypes[$type]);
+
+        return $this;
+    }
+
+    /**
+     * Will this definition default for the given type?
+     *
+     * @param string $type
+     *
+     * @return bool
+     *
+     * @deprecated since version 3.3, to be removed in 4.0.
+     */
+    public function hasAutowiringType($type)
+    {
+        @trigger_error(sprintf('Autowiring-types are deprecated since Symfony 3.3 and will be removed in 4.0. Use aliases instead for "%s".', $type), E_USER_DEPRECATED);
+
+        return isset($this->autowiringTypes[$type]);
+    }
+
+    /**
+     * Gets bindings.
+     *
+     * @return array
+     */
+    public function getBindings()
+    {
+        return $this->bindings;
+    }
+
+    /**
+     * Sets bindings.
+     *
+     * Bindings map $named or FQCN arguments to values that should be
+     * injected in the matching parameters (of the constructor, of methods
+     * called and of controller actions).
+     *
+     * @param array $bindings
+     *
+     * @return $this
+     */
+    public function setBindings(array $bindings)
+    {
+        foreach ($bindings as $key => $binding) {
+            if (!$binding instanceof BoundArgument) {
+                $bindings[$key] = new BoundArgument($binding);
+            }
+        }
+
+        $this->bindings = $bindings;
+
+        return $this;
+    }
+
+    /**
+     * Add an error that occurred when building this Definition.
+     *
+     * @param string $error
+     */
+    public function addError($error)
+    {
+        $this->errors[] = $error;
+    }
+
+    /**
+     * Returns any errors that occurred while building this Definition.
+     *
+     * @return array
+     */
+    public function getErrors()
+    {
+        return $this->errors;
+    }
+>>>>>>> git-aline/master/master
 }

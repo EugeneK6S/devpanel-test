@@ -11,6 +11,11 @@
 
 namespace Symfony\Component\Translation;
 
+<<<<<<< HEAD
+=======
+use Symfony\Component\Translation\Exception\InvalidArgumentException;
+
+>>>>>>> git-aline/master/master
 /**
  * @author Abdellatif Ait boudad <a.aitboudad@gmail.com>
  */
@@ -25,9 +30,12 @@ class DataCollectorTranslator implements TranslatorInterface, TranslatorBagInter
      */
     private $translator;
 
+<<<<<<< HEAD
     /**
      * @var array
      */
+=======
+>>>>>>> git-aline/master/master
     private $messages = array();
 
     /**
@@ -36,7 +44,11 @@ class DataCollectorTranslator implements TranslatorInterface, TranslatorBagInter
     public function __construct(TranslatorInterface $translator)
     {
         if (!$translator instanceof TranslatorBagInterface) {
+<<<<<<< HEAD
             throw new \InvalidArgumentException(sprintf('The Translator "%s" must implement TranslatorInterface and TranslatorBagInterface.', get_class($translator)));
+=======
+            throw new InvalidArgumentException(sprintf('The Translator "%s" must implement TranslatorInterface and TranslatorBagInterface.', \get_class($translator)));
+>>>>>>> git-aline/master/master
         }
 
         $this->translator = $translator;
@@ -48,7 +60,11 @@ class DataCollectorTranslator implements TranslatorInterface, TranslatorBagInter
     public function trans($id, array $parameters = array(), $domain = null, $locale = null)
     {
         $trans = $this->translator->trans($id, $parameters, $domain, $locale);
+<<<<<<< HEAD
         $this->collectMessage($locale, $domain, $id, $trans);
+=======
+        $this->collectMessage($locale, $domain, $id, $trans, $parameters);
+>>>>>>> git-aline/master/master
 
         return $trans;
     }
@@ -59,7 +75,11 @@ class DataCollectorTranslator implements TranslatorInterface, TranslatorBagInter
     public function transChoice($id, $number, array $parameters = array(), $domain = null, $locale = null)
     {
         $trans = $this->translator->transChoice($id, $number, $parameters, $domain, $locale);
+<<<<<<< HEAD
         $this->collectMessage($locale, $domain, $id, $trans);
+=======
+        $this->collectMessage($locale, $domain, $id, $trans, $parameters, $number);
+>>>>>>> git-aline/master/master
 
         return $trans;
     }
@@ -89,11 +109,32 @@ class DataCollectorTranslator implements TranslatorInterface, TranslatorBagInter
     }
 
     /**
+<<<<<<< HEAD
+=======
+     * Gets the fallback locales.
+     *
+     * @return array $locales The fallback locales
+     */
+    public function getFallbackLocales()
+    {
+        if ($this->translator instanceof Translator || method_exists($this->translator, 'getFallbackLocales')) {
+            return $this->translator->getFallbackLocales();
+        }
+
+        return array();
+    }
+
+    /**
+>>>>>>> git-aline/master/master
      * Passes through all unknown calls onto the translator object.
      */
     public function __call($method, $args)
     {
+<<<<<<< HEAD
         return call_user_func_array(array($this->translator, $method), $args);
+=======
+        return \call_user_func_array(array($this->translator, $method), $args);
+>>>>>>> git-aline/master/master
     }
 
     /**
@@ -108,9 +149,17 @@ class DataCollectorTranslator implements TranslatorInterface, TranslatorBagInter
      * @param string|null $locale
      * @param string|null $domain
      * @param string      $id
+<<<<<<< HEAD
      * @param string      $trans
      */
     private function collectMessage($locale, $domain, $id, $translation)
+=======
+     * @param string      $translation
+     * @param array|null  $parameters
+     * @param int|null    $number
+     */
+    private function collectMessage($locale, $domain, $id, $translation, $parameters = array(), $number = null)
+>>>>>>> git-aline/master/master
     {
         if (null === $domain) {
             $domain = 'messages';
@@ -124,14 +173,22 @@ class DataCollectorTranslator implements TranslatorInterface, TranslatorBagInter
         } elseif ($catalogue->has($id, $domain)) {
             $state = self::MESSAGE_EQUALS_FALLBACK;
 
+<<<<<<< HEAD
             $fallbackCatalogue = $catalogue->getFallBackCatalogue();
+=======
+            $fallbackCatalogue = $catalogue->getFallbackCatalogue();
+>>>>>>> git-aline/master/master
             while ($fallbackCatalogue) {
                 if ($fallbackCatalogue->defines($id, $domain)) {
                     $locale = $fallbackCatalogue->getLocale();
                     break;
                 }
 
+<<<<<<< HEAD
                 $fallbackCatalogue = $fallbackCatalogue->getFallBackCatalogue();
+=======
+                $fallbackCatalogue = $fallbackCatalogue->getFallbackCatalogue();
+>>>>>>> git-aline/master/master
             }
         } else {
             $state = self::MESSAGE_MISSING;
@@ -142,6 +199,11 @@ class DataCollectorTranslator implements TranslatorInterface, TranslatorBagInter
             'domain' => $domain,
             'id' => $id,
             'translation' => $translation,
+<<<<<<< HEAD
+=======
+            'parameters' => $parameters,
+            'transChoiceNumber' => $number,
+>>>>>>> git-aline/master/master
             'state' => $state,
         );
     }

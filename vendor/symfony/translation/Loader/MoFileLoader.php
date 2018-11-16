@@ -12,32 +12,46 @@
 namespace Symfony\Component\Translation\Loader;
 
 use Symfony\Component\Translation\Exception\InvalidResourceException;
+<<<<<<< HEAD
 use Symfony\Component\Translation\Exception\NotFoundResourceException;
 use Symfony\Component\Config\Resource\FileResource;
+=======
+>>>>>>> git-aline/master/master
 
 /**
  * @copyright Copyright (c) 2010, Union of RAD http://union-of-rad.org (http://lithify.me/)
  */
+<<<<<<< HEAD
 class MoFileLoader extends ArrayLoader
+=======
+class MoFileLoader extends FileLoader
+>>>>>>> git-aline/master/master
 {
     /**
      * Magic used for validating the format of a MO file as well as
      * detecting if the machine used to create that file was little endian.
+<<<<<<< HEAD
      *
      * @var float
+=======
+>>>>>>> git-aline/master/master
      */
     const MO_LITTLE_ENDIAN_MAGIC = 0x950412de;
 
     /**
      * Magic used for validating the format of a MO file as well as
      * detecting if the machine used to create that file was big endian.
+<<<<<<< HEAD
      *
      * @var float
+=======
+>>>>>>> git-aline/master/master
      */
     const MO_BIG_ENDIAN_MAGIC = 0xde120495;
 
     /**
      * The size of the header of a MO file in bytes.
+<<<<<<< HEAD
      *
      * @var int Number of bytes.
      */
@@ -74,10 +88,16 @@ class MoFileLoader extends ArrayLoader
         return $catalogue;
     }
 
+=======
+     */
+    const MO_HEADER_SIZE = 28;
+
+>>>>>>> git-aline/master/master
     /**
      * Parses machine object (MO) format, independent of the machine's endian it
      * was created on. Both 32bit and 64bit systems are supported.
      *
+<<<<<<< HEAD
      * @param resource $resource
      *
      * @return array
@@ -85,6 +105,11 @@ class MoFileLoader extends ArrayLoader
      * @throws InvalidResourceException If stream content has an invalid format.
      */
     private function parse($resource)
+=======
+     * {@inheritdoc}
+     */
+    protected function loadResource($resource)
+>>>>>>> git-aline/master/master
     {
         $stream = fopen($resource, 'r');
 
@@ -96,9 +121,15 @@ class MoFileLoader extends ArrayLoader
         $magic = unpack('V1', fread($stream, 4));
         $magic = hexdec(substr(dechex(current($magic)), -8));
 
+<<<<<<< HEAD
         if ($magic == self::MO_LITTLE_ENDIAN_MAGIC) {
             $isBigEndian = false;
         } elseif ($magic == self::MO_BIG_ENDIAN_MAGIC) {
+=======
+        if (self::MO_LITTLE_ENDIAN_MAGIC == $magic) {
+            $isBigEndian = false;
+        } elseif (self::MO_BIG_ENDIAN_MAGIC == $magic) {
+>>>>>>> git-aline/master/master
             $isBigEndian = true;
         } else {
             throw new InvalidResourceException('MO stream content has an invalid format.');
@@ -117,7 +148,11 @@ class MoFileLoader extends ArrayLoader
         $messages = array();
 
         for ($i = 0; $i < $count; ++$i) {
+<<<<<<< HEAD
             $singularId = $pluralId = null;
+=======
+            $pluralId = null;
+>>>>>>> git-aline/master/master
             $translated = null;
 
             fseek($stream, $offsetId + $i * 8);
@@ -132,7 +167,11 @@ class MoFileLoader extends ArrayLoader
             fseek($stream, $offset);
             $singularId = fread($stream, $length);
 
+<<<<<<< HEAD
             if (strpos($singularId, "\000") !== false) {
+=======
+            if (false !== strpos($singularId, "\000")) {
+>>>>>>> git-aline/master/master
                 list($singularId, $pluralId) = explode("\000", $singularId);
             }
 
@@ -147,14 +186,22 @@ class MoFileLoader extends ArrayLoader
             fseek($stream, $offset);
             $translated = fread($stream, $length);
 
+<<<<<<< HEAD
             if (strpos($translated, "\000") !== false) {
+=======
+            if (false !== strpos($translated, "\000")) {
+>>>>>>> git-aline/master/master
                 $translated = explode("\000", $translated);
             }
 
             $ids = array('singular' => $singularId, 'plural' => $pluralId);
             $item = compact('ids', 'translated');
 
+<<<<<<< HEAD
             if (is_array($item['translated'])) {
+=======
+            if (\is_array($item['translated'])) {
+>>>>>>> git-aline/master/master
                 $messages[$item['ids']['singular']] = stripcslashes($item['translated'][0]);
                 if (isset($item['ids']['plural'])) {
                     $plurals = array();
@@ -174,7 +221,11 @@ class MoFileLoader extends ArrayLoader
     }
 
     /**
+<<<<<<< HEAD
      * Reads an unsigned long from stream respecting endianess.
+=======
+     * Reads an unsigned long from stream respecting endianness.
+>>>>>>> git-aline/master/master
      *
      * @param resource $stream
      * @param bool     $isBigEndian

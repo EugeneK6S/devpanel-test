@@ -11,6 +11,12 @@
 
 namespace Symfony\Component\Console\Helper;
 
+<<<<<<< HEAD
+=======
+use Symfony\Component\Console\Exception\InvalidArgumentException;
+use Symfony\Component\Console\Exception\LogicException;
+
+>>>>>>> git-aline/master/master
 /**
  * Defines the styles for a Table.
  *
@@ -34,12 +40,20 @@ class TableStyle
      *
      * @param string $paddingChar
      *
+<<<<<<< HEAD
      * @return TableStyle
+=======
+     * @return $this
+>>>>>>> git-aline/master/master
      */
     public function setPaddingChar($paddingChar)
     {
         if (!$paddingChar) {
+<<<<<<< HEAD
             throw new \LogicException('The padding char must not be empty');
+=======
+            throw new LogicException('The padding char must not be empty');
+>>>>>>> git-aline/master/master
         }
 
         $this->paddingChar = $paddingChar;
@@ -62,7 +76,11 @@ class TableStyle
      *
      * @param string $horizontalBorderChar
      *
+<<<<<<< HEAD
      * @return TableStyle
+=======
+     * @return $this
+>>>>>>> git-aline/master/master
      */
     public function setHorizontalBorderChar($horizontalBorderChar)
     {
@@ -86,7 +104,11 @@ class TableStyle
      *
      * @param string $verticalBorderChar
      *
+<<<<<<< HEAD
      * @return TableStyle
+=======
+     * @return $this
+>>>>>>> git-aline/master/master
      */
     public function setVerticalBorderChar($verticalBorderChar)
     {
@@ -110,7 +132,11 @@ class TableStyle
      *
      * @param string $crossingChar
      *
+<<<<<<< HEAD
      * @return TableStyle
+=======
+     * @return $this
+>>>>>>> git-aline/master/master
      */
     public function setCrossingChar($crossingChar)
     {
@@ -134,7 +160,11 @@ class TableStyle
      *
      * @param string $cellHeaderFormat
      *
+<<<<<<< HEAD
      * @return TableStyle
+=======
+     * @return $this
+>>>>>>> git-aline/master/master
      */
     public function setCellHeaderFormat($cellHeaderFormat)
     {
@@ -158,7 +188,11 @@ class TableStyle
      *
      * @param string $cellRowFormat
      *
+<<<<<<< HEAD
      * @return TableStyle
+=======
+     * @return $this
+>>>>>>> git-aline/master/master
      */
     public function setCellRowFormat($cellRowFormat)
     {
@@ -182,7 +216,11 @@ class TableStyle
      *
      * @param string $cellRowContentFormat
      *
+<<<<<<< HEAD
      * @return TableStyle
+=======
+     * @return $this
+>>>>>>> git-aline/master/master
      */
     public function setCellRowContentFormat($cellRowContentFormat)
     {
@@ -206,7 +244,11 @@ class TableStyle
      *
      * @param string $borderFormat
      *
+<<<<<<< HEAD
      * @return TableStyle
+=======
+     * @return $this
+>>>>>>> git-aline/master/master
      */
     public function setBorderFormat($borderFormat)
     {
@@ -230,12 +272,21 @@ class TableStyle
      *
      * @param int $padType STR_PAD_*
      *
+<<<<<<< HEAD
      * @return TableStyle
      */
     public function setPadType($padType)
     {
         if (!in_array($padType, array(STR_PAD_LEFT, STR_PAD_RIGHT, STR_PAD_BOTH), true)) {
             throw new \InvalidArgumentException('Invalid padding type. Expected one of (STR_PAD_LEFT, STR_PAD_RIGHT, STR_PAD_BOTH).');
+=======
+     * @return $this
+     */
+    public function setPadType($padType)
+    {
+        if (!\in_array($padType, array(STR_PAD_LEFT, STR_PAD_RIGHT, STR_PAD_BOTH), true)) {
+            throw new InvalidArgumentException('Invalid padding type. Expected one of (STR_PAD_LEFT, STR_PAD_RIGHT, STR_PAD_BOTH).');
+>>>>>>> git-aline/master/master
         }
 
         $this->padType = $padType;

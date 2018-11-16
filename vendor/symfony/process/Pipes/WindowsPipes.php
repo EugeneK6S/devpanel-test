@@ -11,8 +11,13 @@
 
 namespace Symfony\Component\Process\Pipes;
 
+<<<<<<< HEAD
 use Symfony\Component\Process\Process;
 use Symfony\Component\Process\Exception\RuntimeException;
+=======
+use Symfony\Component\Process\Exception\RuntimeException;
+use Symfony\Component\Process\Process;
+>>>>>>> git-aline/master/master
 
 /**
  * WindowsPipes implementation uses temporary files as handles.
@@ -26,15 +31,21 @@ use Symfony\Component\Process\Exception\RuntimeException;
  */
 class WindowsPipes extends AbstractPipes
 {
+<<<<<<< HEAD
     /** @var array */
     private $files = array();
     /** @var array */
     private $fileHandles = array();
     /** @var array */
+=======
+    private $files = array();
+    private $fileHandles = array();
+>>>>>>> git-aline/master/master
     private $readBytes = array(
         Process::STDOUT => 0,
         Process::STDERR => 0,
     );
+<<<<<<< HEAD
     /** @var bool */
     private $disableOutput;
 
@@ -43,10 +54,20 @@ class WindowsPipes extends AbstractPipes
         $this->disableOutput = (bool) $disableOutput;
 
         if (!$this->disableOutput) {
+=======
+    private $haveReadSupport;
+
+    public function __construct($input, $haveReadSupport)
+    {
+        $this->haveReadSupport = (bool) $haveReadSupport;
+
+        if ($this->haveReadSupport) {
+>>>>>>> git-aline/master/master
             // Fix for PHP bug #51800: reading from STDOUT pipe hangs forever on Windows if the output is too big.
             // Workaround for this problem is to use temporary files instead of pipes on Windows platform.
             //
             // @see https://bugs.php.net/bug.php?id=51800
+<<<<<<< HEAD
             $this->files = array(
                 Process::STDOUT => tempnam(sys_get_temp_dir(), 'out_sf_proc'),
                 Process::STDERR => tempnam(sys_get_temp_dir(), 'err_sf_proc'),
@@ -63,6 +84,45 @@ class WindowsPipes extends AbstractPipes
         } else {
             $this->inputBuffer = $input;
         }
+=======
+            $pipes = array(
+                Process::STDOUT => Process::OUT,
+                Process::STDERR => Process::ERR,
+            );
+            $tmpCheck = false;
+            $tmpDir = sys_get_temp_dir();
+            $lastError = 'unknown reason';
+            set_error_handler(function ($type, $msg) use (&$lastError) { $lastError = $msg; });
+            for ($i = 0;; ++$i) {
+                foreach ($pipes as $pipe => $name) {
+                    $file = sprintf('%s\\sf_proc_%02X.%s', $tmpDir, $i, $name);
+                    if (file_exists($file) && !unlink($file)) {
+                        continue 2;
+                    }
+                    $h = fopen($file, 'xb');
+                    if (!$h) {
+                        $error = $lastError;
+                        if ($tmpCheck || $tmpCheck = unlink(tempnam(false, 'sf_check_'))) {
+                            continue;
+                        }
+                        restore_error_handler();
+                        throw new RuntimeException(sprintf('A temporary file could not be opened to write the process output: %s', $error));
+                    }
+                    if (!$h || !$this->fileHandles[$pipe] = fopen($file, 'rb')) {
+                        continue 2;
+                    }
+                    if (isset($this->files[$pipe])) {
+                        unlink($this->files[$pipe]);
+                    }
+                    $this->files[$pipe] = $file;
+                }
+                break;
+            }
+            restore_error_handler();
+        }
+
+        parent::__construct($input);
+>>>>>>> git-aline/master/master
     }
 
     public function __destruct()
@@ -76,7 +136,11 @@ class WindowsPipes extends AbstractPipes
      */
     public function getDescriptors()
     {
+<<<<<<< HEAD
         if ($this->disableOutput) {
+=======
+        if (!$this->haveReadSupport) {
+>>>>>>> git-aline/master/master
             $nullstream = fopen('NUL', 'c');
 
             return array(
@@ -109,6 +173,7 @@ class WindowsPipes extends AbstractPipes
      */
     public function readAndWrite($blocking, $close = false)
     {
+<<<<<<< HEAD
         $this->write($blocking, $close);
 
         $read = array();
@@ -131,6 +196,28 @@ class WindowsPipes extends AbstractPipes
 
             if (false === $dataread || (true === $close && feof($fileHandle) && '' === $data)) {
                 fclose($this->fileHandles[$type]);
+=======
+        $this->unblock();
+        $w = $this->write();
+        $read = $r = $e = array();
+
+        if ($blocking) {
+            if ($w) {
+                @stream_select($r, $w, $e, 0, Process::TIMEOUT_PRECISION * 1E6);
+            } elseif ($this->fileHandles) {
+                usleep(Process::TIMEOUT_PRECISION * 1E6);
+            }
+        }
+        foreach ($this->fileHandles as $type => $fileHandle) {
+            $data = stream_get_contents($fileHandle, -1, $this->readBytes[$type]);
+
+            if (isset($data[0])) {
+                $this->readBytes[$type] += \strlen($data);
+                $read[$type] = $data;
+            }
+            if ($close) {
+                fclose($fileHandle);
+>>>>>>> git-aline/master/master
                 unset($this->fileHandles[$type]);
             }
         }
@@ -141,9 +228,23 @@ class WindowsPipes extends AbstractPipes
     /**
      * {@inheritdoc}
      */
+<<<<<<< HEAD
     public function areOpen()
     {
         return (bool) $this->pipes && (bool) $this->fileHandles;
+=======
+    public function haveReadSupport()
+    {
+        return $this->haveReadSupport;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function areOpen()
+    {
+        return $this->pipes && $this->fileHandles;
+>>>>>>> git-aline/master/master
     }
 
     /**
@@ -159,6 +260,7 @@ class WindowsPipes extends AbstractPipes
     }
 
     /**
+<<<<<<< HEAD
      * Creates a new WindowsPipes instance.
      *
      * @param Process $process The process
@@ -172,6 +274,8 @@ class WindowsPipes extends AbstractPipes
     }
 
     /**
+=======
+>>>>>>> git-aline/master/master
      * Removes temporary files.
      */
     private function removeFiles()
@@ -183,6 +287,7 @@ class WindowsPipes extends AbstractPipes
         }
         $this->files = array();
     }
+<<<<<<< HEAD
 
     /**
      * Writes input to stdin.
@@ -250,4 +355,6 @@ class WindowsPipes extends AbstractPipes
             unset($this->pipes[0]);
         }
     }
+=======
+>>>>>>> git-aline/master/master
 }

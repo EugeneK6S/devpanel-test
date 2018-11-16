@@ -45,12 +45,20 @@ class ProcessTimedOutException extends RuntimeException
 
     public function isGeneralTimeout()
     {
+<<<<<<< HEAD
         return $this->timeoutType === self::TYPE_GENERAL;
+=======
+        return self::TYPE_GENERAL === $this->timeoutType;
+>>>>>>> git-aline/master/master
     }
 
     public function isIdleTimeout()
     {
+<<<<<<< HEAD
         return $this->timeoutType === self::TYPE_IDLE;
+=======
+        return self::TYPE_IDLE === $this->timeoutType;
+>>>>>>> git-aline/master/master
     }
 
     public function getExceededTimeout()

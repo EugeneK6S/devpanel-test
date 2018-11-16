@@ -28,15 +28,25 @@ class StreamedResponse extends Response
 {
     protected $callback;
     protected $streamed;
+<<<<<<< HEAD
 
     /**
      * Constructor.
      *
+=======
+    private $headersSent;
+
+    /**
+>>>>>>> git-aline/master/master
      * @param callable|null $callback A valid PHP callback or null to set it later
      * @param int           $status   The response status code
      * @param array         $headers  An array of response headers
      */
+<<<<<<< HEAD
     public function __construct($callback = null, $status = 200, $headers = array())
+=======
+    public function __construct(callable $callback = null, $status = 200, $headers = array())
+>>>>>>> git-aline/master/master
     {
         parent::__construct(null, $status, $headers);
 
@@ -44,6 +54,10 @@ class StreamedResponse extends Response
             $this->setCallback($callback);
         }
         $this->streamed = false;
+<<<<<<< HEAD
+=======
+        $this->headersSent = false;
+>>>>>>> git-aline/master/master
     }
 
     /**
@@ -53,7 +67,11 @@ class StreamedResponse extends Response
      * @param int           $status   The response status code
      * @param array         $headers  An array of response headers
      *
+<<<<<<< HEAD
      * @return StreamedResponse
+=======
+     * @return static
+>>>>>>> git-aline/master/master
      */
     public static function create($callback = null, $status = 200, $headers = array())
     {
@@ -65,6 +83,7 @@ class StreamedResponse extends Response
      *
      * @param callable $callback A valid PHP callback
      *
+<<<<<<< HEAD
      * @throws \LogicException
      */
     public function setCallback($callback)
@@ -73,17 +92,53 @@ class StreamedResponse extends Response
             throw new \LogicException('The Response callback must be a valid PHP callable.');
         }
         $this->callback = $callback;
+=======
+     * @return $this
+     */
+    public function setCallback(callable $callback)
+    {
+        $this->callback = $callback;
+
+        return $this;
+    }
+
+    /**
+     * {@inheritdoc}
+     *
+     * This method only sends the headers once.
+     *
+     * @return $this
+     */
+    public function sendHeaders()
+    {
+        if ($this->headersSent) {
+            return $this;
+        }
+
+        $this->headersSent = true;
+
+        return parent::sendHeaders();
+>>>>>>> git-aline/master/master
     }
 
     /**
      * {@inheritdoc}
      *
      * This method only sends the content once.
+<<<<<<< HEAD
+=======
+     *
+     * @return $this
+>>>>>>> git-aline/master/master
      */
     public function sendContent()
     {
         if ($this->streamed) {
+<<<<<<< HEAD
             return;
+=======
+            return $this;
+>>>>>>> git-aline/master/master
         }
 
         $this->streamed = true;
@@ -92,19 +147,35 @@ class StreamedResponse extends Response
             throw new \LogicException('The Response callback must not be null.');
         }
 
+<<<<<<< HEAD
         call_user_func($this->callback);
+=======
+        \call_user_func($this->callback);
+
+        return $this;
+>>>>>>> git-aline/master/master
     }
 
     /**
      * {@inheritdoc}
      *
      * @throws \LogicException when the content is not null
+<<<<<<< HEAD
+=======
+     *
+     * @return $this
+>>>>>>> git-aline/master/master
      */
     public function setContent($content)
     {
         if (null !== $content) {
             throw new \LogicException('The content cannot be set on a StreamedResponse instance.');
         }
+<<<<<<< HEAD
+=======
+
+        return $this;
+>>>>>>> git-aline/master/master
     }
 
     /**
@@ -116,4 +187,19 @@ class StreamedResponse extends Response
     {
         return false;
     }
+<<<<<<< HEAD
+=======
+
+    /**
+     * {@inheritdoc}
+     *
+     * @return $this
+     */
+    public function setNotModified()
+    {
+        $this->setCallback(function () {});
+
+        return parent::setNotModified();
+    }
+>>>>>>> git-aline/master/master
 }

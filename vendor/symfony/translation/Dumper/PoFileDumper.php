@@ -23,7 +23,11 @@ class PoFileDumper extends FileDumper
     /**
      * {@inheritdoc}
      */
+<<<<<<< HEAD
     public function format(MessageCatalogue $messages, $domain = 'messages')
+=======
+    public function formatCatalogue(MessageCatalogue $messages, $domain, array $options = array())
+>>>>>>> git-aline/master/master
     {
         $output = 'msgid ""'."\n";
         $output .= 'msgstr ""'."\n";

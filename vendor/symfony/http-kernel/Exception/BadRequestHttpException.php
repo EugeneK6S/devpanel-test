@@ -12,15 +12,21 @@
 namespace Symfony\Component\HttpKernel\Exception;
 
 /**
+<<<<<<< HEAD
  * BadRequestHttpException.
  *
+=======
+>>>>>>> git-aline/master/master
  * @author Ben Ramsey <ben@benramsey.com>
  */
 class BadRequestHttpException extends HttpException
 {
     /**
+<<<<<<< HEAD
      * Constructor.
      *
+=======
+>>>>>>> git-aline/master/master
      * @param string     $message  The internal exception message
      * @param \Exception $previous The previous exception
      * @param int        $code     The internal exception code

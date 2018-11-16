@@ -11,14 +11,25 @@
 
 namespace Symfony\Component\HttpKernel\Config;
 
+<<<<<<< HEAD
 use Symfony\Component\Config\Resource\ResourceInterface;
+=======
+use Symfony\Component\Config\Resource\SelfCheckingResourceInterface;
+>>>>>>> git-aline/master/master
 
 /**
  * EnvParametersResource represents resources stored in prefixed environment variables.
  *
  * @author Chris Wilkinson <chriswilkinson84@gmail.com>
+<<<<<<< HEAD
  */
 class EnvParametersResource implements ResourceInterface, \Serializable
+=======
+ *
+ * @deprecated since version 3.4, to be removed in 4.0
+ */
+class EnvParametersResource implements SelfCheckingResourceInterface, \Serializable
+>>>>>>> git-aline/master/master
 {
     /**
      * @var string
@@ -31,8 +42,11 @@ class EnvParametersResource implements ResourceInterface, \Serializable
     private $variables;
 
     /**
+<<<<<<< HEAD
      * Constructor.
      *
+=======
+>>>>>>> git-aline/master/master
      * @param string $prefix
      */
     public function __construct($prefix)
@@ -50,7 +64,11 @@ class EnvParametersResource implements ResourceInterface, \Serializable
     }
 
     /**
+<<<<<<< HEAD
      * {@inheritdoc}
+=======
+     * @return array An array with two keys: 'prefix' for the prefix used and 'variables' containing all the variables watched by this resource
+>>>>>>> git-aline/master/master
      */
     public function getResource()
     {
@@ -72,7 +90,15 @@ class EnvParametersResource implements ResourceInterface, \Serializable
 
     public function unserialize($serialized)
     {
+<<<<<<< HEAD
         $unserialized = unserialize($serialized);
+=======
+        if (\PHP_VERSION_ID >= 70000) {
+            $unserialized = unserialize($serialized, array('allowed_classes' => false));
+        } else {
+            $unserialized = unserialize($serialized);
+        }
+>>>>>>> git-aline/master/master
 
         $this->prefix = $unserialized['prefix'];
         $this->variables = $unserialized['variables'];

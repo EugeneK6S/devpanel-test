@@ -1,7 +1,13 @@
 --TEST--
 Test ErrorHandler in case of fatal error
 --SKIPIF--
+<<<<<<< HEAD
 <?php if (!extension_loaded("symfony_debug")) print "skip"; ?>
+=======
+<?php if (!extension_loaded('symfony_debug')) {
+    echo 'skip';
+} ?>
+>>>>>>> git-aline/master/master
 --FILE--
 <?php
 
@@ -43,7 +49,11 @@ function foo()
 $handler = ErrorHandler::register();
 $handler->setExceptionHandler('print_r');
 
+<<<<<<< HEAD
 if (function_exists('xdebug_disable')) {
+=======
+if (\function_exists('xdebug_disable')) {
+>>>>>>> git-aline/master/master
     xdebug_disable();
 }
 

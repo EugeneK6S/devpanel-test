@@ -105,6 +105,7 @@ class Writer
                 return;
             }
         }
+<<<<<<< HEAD
         if (!$manager->has($feedName)
             && !$manager->has($entryName)
             && !$manager->has($feedRendererName)
@@ -112,6 +113,18 @@ class Writer
         ) {
             throw new Exception\RuntimeException('Could not load extension: ' . $name
                 . 'using Plugin Loader. Check prefix paths are configured and extension exists.');
+=======
+        if (! $manager->has($feedName)
+            && ! $manager->has($entryName)
+            && ! $manager->has($feedRendererName)
+            && ! $manager->has($entryRendererName)
+        ) {
+            throw new Exception\RuntimeException(sprintf(
+                'Could not load extension "%s" using Plugin Loader. '
+                . 'Check prefix paths are configured and extension exists.',
+                $name
+            ));
+>>>>>>> git-aline/master/master
         }
         if ($manager->has($feedName)) {
             static::$extensions['feed'][] = $feedName;

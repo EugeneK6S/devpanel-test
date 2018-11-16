@@ -12,11 +12,19 @@
 namespace Symfony\Component\Routing\Loader;
 
 use Doctrine\Common\Annotations\Reader;
+<<<<<<< HEAD
 use Symfony\Component\Config\Resource\FileResource;
 use Symfony\Component\Routing\Route;
 use Symfony\Component\Routing\RouteCollection;
 use Symfony\Component\Config\Loader\LoaderInterface;
 use Symfony\Component\Config\Loader\LoaderResolverInterface;
+=======
+use Symfony\Component\Config\Loader\LoaderInterface;
+use Symfony\Component\Config\Loader\LoaderResolverInterface;
+use Symfony\Component\Config\Resource\FileResource;
+use Symfony\Component\Routing\Route;
+use Symfony\Component\Routing\RouteCollection;
+>>>>>>> git-aline/master/master
 
 /**
  * AnnotationClassLoader loads routing information from a PHP class and its methods.
@@ -57,9 +65,12 @@ use Symfony\Component\Config\Loader\LoaderResolverInterface;
  */
 abstract class AnnotationClassLoader implements LoaderInterface
 {
+<<<<<<< HEAD
     /**
      * @var Reader
      */
+=======
+>>>>>>> git-aline/master/master
     protected $reader;
 
     /**
@@ -72,11 +83,14 @@ abstract class AnnotationClassLoader implements LoaderInterface
      */
     protected $defaultRouteIndex = 0;
 
+<<<<<<< HEAD
     /**
      * Constructor.
      *
      * @param Reader $reader
      */
+=======
+>>>>>>> git-aline/master/master
     public function __construct(Reader $reader)
     {
         $this->reader = $reader;
@@ -110,7 +124,11 @@ abstract class AnnotationClassLoader implements LoaderInterface
 
         $class = new \ReflectionClass($class);
         if ($class->isAbstract()) {
+<<<<<<< HEAD
             throw new \InvalidArgumentException(sprintf('Annotations from class "%s" cannot be read as it is abstract.', $class));
+=======
+            throw new \InvalidArgumentException(sprintf('Annotations from class "%s" cannot be read as it is abstract.', $class->getName()));
+>>>>>>> git-aline/master/master
         }
 
         $globals = $this->getGlobals($class);
@@ -127,6 +145,20 @@ abstract class AnnotationClassLoader implements LoaderInterface
             }
         }
 
+<<<<<<< HEAD
+=======
+        if (0 === $collection->count() && $class->hasMethod('__invoke')) {
+            foreach ($this->reader->getClassAnnotations($class) as $annot) {
+                if ($annot instanceof $this->routeAnnotationClass) {
+                    $globals['path'] = '';
+                    $globals['name'] = '';
+
+                    $this->addRoute($collection, $annot, $globals, $class, $class->getMethod('__invoke'));
+                }
+            }
+        }
+
+>>>>>>> git-aline/master/master
         return $collection;
     }
 
@@ -136,10 +168,18 @@ abstract class AnnotationClassLoader implements LoaderInterface
         if (null === $name) {
             $name = $this->getDefaultRouteName($class, $method);
         }
+<<<<<<< HEAD
 
         $defaults = array_replace($globals['defaults'], $annot->getDefaults());
         foreach ($method->getParameters() as $param) {
             if (!isset($defaults[$param->getName()]) && $param->isDefaultValueAvailable()) {
+=======
+        $name = $globals['name'].$name;
+
+        $defaults = array_replace($globals['defaults'], $annot->getDefaults());
+        foreach ($method->getParameters() as $param) {
+            if (false !== strpos($globals['path'].$annot->getPath(), sprintf('{%s}', $param->getName())) && !isset($defaults[$param->getName()]) && $param->isDefaultValueAvailable()) {
+>>>>>>> git-aline/master/master
                 $defaults[$param->getName()] = $param->getDefaultValue();
             }
         }
@@ -170,7 +210,11 @@ abstract class AnnotationClassLoader implements LoaderInterface
      */
     public function supports($resource, $type = null)
     {
+<<<<<<< HEAD
         return is_string($resource) && preg_match('/^(?:\\\\?[a-zA-Z_\x7f-\xff][a-zA-Z0-9_\x7f-\xff]*)+$/', $resource) && (!$type || 'annotation' === $type);
+=======
+        return \is_string($resource) && preg_match('/^(?:\\\\?[a-zA-Z_\x7f-\xff][a-zA-Z0-9_\x7f-\xff]*)+$/', $resource) && (!$type || 'annotation' === $type);
+>>>>>>> git-aline/master/master
     }
 
     /**
@@ -217,6 +261,7 @@ abstract class AnnotationClassLoader implements LoaderInterface
             'methods' => array(),
             'host' => '',
             'condition' => '',
+<<<<<<< HEAD
         );
 
         if ($annot = $this->reader->getClassAnnotation($class, $this->routeAnnotationClass)) {
@@ -225,6 +270,18 @@ abstract class AnnotationClassLoader implements LoaderInterface
                 $globals['path'] = $annot->getPath();
             } elseif (null !== $annot->getPattern()) {
                 $globals['path'] = $annot->getPattern();
+=======
+            'name' => '',
+        );
+
+        if ($annot = $this->reader->getClassAnnotation($class, $this->routeAnnotationClass)) {
+            if (null !== $annot->getName()) {
+                $globals['name'] = $annot->getName();
+            }
+
+            if (null !== $annot->getPath()) {
+                $globals['path'] = $annot->getPath();
+>>>>>>> git-aline/master/master
             }
 
             if (null !== $annot->getRequirements()) {

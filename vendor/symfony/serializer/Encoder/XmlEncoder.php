@@ -11,7 +11,11 @@
 
 namespace Symfony\Component\Serializer\Encoder;
 
+<<<<<<< HEAD
 use Symfony\Component\Serializer\Exception\UnexpectedValueException;
+=======
+use Symfony\Component\Serializer\Exception\NotEncodableValueException;
+>>>>>>> git-aline/master/master
 
 /**
  * Encodes XML data.
@@ -23,6 +27,11 @@ use Symfony\Component\Serializer\Exception\UnexpectedValueException;
  */
 class XmlEncoder extends SerializerAwareEncoder implements EncoderInterface, DecoderInterface, NormalizationAwareInterface
 {
+<<<<<<< HEAD
+=======
+    const FORMAT = 'xml';
+
+>>>>>>> git-aline/master/master
     /**
      * @var \DOMDocument
      */
@@ -30,15 +39,29 @@ class XmlEncoder extends SerializerAwareEncoder implements EncoderInterface, Dec
     private $format;
     private $context;
     private $rootNodeName = 'response';
+<<<<<<< HEAD
+=======
+    private $loadOptions;
+>>>>>>> git-aline/master/master
 
     /**
      * Construct new XmlEncoder and allow to change the root node element name.
      *
+<<<<<<< HEAD
      * @param string $rootNodeName
      */
     public function __construct($rootNodeName = 'response')
     {
         $this->rootNodeName = $rootNodeName;
+=======
+     * @param string   $rootNodeName
+     * @param int|null $loadOptions  A bit field of LIBXML_* constants
+     */
+    public function __construct($rootNodeName = 'response', $loadOptions = null)
+    {
+        $this->rootNodeName = $rootNodeName;
+        $this->loadOptions = null !== $loadOptions ? $loadOptions : LIBXML_NONET | LIBXML_NOBLANKS;
+>>>>>>> git-aline/master/master
     }
 
     /**
@@ -73,7 +96,11 @@ class XmlEncoder extends SerializerAwareEncoder implements EncoderInterface, Dec
     public function decode($data, $format, array $context = array())
     {
         if ('' === trim($data)) {
+<<<<<<< HEAD
             throw new UnexpectedValueException('Invalid XML data, it can not be empty.');
+=======
+            throw new NotEncodableValueException('Invalid XML data, it can not be empty.');
+>>>>>>> git-aline/master/master
         }
 
         $internalErrors = libxml_use_internal_errors(true);
@@ -81,7 +108,11 @@ class XmlEncoder extends SerializerAwareEncoder implements EncoderInterface, Dec
         libxml_clear_errors();
 
         $dom = new \DOMDocument();
+<<<<<<< HEAD
         $dom->loadXML($data, LIBXML_NONET | LIBXML_NOBLANKS);
+=======
+        $dom->loadXML($data, $this->loadOptions);
+>>>>>>> git-aline/master/master
 
         libxml_use_internal_errors($internalErrors);
         libxml_disable_entity_loader($disableEntities);
@@ -89,6 +120,7 @@ class XmlEncoder extends SerializerAwareEncoder implements EncoderInterface, Dec
         if ($error = libxml_get_last_error()) {
             libxml_clear_errors();
 
+<<<<<<< HEAD
             throw new UnexpectedValueException($error->message);
         }
 
@@ -100,6 +132,21 @@ class XmlEncoder extends SerializerAwareEncoder implements EncoderInterface, Dec
 
         $rootNode = $dom->firstChild;
 
+=======
+            throw new NotEncodableValueException($error->message);
+        }
+
+        $rootNode = null;
+        foreach ($dom->childNodes as $child) {
+            if (XML_DOCUMENT_TYPE_NODE === $child->nodeType) {
+                throw new NotEncodableValueException('Document types are not allowed.');
+            }
+            if (!$rootNode && XML_PI_NODE !== $child->nodeType) {
+                $rootNode = $child;
+            }
+        }
+
+>>>>>>> git-aline/master/master
         // todo: throw an exception if the root node name is not correctly configured (bc)
 
         if ($rootNode->hasChildNodes()) {
@@ -112,10 +159,17 @@ class XmlEncoder extends SerializerAwareEncoder implements EncoderInterface, Dec
             unset($data['@xmlns:xml']);
 
             if (empty($data)) {
+<<<<<<< HEAD
                 return $this->parseXml($rootNode);
             }
 
             return array_merge($data, (array) $this->parseXml($rootNode));
+=======
+                return $this->parseXml($rootNode, $context);
+            }
+
+            return array_merge($data, (array) $this->parseXml($rootNode, $context));
+>>>>>>> git-aline/master/master
         }
 
         if (!$rootNode->hasAttributes()) {
@@ -138,7 +192,11 @@ class XmlEncoder extends SerializerAwareEncoder implements EncoderInterface, Dec
      */
     public function supportsEncoding($format)
     {
+<<<<<<< HEAD
         return 'xml' === $format;
+=======
+        return self::FORMAT === $format;
+>>>>>>> git-aline/master/master
     }
 
     /**
@@ -146,13 +204,21 @@ class XmlEncoder extends SerializerAwareEncoder implements EncoderInterface, Dec
      */
     public function supportsDecoding($format)
     {
+<<<<<<< HEAD
         return 'xml' === $format;
+=======
+        return self::FORMAT === $format;
+>>>>>>> git-aline/master/master
     }
 
     /**
      * Sets the root node name.
      *
+<<<<<<< HEAD
      * @param string $name root node name
+=======
+     * @param string $name Root node name
+>>>>>>> git-aline/master/master
      */
     public function setRootNodeName($name)
     {
@@ -177,7 +243,11 @@ class XmlEncoder extends SerializerAwareEncoder implements EncoderInterface, Dec
      */
     final protected function appendXMLString(\DOMNode $node, $val)
     {
+<<<<<<< HEAD
         if (strlen($val) > 0) {
+=======
+        if (\strlen($val) > 0) {
+>>>>>>> git-aline/master/master
             $frag = $this->dom->createDocumentFragment();
             $frag->appendXML($val);
             $node->appendChild($frag);
@@ -250,6 +320,7 @@ class XmlEncoder extends SerializerAwareEncoder implements EncoderInterface, Dec
     /**
      * Parse the input DOMNode into an array or a string.
      *
+<<<<<<< HEAD
      * @param \DOMNode $node xml to parse
      *
      * @return array|string
@@ -265,12 +336,31 @@ class XmlEncoder extends SerializerAwareEncoder implements EncoderInterface, Dec
         }
 
         if (!is_array($value)) {
+=======
+     * @return array|string
+     */
+    private function parseXml(\DOMNode $node, array $context = array())
+    {
+        $data = $this->parseXmlAttributes($node, $context);
+
+        $value = $this->parseXmlValue($node, $context);
+
+        if (!\count($data)) {
+            return $value;
+        }
+
+        if (!\is_array($value)) {
+>>>>>>> git-aline/master/master
             $data['#'] = $value;
 
             return $data;
         }
 
+<<<<<<< HEAD
         if (1 === count($value) && key($value)) {
+=======
+        if (1 === \count($value) && key($value)) {
+>>>>>>> git-aline/master/master
             $data[key($value)] = current($value);
 
             return $data;
@@ -286,17 +376,24 @@ class XmlEncoder extends SerializerAwareEncoder implements EncoderInterface, Dec
     /**
      * Parse the input DOMNode attributes into an array.
      *
+<<<<<<< HEAD
      * @param \DOMNode $node xml to parse
      *
      * @return array
      */
     private function parseXmlAttributes(\DOMNode $node)
+=======
+     * @return array
+     */
+    private function parseXmlAttributes(\DOMNode $node, array $context = array())
+>>>>>>> git-aline/master/master
     {
         if (!$node->hasAttributes()) {
             return array();
         }
 
         $data = array();
+<<<<<<< HEAD
 
         foreach ($node->attributes as $attr) {
             if (ctype_digit($attr->nodeValue)) {
@@ -304,6 +401,24 @@ class XmlEncoder extends SerializerAwareEncoder implements EncoderInterface, Dec
             } else {
                 $data['@'.$attr->nodeName] = $attr->nodeValue;
             }
+=======
+        $typeCastAttributes = $this->resolveXmlTypeCastAttributes($context);
+
+        foreach ($node->attributes as $attr) {
+            if (!is_numeric($attr->nodeValue) || !$typeCastAttributes) {
+                $data['@'.$attr->nodeName] = $attr->nodeValue;
+
+                continue;
+            }
+
+            if (false !== $val = filter_var($attr->nodeValue, FILTER_VALIDATE_INT)) {
+                $data['@'.$attr->nodeName] = $val;
+
+                continue;
+            }
+
+            $data['@'.$attr->nodeName] = (float) $attr->nodeValue;
+>>>>>>> git-aline/master/master
         }
 
         return $data;
@@ -312,24 +427,42 @@ class XmlEncoder extends SerializerAwareEncoder implements EncoderInterface, Dec
     /**
      * Parse the input DOMNode value (content and children) into an array or a string.
      *
+<<<<<<< HEAD
      * @param \DOMNode $node xml to parse
      *
      * @return array|string
      */
     private function parseXmlValue(\DOMNode $node)
+=======
+     * @return array|string
+     */
+    private function parseXmlValue(\DOMNode $node, array $context = array())
+>>>>>>> git-aline/master/master
     {
         if (!$node->hasChildNodes()) {
             return $node->nodeValue;
         }
 
+<<<<<<< HEAD
         if (1 === $node->childNodes->length && in_array($node->firstChild->nodeType, array(XML_TEXT_NODE, XML_CDATA_SECTION_NODE))) {
+=======
+        if (1 === $node->childNodes->length && \in_array($node->firstChild->nodeType, array(XML_TEXT_NODE, XML_CDATA_SECTION_NODE))) {
+>>>>>>> git-aline/master/master
             return $node->firstChild->nodeValue;
         }
 
         $value = array();
 
         foreach ($node->childNodes as $subnode) {
+<<<<<<< HEAD
             $val = $this->parseXml($subnode);
+=======
+            if (XML_PI_NODE === $subnode->nodeType) {
+                continue;
+            }
+
+            $val = $this->parseXml($subnode, $context);
+>>>>>>> git-aline/master/master
 
             if ('item' === $subnode->nodeName && isset($val['@key'])) {
                 if (isset($val['#'])) {
@@ -343,7 +476,11 @@ class XmlEncoder extends SerializerAwareEncoder implements EncoderInterface, Dec
         }
 
         foreach ($value as $key => $val) {
+<<<<<<< HEAD
             if (is_array($val) && 1 === count($val)) {
+=======
+            if (\is_array($val) && 1 === \count($val)) {
+>>>>>>> git-aline/master/master
                 $value[$key] = current($val);
             }
         }
@@ -360,12 +497,17 @@ class XmlEncoder extends SerializerAwareEncoder implements EncoderInterface, Dec
      *
      * @return bool
      *
+<<<<<<< HEAD
      * @throws UnexpectedValueException
+=======
+     * @throws NotEncodableValueException
+>>>>>>> git-aline/master/master
      */
     private function buildXml(\DOMNode $parentNode, $data, $xmlRootNodeName = null)
     {
         $append = true;
 
+<<<<<<< HEAD
         if (is_array($data) || $data instanceof \Traversable) {
             foreach ($data as $key => $data) {
                 //Ah this is the magic @ attribute types.
@@ -374,6 +516,19 @@ class XmlEncoder extends SerializerAwareEncoder implements EncoderInterface, Dec
                 } elseif ($key === '#') {
                     $append = $this->selectNodeType($parentNode, $data);
                 } elseif (is_array($data) && false === is_numeric($key)) {
+=======
+        if (\is_array($data) || ($data instanceof \Traversable && !$this->serializer->supportsNormalization($data, $this->format))) {
+            foreach ($data as $key => $data) {
+                //Ah this is the magic @ attribute types.
+                if (0 === strpos($key, '@') && $this->isElementNameValid($attributeName = substr($key, 1))) {
+                    if (!is_scalar($data)) {
+                        $data = $this->serializer->normalize($data, $this->format, $this->context);
+                    }
+                    $parentNode->setAttribute($attributeName, $data);
+                } elseif ('#' === $key) {
+                    $append = $this->selectNodeType($parentNode, $data);
+                } elseif (\is_array($data) && false === is_numeric($key)) {
+>>>>>>> git-aline/master/master
                     // Is this array fully numeric keys?
                     if (ctype_digit(implode('', array_keys($data)))) {
                         /*
@@ -389,7 +544,11 @@ class XmlEncoder extends SerializerAwareEncoder implements EncoderInterface, Dec
                     }
                 } elseif (is_numeric($key) || !$this->isElementNameValid($key)) {
                     $append = $this->appendNode($parentNode, $data, 'item', $key);
+<<<<<<< HEAD
                 } else {
+=======
+                } elseif (null !== $data || !isset($this->context['remove_empty_tags']) || false === $this->context['remove_empty_tags']) {
+>>>>>>> git-aline/master/master
                     $append = $this->appendNode($parentNode, $data, $key);
                 }
             }
@@ -397,7 +556,11 @@ class XmlEncoder extends SerializerAwareEncoder implements EncoderInterface, Dec
             return $append;
         }
 
+<<<<<<< HEAD
         if (is_object($data)) {
+=======
+        if (\is_object($data)) {
+>>>>>>> git-aline/master/master
             $data = $this->serializer->normalize($data, $this->format, $this->context);
             if (null !== $data && !is_scalar($data)) {
                 return $this->buildXml($parentNode, $data, $xmlRootNodeName);
@@ -414,7 +577,11 @@ class XmlEncoder extends SerializerAwareEncoder implements EncoderInterface, Dec
             return $this->appendNode($parentNode, $data, 'data');
         }
 
+<<<<<<< HEAD
         throw new UnexpectedValueException(sprintf('An unexpected value could not be serialized: %s', var_export($data, true)));
+=======
+        throw new NotEncodableValueException(sprintf('An unexpected value could not be serialized: %s', var_export($data, true)));
+>>>>>>> git-aline/master/master
     }
 
     /**
@@ -451,7 +618,11 @@ class XmlEncoder extends SerializerAwareEncoder implements EncoderInterface, Dec
      */
     private function needsCdataWrapping($val)
     {
+<<<<<<< HEAD
         return preg_match('/[<>&]/', $val);
+=======
+        return 0 < preg_match('/[<>&]/', $val);
+>>>>>>> git-aline/master/master
     }
 
     /**
@@ -461,16 +632,26 @@ class XmlEncoder extends SerializerAwareEncoder implements EncoderInterface, Dec
      * @param mixed    $val
      *
      * @return bool
+<<<<<<< HEAD
      */
     private function selectNodeType(\DOMNode $node, $val)
     {
         if (is_array($val)) {
+=======
+     *
+     * @throws NotEncodableValueException
+     */
+    private function selectNodeType(\DOMNode $node, $val)
+    {
+        if (\is_array($val)) {
+>>>>>>> git-aline/master/master
             return $this->buildXml($node, $val);
         } elseif ($val instanceof \SimpleXMLElement) {
             $child = $this->dom->importNode(dom_import_simplexml($val), true);
             $node->appendChild($child);
         } elseif ($val instanceof \Traversable) {
             $this->buildXml($node, $val);
+<<<<<<< HEAD
         } elseif (is_object($val)) {
             return $this->buildXml($node, $this->serializer->normalize($val, $this->format, $this->context));
         } elseif (is_numeric($val)) {
@@ -480,6 +661,17 @@ class XmlEncoder extends SerializerAwareEncoder implements EncoderInterface, Dec
         } elseif (is_string($val)) {
             return $this->appendText($node, $val);
         } elseif (is_bool($val)) {
+=======
+        } elseif (\is_object($val)) {
+            return $this->selectNodeType($node, $this->serializer->normalize($val, $this->format, $this->context));
+        } elseif (is_numeric($val)) {
+            return $this->appendText($node, (string) $val);
+        } elseif (\is_string($val) && $this->needsCdataWrapping($val)) {
+            return $this->appendCData($node, $val);
+        } elseif (\is_string($val)) {
+            return $this->appendText($node, $val);
+        } elseif (\is_bool($val)) {
+>>>>>>> git-aline/master/master
             return $this->appendText($node, (int) $val);
         } elseif ($val instanceof \DOMNode) {
             $child = $this->dom->importNode($val, true);
@@ -492,8 +684,11 @@ class XmlEncoder extends SerializerAwareEncoder implements EncoderInterface, Dec
     /**
      * Get real XML root node name, taking serializer options into account.
      *
+<<<<<<< HEAD
      * @param array $context
      *
+=======
+>>>>>>> git-aline/master/master
      * @return string
      */
     private function resolveXmlRootName(array $context = array())
@@ -504,9 +699,29 @@ class XmlEncoder extends SerializerAwareEncoder implements EncoderInterface, Dec
     }
 
     /**
+<<<<<<< HEAD
      * Create a DOM document, taking serializer options into account.
      *
      * @param array $context options that the encoder has access to.
+=======
+     * Get XML option for type casting attributes Defaults to true.
+     *
+     * @param array $context
+     *
+     * @return bool
+     */
+    private function resolveXmlTypeCastAttributes(array $context = array())
+    {
+        return isset($context['xml_type_cast_attributes'])
+            ? (bool) $context['xml_type_cast_attributes']
+            : true;
+    }
+
+    /**
+     * Create a DOM document, taking serializer options into account.
+     *
+     * @param array $context Options that the encoder has access to
+>>>>>>> git-aline/master/master
      *
      * @return \DOMDocument
      */

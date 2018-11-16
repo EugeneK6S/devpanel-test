@@ -14,7 +14,11 @@ namespace Symfony\Component\DependencyInjection\Compiler;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 
 /**
+<<<<<<< HEAD
  * A pass to automatically process extensions if they implement 
+=======
+ * A pass to automatically process extensions if they implement
+>>>>>>> git-aline/master/master
  * CompilerPassInterface.
  *
  * @author Wouter J <wouter@wouterj.nl>

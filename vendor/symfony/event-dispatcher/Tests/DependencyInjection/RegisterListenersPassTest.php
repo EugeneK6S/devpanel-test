@@ -11,10 +11,20 @@
 
 namespace Symfony\Component\EventDispatcher\Tests\DependencyInjection;
 
+<<<<<<< HEAD
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\EventDispatcher\DependencyInjection\RegisterListenersPass;
 
 class RegisterListenersPassTest extends \PHPUnit_Framework_TestCase
+=======
+use PHPUnit\Framework\TestCase;
+use Symfony\Component\DependencyInjection\Argument\ServiceClosureArgument;
+use Symfony\Component\DependencyInjection\ContainerBuilder;
+use Symfony\Component\DependencyInjection\Reference;
+use Symfony\Component\EventDispatcher\DependencyInjection\RegisterListenersPass;
+
+class RegisterListenersPassTest extends TestCase
+>>>>>>> git-aline/master/master
 {
     /**
      * Tests that event subscribers not implementing EventSubscriberInterface
@@ -24,6 +34,7 @@ class RegisterListenersPassTest extends \PHPUnit_Framework_TestCase
      */
     public function testEventSubscriberWithoutInterface()
     {
+<<<<<<< HEAD
         // one service, not implementing any interface
         $services = array(
             'my_event_subscriber' => array(0 => array()),
@@ -53,6 +64,12 @@ class RegisterListenersPassTest extends \PHPUnit_Framework_TestCase
         $builder->expects($this->atLeastOnce())
             ->method('getDefinition')
             ->will($this->returnValue($definition));
+=======
+        $builder = new ContainerBuilder();
+        $builder->register('event_dispatcher');
+        $builder->register('my_event_subscriber', 'stdClass')
+            ->addTag('kernel.event_subscriber');
+>>>>>>> git-aline/master/master
 
         $registerListenersPass = new RegisterListenersPass();
         $registerListenersPass->process($builder);
@@ -64,6 +81,7 @@ class RegisterListenersPassTest extends \PHPUnit_Framework_TestCase
             'my_event_subscriber' => array(0 => array()),
         );
 
+<<<<<<< HEAD
         $definition = $this->getMock('Symfony\Component\DependencyInjection\Definition');
         $definition->expects($this->atLeastOnce())
             ->method('isPublic')
@@ -123,11 +141,36 @@ class RegisterListenersPassTest extends \PHPUnit_Framework_TestCase
 
         $registerListenersPass = new RegisterListenersPass();
         $registerListenersPass->process($container);
+=======
+        $builder = new ContainerBuilder();
+        $eventDispatcherDefinition = $builder->register('event_dispatcher');
+        $builder->register('my_event_subscriber', 'Symfony\Component\EventDispatcher\Tests\DependencyInjection\SubscriberService')
+            ->addTag('kernel.event_subscriber');
+
+        $registerListenersPass = new RegisterListenersPass();
+        $registerListenersPass->process($builder);
+
+        $expectedCalls = array(
+            array(
+                'addListener',
+                array(
+                    'event',
+                    array(new ServiceClosureArgument(new Reference('my_event_subscriber')), 'onEvent'),
+                    0,
+                ),
+            ),
+        );
+        $this->assertEquals($expectedCalls, $eventDispatcherDefinition->getMethodCalls());
+>>>>>>> git-aline/master/master
     }
 
     /**
      * @expectedException \InvalidArgumentException
+<<<<<<< HEAD
      * @expectedExceptionMessage The service "foo" must not be abstract as event listeners are lazy-loaded.
+=======
+     * @expectedExceptionMessage The service "foo" tagged "kernel.event_listener" must not be abstract.
+>>>>>>> git-aline/master/master
      */
     public function testAbstractEventListener()
     {
@@ -141,7 +184,11 @@ class RegisterListenersPassTest extends \PHPUnit_Framework_TestCase
 
     /**
      * @expectedException \InvalidArgumentException
+<<<<<<< HEAD
      * @expectedExceptionMessage The service "foo" must not be abstract as event subscribers are lazy-loaded.
+=======
+     * @expectedExceptionMessage The service "foo" tagged "kernel.event_subscriber" must not be abstract.
+>>>>>>> git-aline/master/master
      */
     public function testAbstractEventSubscriber()
     {
@@ -165,6 +212,7 @@ class RegisterListenersPassTest extends \PHPUnit_Framework_TestCase
         $registerListenersPass->process($container);
 
         $definition = $container->getDefinition('event_dispatcher');
+<<<<<<< HEAD
         $expected_calls = array(
             array(
                 'addSubscriberService',
@@ -175,6 +223,31 @@ class RegisterListenersPassTest extends \PHPUnit_Framework_TestCase
             ),
         );
         $this->assertSame($expected_calls, $definition->getMethodCalls());
+=======
+        $expectedCalls = array(
+            array(
+                'addListener',
+                array(
+                    'event',
+                    array(new ServiceClosureArgument(new Reference('foo')), 'onEvent'),
+                    0,
+                ),
+            ),
+        );
+        $this->assertEquals($expectedCalls, $definition->getMethodCalls());
+    }
+
+    public function testHotPathEvents()
+    {
+        $container = new ContainerBuilder();
+
+        $container->register('foo', SubscriberService::class)->addTag('kernel.event_subscriber', array());
+        $container->register('event_dispatcher', 'stdClass');
+
+        (new RegisterListenersPass())->setHotPathEvents(array('event'))->process($container);
+
+        $this->assertTrue($container->getDefinition('foo')->hasTag('container.hot_path'));
+>>>>>>> git-aline/master/master
     }
 
     /**
@@ -196,5 +269,11 @@ class SubscriberService implements \Symfony\Component\EventDispatcher\EventSubsc
 {
     public static function getSubscribedEvents()
     {
+<<<<<<< HEAD
+=======
+        return array(
+            'event' => 'onEvent',
+        );
+>>>>>>> git-aline/master/master
     }
 }

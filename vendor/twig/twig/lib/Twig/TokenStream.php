@@ -3,8 +3,13 @@
 /*
  * This file is part of Twig.
  *
+<<<<<<< HEAD
  * (c) 2009 Fabien Potencier
  * (c) 2009 Armin Ronacher
+=======
+ * (c) Fabien Potencier
+ * (c) Armin Ronacher
+>>>>>>> git-aline/master/master
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
@@ -13,6 +18,11 @@
 /**
  * Represents a token stream.
  *
+<<<<<<< HEAD
+=======
+ * @final
+ *
+>>>>>>> git-aline/master/master
  * @author Fabien Potencier <fabien@symfony.com>
  */
 class Twig_TokenStream
@@ -21,6 +31,7 @@ class Twig_TokenStream
     protected $current = 0;
     protected $filename;
 
+<<<<<<< HEAD
     /**
      * Constructor.
      *
@@ -38,6 +49,32 @@ class Twig_TokenStream
      *
      * @return string
      */
+=======
+    private $source;
+
+    /**
+     * @param array       $tokens An array of tokens
+     * @param string|null $name   The name of the template which tokens are associated with
+     * @param string|null $source The source code associated with the tokens
+     */
+    public function __construct(array $tokens, $name = null, $source = null)
+    {
+        if (!$name instanceof Twig_Source) {
+            if (null !== $name || null !== $source) {
+                @trigger_error(sprintf('Passing a string as the $name argument of %s() is deprecated since version 1.27. Pass a Twig_Source instance instead.', __METHOD__), E_USER_DEPRECATED);
+            }
+            $this->source = new Twig_Source($source, $name);
+        } else {
+            $this->source = $name;
+        }
+
+        $this->tokens = $tokens;
+
+        // deprecated, not used anymore, to be removed in 2.0
+        $this->filename = $this->source->getName();
+    }
+
+>>>>>>> git-aline/master/master
     public function __toString()
     {
         return implode("\n", $this->tokens);
@@ -56,7 +93,11 @@ class Twig_TokenStream
     public function next()
     {
         if (!isset($this->tokens[++$this->current])) {
+<<<<<<< HEAD
             throw new Twig_Error_Syntax('Unexpected end of template.', $this->tokens[$this->current - 1]->getLine(), $this->filename);
+=======
+            throw new Twig_Error_Syntax('Unexpected end of template.', $this->tokens[$this->current - 1]->getLine(), $this->source);
+>>>>>>> git-aline/master/master
         }
 
         return $this->tokens[$this->current - 1];
@@ -89,7 +130,11 @@ class Twig_TokenStream
                 Twig_Token::typeToEnglish($token->getType()), $token->getValue(),
                 Twig_Token::typeToEnglish($type), $value ? sprintf(' with value "%s"', $value) : ''),
                 $line,
+<<<<<<< HEAD
                 $this->filename
+=======
+                $this->source
+>>>>>>> git-aline/master/master
             );
         }
         $this->next();
@@ -107,7 +152,11 @@ class Twig_TokenStream
     public function look($number = 1)
     {
         if (!isset($this->tokens[$this->current + $number])) {
+<<<<<<< HEAD
             throw new Twig_Error_Syntax('Unexpected end of template.', $this->tokens[$this->current + $number - 1]->getLine(), $this->filename);
+=======
+            throw new Twig_Error_Syntax('Unexpected end of template.', $this->tokens[$this->current + $number - 1]->getLine(), $this->source);
+>>>>>>> git-aline/master/master
         }
 
         return $this->tokens[$this->current + $number];
@@ -130,12 +179,19 @@ class Twig_TokenStream
      */
     public function isEOF()
     {
+<<<<<<< HEAD
         return $this->tokens[$this->current]->getType() === Twig_Token::EOF_TYPE;
     }
 
     /**
      * Gets the current token.
      *
+=======
+        return Twig_Token::EOF_TYPE === $this->tokens[$this->current]->getType();
+    }
+
+    /**
+>>>>>>> git-aline/master/master
      * @return Twig_Token
      */
     public function getCurrent()
@@ -144,6 +200,7 @@ class Twig_TokenStream
     }
 
     /**
+<<<<<<< HEAD
      * Gets the filename associated with this stream.
      *
      * @return string
@@ -153,3 +210,48 @@ class Twig_TokenStream
         return $this->filename;
     }
 }
+=======
+     * Gets the name associated with this stream (null if not defined).
+     *
+     * @return string|null
+     *
+     * @deprecated since 1.27 (to be removed in 2.0)
+     */
+    public function getFilename()
+    {
+        @trigger_error(sprintf('The %s() method is deprecated since version 1.27 and will be removed in 2.0. Use getSourceContext() instead.', __METHOD__), E_USER_DEPRECATED);
+
+        return $this->source->getName();
+    }
+
+    /**
+     * Gets the source code associated with this stream.
+     *
+     * @return string
+     *
+     * @internal Don't use this as it might be empty depending on the environment configuration
+     *
+     * @deprecated since 1.27 (to be removed in 2.0)
+     */
+    public function getSource()
+    {
+        @trigger_error(sprintf('The %s() method is deprecated since version 1.27 and will be removed in 2.0. Use getSourceContext() instead.', __METHOD__), E_USER_DEPRECATED);
+
+        return $this->source->getCode();
+    }
+
+    /**
+     * Gets the source associated with this stream.
+     *
+     * @return Twig_Source
+     *
+     * @internal
+     */
+    public function getSourceContext()
+    {
+        return $this->source;
+    }
+}
+
+class_alias('Twig_TokenStream', 'Twig\TokenStream', false);
+>>>>>>> git-aline/master/master

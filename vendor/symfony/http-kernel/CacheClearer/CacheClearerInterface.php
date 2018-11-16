@@ -21,7 +21,11 @@ interface CacheClearerInterface
     /**
      * Clears any caches necessary.
      *
+<<<<<<< HEAD
      * @param string $cacheDir The cache directory.
+=======
+     * @param string $cacheDir The cache directory
+>>>>>>> git-aline/master/master
      */
     public function clear($cacheDir);
 }

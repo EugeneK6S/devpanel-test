@@ -26,11 +26,16 @@ class ConstraintValidatorFactory implements ConstraintValidatorFactoryInterface
 {
     protected $validators = array();
 
+<<<<<<< HEAD
     private $propertyAccessor;
 
     public function __construct($propertyAccessor = null)
     {
         $this->propertyAccessor = $propertyAccessor;
+=======
+    public function __construct()
+    {
+>>>>>>> git-aline/master/master
     }
 
     /**
@@ -42,7 +47,11 @@ class ConstraintValidatorFactory implements ConstraintValidatorFactoryInterface
 
         if (!isset($this->validators[$className])) {
             $this->validators[$className] = 'validator.expression' === $className
+<<<<<<< HEAD
                 ? new ExpressionValidator($this->propertyAccessor)
+=======
+                ? new ExpressionValidator()
+>>>>>>> git-aline/master/master
                 : new $className();
         }
 

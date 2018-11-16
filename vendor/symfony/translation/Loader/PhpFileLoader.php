@@ -11,20 +11,28 @@
 
 namespace Symfony\Component\Translation\Loader;
 
+<<<<<<< HEAD
 use Symfony\Component\Translation\Exception\InvalidResourceException;
 use Symfony\Component\Translation\Exception\NotFoundResourceException;
 use Symfony\Component\Config\Resource\FileResource;
 
+=======
+>>>>>>> git-aline/master/master
 /**
  * PhpFileLoader loads translations from PHP files returning an array of translations.
  *
  * @author Fabien Potencier <fabien@symfony.com>
  */
+<<<<<<< HEAD
 class PhpFileLoader extends ArrayLoader
+=======
+class PhpFileLoader extends FileLoader
+>>>>>>> git-aline/master/master
 {
     /**
      * {@inheritdoc}
      */
+<<<<<<< HEAD
     public function load($resource, $locale, $domain = 'messages')
     {
         if (!stream_is_local($resource)) {
@@ -44,5 +52,10 @@ class PhpFileLoader extends ArrayLoader
         }
 
         return $catalogue;
+=======
+    protected function loadResource($resource)
+    {
+        return require $resource;
+>>>>>>> git-aline/master/master
     }
 }

@@ -18,15 +18,23 @@ use Symfony\Component\HttpFoundation\Response;
  * DataCollectorInterface.
  *
  * @author Fabien Potencier <fabien@symfony.com>
+<<<<<<< HEAD
+=======
+ *
+ * @method reset() Resets this data collector to its initial state.
+>>>>>>> git-aline/master/master
  */
 interface DataCollectorInterface
 {
     /**
      * Collects data for the given Request and Response.
+<<<<<<< HEAD
      *
      * @param Request    $request   A Request instance
      * @param Response   $response  A Response instance
      * @param \Exception $exception An Exception instance
+=======
+>>>>>>> git-aline/master/master
      */
     public function collect(Request $request, Response $response, \Exception $exception = null);
 

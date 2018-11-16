@@ -3,7 +3,11 @@
 /*
  * This file is part of Twig.
  *
+<<<<<<< HEAD
  * (c) 2010 Fabien Potencier
+=======
+ * (c) Fabien Potencier
+>>>>>>> git-aline/master/master
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
@@ -17,6 +21,11 @@
  * You can configure which optimizations you want to activate via the
  * optimizer mode.
  *
+<<<<<<< HEAD
+=======
+ * @final
+ *
+>>>>>>> git-aline/master/master
  * @author Fabien Potencier <fabien@symfony.com>
  */
 class Twig_NodeVisitor_Optimizer extends Twig_BaseNodeVisitor
@@ -34,8 +43,11 @@ class Twig_NodeVisitor_Optimizer extends Twig_BaseNodeVisitor
     protected $inABody = false;
 
     /**
+<<<<<<< HEAD
      * Constructor.
      *
+=======
+>>>>>>> git-aline/master/master
      * @param int $optimizers The optimizer mode
      */
     public function __construct($optimizers = -1)
@@ -47,19 +59,29 @@ class Twig_NodeVisitor_Optimizer extends Twig_BaseNodeVisitor
         $this->optimizers = $optimizers;
     }
 
+<<<<<<< HEAD
     /**
      * {@inheritdoc}
      */
+=======
+>>>>>>> git-aline/master/master
     protected function doEnterNode(Twig_Node $node, Twig_Environment $env)
     {
         if (self::OPTIMIZE_FOR === (self::OPTIMIZE_FOR & $this->optimizers)) {
             $this->enterOptimizeFor($node, $env);
         }
 
+<<<<<<< HEAD
         if (PHP_VERSION_ID < 50400 && self::OPTIMIZE_VAR_ACCESS === (self::OPTIMIZE_VAR_ACCESS & $this->optimizers) && !$env->isStrictVariables() && !$env->hasExtension('sandbox')) {
             if ($this->inABody) {
                 if (!$node instanceof Twig_Node_Expression) {
                     if (get_class($node) !== 'Twig_Node') {
+=======
+        if (PHP_VERSION_ID < 50400 && self::OPTIMIZE_VAR_ACCESS === (self::OPTIMIZE_VAR_ACCESS & $this->optimizers) && !$env->isStrictVariables() && !$env->hasExtension('Twig_Extension_Sandbox')) {
+            if ($this->inABody) {
+                if (!$node instanceof Twig_Node_Expression) {
+                    if ('Twig_Node' !== get_class($node)) {
+>>>>>>> git-aline/master/master
                         array_unshift($this->prependedNodes, array());
                     }
                 } else {
@@ -73,9 +95,12 @@ class Twig_NodeVisitor_Optimizer extends Twig_BaseNodeVisitor
         return $node;
     }
 
+<<<<<<< HEAD
     /**
      * {@inheritdoc}
      */
+=======
+>>>>>>> git-aline/master/master
     protected function doLeaveNode(Twig_Node $node, Twig_Environment $env)
     {
         $expression = $node instanceof Twig_Node_Expression;
@@ -90,6 +115,7 @@ class Twig_NodeVisitor_Optimizer extends Twig_BaseNodeVisitor
 
         $node = $this->optimizePrintNode($node, $env);
 
+<<<<<<< HEAD
         if (self::OPTIMIZE_VAR_ACCESS === (self::OPTIMIZE_VAR_ACCESS & $this->optimizers) && !$env->isStrictVariables() && !$env->hasExtension('sandbox')) {
             if ($node instanceof Twig_Node_Body) {
                 $this->inABody = false;
@@ -98,6 +124,16 @@ class Twig_NodeVisitor_Optimizer extends Twig_BaseNodeVisitor
                     $nodes = array();
                     foreach (array_unique($prependedNodes) as $name) {
                         $nodes[] = new Twig_Node_SetTemp($name, $node->getLine());
+=======
+        if (self::OPTIMIZE_VAR_ACCESS === (self::OPTIMIZE_VAR_ACCESS & $this->optimizers) && !$env->isStrictVariables() && !$env->hasExtension('Twig_Extension_Sandbox')) {
+            if ($node instanceof Twig_Node_Body) {
+                $this->inABody = false;
+            } elseif ($this->inABody) {
+                if (!$expression && 'Twig_Node' !== get_class($node) && $prependedNodes = array_shift($this->prependedNodes)) {
+                    $nodes = array();
+                    foreach (array_unique($prependedNodes) as $name) {
+                        $nodes[] = new Twig_Node_SetTemp($name, $node->getTemplateLine());
+>>>>>>> git-aline/master/master
                     }
 
                     $nodes[] = $node;
@@ -114,7 +150,11 @@ class Twig_NodeVisitor_Optimizer extends Twig_BaseNodeVisitor
         if ('Twig_Node_Expression_Name' === get_class($node) && $node->isSimple()) {
             $this->prependedNodes[0][] = $node->getAttribute('name');
 
+<<<<<<< HEAD
             return new Twig_Node_Expression_TempName($node->getAttribute('name'), $node->getLine());
+=======
+            return new Twig_Node_Expression_TempName($node->getAttribute('name'), $node->getTemplateLine());
+>>>>>>> git-aline/master/master
         }
 
         return $node;
@@ -127,9 +167,12 @@ class Twig_NodeVisitor_Optimizer extends Twig_BaseNodeVisitor
      *
      *   * "echo $this->render(Parent)Block()" with "$this->display(Parent)Block()"
      *
+<<<<<<< HEAD
      * @param Twig_NodeInterface $node A Node
      * @param Twig_Environment   $env  The current Twig environment
      *
+=======
+>>>>>>> git-aline/master/master
      * @return Twig_NodeInterface
      */
     protected function optimizePrintNode(Twig_NodeInterface $node, Twig_Environment $env)
@@ -138,6 +181,7 @@ class Twig_NodeVisitor_Optimizer extends Twig_BaseNodeVisitor
             return $node;
         }
 
+<<<<<<< HEAD
         if (
             $node->getNode('expr') instanceof Twig_Node_Expression_BlockReference ||
             $node->getNode('expr') instanceof Twig_Node_Expression_Parent
@@ -145,6 +189,16 @@ class Twig_NodeVisitor_Optimizer extends Twig_BaseNodeVisitor
             $node->getNode('expr')->setAttribute('output', true);
 
             return $node->getNode('expr');
+=======
+        $exprNode = $node->getNode('expr');
+        if (
+            $exprNode instanceof Twig_Node_Expression_BlockReference ||
+            $exprNode instanceof Twig_Node_Expression_Parent
+        ) {
+            $exprNode->setAttribute('output', true);
+
+            return $exprNode;
+>>>>>>> git-aline/master/master
         }
 
         return $node;
@@ -153,9 +207,12 @@ class Twig_NodeVisitor_Optimizer extends Twig_BaseNodeVisitor
     /**
      * Removes "raw" filters.
      *
+<<<<<<< HEAD
      * @param Twig_NodeInterface $node A Node
      * @param Twig_Environment   $env  The current Twig environment
      *
+=======
+>>>>>>> git-aline/master/master
      * @return Twig_NodeInterface
      */
     protected function optimizeRawFilter(Twig_NodeInterface $node, Twig_Environment $env)
@@ -169,9 +226,12 @@ class Twig_NodeVisitor_Optimizer extends Twig_BaseNodeVisitor
 
     /**
      * Optimizes "for" tag by removing the "loop" variable creation whenever possible.
+<<<<<<< HEAD
      *
      * @param Twig_NodeInterface $node A Node
      * @param Twig_Environment   $env  The current Twig environment
+=======
+>>>>>>> git-aline/master/master
      */
     protected function enterOptimizeFor(Twig_NodeInterface $node, Twig_Environment $env)
     {
@@ -236,9 +296,12 @@ class Twig_NodeVisitor_Optimizer extends Twig_BaseNodeVisitor
 
     /**
      * Optimizes "for" tag by removing the "loop" variable creation whenever possible.
+<<<<<<< HEAD
      *
      * @param Twig_NodeInterface $node A Node
      * @param Twig_Environment   $env  The current Twig environment
+=======
+>>>>>>> git-aline/master/master
      */
     protected function leaveOptimizeFor(Twig_NodeInterface $node, Twig_Environment $env)
     {
@@ -261,11 +324,19 @@ class Twig_NodeVisitor_Optimizer extends Twig_BaseNodeVisitor
         }
     }
 
+<<<<<<< HEAD
     /**
      * {@inheritdoc}
      */
+=======
+>>>>>>> git-aline/master/master
     public function getPriority()
     {
         return 255;
     }
 }
+<<<<<<< HEAD
+=======
+
+class_alias('Twig_NodeVisitor_Optimizer', 'Twig\NodeVisitor\OptimizerNodeVisitor', false);
+>>>>>>> git-aline/master/master

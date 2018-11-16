@@ -104,25 +104,39 @@ interface MessageCatalogueInterface
      * Merges translations from the given Catalogue into the current one.
      *
      * The two catalogues must have the same locale.
+<<<<<<< HEAD
      *
      * @param MessageCatalogueInterface $catalogue A MessageCatalogueInterface instance
      */
     public function addCatalogue(MessageCatalogueInterface $catalogue);
+=======
+     */
+    public function addCatalogue(self $catalogue);
+>>>>>>> git-aline/master/master
 
     /**
      * Merges translations from the given Catalogue into the current one
      * only when the translation does not exist.
      *
      * This is used to provide default translations when they do not exist for the current locale.
+<<<<<<< HEAD
      *
      * @param MessageCatalogueInterface $catalogue A MessageCatalogueInterface instance
      */
     public function addFallbackCatalogue(MessageCatalogueInterface $catalogue);
+=======
+     */
+    public function addFallbackCatalogue(self $catalogue);
+>>>>>>> git-aline/master/master
 
     /**
      * Gets the fallback catalogue.
      *
+<<<<<<< HEAD
      * @return MessageCatalogueInterface|null A MessageCatalogueInterface instance or null when no fallback has been set
+=======
+     * @return self|null A MessageCatalogueInterface instance or null when no fallback has been set
+>>>>>>> git-aline/master/master
      */
     public function getFallbackCatalogue();
 
@@ -135,8 +149,11 @@ interface MessageCatalogueInterface
 
     /**
      * Adds a resource for this collection.
+<<<<<<< HEAD
      *
      * @param ResourceInterface $resource A resource instance
+=======
+>>>>>>> git-aline/master/master
      */
     public function addResource(ResourceInterface $resource);
 }

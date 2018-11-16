@@ -12,15 +12,21 @@
 namespace Symfony\Component\HttpKernel\Exception;
 
 /**
+<<<<<<< HEAD
  * MethodNotAllowedHttpException.
  *
+=======
+>>>>>>> git-aline/master/master
  * @author Kris Wallsmith <kris@symfony.com>
  */
 class MethodNotAllowedHttpException extends HttpException
 {
     /**
+<<<<<<< HEAD
      * Constructor.
      *
+=======
+>>>>>>> git-aline/master/master
      * @param array      $allow    An array of allowed methods
      * @param string     $message  The internal exception message
      * @param \Exception $previous The previous exception

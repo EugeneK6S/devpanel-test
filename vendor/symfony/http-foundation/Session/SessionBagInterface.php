@@ -27,8 +27,11 @@ interface SessionBagInterface
 
     /**
      * Initializes the Bag.
+<<<<<<< HEAD
      *
      * @param array $array
+=======
+>>>>>>> git-aline/master/master
      */
     public function initialize(array &$array);
 
@@ -42,7 +45,11 @@ interface SessionBagInterface
     /**
      * Clears out data from bag.
      *
+<<<<<<< HEAD
      * @return mixed Whatever data was contained.
+=======
+     * @return mixed Whatever data was contained
+>>>>>>> git-aline/master/master
      */
     public function clear();
 }

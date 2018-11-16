@@ -29,8 +29,11 @@ use Symfony\Component\Validator\Exception\ValidatorException;
 class PropertyMetadata extends MemberMetadata
 {
     /**
+<<<<<<< HEAD
      * Constructor.
      *
+=======
+>>>>>>> git-aline/master/master
      * @param string $class The class this property is defined on
      * @param string $name  The name of this property
      *
@@ -39,7 +42,11 @@ class PropertyMetadata extends MemberMetadata
     public function __construct($class, $name)
     {
         if (!property_exists($class, $name)) {
+<<<<<<< HEAD
             throw new ValidatorException(sprintf('Property %s does not exist in class %s', $name, $class));
+=======
+            throw new ValidatorException(sprintf('Property "%s" does not exist in class "%s"', $name, $class));
+>>>>>>> git-aline/master/master
         }
 
         parent::__construct($class, $name, $name);
@@ -58,12 +65,26 @@ class PropertyMetadata extends MemberMetadata
      */
     protected function newReflectionMember($objectOrClassName)
     {
+<<<<<<< HEAD
         $class = new \ReflectionClass($objectOrClassName);
         while (!$class->hasProperty($this->getName())) {
             $class = $class->getParentClass();
         }
 
         $member = new \ReflectionProperty($class->getName(), $this->getName());
+=======
+        $originalClass = \is_string($objectOrClassName) ? $objectOrClassName : \get_class($objectOrClassName);
+
+        while (!property_exists($objectOrClassName, $this->getName())) {
+            $objectOrClassName = get_parent_class($objectOrClassName);
+
+            if (false === $objectOrClassName) {
+                throw new ValidatorException(sprintf('Property "%s" does not exist in class "%s".', $this->getName(), $originalClass));
+            }
+        }
+
+        $member = new \ReflectionProperty($objectOrClassName, $this->getName());
+>>>>>>> git-aline/master/master
         $member->setAccessible(true);
 
         return $member;

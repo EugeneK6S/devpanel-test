@@ -24,8 +24,11 @@ class FileBag extends ParameterBag
     private static $fileKeys = array('error', 'name', 'size', 'tmp_name', 'type');
 
     /**
+<<<<<<< HEAD
      * Constructor.
      *
+=======
+>>>>>>> git-aline/master/master
      * @param array $parameters An array of HTTP files
      */
     public function __construct(array $parameters = array())
@@ -47,7 +50,11 @@ class FileBag extends ParameterBag
      */
     public function set($key, $value)
     {
+<<<<<<< HEAD
         if (!is_array($value) && !$value instanceof UploadedFile) {
+=======
+        if (!\is_array($value) && !$value instanceof UploadedFile) {
+>>>>>>> git-aline/master/master
             throw new \InvalidArgumentException('An uploaded file must be an array or an instance of UploadedFile.');
         }
 
@@ -69,7 +76,11 @@ class FileBag extends ParameterBag
      *
      * @param array|UploadedFile $file A (multi-dimensional) array of uploaded file information
      *
+<<<<<<< HEAD
      * @return array A (multi-dimensional) array of UploadedFile instances
+=======
+     * @return UploadedFile[]|UploadedFile|null A (multi-dimensional) array of UploadedFile instances
+>>>>>>> git-aline/master/master
      */
     protected function convertFileInformation($file)
     {
@@ -78,7 +89,11 @@ class FileBag extends ParameterBag
         }
 
         $file = $this->fixPhpFilesArray($file);
+<<<<<<< HEAD
         if (is_array($file)) {
+=======
+        if (\is_array($file)) {
+>>>>>>> git-aline/master/master
             $keys = array_keys($file);
             sort($keys);
 
@@ -90,6 +105,12 @@ class FileBag extends ParameterBag
                 }
             } else {
                 $file = array_map(array($this, 'convertFileInformation'), $file);
+<<<<<<< HEAD
+=======
+                if (array_keys($keys) === $keys) {
+                    $file = array_filter($file);
+                }
+>>>>>>> git-aline/master/master
             }
         }
 
@@ -108,20 +129,31 @@ class FileBag extends ParameterBag
      * It's safe to pass an already converted array, in which case this method
      * just returns the original array unmodified.
      *
+<<<<<<< HEAD
      * @param array $data
      *
+=======
+>>>>>>> git-aline/master/master
      * @return array
      */
     protected function fixPhpFilesArray($data)
     {
+<<<<<<< HEAD
         if (!is_array($data)) {
+=======
+        if (!\is_array($data)) {
+>>>>>>> git-aline/master/master
             return $data;
         }
 
         $keys = array_keys($data);
         sort($keys);
 
+<<<<<<< HEAD
         if (self::$fileKeys != $keys || !isset($data['name']) || !is_array($data['name'])) {
+=======
+        if (self::$fileKeys != $keys || !isset($data['name']) || !\is_array($data['name'])) {
+>>>>>>> git-aline/master/master
             return $data;
         }
 

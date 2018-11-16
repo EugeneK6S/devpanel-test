@@ -12,19 +12,27 @@
 namespace Symfony\Component\Translation\Loader;
 
 use Symfony\Component\Translation\Exception\InvalidResourceException;
+<<<<<<< HEAD
 use Symfony\Component\Translation\Exception\NotFoundResourceException;
 use Symfony\Component\Config\Resource\FileResource;
+=======
+>>>>>>> git-aline/master/master
 
 /**
  * JsonFileLoader loads translations from an json file.
  *
  * @author singles
  */
+<<<<<<< HEAD
 class JsonFileLoader extends ArrayLoader
+=======
+class JsonFileLoader extends FileLoader
+>>>>>>> git-aline/master/master
 {
     /**
      * {@inheritdoc}
      */
+<<<<<<< HEAD
     public function load($resource, $locale, $domain = 'messages')
     {
         if (!stream_is_local($resource)) {
@@ -35,6 +43,10 @@ class JsonFileLoader extends ArrayLoader
             throw new NotFoundResourceException(sprintf('File "%s" not found.', $resource));
         }
 
+=======
+    protected function loadResource($resource)
+    {
+>>>>>>> git-aline/master/master
         $messages = array();
         if ($data = file_get_contents($resource)) {
             $messages = json_decode($data, true);
@@ -44,6 +56,7 @@ class JsonFileLoader extends ArrayLoader
             }
         }
 
+<<<<<<< HEAD
         if (null === $messages) {
             $messages = array();
         }
@@ -52,6 +65,9 @@ class JsonFileLoader extends ArrayLoader
         $catalogue->addResource(new FileResource($resource));
 
         return $catalogue;
+=======
+        return $messages;
+>>>>>>> git-aline/master/master
     }
 
     /**

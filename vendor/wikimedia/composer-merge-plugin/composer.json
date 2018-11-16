@@ -16,7 +16,11 @@
         "php": ">=5.3.2"
     },
     "require-dev": {
+<<<<<<< HEAD
         "composer/composer": "1.0.*@dev",
+=======
+        "composer/composer": "~1.0.0",
+>>>>>>> git-aline/master/master
         "jakub-onderka/php-parallel-lint": "~0.8",
         "phpunit/phpunit": "~4.8|~5.0",
         "squizlabs/php_codesniffer": "~2.1.0"

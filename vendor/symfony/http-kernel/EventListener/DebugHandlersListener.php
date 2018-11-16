@@ -12,15 +12,24 @@
 namespace Symfony\Component\HttpKernel\EventListener;
 
 use Psr\Log\LoggerInterface;
+<<<<<<< HEAD
+=======
+use Symfony\Component\Console\ConsoleEvents;
+use Symfony\Component\Console\Event\ConsoleEvent;
+use Symfony\Component\Console\Output\ConsoleOutputInterface;
+>>>>>>> git-aline/master/master
 use Symfony\Component\Debug\ErrorHandler;
 use Symfony\Component\Debug\ExceptionHandler;
 use Symfony\Component\EventDispatcher\Event;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\HttpKernel\Event\KernelEvent;
 use Symfony\Component\HttpKernel\KernelEvents;
+<<<<<<< HEAD
 use Symfony\Component\Console\ConsoleEvents;
 use Symfony\Component\Console\Event\ConsoleEvent;
 use Symfony\Component\Console\Output\ConsoleOutputInterface;
+=======
+>>>>>>> git-aline/master/master
 
 /**
  * Configures errors and exceptions handlers.
@@ -35,7 +44,13 @@ class DebugHandlersListener implements EventSubscriberInterface
     private $throwAt;
     private $scream;
     private $fileLinkFormat;
+<<<<<<< HEAD
     private $firstCall = true;
+=======
+    private $scope;
+    private $firstCall = true;
+    private $hasTerminatedWithException;
+>>>>>>> git-aline/master/master
 
     /**
      * @param callable|null        $exceptionHandler A handler that will be called on Exception
@@ -43,6 +58,7 @@ class DebugHandlersListener implements EventSubscriberInterface
      * @param array|int            $levels           An array map of E_* to LogLevel::* or an integer bit field of E_* constants
      * @param int|null             $throwAt          Thrown errors in a bit field of E_* constants, or null to keep the current value
      * @param bool                 $scream           Enables/disables screaming mode, where even silenced errors are logged
+<<<<<<< HEAD
      * @param string               $fileLinkFormat   The format for links to source files
      */
     public function __construct($exceptionHandler, LoggerInterface $logger = null, $levels = null, $throwAt = -1, $scream = true, $fileLinkFormat = null)
@@ -53,10 +69,25 @@ class DebugHandlersListener implements EventSubscriberInterface
         $this->throwAt = is_numeric($throwAt) ? (int) $throwAt : (null === $throwAt ? null : ($throwAt ? -1 : null));
         $this->scream = (bool) $scream;
         $this->fileLinkFormat = $fileLinkFormat ?: ini_get('xdebug.file_link_format') ?: get_cfg_var('xdebug.file_link_format');
+=======
+     * @param string|array         $fileLinkFormat   The format for links to source files
+     * @param bool                 $scope            Enables/disables scoping mode
+     */
+    public function __construct(callable $exceptionHandler = null, LoggerInterface $logger = null, $levels = E_ALL, $throwAt = E_ALL, $scream = true, $fileLinkFormat = null, $scope = true)
+    {
+        $this->exceptionHandler = $exceptionHandler;
+        $this->logger = $logger;
+        $this->levels = null === $levels ? E_ALL : $levels;
+        $this->throwAt = is_numeric($throwAt) ? (int) $throwAt : (null === $throwAt ? null : ($throwAt ? E_ALL : null));
+        $this->scream = (bool) $scream;
+        $this->fileLinkFormat = $fileLinkFormat;
+        $this->scope = (bool) $scope;
+>>>>>>> git-aline/master/master
     }
 
     /**
      * Configures the error handler.
+<<<<<<< HEAD
      *
      * @param Event|null $event The triggering event
      */
@@ -83,6 +114,39 @@ class DebugHandlersListener implements EventSubscriberInterface
                     }
                     if ($this->scream) {
                         $handler->screamAt($scream);
+=======
+     */
+    public function configure(Event $event = null)
+    {
+        if (!$event instanceof KernelEvent ? !$this->firstCall : !$event->isMasterRequest()) {
+            return;
+        }
+        $this->firstCall = $this->hasTerminatedWithException = false;
+
+        $handler = set_exception_handler('var_dump');
+        $handler = \is_array($handler) ? $handler[0] : null;
+        restore_exception_handler();
+
+        if ($this->logger || null !== $this->throwAt) {
+            if ($handler instanceof ErrorHandler) {
+                if ($this->logger) {
+                    $handler->setDefaultLogger($this->logger, $this->levels);
+                    if (\is_array($this->levels)) {
+                        $levels = 0;
+                        foreach ($this->levels as $type => $log) {
+                            $levels |= $type;
+                        }
+                    } else {
+                        $levels = $this->levels;
+                    }
+                    if ($this->scream) {
+                        $handler->screamAt($levels);
+                    }
+                    if ($this->scope) {
+                        $handler->scopeAt($levels & ~E_USER_DEPRECATED & ~E_DEPRECATED);
+                    } else {
+                        $handler->scopeAt(0, true);
+>>>>>>> git-aline/master/master
                     }
                     $this->logger = $this->levels = null;
                 }
@@ -93,7 +157,21 @@ class DebugHandlersListener implements EventSubscriberInterface
         }
         if (!$this->exceptionHandler) {
             if ($event instanceof KernelEvent) {
+<<<<<<< HEAD
                 $this->exceptionHandler = array($event->getKernel(), 'terminateWithException');
+=======
+                if (method_exists($kernel = $event->getKernel(), 'terminateWithException')) {
+                    $request = $event->getRequest();
+                    $hasRun = &$this->hasTerminatedWithException;
+                    $this->exceptionHandler = function (\Exception $e) use ($kernel, $request, &$hasRun) {
+                        if ($hasRun) {
+                            throw $e;
+                        }
+                        $hasRun = true;
+                        $kernel->terminateWithException($e, $request);
+                    };
+                }
+>>>>>>> git-aline/master/master
             } elseif ($event instanceof ConsoleEvent && $app = $event->getCommand()->getApplication()) {
                 $output = $event->getOutput();
                 if ($output instanceof ConsoleOutputInterface) {
@@ -105,6 +183,7 @@ class DebugHandlersListener implements EventSubscriberInterface
             }
         }
         if ($this->exceptionHandler) {
+<<<<<<< HEAD
             $handler = set_exception_handler('var_dump');
             $handler = is_array($handler) ? $handler[0] : null;
             restore_exception_handler();
@@ -112,6 +191,16 @@ class DebugHandlersListener implements EventSubscriberInterface
                 $h = $handler->setExceptionHandler('var_dump') ?: $this->exceptionHandler;
                 $handler->setExceptionHandler($h);
                 $handler = is_array($h) ? $h[0] : null;
+=======
+            if ($handler instanceof ErrorHandler) {
+                $h = $handler->setExceptionHandler('var_dump');
+                if (\is_array($h) && $h[0] instanceof ExceptionHandler) {
+                    $handler->setExceptionHandler($h);
+                    $handler = $h[0];
+                } else {
+                    $handler->setExceptionHandler($this->exceptionHandler);
+                }
+>>>>>>> git-aline/master/master
             }
             if ($handler instanceof ExceptionHandler) {
                 $handler->setHandler($this->exceptionHandler);
@@ -127,7 +216,11 @@ class DebugHandlersListener implements EventSubscriberInterface
     {
         $events = array(KernelEvents::REQUEST => array('configure', 2048));
 
+<<<<<<< HEAD
         if (defined('Symfony\Component\Console\ConsoleEvents::COMMAND')) {
+=======
+        if ('cli' === \PHP_SAPI && \defined('Symfony\Component\Console\ConsoleEvents::COMMAND')) {
+>>>>>>> git-aline/master/master
             $events[ConsoleEvents::COMMAND] = array('configure', 2048);
         }
 

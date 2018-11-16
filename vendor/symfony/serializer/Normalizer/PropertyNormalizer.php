@@ -11,10 +11,13 @@
 
 namespace Symfony\Component\Serializer\Normalizer;
 
+<<<<<<< HEAD
 use Symfony\Component\Serializer\Exception\CircularReferenceException;
 use Symfony\Component\Serializer\Exception\LogicException;
 use Symfony\Component\Serializer\Exception\RuntimeException;
 
+=======
+>>>>>>> git-aline/master/master
 /**
  * Converts between objects and arrays by mapping properties.
  *
@@ -32,6 +35,7 @@ use Symfony\Component\Serializer\Exception\RuntimeException;
  * @author Matthieu Napoli <matthieu@mnapoli.fr>
  * @author Kévin Dunglas <dunglas@gmail.com>
  */
+<<<<<<< HEAD
 class PropertyNormalizer extends AbstractNormalizer
 {
     /**
@@ -85,10 +89,75 @@ class PropertyNormalizer extends AbstractNormalizer
         }
 
         return $attributes;
+=======
+class PropertyNormalizer extends AbstractObjectNormalizer
+{
+    private $cache = array();
+
+    /**
+     * {@inheritdoc}
+     */
+    public function supportsNormalization($data, $format = null)
+    {
+        return parent::supportsNormalization($data, $format) && (isset($this->cache[$type = \get_class($data)]) ? $this->cache[$type] : $this->cache[$type] = $this->supports($type));
     }
 
     /**
      * {@inheritdoc}
+     */
+    public function supportsDenormalization($data, $type, $format = null)
+    {
+        return parent::supportsDenormalization($data, $type, $format) && (isset($this->cache[$type]) ? $this->cache[$type] : $this->cache[$type] = $this->supports($type));
+    }
+
+    /**
+     * Checks if the given class has any non-static property.
+     *
+     * @param string $class
+     *
+     * @return bool
+     */
+    private function supports($class)
+    {
+        $class = new \ReflectionClass($class);
+
+        // We look for at least one non-static property
+        do {
+            foreach ($class->getProperties() as $property) {
+                if (!$property->isStatic()) {
+                    return true;
+                }
+            }
+        } while ($class = $class->getParentClass());
+
+        return false;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    protected function isAllowedAttribute($classOrObject, $attribute, $format = null, array $context = array())
+    {
+        if (!parent::isAllowedAttribute($classOrObject, $attribute, $format, $context)) {
+            return false;
+        }
+
+        try {
+            $reflectionProperty = $this->getReflectionProperty($classOrObject, $attribute);
+            if ($reflectionProperty->isStatic()) {
+                return false;
+            }
+        } catch (\ReflectionException $reflectionException) {
+            return false;
+        }
+
+        return true;
+>>>>>>> git-aline/master/master
+    }
+
+    /**
+     * {@inheritdoc}
+<<<<<<< HEAD
      *
      * @throws RuntimeException
      */
@@ -120,19 +189,56 @@ class PropertyNormalizer extends AbstractNormalizer
         }
 
         return $object;
+=======
+     */
+    protected function extractAttributes($object, $format = null, array $context = array())
+    {
+        $reflectionObject = new \ReflectionObject($object);
+        $attributes = array();
+
+        do {
+            foreach ($reflectionObject->getProperties() as $property) {
+                if (!$this->isAllowedAttribute($reflectionObject->getName(), $property->name)) {
+                    continue;
+                }
+
+                $attributes[] = $property->name;
+            }
+        } while ($reflectionObject = $reflectionObject->getParentClass());
+
+        return $attributes;
+>>>>>>> git-aline/master/master
     }
 
     /**
      * {@inheritdoc}
      */
+<<<<<<< HEAD
     public function supportsNormalization($data, $format = null)
     {
         return is_object($data) && !$data instanceof \Traversable && $this->supports(get_class($data));
+=======
+    protected function getAttributeValue($object, $attribute, $format = null, array $context = array())
+    {
+        try {
+            $reflectionProperty = $this->getReflectionProperty($object, $attribute);
+        } catch (\ReflectionException $reflectionException) {
+            return;
+        }
+
+        // Override visibility
+        if (!$reflectionProperty->isPublic()) {
+            $reflectionProperty->setAccessible(true);
+        }
+
+        return $reflectionProperty->getValue($object);
+>>>>>>> git-aline/master/master
     }
 
     /**
      * {@inheritdoc}
      */
+<<<<<<< HEAD
     public function supportsDenormalization($data, $type, $format = null)
     {
         return $this->supports($type);
@@ -157,5 +263,47 @@ class PropertyNormalizer extends AbstractNormalizer
         }
 
         return false;
+=======
+    protected function setAttributeValue($object, $attribute, $value, $format = null, array $context = array())
+    {
+        try {
+            $reflectionProperty = $this->getReflectionProperty($object, $attribute);
+        } catch (\ReflectionException $reflectionException) {
+            return;
+        }
+
+        if ($reflectionProperty->isStatic()) {
+            return;
+        }
+
+        // Override visibility
+        if (!$reflectionProperty->isPublic()) {
+            $reflectionProperty->setAccessible(true);
+        }
+
+        $reflectionProperty->setValue($object, $value);
+    }
+
+    /**
+     * @param string|object $classOrObject
+     * @param string        $attribute
+     *
+     * @return \ReflectionProperty
+     *
+     * @throws \ReflectionException
+     */
+    private function getReflectionProperty($classOrObject, $attribute)
+    {
+        $reflectionClass = new \ReflectionClass($classOrObject);
+        while (true) {
+            try {
+                return $reflectionClass->getProperty($attribute);
+            } catch (\ReflectionException $e) {
+                if (!$reflectionClass = $reflectionClass->getParentClass()) {
+                    throw $e;
+                }
+            }
+        }
+>>>>>>> git-aline/master/master
     }
 }

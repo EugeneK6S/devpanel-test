@@ -3,8 +3,13 @@
 /*
  * This file is part of Twig.
  *
+<<<<<<< HEAD
  * (c) 2009 Fabien Potencier
  * (c) 2009 Armin Ronacher
+=======
+ * (c) Fabien Potencier
+ * (c) Armin Ronacher
+>>>>>>> git-aline/master/master
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
@@ -31,24 +36,40 @@ class Twig_Parser implements Twig_ParserInterface
     protected $importedSymbols;
     protected $traits;
     protected $embeddedTemplates = array();
+<<<<<<< HEAD
 
     /**
      * Constructor.
      *
      * @param Twig_Environment $env A Twig_Environment instance
      */
+=======
+    private $varNameSalt = 0;
+
+>>>>>>> git-aline/master/master
     public function __construct(Twig_Environment $env)
     {
         $this->env = $env;
     }
 
+<<<<<<< HEAD
     public function getEnvironment()
     {
+=======
+    /**
+     * @deprecated since 1.27 (to be removed in 2.0)
+     */
+    public function getEnvironment()
+    {
+        @trigger_error('The '.__METHOD__.' method is deprecated since version 1.27 and will be removed in 2.0.', E_USER_DEPRECATED);
+
+>>>>>>> git-aline/master/master
         return $this->env;
     }
 
     public function getVarName()
     {
+<<<<<<< HEAD
         return sprintf('__internal_%s', hash('sha256', uniqid(mt_rand(), true), false));
     }
 
@@ -64,6 +85,31 @@ class Twig_Parser implements Twig_ParserInterface
     {
         // push all variables into the stack to keep the current state of the parser
         $vars = get_object_vars($this);
+=======
+        return sprintf('__internal_%s', hash('sha256', __METHOD__.$this->stream->getSourceContext()->getCode().$this->varNameSalt++));
+    }
+
+    /**
+     * @deprecated since 1.27 (to be removed in 2.0). Use $parser->getStream()->getSourceContext()->getPath() instead.
+     */
+    public function getFilename()
+    {
+        @trigger_error(sprintf('The "%s" method is deprecated since version 1.27 and will be removed in 2.0. Use $parser->getStream()->getSourceContext()->getPath() instead.', __METHOD__), E_USER_DEPRECATED);
+
+        return $this->stream->getSourceContext()->getName();
+    }
+
+    public function parse(Twig_TokenStream $stream, $test = null, $dropNeedle = false)
+    {
+        // push all variables into the stack to keep the current state of the parser
+        // using get_object_vars() instead of foreach would lead to https://bugs.php.net/71336
+        // This hack can be removed when min version if PHP 7.0
+        $vars = array();
+        foreach ($this as $k => $v) {
+            $vars[$k] = $v;
+        }
+
+>>>>>>> git-aline/master/master
         unset($vars['stack'], $vars['env'], $vars['handlers'], $vars['visitors'], $vars['expressionParser'], $vars['reservedMacroNames']);
         $this->stack[] = $vars;
 
@@ -79,7 +125,11 @@ class Twig_Parser implements Twig_ParserInterface
         }
 
         if (null === $this->expressionParser) {
+<<<<<<< HEAD
             $this->expressionParser = new Twig_ExpressionParser($this, $this->env->getUnaryOperators(), $this->env->getBinaryOperators());
+=======
+            $this->expressionParser = new Twig_ExpressionParser($this, $this->env);
+>>>>>>> git-aline/master/master
         }
 
         $this->stream = $stream;
@@ -90,6 +140,10 @@ class Twig_Parser implements Twig_ParserInterface
         $this->blockStack = array();
         $this->importedSymbols = array(array());
         $this->embeddedTemplates = array();
+<<<<<<< HEAD
+=======
+        $this->varNameSalt = 0;
+>>>>>>> git-aline/master/master
 
         try {
             $body = $this->subparse($test, $dropNeedle);
@@ -98,8 +152,13 @@ class Twig_Parser implements Twig_ParserInterface
                 $body = new Twig_Node();
             }
         } catch (Twig_Error_Syntax $e) {
+<<<<<<< HEAD
             if (!$e->getTemplateFile()) {
                 $e->setTemplateFile($this->getFilename());
+=======
+            if (!$e->getSourceContext()) {
+                $e->setSourceContext($this->stream->getSourceContext());
+>>>>>>> git-aline/master/master
             }
 
             if (!$e->getTemplateLine()) {
@@ -109,7 +168,11 @@ class Twig_Parser implements Twig_ParserInterface
             throw $e;
         }
 
+<<<<<<< HEAD
         $node = new Twig_Node_Module(new Twig_Node_Body(array($body)), $this->parent, new Twig_Node($this->blocks), new Twig_Node($this->macros), new Twig_Node($this->traits), $this->embeddedTemplates, $this->getFilename());
+=======
+        $node = new Twig_Node_Module(new Twig_Node_Body(array($body)), $this->parent, new Twig_Node($this->blocks), new Twig_Node($this->macros), new Twig_Node($this->traits), $this->embeddedTemplates, $stream->getSourceContext());
+>>>>>>> git-aline/master/master
 
         $traverser = new Twig_NodeTraverser($this->env, $this->visitors);
 
@@ -145,8 +208,13 @@ class Twig_Parser implements Twig_ParserInterface
                     $this->stream->next();
                     $token = $this->getCurrentToken();
 
+<<<<<<< HEAD
                     if ($token->getType() !== Twig_Token::NAME_TYPE) {
                         throw new Twig_Error_Syntax('A block must start with a tag name.', $token->getLine(), $this->getFilename());
+=======
+                    if (Twig_Token::NAME_TYPE !== $token->getType()) {
+                        throw new Twig_Error_Syntax('A block must start with a tag name.', $token->getLine(), $this->stream->getSourceContext());
+>>>>>>> git-aline/master/master
                     }
 
                     if (null !== $test && call_user_func($test, $token)) {
@@ -164,13 +232,21 @@ class Twig_Parser implements Twig_ParserInterface
                     $subparser = $this->handlers->getTokenParser($token->getValue());
                     if (null === $subparser) {
                         if (null !== $test) {
+<<<<<<< HEAD
                             $e = new Twig_Error_Syntax(sprintf('Unexpected "%s" tag', $token->getValue()), $token->getLine(), $this->getFilename());
+=======
+                            $e = new Twig_Error_Syntax(sprintf('Unexpected "%s" tag', $token->getValue()), $token->getLine(), $this->stream->getSourceContext());
+>>>>>>> git-aline/master/master
 
                             if (is_array($test) && isset($test[0]) && $test[0] instanceof Twig_TokenParserInterface) {
                                 $e->appendMessage(sprintf(' (expecting closing tag for the "%s" tag defined near line %s).', $test[0]->getTag(), $lineno));
                             }
                         } else {
+<<<<<<< HEAD
                             $e = new Twig_Error_Syntax(sprintf('Unknown "%s" tag.', $token->getValue()), $token->getLine(), $this->getFilename());
+=======
+                            $e = new Twig_Error_Syntax(sprintf('Unknown "%s" tag.', $token->getValue()), $token->getLine(), $this->stream->getSourceContext());
+>>>>>>> git-aline/master/master
                             $e->addSuggestions($token->getValue(), array_keys($this->env->getTags()));
                         }
 
@@ -186,7 +262,11 @@ class Twig_Parser implements Twig_ParserInterface
                     break;
 
                 default:
+<<<<<<< HEAD
                     throw new Twig_Error_Syntax('Lexer or parser ended up in unsupported state.', 0, $this->getFilename());
+=======
+                    throw new Twig_Error_Syntax('Lexer or parser ended up in unsupported state.', $this->getCurrentToken()->getLine(), $this->stream->getSourceContext());
+>>>>>>> git-aline/master/master
             }
         }
 
@@ -197,6 +277,7 @@ class Twig_Parser implements Twig_ParserInterface
         return new Twig_Node($rv, array(), $lineno);
     }
 
+<<<<<<< HEAD
     public function addHandler($name, $class)
     {
         $this->handlers[$name] = $class;
@@ -204,6 +285,25 @@ class Twig_Parser implements Twig_ParserInterface
 
     public function addNodeVisitor(Twig_NodeVisitorInterface $visitor)
     {
+=======
+    /**
+     * @deprecated since 1.27 (to be removed in 2.0)
+     */
+    public function addHandler($name, $class)
+    {
+        @trigger_error('The '.__METHOD__.' method is deprecated since version 1.27 and will be removed in 2.0.', E_USER_DEPRECATED);
+
+        $this->handlers[$name] = $class;
+    }
+
+    /**
+     * @deprecated since 1.27 (to be removed in 2.0)
+     */
+    public function addNodeVisitor(Twig_NodeVisitorInterface $visitor)
+    {
+        @trigger_error('The '.__METHOD__.' method is deprecated since version 1.27 and will be removed in 2.0.', E_USER_DEPRECATED);
+
+>>>>>>> git-aline/master/master
         $this->visitors[] = $visitor;
     }
 
@@ -239,7 +339,11 @@ class Twig_Parser implements Twig_ParserInterface
 
     public function setBlock($name, Twig_Node_Block $value)
     {
+<<<<<<< HEAD
         $this->blocks[$name] = new Twig_Node_Body(array($value), array(), $value->getLine());
+=======
+        $this->blocks[$name] = new Twig_Node_Body(array($value), array(), $value->getTemplateLine());
+>>>>>>> git-aline/master/master
     }
 
     public function hasMacro($name)
@@ -250,7 +354,11 @@ class Twig_Parser implements Twig_ParserInterface
     public function setMacro($name, Twig_Node_Macro $node)
     {
         if ($this->isReservedMacroName($name)) {
+<<<<<<< HEAD
             throw new Twig_Error_Syntax(sprintf('"%s" cannot be used as a macro name as it is a reserved keyword.', $name), $node->getLine(), $this->getFilename());
+=======
+            throw new Twig_Error_Syntax(sprintf('"%s" cannot be used as a macro name as it is a reserved keyword.', $name), $node->getTemplateLine(), $this->stream->getSourceContext());
+>>>>>>> git-aline/master/master
         }
 
         $this->macros[$name] = $node;
@@ -320,9 +428,13 @@ class Twig_Parser implements Twig_ParserInterface
     }
 
     /**
+<<<<<<< HEAD
      * Gets the expression parser.
      *
      * @return Twig_ExpressionParser The expression parser
+=======
+     * @return Twig_ExpressionParser
+>>>>>>> git-aline/master/master
      */
     public function getExpressionParser()
     {
@@ -340,9 +452,13 @@ class Twig_Parser implements Twig_ParserInterface
     }
 
     /**
+<<<<<<< HEAD
      * Gets the token stream.
      *
      * @return Twig_TokenStream The token stream
+=======
+     * @return Twig_TokenStream
+>>>>>>> git-aline/master/master
      */
     public function getStream()
     {
@@ -350,9 +466,13 @@ class Twig_Parser implements Twig_ParserInterface
     }
 
     /**
+<<<<<<< HEAD
      * Gets the current token.
      *
      * @return Twig_Token The current token
+=======
+     * @return Twig_Token
+>>>>>>> git-aline/master/master
      */
     public function getCurrentToken()
     {
@@ -368,6 +488,7 @@ class Twig_Parser implements Twig_ParserInterface
             (!$node instanceof Twig_Node_Text && !$node instanceof Twig_Node_BlockReference && $node instanceof Twig_NodeOutputInterface)
         ) {
             if (false !== strpos((string) $node, chr(0xEF).chr(0xBB).chr(0xBF))) {
+<<<<<<< HEAD
                 throw new Twig_Error_Syntax('A template that extends another one cannot have a body but a byte order mark (BOM) has been detected; it must be removed.', $node->getLine(), $this->getFilename());
             }
 
@@ -376,6 +497,16 @@ class Twig_Parser implements Twig_ParserInterface
 
         // bypass "set" nodes as they "capture" the output
         if ($node instanceof Twig_Node_Set) {
+=======
+                throw new Twig_Error_Syntax('A template that extends another one cannot start with a byte order mark (BOM); it must be removed.', $node->getTemplateLine(), $this->stream->getSourceContext());
+            }
+
+            throw new Twig_Error_Syntax('A template that extends another one cannot include content outside Twig blocks. Did you forget to put the content inside a {% block %} tag?', $node->getTemplateLine(), $this->stream->getSourceContext());
+        }
+
+        // bypass nodes that will "capture" the output
+        if ($node instanceof Twig_NodeCaptureInterface) {
+>>>>>>> git-aline/master/master
             return $node;
         }
 
@@ -392,3 +523,10 @@ class Twig_Parser implements Twig_ParserInterface
         return $node;
     }
 }
+<<<<<<< HEAD
+=======
+
+class_alias('Twig_Parser', 'Twig\Parser', false);
+class_exists('Twig_Node');
+class_exists('Twig_TokenStream');
+>>>>>>> git-aline/master/master

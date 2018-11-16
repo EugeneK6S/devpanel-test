@@ -14,8 +14,11 @@ use Zend\Feed\Writer;
 use Zend\Stdlib\StringUtils;
 use Zend\Stdlib\StringWrapper\StringWrapperInterface;
 
+<<<<<<< HEAD
 /**
 */
+=======
+>>>>>>> git-aline/master/master
 class Feed
 {
     /**

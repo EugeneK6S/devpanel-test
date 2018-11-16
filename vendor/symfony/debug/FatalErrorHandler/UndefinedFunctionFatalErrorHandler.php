@@ -11,8 +11,13 @@
 
 namespace Symfony\Component\Debug\FatalErrorHandler;
 
+<<<<<<< HEAD
 use Symfony\Component\Debug\Exception\UndefinedFunctionException;
 use Symfony\Component\Debug\Exception\FatalErrorException;
+=======
+use Symfony\Component\Debug\Exception\FatalErrorException;
+use Symfony\Component\Debug\Exception\UndefinedFunctionException;
+>>>>>>> git-aline/master/master
 
 /**
  * ErrorHandler for undefined functions.
@@ -26,9 +31,15 @@ class UndefinedFunctionFatalErrorHandler implements FatalErrorHandlerInterface
      */
     public function handleError(array $error, FatalErrorException $exception)
     {
+<<<<<<< HEAD
         $messageLen = strlen($error['message']);
         $notFoundSuffix = '()';
         $notFoundSuffixLen = strlen($notFoundSuffix);
+=======
+        $messageLen = \strlen($error['message']);
+        $notFoundSuffix = '()';
+        $notFoundSuffixLen = \strlen($notFoundSuffix);
+>>>>>>> git-aline/master/master
         if ($notFoundSuffixLen > $messageLen) {
             return;
         }
@@ -38,7 +49,11 @@ class UndefinedFunctionFatalErrorHandler implements FatalErrorHandlerInterface
         }
 
         $prefix = 'Call to undefined function ';
+<<<<<<< HEAD
         $prefixLen = strlen($prefix);
+=======
+        $prefixLen = \strlen($prefix);
+>>>>>>> git-aline/master/master
         if (0 !== strpos($error['message'], $prefix)) {
             return;
         }

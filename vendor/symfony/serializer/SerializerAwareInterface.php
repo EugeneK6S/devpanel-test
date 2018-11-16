@@ -20,8 +20,11 @@ interface SerializerAwareInterface
 {
     /**
      * Sets the owning Serializer object.
+<<<<<<< HEAD
      *
      * @param SerializerInterface $serializer
+=======
+>>>>>>> git-aline/master/master
      */
     public function setSerializer(SerializerInterface $serializer);
 }

@@ -9,6 +9,12 @@
  * file that was distributed with this source code.
  */
 
+<<<<<<< HEAD
+=======
+/**
+ * @final
+ */
+>>>>>>> git-aline/master/master
 class Twig_NodeVisitor_SafeAnalysis extends Twig_BaseNodeVisitor
 {
     protected $data = array();
@@ -57,17 +63,23 @@ class Twig_NodeVisitor_SafeAnalysis extends Twig_BaseNodeVisitor
         );
     }
 
+<<<<<<< HEAD
     /**
      * {@inheritdoc}
      */
+=======
+>>>>>>> git-aline/master/master
     protected function doEnterNode(Twig_Node $node, Twig_Environment $env)
     {
         return $node;
     }
 
+<<<<<<< HEAD
     /**
      * {@inheritdoc}
      */
+=======
+>>>>>>> git-aline/master/master
     protected function doLeaveNode(Twig_Node $node, Twig_Environment $env)
     {
         if ($node instanceof Twig_Node_Expression_Constant) {
@@ -144,11 +156,19 @@ class Twig_NodeVisitor_SafeAnalysis extends Twig_BaseNodeVisitor
         return array_intersect($a, $b);
     }
 
+<<<<<<< HEAD
     /**
      * {@inheritdoc}
      */
+=======
+>>>>>>> git-aline/master/master
     public function getPriority()
     {
         return 0;
     }
 }
+<<<<<<< HEAD
+=======
+
+class_alias('Twig_NodeVisitor_SafeAnalysis', 'Twig\NodeVisitor\SafeAnalysisNodeVisitor', false);
+>>>>>>> git-aline/master/master

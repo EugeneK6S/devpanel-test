@@ -3,7 +3,11 @@
 /*
  * This file is part of Twig.
  *
+<<<<<<< HEAD
  * (c) 2015 Fabien Potencier
+=======
+ * (c) Fabien Potencier
+>>>>>>> git-aline/master/master
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
@@ -11,6 +15,7 @@
 
 /**
  * @author Fabien Potencier <fabien@symfony.com>
+<<<<<<< HEAD
  */
 class Twig_Profiler_Dumper_Text
 {
@@ -21,6 +26,13 @@ class Twig_Profiler_Dumper_Text
         return $this->dumpProfile($profile);
     }
 
+=======
+ *
+ * @final
+ */
+class Twig_Profiler_Dumper_Text extends Twig_Profiler_Dumper_Base
+{
+>>>>>>> git-aline/master/master
     protected function formatTemplate(Twig_Profiler_Profile $profile, $prefix)
     {
         return sprintf('%s└ %s', $prefix, $profile->getTemplate());
@@ -35,6 +47,7 @@ class Twig_Profiler_Dumper_Text
     {
         return sprintf('%.2fms/%.0f%%', $profile->getDuration() * 1000, $percent);
     }
+<<<<<<< HEAD
 
     private function dumpProfile(Twig_Profiler_Profile $profile, $prefix = '', $sibling = false)
     {
@@ -66,3 +79,8 @@ class Twig_Profiler_Dumper_Text
         return $str;
     }
 }
+=======
+}
+
+class_alias('Twig_Profiler_Dumper_Text', 'Twig\Profiler\Dumper\TextDumper', false);
+>>>>>>> git-aline/master/master

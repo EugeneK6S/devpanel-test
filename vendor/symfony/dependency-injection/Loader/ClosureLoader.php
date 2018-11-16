@@ -11,8 +11,13 @@
 
 namespace Symfony\Component\DependencyInjection\Loader;
 
+<<<<<<< HEAD
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\Config\Loader\Loader;
+=======
+use Symfony\Component\Config\Loader\Loader;
+use Symfony\Component\DependencyInjection\ContainerBuilder;
+>>>>>>> git-aline/master/master
 
 /**
  * ClosureLoader loads service definitions from a PHP closure.
@@ -25,11 +30,14 @@ class ClosureLoader extends Loader
 {
     private $container;
 
+<<<<<<< HEAD
     /**
      * Constructor.
      *
      * @param ContainerBuilder $container A ContainerBuilder instance
      */
+=======
+>>>>>>> git-aline/master/master
     public function __construct(ContainerBuilder $container)
     {
         $this->container = $container;
@@ -40,7 +48,11 @@ class ClosureLoader extends Loader
      */
     public function load($resource, $type = null)
     {
+<<<<<<< HEAD
         call_user_func($resource, $this->container);
+=======
+        \call_user_func($resource, $this->container);
+>>>>>>> git-aline/master/master
     }
 
     /**

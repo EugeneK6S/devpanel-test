@@ -11,8 +11,13 @@
 
 namespace Symfony\Component\HttpFoundation;
 
+<<<<<<< HEAD
 use Symfony\Component\HttpFoundation\File\File;
 use Symfony\Component\HttpFoundation\File\Exception\FileException;
+=======
+use Symfony\Component\HttpFoundation\File\Exception\FileException;
+use Symfony\Component\HttpFoundation\File\File;
+>>>>>>> git-aline/master/master
 
 /**
  * BinaryFileResponse represents an HTTP response delivering a file.
@@ -27,6 +32,7 @@ class BinaryFileResponse extends Response
 {
     protected static $trustXSendfileTypeHeader = false;
 
+<<<<<<< HEAD
     protected $file;
     protected $offset;
     protected $maxlen;
@@ -35,6 +41,17 @@ class BinaryFileResponse extends Response
     /**
      * Constructor.
      *
+=======
+    /**
+     * @var File
+     */
+    protected $file;
+    protected $offset = 0;
+    protected $maxlen = -1;
+    protected $deleteFileAfterSend = false;
+
+    /**
+>>>>>>> git-aline/master/master
      * @param \SplFileInfo|string $file               The file to stream
      * @param int                 $status             The response status code
      * @param array               $headers            An array of response headers
@@ -63,7 +80,11 @@ class BinaryFileResponse extends Response
      * @param bool                $autoEtag           Whether the ETag header should be automatically set
      * @param bool                $autoLastModified   Whether the Last-Modified header should be automatically set
      *
+<<<<<<< HEAD
      * @return BinaryFileResponse The created response
+=======
+     * @return static
+>>>>>>> git-aline/master/master
      */
     public static function create($file = null, $status = 200, $headers = array(), $public = true, $contentDisposition = null, $autoEtag = false, $autoLastModified = true)
     {
@@ -78,7 +99,11 @@ class BinaryFileResponse extends Response
      * @param bool                $autoEtag
      * @param bool                $autoLastModified
      *
+<<<<<<< HEAD
      * @return BinaryFileResponse
+=======
+     * @return $this
+>>>>>>> git-aline/master/master
      *
      * @throws FileException
      */
@@ -138,7 +163,11 @@ class BinaryFileResponse extends Response
      */
     public function setAutoEtag()
     {
+<<<<<<< HEAD
         $this->setEtag(sha1_file($this->file->getPathname()));
+=======
+        $this->setEtag(base64_encode(hash_file('sha256', $this->file->getPathname(), true)));
+>>>>>>> git-aline/master/master
 
         return $this;
     }
@@ -147,6 +176,7 @@ class BinaryFileResponse extends Response
      * Sets the Content-Disposition header with the given filename.
      *
      * @param string $disposition      ResponseHeaderBag::DISPOSITION_INLINE or ResponseHeaderBag::DISPOSITION_ATTACHMENT
+<<<<<<< HEAD
      * @param string $filename         Optionally use this filename instead of the real name of the file
      * @param string $filenameFallback A fallback filename, containing only ASCII characters. Defaults to an automatically encoded filename
      *
@@ -158,6 +188,33 @@ class BinaryFileResponse extends Response
             $filename = $this->file->getFilename();
         }
 
+=======
+     * @param string $filename         Optionally use this UTF-8 encoded filename instead of the real name of the file
+     * @param string $filenameFallback A fallback filename, containing only ASCII characters. Defaults to an automatically encoded filename
+     *
+     * @return $this
+     */
+    public function setContentDisposition($disposition, $filename = '', $filenameFallback = '')
+    {
+        if ('' === $filename) {
+            $filename = $this->file->getFilename();
+        }
+
+        if ('' === $filenameFallback && (!preg_match('/^[\x20-\x7e]*$/', $filename) || false !== strpos($filename, '%'))) {
+            $encoding = mb_detect_encoding($filename, null, true) ?: '8bit';
+
+            for ($i = 0, $filenameLength = mb_strlen($filename, $encoding); $i < $filenameLength; ++$i) {
+                $char = mb_substr($filename, $i, 1, $encoding);
+
+                if ('%' === $char || \ord($char) < 32 || \ord($char) > 126) {
+                    $filenameFallback .= '_';
+                } else {
+                    $filenameFallback .= $char;
+                }
+            }
+        }
+
+>>>>>>> git-aline/master/master
         $dispositionHeader = $this->headers->makeDisposition($disposition, $filename, $filenameFallback);
         $this->headers->set('Content-Disposition', $dispositionHeader);
 
@@ -169,6 +226,7 @@ class BinaryFileResponse extends Response
      */
     public function prepare(Request $request)
     {
+<<<<<<< HEAD
         $this->headers->set('Content-Length', $this->file->getSize());
 
         if (!$this->headers->has('Accept-Ranges')) {
@@ -176,11 +234,17 @@ class BinaryFileResponse extends Response
             $this->headers->set('Accept-Ranges', $request->isMethodSafe() ? 'bytes' : 'none');
         }
 
+=======
+>>>>>>> git-aline/master/master
         if (!$this->headers->has('Content-Type')) {
             $this->headers->set('Content-Type', $this->file->getMimeType() ?: 'application/octet-stream');
         }
 
+<<<<<<< HEAD
         if ('HTTP/1.0' != $request->server->get('SERVER_PROTOCOL')) {
+=======
+        if ('HTTP/1.0' !== $request->server->get('SERVER_PROTOCOL')) {
+>>>>>>> git-aline/master/master
             $this->setProtocolVersion('1.1');
         }
 
@@ -189,22 +253,52 @@ class BinaryFileResponse extends Response
         $this->offset = 0;
         $this->maxlen = -1;
 
+<<<<<<< HEAD
+=======
+        if (false === $fileSize = $this->file->getSize()) {
+            return $this;
+        }
+        $this->headers->set('Content-Length', $fileSize);
+
+        if (!$this->headers->has('Accept-Ranges')) {
+            // Only accept ranges on safe HTTP methods
+            $this->headers->set('Accept-Ranges', $request->isMethodSafe(false) ? 'bytes' : 'none');
+        }
+
+>>>>>>> git-aline/master/master
         if (self::$trustXSendfileTypeHeader && $request->headers->has('X-Sendfile-Type')) {
             // Use X-Sendfile, do not send any content.
             $type = $request->headers->get('X-Sendfile-Type');
             $path = $this->file->getRealPath();
+<<<<<<< HEAD
             if (strtolower($type) == 'x-accel-redirect') {
+=======
+            // Fall back to scheme://path for stream wrapped locations.
+            if (false === $path) {
+                $path = $this->file->getPathname();
+            }
+            if ('x-accel-redirect' === strtolower($type)) {
+>>>>>>> git-aline/master/master
                 // Do X-Accel-Mapping substitutions.
                 // @link http://wiki.nginx.org/X-accel#X-Accel-Redirect
                 foreach (explode(',', $request->headers->get('X-Accel-Mapping', '')) as $mapping) {
                     $mapping = explode('=', $mapping, 2);
 
+<<<<<<< HEAD
                     if (2 == count($mapping)) {
                         $pathPrefix = trim($mapping[0]);
                         $location = trim($mapping[1]);
 
                         if (substr($path, 0, strlen($pathPrefix)) == $pathPrefix) {
                             $path = $location.substr($path, strlen($pathPrefix));
+=======
+                    if (2 === \count($mapping)) {
+                        $pathPrefix = trim($mapping[0]);
+                        $location = trim($mapping[1]);
+
+                        if (substr($path, 0, \strlen($pathPrefix)) === $pathPrefix) {
+                            $path = $location.substr($path, \strlen($pathPrefix));
+>>>>>>> git-aline/master/master
                             break;
                         }
                     }
@@ -214,9 +308,14 @@ class BinaryFileResponse extends Response
             $this->maxlen = 0;
         } elseif ($request->headers->has('Range')) {
             // Process the range headers.
+<<<<<<< HEAD
             if (!$request->headers->has('If-Range') || $this->getEtag() == $request->headers->get('If-Range')) {
                 $range = $request->headers->get('Range');
                 $fileSize = $this->file->getSize();
+=======
+            if (!$request->headers->has('If-Range') || $this->hasValidIfRangeHeader($request->headers->get('If-Range'))) {
+                $range = $request->headers->get('Range');
+>>>>>>> git-aline/master/master
 
                 list($start, $end) = explode('-', substr($range, 6), 2) + array(0);
 
@@ -232,7 +331,12 @@ class BinaryFileResponse extends Response
                 if ($start <= $end) {
                     if ($start < 0 || $end > $fileSize - 1) {
                         $this->setStatusCode(416);
+<<<<<<< HEAD
                     } elseif ($start !== 0 || $end !== $fileSize - 1) {
+=======
+                        $this->headers->set('Content-Range', sprintf('bytes */%s', $fileSize));
+                    } elseif (0 !== $start || $end !== $fileSize - 1) {
+>>>>>>> git-aline/master/master
                         $this->maxlen = $end < $fileSize ? $end - $start + 1 : -1;
                         $this->offset = $start;
 
@@ -247,12 +351,33 @@ class BinaryFileResponse extends Response
         return $this;
     }
 
+<<<<<<< HEAD
     /**
      * Sends the file.
+=======
+    private function hasValidIfRangeHeader($header)
+    {
+        if ($this->getEtag() === $header) {
+            return true;
+        }
+
+        if (null === $lastModified = $this->getLastModified()) {
+            return false;
+        }
+
+        return $lastModified->format('D, d M Y H:i:s').' GMT' === $header;
+    }
+
+    /**
+     * Sends the file.
+     *
+     * {@inheritdoc}
+>>>>>>> git-aline/master/master
      */
     public function sendContent()
     {
         if (!$this->isSuccessful()) {
+<<<<<<< HEAD
             parent::sendContent();
 
             return;
@@ -260,6 +385,13 @@ class BinaryFileResponse extends Response
 
         if (0 === $this->maxlen) {
             return;
+=======
+            return parent::sendContent();
+        }
+
+        if (0 === $this->maxlen) {
+            return $this;
+>>>>>>> git-aline/master/master
         }
 
         $out = fopen('php://output', 'wb');
@@ -273,6 +405,11 @@ class BinaryFileResponse extends Response
         if ($this->deleteFileAfterSend) {
             unlink($this->file->getPathname());
         }
+<<<<<<< HEAD
+=======
+
+        return $this;
+>>>>>>> git-aline/master/master
     }
 
     /**
@@ -311,7 +448,11 @@ class BinaryFileResponse extends Response
      *
      * @param bool $shouldDelete
      *
+<<<<<<< HEAD
      * @return BinaryFileResponse
+=======
+     * @return $this
+>>>>>>> git-aline/master/master
      */
     public function deleteFileAfterSend($shouldDelete)
     {

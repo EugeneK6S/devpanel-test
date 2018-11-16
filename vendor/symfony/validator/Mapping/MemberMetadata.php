@@ -13,7 +13,10 @@ namespace Symfony\Component\Validator\Mapping;
 
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\Exception\ConstraintDefinitionException;
+<<<<<<< HEAD
 use Symfony\Component\Validator\ValidationVisitorInterface;
+=======
+>>>>>>> git-aline/master/master
 
 /**
  * Stores all metadata needed for validating a class property.
@@ -27,11 +30,17 @@ use Symfony\Component\Validator\ValidationVisitorInterface;
  *
  * @see PropertyMetadataInterface
  */
+<<<<<<< HEAD
 abstract class MemberMetadata extends ElementMetadata implements PropertyMetadataInterface
 {
     /**
      * @var string
      *
+=======
+abstract class MemberMetadata extends GenericMetadata implements PropertyMetadataInterface
+{
+    /**
+>>>>>>> git-aline/master/master
      * @internal This property is public in order to reduce the size of the
      *           class' serialized representation. Do not access it. Use
      *           {@link getClassName()} instead.
@@ -39,8 +48,11 @@ abstract class MemberMetadata extends ElementMetadata implements PropertyMetadat
     public $class;
 
     /**
+<<<<<<< HEAD
      * @var string
      *
+=======
+>>>>>>> git-aline/master/master
      * @internal This property is public in order to reduce the size of the
      *           class' serialized representation. Do not access it. Use
      *           {@link getName()} instead.
@@ -48,8 +60,11 @@ abstract class MemberMetadata extends ElementMetadata implements PropertyMetadat
     public $name;
 
     /**
+<<<<<<< HEAD
      * @var string
      *
+=======
+>>>>>>> git-aline/master/master
      * @internal This property is public in order to reduce the size of the
      *           class' serialized representation. Do not access it. Use
      *           {@link getPropertyName()} instead.
@@ -62,8 +77,11 @@ abstract class MemberMetadata extends ElementMetadata implements PropertyMetadat
     private $reflMember = array();
 
     /**
+<<<<<<< HEAD
      * Constructor.
      *
+=======
+>>>>>>> git-aline/master/master
      * @param string $class    The name of the class this member is defined on
      * @param string $name     The name of the member
      * @param string $property The property the member belongs to
@@ -77,6 +95,7 @@ abstract class MemberMetadata extends ElementMetadata implements PropertyMetadat
 
     /**
      * {@inheritdoc}
+<<<<<<< HEAD
      *
      * @deprecated since version 2.5, to be removed in 3.0.
      */
@@ -100,6 +119,15 @@ abstract class MemberMetadata extends ElementMetadata implements PropertyMetadat
             throw new ConstraintDefinitionException(sprintf(
                 'The constraint %s cannot be put on properties or getters',
                 get_class($constraint)
+=======
+     */
+    public function addConstraint(Constraint $constraint)
+    {
+        if (!\in_array(Constraint::PROPERTY_CONSTRAINT, (array) $constraint->getTargets())) {
+            throw new ConstraintDefinitionException(sprintf(
+                'The constraint %s cannot be put on properties or getters',
+                \get_class($constraint)
+>>>>>>> git-aline/master/master
             ));
         }
 
@@ -183,6 +211,7 @@ abstract class MemberMetadata extends ElementMetadata implements PropertyMetadat
     }
 
     /**
+<<<<<<< HEAD
      * Returns whether objects stored in this member should be validated.
      *
      * @return bool
@@ -230,6 +259,8 @@ abstract class MemberMetadata extends ElementMetadata implements PropertyMetadat
     }
 
     /**
+=======
+>>>>>>> git-aline/master/master
      * Returns the reflection instance for accessing the member's value.
      *
      * @param object|string $objectOrClassName The object or the class name
@@ -238,7 +269,11 @@ abstract class MemberMetadata extends ElementMetadata implements PropertyMetadat
      */
     public function getReflectionMember($objectOrClassName)
     {
+<<<<<<< HEAD
         $className = is_string($objectOrClassName) ? $objectOrClassName : get_class($objectOrClassName);
+=======
+        $className = \is_string($objectOrClassName) ? $objectOrClassName : \get_class($objectOrClassName);
+>>>>>>> git-aline/master/master
         if (!isset($this->reflMember[$className])) {
             $this->reflMember[$className] = $this->newReflectionMember($objectOrClassName);
         }

@@ -22,11 +22,14 @@ abstract class Dumper implements DumperInterface
 {
     protected $container;
 
+<<<<<<< HEAD
     /**
      * Constructor.
      *
      * @param ContainerBuilder $container The service container to dump
      */
+=======
+>>>>>>> git-aline/master/master
     public function __construct(ContainerBuilder $container)
     {
         $this->container = $container;

@@ -24,8 +24,11 @@ use Symfony\Component\Validator\Exception\ConstraintDefinitionException;
  * let {@link getCompositeOption()} return the name of the property which
  * contains the nested constraints.
  *
+<<<<<<< HEAD
  * @since  2.6
  *
+=======
+>>>>>>> git-aline/master/master
  * @author Bernhard Schussek <bschussek@gmail.com>
  */
 abstract class Composite extends Constraint
@@ -63,17 +66,33 @@ abstract class Composite extends Constraint
         $compositeOption = $this->getCompositeOption();
         $nestedConstraints = $this->$compositeOption;
 
+<<<<<<< HEAD
         if (!is_array($nestedConstraints)) {
+=======
+        if (!\is_array($nestedConstraints)) {
+>>>>>>> git-aline/master/master
             $nestedConstraints = array($nestedConstraints);
         }
 
         foreach ($nestedConstraints as $constraint) {
             if (!$constraint instanceof Constraint) {
+<<<<<<< HEAD
                 throw new ConstraintDefinitionException(sprintf('The value %s is not an instance of Constraint in constraint %s', $constraint, get_class($this)));
             }
 
             if ($constraint instanceof Valid) {
                 throw new ConstraintDefinitionException(sprintf('The constraint Valid cannot be nested inside constraint %s. You can only declare the Valid constraint directly on a field or method.', get_class($this)));
+=======
+                if (\is_object($constraint)) {
+                    $constraint = \get_class($constraint);
+                }
+
+                throw new ConstraintDefinitionException(sprintf('The value %s is not an instance of Constraint in constraint %s', $constraint, \get_class($this)));
+            }
+
+            if ($constraint instanceof Valid) {
+                throw new ConstraintDefinitionException(sprintf('The constraint Valid cannot be nested inside constraint %s. You can only declare the Valid constraint directly on a field or method.', \get_class($this)));
+>>>>>>> git-aline/master/master
             }
         }
 
@@ -96,13 +115,22 @@ abstract class Composite extends Constraint
             if (property_exists($constraint, 'groups')) {
                 $excessGroups = array_diff($constraint->groups, $this->groups);
 
+<<<<<<< HEAD
                 if (count($excessGroups) > 0) {
+=======
+                if (\count($excessGroups) > 0) {
+>>>>>>> git-aline/master/master
                     throw new ConstraintDefinitionException(sprintf(
                         'The group(s) "%s" passed to the constraint %s '.
                         'should also be passed to its containing constraint %s',
                         implode('", "', $excessGroups),
+<<<<<<< HEAD
                         get_class($constraint),
                         get_class($this)
+=======
+                        \get_class($constraint),
+                        \get_class($this)
+>>>>>>> git-aline/master/master
                     ));
                 }
             } else {

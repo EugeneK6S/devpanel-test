@@ -12,15 +12,21 @@
 namespace Symfony\Component\HttpKernel\Exception;
 
 /**
+<<<<<<< HEAD
  * ServiceUnavailableHttpException.
  *
+=======
+>>>>>>> git-aline/master/master
  * @author Ben Ramsey <ben@benramsey.com>
  */
 class ServiceUnavailableHttpException extends HttpException
 {
     /**
+<<<<<<< HEAD
      * Constructor.
      *
+=======
+>>>>>>> git-aline/master/master
      * @param int|string $retryAfter The number of seconds or HTTP-date after which the request may be retried
      * @param string     $message    The internal exception message
      * @param \Exception $previous   The previous exception

@@ -16,8 +16,21 @@ namespace Symfony\Component\Validator\Constraints;
  * @Target({"PROPERTY", "METHOD", "ANNOTATION"})
  *
  * @author Daniel Holmes <daniel@danielholmes.org>
+<<<<<<< HEAD
  */
 class GreaterThanOrEqual extends AbstractComparison
 {
+=======
+ * @author Bernhard Schussek <bschussek@gmail.com>
+ */
+class GreaterThanOrEqual extends AbstractComparison
+{
+    const TOO_LOW_ERROR = 'ea4e51d1-3342-48bd-87f1-9e672cd90cad';
+
+    protected static $errorNames = array(
+        self::TOO_LOW_ERROR => 'TOO_LOW_ERROR',
+    );
+
+>>>>>>> git-aline/master/master
     public $message = 'This value should be greater than or equal to {{ compared_value }}.';
 }

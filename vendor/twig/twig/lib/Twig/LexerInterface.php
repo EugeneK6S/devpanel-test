@@ -3,7 +3,11 @@
 /*
  * This file is part of Twig.
  *
+<<<<<<< HEAD
  * (c) 2009 Fabien Potencier
+=======
+ * (c) Fabien Potencier
+>>>>>>> git-aline/master/master
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
@@ -21,6 +25,7 @@ interface Twig_LexerInterface
     /**
      * Tokenizes a source code.
      *
+<<<<<<< HEAD
      * @param string $code     The source code
      * @param string $filename A unique identifier for the source code
      *
@@ -29,4 +34,14 @@ interface Twig_LexerInterface
      * @throws Twig_Error_Syntax When the code is syntactically wrong
      */
     public function tokenize($code, $filename = null);
+=======
+     * @param string|Twig_Source $code The source code
+     * @param string             $name A unique identifier for the source code
+     *
+     * @return Twig_TokenStream
+     *
+     * @throws Twig_Error_Syntax When the code is syntactically wrong
+     */
+    public function tokenize($code, $name = null);
+>>>>>>> git-aline/master/master
 }

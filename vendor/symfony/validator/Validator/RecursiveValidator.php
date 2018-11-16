@@ -11,6 +11,7 @@
 
 namespace Symfony\Component\Validator\Validator;
 
+<<<<<<< HEAD
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\Constraints\GroupSequence;
 use Symfony\Component\Validator\Constraints\Valid;
@@ -20,10 +21,18 @@ use Symfony\Component\Validator\Context\ExecutionContextInterface;
 use Symfony\Component\Validator\MetadataFactoryInterface;
 use Symfony\Component\Validator\ObjectInitializerInterface;
 use Symfony\Component\Validator\ValidatorInterface as LegacyValidatorInterface;
+=======
+use Symfony\Component\Validator\ConstraintValidatorFactoryInterface;
+use Symfony\Component\Validator\Context\ExecutionContextFactoryInterface;
+use Symfony\Component\Validator\Context\ExecutionContextInterface;
+use Symfony\Component\Validator\Mapping\Factory\MetadataFactoryInterface;
+use Symfony\Component\Validator\ObjectInitializerInterface;
+>>>>>>> git-aline/master/master
 
 /**
  * Recursive implementation of {@link ValidatorInterface}.
  *
+<<<<<<< HEAD
  * @since  2.5
  *
  * @author Bernhard Schussek <bschussek@gmail.com>
@@ -48,6 +57,15 @@ class RecursiveValidator implements ValidatorInterface, LegacyValidatorInterface
     /**
      * @var ObjectInitializerInterface[]
      */
+=======
+ * @author Bernhard Schussek <bschussek@gmail.com>
+ */
+class RecursiveValidator implements ValidatorInterface
+{
+    protected $contextFactory;
+    protected $metadataFactory;
+    protected $validatorFactory;
+>>>>>>> git-aline/master/master
     protected $objectInitializers;
 
     /**
@@ -115,6 +133,7 @@ class RecursiveValidator implements ValidatorInterface, LegacyValidatorInterface
     /**
      * {@inheritdoc}
      */
+<<<<<<< HEAD
     public function validate($value, $groups = null, $traverse = false, $deep = false)
     {
         $numArgs = func_num_args();
@@ -130,6 +149,10 @@ class RecursiveValidator implements ValidatorInterface, LegacyValidatorInterface
             $constraints = new Valid(array('traverse' => $traverse, 'deep' => $deep));
         }
 
+=======
+    public function validate($value, $constraints = null, $groups = null)
+    {
+>>>>>>> git-aline/master/master
         return $this->startContext($value)
             ->validate($value, $constraints, $groups)
             ->getViolations();
@@ -151,6 +174,7 @@ class RecursiveValidator implements ValidatorInterface, LegacyValidatorInterface
     public function validatePropertyValue($objectOrClass, $propertyName, $value, $groups = null)
     {
         // If a class name is passed, take $value as root
+<<<<<<< HEAD
         return $this->startContext(is_object($objectOrClass) ? $objectOrClass : $value)
             ->validatePropertyValue($objectOrClass, $propertyName, $value, $groups)
             ->getViolations();
@@ -185,4 +209,10 @@ class RecursiveValidator implements ValidatorInterface, LegacyValidatorInterface
     {
         return null === $groups || is_string($groups) || $groups instanceof GroupSequence || (is_array($groups) && (0 === count($groups) || is_string(current($groups)) || current($groups) instanceof GroupSequence));
     }
+=======
+        return $this->startContext(\is_object($objectOrClass) ? $objectOrClass : $value)
+            ->validatePropertyValue($objectOrClass, $propertyName, $value, $groups)
+            ->getViolations();
+    }
+>>>>>>> git-aline/master/master
 }

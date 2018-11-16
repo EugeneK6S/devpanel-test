@@ -24,6 +24,7 @@ use Symfony\Component\HttpFoundation\File\MimeType\ExtensionGuesser;
  */
 class UploadedFile extends File
 {
+<<<<<<< HEAD
     /**
      * Whether the test mode is activated.
      *
@@ -59,6 +60,12 @@ class UploadedFile extends File
      *
      * @var int
      */
+=======
+    private $test = false;
+    private $originalName;
+    private $mimeType;
+    private $size;
+>>>>>>> git-aline/master/master
     private $error;
 
     /**
@@ -75,12 +82,22 @@ class UploadedFile extends File
      *
      * Calling any other method on an non-valid instance will cause an unpredictable result.
      *
+<<<<<<< HEAD
      * @param string $path         The full temporary path to the file
      * @param string $originalName The original file name
      * @param string $mimeType     The type of the file as provided by PHP
      * @param int    $size         The file size
      * @param int    $error        The error constant of the upload (one of PHP's UPLOAD_ERR_XXX constants)
      * @param bool   $test         Whether the test mode is active
+=======
+     * @param string      $path         The full temporary path to the file
+     * @param string      $originalName The original file name of the uploaded file
+     * @param string|null $mimeType     The type of the file as provided by PHP; null defaults to application/octet-stream
+     * @param int|null    $size         The file size provided by the uploader
+     * @param int|null    $error        The error constant of the upload (one of PHP's UPLOAD_ERR_XXX constants); null defaults to UPLOAD_ERR_OK
+     * @param bool        $test         Whether the test mode is active
+     *                                  Local files are used in test mode hence the code should not enforce HTTP uploads
+>>>>>>> git-aline/master/master
      *
      * @throws FileException         If file_uploads is disabled
      * @throws FileNotFoundException If the file does not exist
@@ -194,11 +211,19 @@ class UploadedFile extends File
     /**
      * Returns whether the file was uploaded successfully.
      *
+<<<<<<< HEAD
      * @return bool True if the file has been uploaded with HTTP and no error occurred.
      */
     public function isValid()
     {
         $isOk = $this->error === UPLOAD_ERR_OK;
+=======
+     * @return bool True if the file has been uploaded with HTTP and no error occurred
+     */
+    public function isValid()
+    {
+        $isOk = UPLOAD_ERR_OK === $this->error;
+>>>>>>> git-aline/master/master
 
         return $this->test ? $isOk : $isOk && is_uploaded_file($this->getPathname());
     }
@@ -222,9 +247,17 @@ class UploadedFile extends File
 
             $target = $this->getTargetFile($directory, $name);
 
+<<<<<<< HEAD
             if (!@move_uploaded_file($this->getPathname(), $target)) {
                 $error = error_get_last();
                 throw new FileException(sprintf('Could not move the file "%s" to "%s" (%s)', $this->getPathname(), $target, strip_tags($error['message'])));
+=======
+            set_error_handler(function ($type, $msg) use (&$error) { $error = $msg; });
+            $moved = move_uploaded_file($this->getPathname(), $target);
+            restore_error_handler();
+            if (!$moved) {
+                throw new FileException(sprintf('Could not move the file "%s" to "%s" (%s)', $this->getPathname(), $target, strip_tags($error)));
+>>>>>>> git-aline/master/master
             }
 
             @chmod($target, 0666 & ~umask());
@@ -250,17 +283,31 @@ class UploadedFile extends File
 
         $max = ltrim($iniMax, '+');
         if (0 === strpos($max, '0x')) {
+<<<<<<< HEAD
             $max = intval($max, 16);
         } elseif (0 === strpos($max, '0')) {
             $max = intval($max, 8);
+=======
+            $max = \intval($max, 16);
+        } elseif (0 === strpos($max, '0')) {
+            $max = \intval($max, 8);
+>>>>>>> git-aline/master/master
         } else {
             $max = (int) $max;
         }
 
         switch (substr($iniMax, -1)) {
             case 't': $max *= 1024;
+<<<<<<< HEAD
             case 'g': $max *= 1024;
             case 'm': $max *= 1024;
+=======
+            // no break
+            case 'g': $max *= 1024;
+            // no break
+            case 'm': $max *= 1024;
+            // no break
+>>>>>>> git-aline/master/master
             case 'k': $max *= 1024;
         }
 
@@ -285,7 +332,11 @@ class UploadedFile extends File
         );
 
         $errorCode = $this->error;
+<<<<<<< HEAD
         $maxFilesize = $errorCode === UPLOAD_ERR_INI_SIZE ? self::getMaxFilesize() / 1024 : 0;
+=======
+        $maxFilesize = UPLOAD_ERR_INI_SIZE === $errorCode ? self::getMaxFilesize() / 1024 : 0;
+>>>>>>> git-aline/master/master
         $message = isset($errors[$errorCode]) ? $errors[$errorCode] : 'The file "%s" was not uploaded due to an unknown error.';
 
         return sprintf($message, $this->getClientOriginalName(), $maxFilesize);

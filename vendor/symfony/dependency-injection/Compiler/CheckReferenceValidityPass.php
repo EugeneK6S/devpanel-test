@@ -12,18 +12,24 @@
 namespace Symfony\Component\DependencyInjection\Compiler;
 
 use Symfony\Component\DependencyInjection\Definition;
+<<<<<<< HEAD
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\DependencyInjection\Reference;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Exception\RuntimeException;
 use Symfony\Component\DependencyInjection\Exception\ScopeCrossingInjectionException;
 use Symfony\Component\DependencyInjection\Exception\ScopeWideningInjectionException;
+=======
+use Symfony\Component\DependencyInjection\Exception\RuntimeException;
+use Symfony\Component\DependencyInjection\Reference;
+>>>>>>> git-aline/master/master
 
 /**
  * Checks the validity of references.
  *
  * The following checks are performed by this pass:
  * - target definitions are not abstract
+<<<<<<< HEAD
  * - target definitions are of equal or wider scope
  * - target definitions are in the same scope hierarchy
  *
@@ -161,5 +167,31 @@ class CheckReferenceValidityPass implements CompilerPassInterface
         }
 
         return $this->container->getDefinition($id);
+=======
+ *
+ * @author Johannes M. Schmitt <schmittjoh@gmail.com>
+ */
+class CheckReferenceValidityPass extends AbstractRecursivePass
+{
+    protected function processValue($value, $isRoot = false)
+    {
+        if ($isRoot && $value instanceof Definition && ($value->isSynthetic() || $value->isAbstract())) {
+            return $value;
+        }
+        if ($value instanceof Reference && $this->container->hasDefinition((string) $value)) {
+            $targetDefinition = $this->container->getDefinition((string) $value);
+
+            if ($targetDefinition->isAbstract()) {
+                throw new RuntimeException(sprintf(
+                    'The definition "%s" has a reference to an abstract definition "%s". '
+                   .'Abstract definitions cannot be the target of references.',
+                   $this->currentId,
+                   $value
+                ));
+            }
+        }
+
+        return parent::processValue($value, $isRoot);
+>>>>>>> git-aline/master/master
     }
 }

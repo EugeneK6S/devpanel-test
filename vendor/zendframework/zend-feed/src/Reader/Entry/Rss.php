@@ -167,7 +167,11 @@ class Rss extends AbstractEntry implements EntryInterface
     /**
      * Get the entry's date of creation
      *
+<<<<<<< HEAD
      * @return string
+=======
+     * @return \DateTime
+>>>>>>> git-aline/master/master
      */
     public function getDateCreated()
     {
@@ -178,7 +182,11 @@ class Rss extends AbstractEntry implements EntryInterface
      * Get the entry's date of modification
      *
      * @throws Exception\RuntimeException
+<<<<<<< HEAD
      * @return string
+=======
+     * @return \DateTime
+>>>>>>> git-aline/master/master
      */
     public function getDateModified()
     {

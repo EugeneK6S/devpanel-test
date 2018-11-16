@@ -14,8 +14,11 @@ namespace Symfony\Component\Validator\Mapping\Factory;
 use Symfony\Component\Validator\Exception\NoSuchMetadataException;
 use Symfony\Component\Validator\Mapping\Cache\CacheInterface;
 use Symfony\Component\Validator\Mapping\ClassMetadata;
+<<<<<<< HEAD
 use Symfony\Component\Validator\Mapping\ClassMetadataInterface;
 use Symfony\Component\Validator\Mapping\Loader\LoaderChain;
+=======
+>>>>>>> git-aline/master/master
 use Symfony\Component\Validator\Mapping\Loader\LoaderInterface;
 
 /**
@@ -40,6 +43,7 @@ use Symfony\Component\Validator\Mapping\Loader\LoaderInterface;
  */
 class LazyLoadingMetadataFactory implements MetadataFactoryInterface
 {
+<<<<<<< HEAD
     /**
      * The loader for loading the class metadata.
      *
@@ -52,6 +56,9 @@ class LazyLoadingMetadataFactory implements MetadataFactoryInterface
      *
      * @var CacheInterface|null
      */
+=======
+    protected $loader;
+>>>>>>> git-aline/master/master
     protected $cache;
 
     /**
@@ -91,16 +98,25 @@ class LazyLoadingMetadataFactory implements MetadataFactoryInterface
      */
     public function getMetadataFor($value)
     {
+<<<<<<< HEAD
         if (!is_object($value) && !is_string($value)) {
             throw new NoSuchMetadataException(sprintf('Cannot create metadata for non-objects. Got: %s', gettype($value)));
         }
 
         $class = ltrim(is_object($value) ? get_class($value) : $value, '\\');
+=======
+        if (!\is_object($value) && !\is_string($value)) {
+            throw new NoSuchMetadataException(sprintf('Cannot create metadata for non-objects. Got: %s', \gettype($value)));
+        }
+
+        $class = ltrim(\is_object($value) ? \get_class($value) : $value, '\\');
+>>>>>>> git-aline/master/master
 
         if (isset($this->loadedClasses[$class])) {
             return $this->loadedClasses[$class];
         }
 
+<<<<<<< HEAD
         if (null !== $this->cache && false !== ($this->loadedClasses[$class] = $this->cache->read($class))) {
             return $this->loadedClasses[$class];
         }
@@ -123,6 +139,20 @@ class LazyLoadingMetadataFactory implements MetadataFactoryInterface
             }
             $metadata->mergeConstraints($this->getMetadataFor($interface->name));
         }
+=======
+        if (!class_exists($class) && !interface_exists($class, false)) {
+            throw new NoSuchMetadataException(sprintf('The class or interface "%s" does not exist.', $class));
+        }
+
+        if (null !== $this->cache && false !== ($metadata = $this->cache->read($class))) {
+            // Include constraints from the parent class
+            $this->mergeConstraints($metadata);
+
+            return $this->loadedClasses[$class] = $metadata;
+        }
+
+        $metadata = new ClassMetadata($class);
+>>>>>>> git-aline/master/master
 
         if (null !== $this->loader) {
             $this->loader->loadClassMetadata($metadata);
@@ -132,14 +162,58 @@ class LazyLoadingMetadataFactory implements MetadataFactoryInterface
             $this->cache->write($metadata);
         }
 
+<<<<<<< HEAD
         return $this->loadedClasses[$class] = $metadata;
     }
 
+=======
+        // Include constraints from the parent class
+        $this->mergeConstraints($metadata);
+
+        return $this->loadedClasses[$class] = $metadata;
+    }
+
+    private function mergeConstraints(ClassMetadata $metadata)
+    {
+        // Include constraints from the parent class
+        if ($parent = $metadata->getReflectionClass()->getParentClass()) {
+            $metadata->mergeConstraints($this->getMetadataFor($parent->name));
+        }
+
+        $interfaces = $metadata->getReflectionClass()->getInterfaces();
+
+        $interfaces = array_filter($interfaces, function ($interface) use ($parent, $interfaces) {
+            $interfaceName = $interface->getName();
+
+            if ($parent && $parent->implementsInterface($interfaceName)) {
+                return false;
+            }
+
+            foreach ($interfaces as $i) {
+                if ($i !== $interface && $i->implementsInterface($interfaceName)) {
+                    return false;
+                }
+            }
+
+            return true;
+        });
+
+        // Include constraints from all directly implemented interfaces
+        foreach ($interfaces as $interface) {
+            if ('Symfony\Component\Validator\GroupSequenceProviderInterface' === $interface->name) {
+                continue;
+            }
+            $metadata->mergeConstraints($this->getMetadataFor($interface->name));
+        }
+    }
+
+>>>>>>> git-aline/master/master
     /**
      * {@inheritdoc}
      */
     public function hasMetadataFor($value)
     {
+<<<<<<< HEAD
         if (!is_object($value) && !is_string($value)) {
             return false;
         }
@@ -151,5 +225,14 @@ class LazyLoadingMetadataFactory implements MetadataFactoryInterface
         }
 
         return false;
+=======
+        if (!\is_object($value) && !\is_string($value)) {
+            return false;
+        }
+
+        $class = ltrim(\is_object($value) ? \get_class($value) : $value, '\\');
+
+        return class_exists($class) || interface_exists($class, false);
+>>>>>>> git-aline/master/master
     }
 }

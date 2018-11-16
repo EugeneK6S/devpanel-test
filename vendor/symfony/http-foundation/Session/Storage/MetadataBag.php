@@ -54,9 +54,13 @@ class MetadataBag implements SessionBagInterface
     private $updateThreshold;
 
     /**
+<<<<<<< HEAD
      * Constructor.
      *
      * @param string $storageKey      The key used to store bag in the session.
+=======
+     * @param string $storageKey      The key used to store bag in the session
+>>>>>>> git-aline/master/master
      * @param int    $updateThreshold The time to wait between two UPDATED updates
      */
     public function __construct($storageKey = '_sf2_meta', $updateThreshold = 0)

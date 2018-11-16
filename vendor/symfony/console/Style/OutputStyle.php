@@ -13,6 +13,10 @@ namespace Symfony\Component\Console\Style;
 
 use Symfony\Component\Console\Formatter\OutputFormatterInterface;
 use Symfony\Component\Console\Helper\ProgressBar;
+<<<<<<< HEAD
+=======
+use Symfony\Component\Console\Output\ConsoleOutputInterface;
+>>>>>>> git-aline/master/master
 use Symfony\Component\Console\Output\OutputInterface;
 
 /**
@@ -24,9 +28,12 @@ abstract class OutputStyle implements OutputInterface, StyleInterface
 {
     private $output;
 
+<<<<<<< HEAD
     /**
      * @param OutputInterface $output
      */
+=======
+>>>>>>> git-aline/master/master
     public function __construct(OutputInterface $output)
     {
         $this->output = $output;
@@ -113,4 +120,48 @@ abstract class OutputStyle implements OutputInterface, StyleInterface
     {
         return $this->output->getFormatter();
     }
+<<<<<<< HEAD
+=======
+
+    /**
+     * {@inheritdoc}
+     */
+    public function isQuiet()
+    {
+        return $this->output->isQuiet();
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function isVerbose()
+    {
+        return $this->output->isVerbose();
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function isVeryVerbose()
+    {
+        return $this->output->isVeryVerbose();
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function isDebug()
+    {
+        return $this->output->isDebug();
+    }
+
+    protected function getErrorOutput()
+    {
+        if (!$this->output instanceof ConsoleOutputInterface) {
+            return $this->output;
+        }
+
+        return $this->output->getErrorOutput();
+    }
+>>>>>>> git-aline/master/master
 }

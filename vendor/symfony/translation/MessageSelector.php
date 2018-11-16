@@ -11,6 +11,11 @@
 
 namespace Symfony\Component\Translation;
 
+<<<<<<< HEAD
+=======
+use Symfony\Component\Translation\Exception\InvalidArgumentException;
+
+>>>>>>> git-aline/master/master
 /**
  * MessageSelector.
  *
@@ -43,6 +48,7 @@ class MessageSelector
      *
      * @return string
      *
+<<<<<<< HEAD
      * @throws \InvalidArgumentException
      */
     public function choose($message, $number, $locale)
@@ -52,6 +58,23 @@ class MessageSelector
         $standardRules = array();
         foreach ($parts as $part) {
             $part = trim($part);
+=======
+     * @throws InvalidArgumentException
+     */
+    public function choose($message, $number, $locale)
+    {
+        $parts = array();
+        if (preg_match('/^\|++$/', $message)) {
+            $parts = explode('|', $message);
+        } elseif (preg_match_all('/(?:\|\||[^\|])++/', $message, $matches)) {
+            $parts = $matches[0];
+        }
+
+        $explicitRules = array();
+        $standardRules = array();
+        foreach ($parts as $part) {
+            $part = trim(str_replace('||', '|', $part));
+>>>>>>> git-aline/master/master
 
             if (preg_match('/^(?P<interval>'.Interval::getIntervalRegexp().')\s*(?P<message>.*?)$/xs', $part, $matches)) {
                 $explicitRules[$matches['interval']] = $matches['message'];
@@ -74,11 +97,19 @@ class MessageSelector
         if (!isset($standardRules[$position])) {
             // when there's exactly one rule given, and that rule is a standard
             // rule, use this rule
+<<<<<<< HEAD
             if (1 === count($parts) && isset($standardRules[0])) {
                 return $standardRules[0];
             }
 
             throw new \InvalidArgumentException(sprintf('Unable to choose a translation for "%s" with locale "%s" for value "%d". Double check that this translation has the correct plural options (e.g. "There is one apple|There are %%count%% apples").', $message, $locale, $number));
+=======
+            if (1 === \count($parts) && isset($standardRules[0])) {
+                return $standardRules[0];
+            }
+
+            throw new InvalidArgumentException(sprintf('Unable to choose a translation for "%s" with locale "%s" for value "%d". Double check that this translation has the correct plural options (e.g. "There is one apple|There are %%count%% apples").', $message, $locale, $number));
+>>>>>>> git-aline/master/master
         }
 
         return $standardRules[$position];

@@ -3,7 +3,11 @@
 /*
  * This file is part of Twig.
  *
+<<<<<<< HEAD
  * (c) 2015 Fabien Potencier
+=======
+ * (c) Fabien Potencier
+>>>>>>> git-aline/master/master
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
@@ -11,6 +15,11 @@
 
 /**
  * @author Fabien Potencier <fabien@symfony.com>
+<<<<<<< HEAD
+=======
+ *
+ * @final
+>>>>>>> git-aline/master/master
  */
 class Twig_Profiler_Dumper_Blackfire
 {
@@ -20,7 +29,11 @@ class Twig_Profiler_Dumper_Blackfire
         $this->dumpProfile('main()', $profile, $data);
         $this->dumpChildren('main()', $profile, $data);
 
+<<<<<<< HEAD
         $start = microtime(true);
+=======
+        $start = sprintf('%f', microtime(true));
+>>>>>>> git-aline/master/master
         $str = <<<EOF
 file-format: BlackfireProbe
 cost-dimensions: wt mu pmu
@@ -66,3 +79,8 @@ EOF;
         }
     }
 }
+<<<<<<< HEAD
+=======
+
+class_alias('Twig_Profiler_Dumper_Blackfire', 'Twig\Profiler\Dumper\BlackfireDumper', false);
+>>>>>>> git-aline/master/master

@@ -29,15 +29,26 @@ class Store implements StoreInterface
     private $locks;
 
     /**
+<<<<<<< HEAD
      * Constructor.
      *
      * @param string $root The path to the cache directory
+=======
+     * @param string $root The path to the cache directory
+     *
+     * @throws \RuntimeException
+>>>>>>> git-aline/master/master
      */
     public function __construct($root)
     {
         $this->root = $root;
+<<<<<<< HEAD
         if (!is_dir($this->root)) {
             mkdir($this->root, 0777, true);
+=======
+        if (!file_exists($this->root) && !@mkdir($this->root, 0777, true) && !is_dir($this->root)) {
+            throw new \RuntimeException(sprintf('Unable to create the store directory (%s).', $this->root));
+>>>>>>> git-aline/master/master
         }
         $this->keyCache = new \SplObjectStorage();
         $this->locks = array();
@@ -50,6 +61,7 @@ class Store implements StoreInterface
     {
         // unlock everything
         foreach ($this->locks as $lock) {
+<<<<<<< HEAD
             if (file_exists($lock)) {
                 @unlink($lock);
             }
@@ -68,11 +80,23 @@ class Store implements StoreInterface
      * Locks the cache for a given Request.
      *
      * @param Request $request A Request instance
+=======
+            flock($lock, LOCK_UN);
+            fclose($lock);
+        }
+
+        $this->locks = array();
+    }
+
+    /**
+     * Tries to lock the cache for a given Request, without blocking.
+>>>>>>> git-aline/master/master
      *
      * @return bool|string true if the lock is acquired, the path to the current lock otherwise
      */
     public function lock(Request $request)
     {
+<<<<<<< HEAD
         $path = $this->getPath($this->getCacheKey($request).'.lck');
         if (!is_dir(dirname($path)) && false === @mkdir(dirname($path), 0777, true)) {
             return false;
@@ -88,32 +112,91 @@ class Store implements StoreInterface
         }
 
         return !file_exists($path) ?: $path;
+=======
+        $key = $this->getCacheKey($request);
+
+        if (!isset($this->locks[$key])) {
+            $path = $this->getPath($key);
+            if (!file_exists(\dirname($path)) && false === @mkdir(\dirname($path), 0777, true) && !is_dir(\dirname($path))) {
+                return $path;
+            }
+            $h = fopen($path, 'cb');
+            if (!flock($h, LOCK_EX | LOCK_NB)) {
+                fclose($h);
+
+                return $path;
+            }
+
+            $this->locks[$key] = $h;
+        }
+
+        return true;
+>>>>>>> git-aline/master/master
     }
 
     /**
      * Releases the lock for the given Request.
      *
+<<<<<<< HEAD
      * @param Request $request A Request instance
      *
+=======
+>>>>>>> git-aline/master/master
      * @return bool False if the lock file does not exist or cannot be unlocked, true otherwise
      */
     public function unlock(Request $request)
     {
+<<<<<<< HEAD
         $file = $this->getPath($this->getCacheKey($request).'.lck');
 
         return is_file($file) ? @unlink($file) : false;
+=======
+        $key = $this->getCacheKey($request);
+
+        if (isset($this->locks[$key])) {
+            flock($this->locks[$key], LOCK_UN);
+            fclose($this->locks[$key]);
+            unset($this->locks[$key]);
+
+            return true;
+        }
+
+        return false;
+>>>>>>> git-aline/master/master
     }
 
     public function isLocked(Request $request)
     {
+<<<<<<< HEAD
         return is_file($this->getPath($this->getCacheKey($request).'.lck'));
+=======
+        $key = $this->getCacheKey($request);
+
+        if (isset($this->locks[$key])) {
+            return true; // shortcut if lock held by this process
+        }
+
+        if (!file_exists($path = $this->getPath($key))) {
+            return false;
+        }
+
+        $h = fopen($path, 'rb');
+        flock($h, LOCK_EX | LOCK_NB, $wouldBlock);
+        flock($h, LOCK_UN); // release the lock we just acquired
+        fclose($h);
+
+        return (bool) $wouldBlock;
+>>>>>>> git-aline/master/master
     }
 
     /**
      * Locates a cached Response for the Request provided.
      *
+<<<<<<< HEAD
      * @param Request $request A Request instance
      *
+=======
+>>>>>>> git-aline/master/master
      * @return Response|null A Response instance, or null if no cache entry was found
      */
     public function lookup(Request $request)
@@ -138,8 +221,13 @@ class Store implements StoreInterface
             return;
         }
 
+<<<<<<< HEAD
         list($req, $headers) = $match;
         if (is_file($body = $this->getPath($headers['x-content-digest'][0]))) {
+=======
+        $headers = $match[1];
+        if (file_exists($body = $this->getPath($headers['x-content-digest'][0]))) {
+>>>>>>> git-aline/master/master
             return $this->restoreResponse($headers, $body);
         }
 
@@ -154,9 +242,12 @@ class Store implements StoreInterface
      * Existing entries are read and any that match the response are removed. This
      * method calls write with the new list of cache entries.
      *
+<<<<<<< HEAD
      * @param Request  $request  A Request instance
      * @param Response $response A Response instance
      *
+=======
+>>>>>>> git-aline/master/master
      * @return string The key under which the response is stored
      *
      * @throws \RuntimeException
@@ -177,7 +268,11 @@ class Store implements StoreInterface
             $response->headers->set('X-Content-Digest', $digest);
 
             if (!$response->headers->has('Transfer-Encoding')) {
+<<<<<<< HEAD
                 $response->headers->set('Content-Length', strlen($response->getContent()));
+=======
+                $response->headers->set('Content-Length', \strlen($response->getContent()));
+>>>>>>> git-aline/master/master
             }
         }
 
@@ -189,7 +284,11 @@ class Store implements StoreInterface
                 $entry[1]['vary'] = array('');
             }
 
+<<<<<<< HEAD
             if ($vary != $entry[1]['vary'][0] || !$this->requestsMatch($vary, $entry[0], $storedEnv)) {
+=======
+            if ($entry[1]['vary'][0] != $vary || !$this->requestsMatch($vary, $entry[0], $storedEnv)) {
+>>>>>>> git-aline/master/master
                 $entries[] = $entry;
             }
         }
@@ -209,8 +308,11 @@ class Store implements StoreInterface
     /**
      * Returns content digest for $response.
      *
+<<<<<<< HEAD
      * @param Response $response
      *
+=======
+>>>>>>> git-aline/master/master
      * @return string
      */
     protected function generateContentDigest(Response $response)
@@ -221,8 +323,11 @@ class Store implements StoreInterface
     /**
      * Invalidates all cache entries that match the request.
      *
+<<<<<<< HEAD
      * @param Request $request A Request instance
      *
+=======
+>>>>>>> git-aline/master/master
      * @throws \RuntimeException
      */
     public function invalidate(Request $request)
@@ -242,10 +347,15 @@ class Store implements StoreInterface
             }
         }
 
+<<<<<<< HEAD
         if ($modified) {
             if (false === $this->save($key, serialize($entries))) {
                 throw new \RuntimeException('Unable to store the metadata.');
             }
+=======
+        if ($modified && false === $this->save($key, serialize($entries))) {
+            throw new \RuntimeException('Unable to store the metadata.');
+>>>>>>> git-aline/master/master
         }
     }
 
@@ -266,7 +376,11 @@ class Store implements StoreInterface
         }
 
         foreach (preg_split('/[\s,]+/', $vary) as $header) {
+<<<<<<< HEAD
             $key = strtr(strtolower($header), '_', '-');
+=======
+            $key = str_replace('_', '-', strtolower($header));
+>>>>>>> git-aline/master/master
             $v1 = isset($env1[$key]) ? $env1[$key] : null;
             $v2 = isset($env2[$key]) ? $env2[$key] : null;
             if ($v1 !== $v2) {
@@ -288,7 +402,11 @@ class Store implements StoreInterface
      */
     private function getMetadata($key)
     {
+<<<<<<< HEAD
         if (false === $entries = $this->load($key)) {
+=======
+        if (!$entries = $this->load($key)) {
+>>>>>>> git-aline/master/master
             return array();
         }
 
@@ -298,6 +416,7 @@ class Store implements StoreInterface
     /**
      * Purges data for the given URL.
      *
+<<<<<<< HEAD
      * @param string $url A URL
      *
      * @return bool true if the URL exists and has been purged, false otherwise
@@ -305,6 +424,42 @@ class Store implements StoreInterface
     public function purge($url)
     {
         if (is_file($path = $this->getPath($this->getCacheKey(Request::create($url))))) {
+=======
+     * This method purges both the HTTP and the HTTPS version of the cache entry.
+     *
+     * @param string $url A URL
+     *
+     * @return bool true if the URL exists with either HTTP or HTTPS scheme and has been purged, false otherwise
+     */
+    public function purge($url)
+    {
+        $http = preg_replace('#^https:#', 'http:', $url);
+        $https = preg_replace('#^http:#', 'https:', $url);
+
+        $purgedHttp = $this->doPurge($http);
+        $purgedHttps = $this->doPurge($https);
+
+        return $purgedHttp || $purgedHttps;
+    }
+
+    /**
+     * Purges data for the given URL.
+     *
+     * @param string $url A URL
+     *
+     * @return bool true if the URL exists and has been purged, false otherwise
+     */
+    private function doPurge($url)
+    {
+        $key = $this->getCacheKey(Request::create($url));
+        if (isset($this->locks[$key])) {
+            flock($this->locks[$key], LOCK_UN);
+            fclose($this->locks[$key]);
+            unset($this->locks[$key]);
+        }
+
+        if (file_exists($path = $this->getPath($key))) {
+>>>>>>> git-aline/master/master
             unlink($path);
 
             return true;
@@ -324,7 +479,11 @@ class Store implements StoreInterface
     {
         $path = $this->getPath($key);
 
+<<<<<<< HEAD
         return is_file($path) ? file_get_contents($path) : false;
+=======
+        return file_exists($path) ? file_get_contents($path) : false;
+>>>>>>> git-aline/master/master
     }
 
     /**
@@ -338,6 +497,7 @@ class Store implements StoreInterface
     private function save($key, $data)
     {
         $path = $this->getPath($key);
+<<<<<<< HEAD
         if (!is_dir(dirname($path)) && false === @mkdir(dirname($path), 0777, true)) {
             return false;
         }
@@ -355,6 +515,44 @@ class Store implements StoreInterface
 
         if (false === @rename($tmpFile, $path)) {
             return false;
+=======
+
+        if (isset($this->locks[$key])) {
+            $fp = $this->locks[$key];
+            @ftruncate($fp, 0);
+            @fseek($fp, 0);
+            $len = @fwrite($fp, $data);
+            if (\strlen($data) !== $len) {
+                @ftruncate($fp, 0);
+
+                return false;
+            }
+        } else {
+            if (!file_exists(\dirname($path)) && false === @mkdir(\dirname($path), 0777, true) && !is_dir(\dirname($path))) {
+                return false;
+            }
+
+            $tmpFile = tempnam(\dirname($path), basename($path));
+            if (false === $fp = @fopen($tmpFile, 'wb')) {
+                @unlink($tmpFile);
+
+                return false;
+            }
+            @fwrite($fp, $data);
+            @fclose($fp);
+
+            if ($data != file_get_contents($tmpFile)) {
+                @unlink($tmpFile);
+
+                return false;
+            }
+
+            if (false === @rename($tmpFile, $path)) {
+                @unlink($tmpFile);
+
+                return false;
+            }
+>>>>>>> git-aline/master/master
         }
 
         @chmod($path, 0666 & ~umask());
@@ -362,7 +560,11 @@ class Store implements StoreInterface
 
     public function getPath($key)
     {
+<<<<<<< HEAD
         return $this->root.DIRECTORY_SEPARATOR.substr($key, 0, 2).DIRECTORY_SEPARATOR.substr($key, 2, 2).DIRECTORY_SEPARATOR.substr($key, 4, 2).DIRECTORY_SEPARATOR.substr($key, 6);
+=======
+        return $this->root.\DIRECTORY_SEPARATOR.substr($key, 0, 2).\DIRECTORY_SEPARATOR.substr($key, 2, 2).\DIRECTORY_SEPARATOR.substr($key, 4, 2).\DIRECTORY_SEPARATOR.substr($key, 6);
+>>>>>>> git-aline/master/master
     }
 
     /**
@@ -375,8 +577,11 @@ class Store implements StoreInterface
      * headers, use a Vary header to indicate them, and each representation will
      * be stored independently under the same cache key.
      *
+<<<<<<< HEAD
      * @param Request $request A Request instance
      *
+=======
+>>>>>>> git-aline/master/master
      * @return string A key for the given Request
      */
     protected function generateCacheKey(Request $request)
@@ -387,8 +592,11 @@ class Store implements StoreInterface
     /**
      * Returns a cache key for the given Request.
      *
+<<<<<<< HEAD
      * @param Request $request A Request instance
      *
+=======
+>>>>>>> git-aline/master/master
      * @return string A key for the given Request
      */
     private function getCacheKey(Request $request)
@@ -403,8 +611,11 @@ class Store implements StoreInterface
     /**
      * Persists the Request HTTP headers.
      *
+<<<<<<< HEAD
      * @param Request $request A Request instance
      *
+=======
+>>>>>>> git-aline/master/master
      * @return array An array of HTTP headers
      */
     private function persistRequest(Request $request)
@@ -415,8 +626,11 @@ class Store implements StoreInterface
     /**
      * Persists the Response HTTP headers.
      *
+<<<<<<< HEAD
      * @param Response $response A Response instance
      *
+=======
+>>>>>>> git-aline/master/master
      * @return array An array of HTTP headers
      */
     private function persistResponse(Response $response)

@@ -23,8 +23,11 @@ interface LoaderInterface
     /**
      * Loads validation metadata into a {@link ClassMetadata} instance.
      *
+<<<<<<< HEAD
      * @param ClassMetadata $metadata The metadata to load
      *
+=======
+>>>>>>> git-aline/master/master
      * @return bool Whether the loader succeeded
      */
     public function loadClassMetadata(ClassMetadata $metadata);

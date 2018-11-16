@@ -5,6 +5,11 @@
          backupGlobals="false"
          colors="true"
          bootstrap="vendor/autoload.php"
+<<<<<<< HEAD
+=======
+         failOnRisky="true"
+         failOnWarning="true"
+>>>>>>> git-aline/master/master
 >
     <php>
         <ini name="error_reporting" value="-1" />
@@ -26,4 +31,17 @@
             </exclude>
         </whitelist>
     </filter>
+<<<<<<< HEAD
+=======
+
+    <listeners>
+        <listener class="Symfony\Bridge\PhpUnit\SymfonyTestsListener">
+            <arguments>
+                <array>
+                    <element key="time-sensitive"><string>Symfony\Component\Console</string></element>
+                </array>
+            </arguments>
+        </listener>
+    </listeners>
+>>>>>>> git-aline/master/master
 </phpunit>

@@ -18,6 +18,7 @@ namespace Symfony\Component\Validator;
  */
 class ConstraintViolation implements ConstraintViolationInterface
 {
+<<<<<<< HEAD
     /**
      * @var string
      */
@@ -66,6 +67,17 @@ class ConstraintViolation implements ConstraintViolationInterface
     /**
      * @var mixed
      */
+=======
+    private $message;
+    private $messageTemplate;
+    private $parameters;
+    private $plural;
+    private $root;
+    private $propertyPath;
+    private $invalidValue;
+    private $constraint;
+    private $code;
+>>>>>>> git-aline/master/master
     private $cause;
 
     /**
@@ -105,6 +117,7 @@ class ConstraintViolation implements ConstraintViolationInterface
     /**
      * Converts the violation into a string for debugging purposes.
      *
+<<<<<<< HEAD
      * @return string The violation as string.
      */
     public function __toString()
@@ -112,6 +125,15 @@ class ConstraintViolation implements ConstraintViolationInterface
         if (is_object($this->root)) {
             $class = 'Object('.get_class($this->root).')';
         } elseif (is_array($this->root)) {
+=======
+     * @return string The violation as string
+     */
+    public function __toString()
+    {
+        if (\is_object($this->root)) {
+            $class = 'Object('.\get_class($this->root).')';
+        } elseif (\is_array($this->root)) {
+>>>>>>> git-aline/master/master
             $class = 'Array';
         } else {
             $class = (string) $this->root;
@@ -141,6 +163,7 @@ class ConstraintViolation implements ConstraintViolationInterface
 
     /**
      * {@inheritdoc}
+<<<<<<< HEAD
      *
      * @deprecated since version 2.7, to be removed in 3.0.
      *             Use getParameters() instead
@@ -154,6 +177,8 @@ class ConstraintViolation implements ConstraintViolationInterface
 
     /**
      * Alias of {@link getMessageParameters()}.
+=======
+>>>>>>> git-aline/master/master
      */
     public function getParameters()
     {
@@ -162,6 +187,7 @@ class ConstraintViolation implements ConstraintViolationInterface
 
     /**
      * {@inheritdoc}
+<<<<<<< HEAD
      *
      * @deprecated since version 2.7, to be removed in 3.0.
      *             Use getPlural() instead
@@ -175,6 +201,8 @@ class ConstraintViolation implements ConstraintViolationInterface
 
     /**
      * Alias of {@link getMessagePluralization()}.
+=======
+>>>>>>> git-aline/master/master
      */
     public function getPlural()
     {

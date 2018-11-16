@@ -1,6 +1,7 @@
 HttpKernel Component
 ====================
 
+<<<<<<< HEAD
 HttpKernel provides the building blocks to create flexible and fast HTTP-based
 frameworks.
 
@@ -88,12 +89,26 @@ $dispatcher->addSubscriber(new ExceptionListener(function (Request $request) {
 And that's why the simple looking ``HttpKernelInterface`` is so powerful. It
 gives you access to a lot of cool features, ready to be used out of the box,
 with no efforts.
+=======
+The HttpKernel component provides a structured process for converting a Request
+into a Response by making use of the EventDispatcher component. It's flexible
+enough to create a full-stack framework (Symfony), a micro-framework (Silex) or
+an advanced CMS system (Drupal).
+>>>>>>> git-aline/master/master
 
 Resources
 ---------
 
+<<<<<<< HEAD
 You can run the unit tests with the following command:
 
     $ cd path/to/Symfony/Component/HttpKernel/
     $ composer install
     $ phpunit
+=======
+  * [Documentation](https://symfony.com/doc/current/components/http_kernel/index.html)
+  * [Contributing](https://symfony.com/doc/current/contributing/index.html)
+  * [Report issues](https://github.com/symfony/symfony/issues) and
+    [send Pull Requests](https://github.com/symfony/symfony/pulls)
+    in the [main Symfony repository](https://github.com/symfony/symfony)
+>>>>>>> git-aline/master/master

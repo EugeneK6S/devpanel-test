@@ -11,7 +11,10 @@
 
 namespace Symfony\Component\Validator\Constraints;
 
+<<<<<<< HEAD
 use Symfony\Component\Validator\Context\ExecutionContextInterface;
+=======
+>>>>>>> git-aline/master/master
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\ConstraintValidator;
 use Symfony\Component\Validator\Exception\UnexpectedTypeException;
@@ -37,7 +40,11 @@ class IpValidator extends ConstraintValidator
             return;
         }
 
+<<<<<<< HEAD
         if (!is_scalar($value) && !(is_object($value) && method_exists($value, '__toString'))) {
+=======
+        if (!is_scalar($value) && !(\is_object($value) && method_exists($value, '__toString'))) {
+>>>>>>> git-aline/master/master
             throw new UnexpectedTypeException($value, 'string');
         }
 
@@ -94,6 +101,7 @@ class IpValidator extends ConstraintValidator
         }
 
         if (!filter_var($value, FILTER_VALIDATE_IP, $flag)) {
+<<<<<<< HEAD
             if ($this->context instanceof ExecutionContextInterface) {
                 $this->context->buildViolation($constraint->message)
                     ->setParameter('{{ value }}', $this->formatValue($value))
@@ -103,6 +111,12 @@ class IpValidator extends ConstraintValidator
                     ->setParameter('{{ value }}', $this->formatValue($value))
                     ->addViolation();
             }
+=======
+            $this->context->buildViolation($constraint->message)
+                ->setParameter('{{ value }}', $this->formatValue($value))
+                ->setCode(Ip::INVALID_IP_ERROR)
+                ->addViolation();
+>>>>>>> git-aline/master/master
         }
     }
 }

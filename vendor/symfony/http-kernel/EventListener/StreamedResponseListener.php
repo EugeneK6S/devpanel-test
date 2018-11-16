@@ -11,10 +11,17 @@
 
 namespace Symfony\Component\HttpKernel\EventListener;
 
+<<<<<<< HEAD
 use Symfony\Component\HttpFoundation\StreamedResponse;
 use Symfony\Component\HttpKernel\Event\FilterResponseEvent;
 use Symfony\Component\HttpKernel\KernelEvents;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
+=======
+use Symfony\Component\EventDispatcher\EventSubscriberInterface;
+use Symfony\Component\HttpFoundation\StreamedResponse;
+use Symfony\Component\HttpKernel\Event\FilterResponseEvent;
+use Symfony\Component\HttpKernel\KernelEvents;
+>>>>>>> git-aline/master/master
 
 /**
  * StreamedResponseListener is responsible for sending the Response
@@ -26,8 +33,11 @@ class StreamedResponseListener implements EventSubscriberInterface
 {
     /**
      * Filters the Response.
+<<<<<<< HEAD
      *
      * @param FilterResponseEvent $event A FilterResponseEvent instance
+=======
+>>>>>>> git-aline/master/master
      */
     public function onKernelResponse(FilterResponseEvent $event)
     {

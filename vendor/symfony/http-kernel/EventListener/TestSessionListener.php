@@ -11,6 +11,7 @@
 
 namespace Symfony\Component\HttpKernel\EventListener;
 
+<<<<<<< HEAD
 use Symfony\Component\HttpFoundation\Cookie;
 use Symfony\Component\HttpKernel\KernelEvents;
 use Symfony\Component\HttpKernel\Event\FilterResponseEvent;
@@ -80,4 +81,32 @@ abstract class TestSessionListener implements EventSubscriberInterface
      * @return SessionInterface|null A SessionInterface instance or null if no session is available
      */
     abstract protected function getSession();
+=======
+use Psr\Container\ContainerInterface;
+
+/**
+ * Sets the session in the request.
+ *
+ * @author Fabien Potencier <fabien@symfony.com>
+ *
+ * @final since version 3.3
+ */
+class TestSessionListener extends AbstractTestSessionListener
+{
+    private $container;
+
+    public function __construct(ContainerInterface $container)
+    {
+        $this->container = $container;
+    }
+
+    protected function getSession()
+    {
+        if (!$this->container->has('session')) {
+            return;
+        }
+
+        return $this->container->get('session');
+    }
+>>>>>>> git-aline/master/master
 }

@@ -26,10 +26,13 @@ interface ConsoleOutputInterface extends OutputInterface
      */
     public function getErrorOutput();
 
+<<<<<<< HEAD
     /**
      * Sets the OutputInterface used for errors.
      *
      * @param OutputInterface $error
      */
+=======
+>>>>>>> git-aline/master/master
     public function setErrorOutput(OutputInterface $error);
 }

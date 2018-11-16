@@ -29,8 +29,11 @@ class Variable
     private $name;
 
     /**
+<<<<<<< HEAD
      * Constructor.
      *
+=======
+>>>>>>> git-aline/master/master
      * @param string $name
      */
     public function __construct($name)
@@ -38,11 +41,14 @@ class Variable
         $this->name = $name;
     }
 
+<<<<<<< HEAD
     /**
      * Converts the object to a string.
      *
      * @return string
      */
+=======
+>>>>>>> git-aline/master/master
     public function __toString()
     {
         return $this->name;

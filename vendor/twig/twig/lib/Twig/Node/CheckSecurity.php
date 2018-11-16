@@ -3,7 +3,11 @@
 /*
  * This file is part of Twig.
  *
+<<<<<<< HEAD
  * (c) 2015 Fabien Potencier
+=======
+ * (c) Fabien Potencier
+>>>>>>> git-aline/master/master
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
@@ -33,7 +37,11 @@ class Twig_Node_CheckSecurity extends Twig_Node
         foreach (array('tags', 'filters', 'functions') as $type) {
             foreach ($this->{'used'.ucfirst($type)} as $name => $node) {
                 if ($node instanceof Twig_Node) {
+<<<<<<< HEAD
                     ${$type}[$name] = $node->getLine();
+=======
+                    ${$type}[$name] = $node->getTemplateLine();
+>>>>>>> git-aline/master/master
                 } else {
                     ${$type}[$node] = null;
                 }
@@ -46,7 +54,11 @@ class Twig_Node_CheckSecurity extends Twig_Node
             ->write('$functions = ')->repr(array_filter($functions))->raw(";\n\n")
             ->write("try {\n")
             ->indent()
+<<<<<<< HEAD
             ->write("\$this->env->getExtension('sandbox')->checkSecurity(\n")
+=======
+            ->write("\$this->env->getExtension('Twig_Extension_Sandbox')->checkSecurity(\n")
+>>>>>>> git-aline/master/master
             ->indent()
             ->write(!$tags ? "array(),\n" : "array('".implode("', '", array_keys($tags))."'),\n")
             ->write(!$filters ? "array(),\n" : "array('".implode("', '", array_keys($filters))."'),\n")
@@ -56,7 +68,11 @@ class Twig_Node_CheckSecurity extends Twig_Node
             ->outdent()
             ->write("} catch (Twig_Sandbox_SecurityError \$e) {\n")
             ->indent()
+<<<<<<< HEAD
             ->write("\$e->setTemplateFile(\$this->getTemplateName());\n\n")
+=======
+            ->write("\$e->setSourceContext(\$this->getSourceContext());\n\n")
+>>>>>>> git-aline/master/master
             ->write("if (\$e instanceof Twig_Sandbox_SecurityNotAllowedTagError && isset(\$tags[\$e->getTagName()])) {\n")
             ->indent()
             ->write("\$e->setTemplateLine(\$tags[\$e->getTagName()]);\n")
@@ -76,3 +92,8 @@ class Twig_Node_CheckSecurity extends Twig_Node
         ;
     }
 }
+<<<<<<< HEAD
+=======
+
+class_alias('Twig_Node_CheckSecurity', 'Twig\Node\CheckSecurityNode', false);
+>>>>>>> git-aline/master/master

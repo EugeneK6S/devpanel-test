@@ -11,7 +11,11 @@
 
 namespace Symfony\Component\DependencyInjection\Loader;
 
+<<<<<<< HEAD
 use Symfony\Component\Config\Resource\FileResource;
+=======
+use Symfony\Component\DependencyInjection\Loader\Configurator\ContainerConfigurator;
+>>>>>>> git-aline/master/master
 
 /**
  * PhpFileLoader loads service definitions from a PHP file.
@@ -33,10 +37,26 @@ class PhpFileLoader extends FileLoader
         $loader = $this;
 
         $path = $this->locator->locate($resource);
+<<<<<<< HEAD
         $this->setCurrentDir(dirname($path));
         $this->container->addResource(new FileResource($path));
 
         include $path;
+=======
+        $this->setCurrentDir(\dirname($path));
+        $this->container->fileExists($path);
+
+        // the closure forbids access to the private scope in the included file
+        $load = \Closure::bind(function ($path) use ($container, $loader, $resource, $type) {
+            return include $path;
+        }, $this, ProtectedPhpFileLoader::class);
+
+        $callback = $load($path);
+
+        if ($callback instanceof \Closure) {
+            $callback(new ContainerConfigurator($this->container, $this, $this->instanceof, $path, $resource), $this->container, $this);
+        }
+>>>>>>> git-aline/master/master
     }
 
     /**
@@ -44,6 +64,27 @@ class PhpFileLoader extends FileLoader
      */
     public function supports($resource, $type = null)
     {
+<<<<<<< HEAD
         return is_string($resource) && 'php' === pathinfo($resource, PATHINFO_EXTENSION);
     }
 }
+=======
+        if (!\is_string($resource)) {
+            return false;
+        }
+
+        if (null === $type && 'php' === pathinfo($resource, PATHINFO_EXTENSION)) {
+            return true;
+        }
+
+        return 'php' === $type;
+    }
+}
+
+/**
+ * @internal
+ */
+final class ProtectedPhpFileLoader extends PhpFileLoader
+{
+}
+>>>>>>> git-aline/master/master

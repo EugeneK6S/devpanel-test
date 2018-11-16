@@ -13,6 +13,10 @@ namespace Symfony\Component\Routing\Loader;
 
 use Symfony\Component\Config\Loader\FileLoader;
 use Symfony\Component\Config\Resource\FileResource;
+<<<<<<< HEAD
+=======
+use Symfony\Component\Routing\Loader\Configurator\RoutingConfigurator;
+>>>>>>> git-aline/master/master
 use Symfony\Component\Routing\RouteCollection;
 
 /**
@@ -35,9 +39,29 @@ class PhpFileLoader extends FileLoader
     public function load($file, $type = null)
     {
         $path = $this->locator->locate($file);
+<<<<<<< HEAD
         $this->setCurrentDir(dirname($path));
 
         $collection = self::includeFile($path, $this);
+=======
+        $this->setCurrentDir(\dirname($path));
+
+        // the closure forbids access to the private scope in the included file
+        $loader = $this;
+        $load = \Closure::bind(function ($file) use ($loader) {
+            return include $file;
+        }, null, ProtectedPhpFileLoader::class);
+
+        $result = $load($path);
+
+        if ($result instanceof \Closure) {
+            $collection = new RouteCollection();
+            $result(new RoutingConfigurator($collection, $this, $path, $file), $this);
+        } else {
+            $collection = $result;
+        }
+
+>>>>>>> git-aline/master/master
         $collection->addResource(new FileResource($path));
 
         return $collection;
@@ -48,6 +72,7 @@ class PhpFileLoader extends FileLoader
      */
     public function supports($resource, $type = null)
     {
+<<<<<<< HEAD
         return is_string($resource) && 'php' === pathinfo($resource, PATHINFO_EXTENSION) && (!$type || 'php' === $type);
     }
 
@@ -63,4 +88,15 @@ class PhpFileLoader extends FileLoader
     {
         return include $file;
     }
+=======
+        return \is_string($resource) && 'php' === pathinfo($resource, PATHINFO_EXTENSION) && (!$type || 'php' === $type);
+    }
+}
+
+/**
+ * @internal
+ */
+final class ProtectedPhpFileLoader extends PhpFileLoader
+{
+>>>>>>> git-aline/master/master
 }

@@ -35,7 +35,11 @@ class ApacheRequest extends Request
 
         if (false === strpos($this->server->get('REQUEST_URI'), $baseUrl)) {
             // assume mod_rewrite
+<<<<<<< HEAD
             return rtrim(dirname($baseUrl), '/\\');
+=======
+            return rtrim(\dirname($baseUrl), '/\\');
+>>>>>>> git-aline/master/master
         }
 
         return $baseUrl;

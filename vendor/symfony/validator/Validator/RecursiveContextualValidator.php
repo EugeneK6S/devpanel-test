@@ -14,6 +14,10 @@ namespace Symfony\Component\Validator\Validator;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\Constraints\GroupSequence;
 use Symfony\Component\Validator\ConstraintValidatorFactoryInterface;
+<<<<<<< HEAD
+=======
+use Symfony\Component\Validator\Context\ExecutionContext;
+>>>>>>> git-aline/master/master
 use Symfony\Component\Validator\Context\ExecutionContextInterface;
 use Symfony\Component\Validator\Exception\ConstraintDefinitionException;
 use Symfony\Component\Validator\Exception\NoSuchMetadataException;
@@ -22,23 +26,34 @@ use Symfony\Component\Validator\Exception\UnsupportedMetadataException;
 use Symfony\Component\Validator\Exception\ValidatorException;
 use Symfony\Component\Validator\Mapping\CascadingStrategy;
 use Symfony\Component\Validator\Mapping\ClassMetadataInterface;
+<<<<<<< HEAD
+=======
+use Symfony\Component\Validator\Mapping\Factory\MetadataFactoryInterface;
+>>>>>>> git-aline/master/master
 use Symfony\Component\Validator\Mapping\GenericMetadata;
 use Symfony\Component\Validator\Mapping\MetadataInterface;
 use Symfony\Component\Validator\Mapping\PropertyMetadataInterface;
 use Symfony\Component\Validator\Mapping\TraversalStrategy;
+<<<<<<< HEAD
 use Symfony\Component\Validator\MetadataFactoryInterface;
+=======
+>>>>>>> git-aline/master/master
 use Symfony\Component\Validator\ObjectInitializerInterface;
 use Symfony\Component\Validator\Util\PropertyPath;
 
 /**
  * Recursive implementation of {@link ContextualValidatorInterface}.
  *
+<<<<<<< HEAD
  * @since  2.5
  *
+=======
+>>>>>>> git-aline/master/master
  * @author Bernhard Schussek <bschussek@gmail.com>
  */
 class RecursiveContextualValidator implements ContextualValidatorInterface
 {
+<<<<<<< HEAD
     /**
      * @var ExecutionContextInterface
      */
@@ -67,6 +82,13 @@ class RecursiveContextualValidator implements ContextualValidatorInterface
     /**
      * @var ObjectInitializerInterface[]
      */
+=======
+    private $context;
+    private $defaultPropertyPath;
+    private $defaultGroups;
+    private $metadataFactory;
+    private $validatorFactory;
+>>>>>>> git-aline/master/master
     private $objectInitializers;
 
     /**
@@ -112,13 +134,25 @@ class RecursiveContextualValidator implements ContextualValidatorInterface
         $previousMetadata = $this->context->getMetadata();
         $previousPath = $this->context->getPropertyPath();
         $previousGroup = $this->context->getGroup();
+<<<<<<< HEAD
+=======
+        $previousConstraint = null;
+
+        if ($this->context instanceof ExecutionContext || method_exists($this->context, 'getConstraint')) {
+            $previousConstraint = $this->context->getConstraint();
+        }
+>>>>>>> git-aline/master/master
 
         // If explicit constraints are passed, validate the value against
         // those constraints
         if (null !== $constraints) {
             // You can pass a single constraint or an array of constraints
             // Make sure to deal with an array in the rest of the code
+<<<<<<< HEAD
             if (!is_array($constraints)) {
+=======
+            if (!\is_array($constraints)) {
+>>>>>>> git-aline/master/master
                 $constraints = array($constraints);
             }
 
@@ -127,8 +161,13 @@ class RecursiveContextualValidator implements ContextualValidatorInterface
 
             $this->validateGenericNode(
                 $value,
+<<<<<<< HEAD
                 null,
                 is_object($value) ? spl_object_hash($value) : null,
+=======
+                $previousObject,
+                \is_object($value) ? spl_object_hash($value) : null,
+>>>>>>> git-aline/master/master
                 $metadata,
                 $this->defaultPropertyPath,
                 $groups,
@@ -140,12 +179,23 @@ class RecursiveContextualValidator implements ContextualValidatorInterface
             $this->context->setNode($previousValue, $previousObject, $previousMetadata, $previousPath);
             $this->context->setGroup($previousGroup);
 
+<<<<<<< HEAD
+=======
+            if (null !== $previousConstraint) {
+                $this->context->setConstraint($previousConstraint);
+            }
+
+>>>>>>> git-aline/master/master
             return $this;
         }
 
         // If an object is passed without explicit constraints, validate that
         // object against the constraints defined for the object's class
+<<<<<<< HEAD
         if (is_object($value)) {
+=======
+        if (\is_object($value)) {
+>>>>>>> git-aline/master/master
             $this->validateObject(
                 $value,
                 $this->defaultPropertyPath,
@@ -162,12 +212,19 @@ class RecursiveContextualValidator implements ContextualValidatorInterface
 
         // If an array is passed without explicit constraints, validate each
         // object in the array
+<<<<<<< HEAD
         if (is_array($value)) {
+=======
+        if (\is_array($value)) {
+>>>>>>> git-aline/master/master
             $this->validateEachObjectIn(
                 $value,
                 $this->defaultPropertyPath,
                 $groups,
+<<<<<<< HEAD
                 true,
+=======
+>>>>>>> git-aline/master/master
                 $this->context
             );
 
@@ -180,7 +237,11 @@ class RecursiveContextualValidator implements ContextualValidatorInterface
         throw new RuntimeException(sprintf(
             'Cannot validate values of type "%s" automatically. Please '.
             'provide a constraint.',
+<<<<<<< HEAD
             gettype($value)
+=======
+            \gettype($value)
+>>>>>>> git-aline/master/master
         ));
     }
 
@@ -192,13 +253,20 @@ class RecursiveContextualValidator implements ContextualValidatorInterface
         $classMetadata = $this->metadataFactory->getMetadataFor($object);
 
         if (!$classMetadata instanceof ClassMetadataInterface) {
+<<<<<<< HEAD
             // Cannot be UnsupportedMetadataException because of BC with
             // Symfony < 2.5
+=======
+>>>>>>> git-aline/master/master
             throw new ValidatorException(sprintf(
                 'The metadata factory should return instances of '.
                 '"\Symfony\Component\Validator\Mapping\ClassMetadataInterface", '.
                 'got: "%s".',
+<<<<<<< HEAD
                 is_object($classMetadata) ? get_class($classMetadata) : gettype($classMetadata)
+=======
+                \is_object($classMetadata) ? \get_class($classMetadata) : \gettype($classMetadata)
+>>>>>>> git-aline/master/master
             ));
         }
 
@@ -219,7 +287,11 @@ class RecursiveContextualValidator implements ContextualValidatorInterface
             $this->validateGenericNode(
                 $propertyValue,
                 $object,
+<<<<<<< HEAD
                 $cacheKey.':'.$propertyName,
+=======
+                $cacheKey.':'.\get_class($object).':'.$propertyName,
+>>>>>>> git-aline/master/master
                 $propertyMetadata,
                 $propertyPath,
                 $groups,
@@ -243,26 +315,43 @@ class RecursiveContextualValidator implements ContextualValidatorInterface
         $classMetadata = $this->metadataFactory->getMetadataFor($objectOrClass);
 
         if (!$classMetadata instanceof ClassMetadataInterface) {
+<<<<<<< HEAD
             // Cannot be UnsupportedMetadataException because of BC with
             // Symfony < 2.5
+=======
+>>>>>>> git-aline/master/master
             throw new ValidatorException(sprintf(
                 'The metadata factory should return instances of '.
                 '"\Symfony\Component\Validator\Mapping\ClassMetadataInterface", '.
                 'got: "%s".',
+<<<<<<< HEAD
                 is_object($classMetadata) ? get_class($classMetadata) : gettype($classMetadata)
+=======
+                \is_object($classMetadata) ? \get_class($classMetadata) : \gettype($classMetadata)
+>>>>>>> git-aline/master/master
             ));
         }
 
         $propertyMetadatas = $classMetadata->getPropertyMetadata($propertyName);
         $groups = $groups ? $this->normalizeGroups($groups) : $this->defaultGroups;
 
+<<<<<<< HEAD
         if (is_object($objectOrClass)) {
             $object = $objectOrClass;
+=======
+        if (\is_object($objectOrClass)) {
+            $object = $objectOrClass;
+            $class = \get_class($object);
+>>>>>>> git-aline/master/master
             $cacheKey = spl_object_hash($objectOrClass);
             $propertyPath = PropertyPath::append($this->defaultPropertyPath, $propertyName);
         } else {
             // $objectOrClass contains a class name
             $object = null;
+<<<<<<< HEAD
+=======
+            $class = $objectOrClass;
+>>>>>>> git-aline/master/master
             $cacheKey = null;
             $propertyPath = $this->defaultPropertyPath;
         }
@@ -277,7 +366,11 @@ class RecursiveContextualValidator implements ContextualValidatorInterface
             $this->validateGenericNode(
                 $value,
                 $object,
+<<<<<<< HEAD
                 $cacheKey.':'.$propertyName,
+=======
+                $cacheKey.':'.$class.':'.$propertyName,
+>>>>>>> git-aline/master/master
                 $propertyMetadata,
                 $propertyPath,
                 $groups,
@@ -310,12 +403,20 @@ class RecursiveContextualValidator implements ContextualValidatorInterface
      */
     protected function normalizeGroups($groups)
     {
+<<<<<<< HEAD
         if (is_array($groups)) {
+=======
+        if (\is_array($groups)) {
+>>>>>>> git-aline/master/master
             return $groups;
         }
 
         return array($groups);
     }
+<<<<<<< HEAD
+=======
+
+>>>>>>> git-aline/master/master
     /**
      * Validates an object against the constraints defined for its class.
      *
@@ -349,7 +450,11 @@ class RecursiveContextualValidator implements ContextualValidatorInterface
                     'The metadata factory should return instances of '.
                     '"Symfony\Component\Validator\Mapping\ClassMetadataInterface", '.
                     'got: "%s".',
+<<<<<<< HEAD
                     is_object($classMetadata) ? get_class($classMetadata) : gettype($classMetadata)
+=======
+                    \is_object($classMetadata) ? \get_class($classMetadata) : \gettype($classMetadata)
+>>>>>>> git-aline/master/master
                 ));
             }
 
@@ -378,7 +483,10 @@ class RecursiveContextualValidator implements ContextualValidatorInterface
                 $object,
                 $propertyPath,
                 $groups,
+<<<<<<< HEAD
                 $traversalStrategy & TraversalStrategy::STOP_RECURSION,
+=======
+>>>>>>> git-aline/master/master
                 $context
             );
         }
@@ -392,6 +500,7 @@ class RecursiveContextualValidator implements ContextualValidatorInterface
      * objects are iterated as well. Nested arrays are always iterated,
      * regardless of the value of $recursive.
      *
+<<<<<<< HEAD
      * @param array|\Traversable        $collection    The collection
      * @param string                    $propertyPath  The current property path
      * @param string[]                  $groups        The validated groups
@@ -400,10 +509,17 @@ class RecursiveContextualValidator implements ContextualValidatorInterface
      *                                                 backwards compatibility
      *                                                 with Symfony < 2.5.
      * @param ExecutionContextInterface $context       The current execution context
+=======
+     * @param iterable                  $collection   The collection
+     * @param string                    $propertyPath The current property path
+     * @param string[]                  $groups       The validated groups
+     * @param ExecutionContextInterface $context      The current execution context
+>>>>>>> git-aline/master/master
      *
      * @see ClassNode
      * @see CollectionNode
      */
+<<<<<<< HEAD
     private function validateEachObjectIn($collection, $propertyPath, array $groups, $stopRecursion, ExecutionContextInterface $context)
     {
         if ($stopRecursion) {
@@ -417,11 +533,22 @@ class RecursiveContextualValidator implements ContextualValidatorInterface
                 // Arrays are always cascaded, independent of the specified
                 // traversal strategy
                 // (BC with Symfony < 2.5)
+=======
+    private function validateEachObjectIn($collection, $propertyPath, array $groups, ExecutionContextInterface $context)
+    {
+        foreach ($collection as $key => $value) {
+            if (\is_array($value)) {
+                // Arrays are always cascaded, independent of the specified
+                // traversal strategy
+>>>>>>> git-aline/master/master
                 $this->validateEachObjectIn(
                     $value,
                     $propertyPath.'['.$key.']',
                     $groups,
+<<<<<<< HEAD
                     $stopRecursion,
+=======
+>>>>>>> git-aline/master/master
                     $context
                 );
 
@@ -429,13 +556,21 @@ class RecursiveContextualValidator implements ContextualValidatorInterface
             }
 
             // Scalar and null values in the collection are ignored
+<<<<<<< HEAD
             // (BC with Symfony < 2.5)
             if (is_object($value)) {
+=======
+            if (\is_object($value)) {
+>>>>>>> git-aline/master/master
                 $this->validateObject(
                     $value,
                     $propertyPath.'['.$key.']',
                     $groups,
+<<<<<<< HEAD
                     $traversalStrategy,
+=======
+                    TraversalStrategy::IMPLICIT,
+>>>>>>> git-aline/master/master
                     $context
                 );
             }
@@ -510,7 +645,11 @@ class RecursiveContextualValidator implements ContextualValidatorInterface
             $defaultOverridden = false;
 
             // Use the object hash for group sequences
+<<<<<<< HEAD
             $groupHash = is_object($group) ? spl_object_hash($group) : $group;
+=======
+            $groupHash = \is_object($group) ? spl_object_hash($group) : $group;
+>>>>>>> git-aline/master/master
 
             if ($context->isGroupValidated($cacheKey, $groupHash)) {
                 // Skip this group when validating the properties and when
@@ -575,7 +714,11 @@ class RecursiveContextualValidator implements ContextualValidatorInterface
 
         // If no more groups should be validated for the property nodes,
         // we can safely quit
+<<<<<<< HEAD
         if (0 === count($groups)) {
+=======
+        if (0 === \count($groups)) {
+>>>>>>> git-aline/master/master
             return;
         }
 
@@ -590,7 +733,11 @@ class RecursiveContextualValidator implements ContextualValidatorInterface
                         'The property metadata instances should implement '.
                         '"Symfony\Component\Validator\Mapping\PropertyMetadataInterface", '.
                         'got: "%s".',
+<<<<<<< HEAD
                         is_object($propertyMetadata) ? get_class($propertyMetadata) : gettype($propertyMetadata)
+=======
+                        \is_object($propertyMetadata) ? \get_class($propertyMetadata) : \gettype($propertyMetadata)
+>>>>>>> git-aline/master/master
                     ));
                 }
 
@@ -599,7 +746,11 @@ class RecursiveContextualValidator implements ContextualValidatorInterface
                 $this->validateGenericNode(
                     $propertyValue,
                     $object,
+<<<<<<< HEAD
                     $cacheKey.':'.$propertyName,
+=======
+                    $cacheKey.':'.\get_class($object).':'.$propertyName,
+>>>>>>> git-aline/master/master
                     $propertyMetadata,
                     PropertyPath::append($propertyPath, $propertyName),
                     $groups,
@@ -613,9 +764,13 @@ class RecursiveContextualValidator implements ContextualValidatorInterface
         // If no specific traversal strategy was requested when this method
         // was called, use the traversal strategy of the class' metadata
         if ($traversalStrategy & TraversalStrategy::IMPLICIT) {
+<<<<<<< HEAD
             // Keep the STOP_RECURSION flag, if it was set
             $traversalStrategy = $metadata->getTraversalStrategy()
                 | ($traversalStrategy & TraversalStrategy::STOP_RECURSION);
+=======
+            $traversalStrategy = $metadata->getTraversalStrategy();
+>>>>>>> git-aline/master/master
         }
 
         // Traverse only if IMPLICIT or TRAVERSE
@@ -630,12 +785,19 @@ class RecursiveContextualValidator implements ContextualValidatorInterface
 
         // If TRAVERSE, fail if we have no Traversable
         if (!$object instanceof \Traversable) {
+<<<<<<< HEAD
             // Must throw a ConstraintDefinitionException for backwards
             // compatibility reasons with Symfony < 2.5
             throw new ConstraintDefinitionException(sprintf(
                 'Traversal was enabled for "%s", but this class '.
                 'does not implement "\Traversable".',
                 get_class($object)
+=======
+            throw new ConstraintDefinitionException(sprintf(
+                'Traversal was enabled for "%s", but this class '.
+                'does not implement "\Traversable".',
+                \get_class($object)
+>>>>>>> git-aline/master/master
             ));
         }
 
@@ -643,7 +805,10 @@ class RecursiveContextualValidator implements ContextualValidatorInterface
             $object,
             $propertyPath,
             $groups,
+<<<<<<< HEAD
             $traversalStrategy & TraversalStrategy::STOP_RECURSION,
+=======
+>>>>>>> git-aline/master/master
             $context
         );
     }
@@ -711,7 +876,11 @@ class RecursiveContextualValidator implements ContextualValidatorInterface
             $this->validateInGroup($value, $cacheKey, $metadata, $group, $context);
         }
 
+<<<<<<< HEAD
         if (0 === count($groups)) {
+=======
+        if (0 === \count($groups)) {
+>>>>>>> git-aline/master/master
             return;
         }
 
@@ -722,21 +891,30 @@ class RecursiveContextualValidator implements ContextualValidatorInterface
         $cascadingStrategy = $metadata->getCascadingStrategy();
 
         // Quit unless we have an array or a cascaded object
+<<<<<<< HEAD
         if (!is_array($value) && !($cascadingStrategy & CascadingStrategy::CASCADE)) {
+=======
+        if (!\is_array($value) && !($cascadingStrategy & CascadingStrategy::CASCADE)) {
+>>>>>>> git-aline/master/master
             return;
         }
 
         // If no specific traversal strategy was requested when this method
         // was called, use the traversal strategy of the node's metadata
         if ($traversalStrategy & TraversalStrategy::IMPLICIT) {
+<<<<<<< HEAD
             // Keep the STOP_RECURSION flag, if it was set
             $traversalStrategy = $metadata->getTraversalStrategy()
                 | ($traversalStrategy & TraversalStrategy::STOP_RECURSION);
+=======
+            $traversalStrategy = $metadata->getTraversalStrategy();
+>>>>>>> git-aline/master/master
         }
 
         // The $cascadedGroups property is set, if the "Default" group is
         // overridden by a group sequence
         // See validateClassNode()
+<<<<<<< HEAD
         $cascadedGroups = count($cascadedGroups) > 0
             ? $cascadedGroups
             : $groups;
@@ -745,11 +923,21 @@ class RecursiveContextualValidator implements ContextualValidatorInterface
             // Arrays are always traversed, independent of the specified
             // traversal strategy
             // (BC with Symfony < 2.5)
+=======
+        $cascadedGroups = null !== $cascadedGroups && \count($cascadedGroups) > 0 ? $cascadedGroups : $groups;
+
+        if (\is_array($value)) {
+            // Arrays are always traversed, independent of the specified
+            // traversal strategy
+>>>>>>> git-aline/master/master
             $this->validateEachObjectIn(
                 $value,
                 $propertyPath,
                 $cascadedGroups,
+<<<<<<< HEAD
                 $traversalStrategy & TraversalStrategy::STOP_RECURSION,
+=======
+>>>>>>> git-aline/master/master
                 $context
             );
 
@@ -758,7 +946,10 @@ class RecursiveContextualValidator implements ContextualValidatorInterface
 
         // If the value is a scalar, pass it anyway, because we want
         // a NoSuchMetadataException to be thrown in that case
+<<<<<<< HEAD
         // (BC with Symfony < 2.5)
+=======
+>>>>>>> git-aline/master/master
         $this->validateObject(
             $value,
             $propertyPath,
@@ -792,7 +983,11 @@ class RecursiveContextualValidator implements ContextualValidatorInterface
      * @param int                       $traversalStrategy The strategy used for
      *                                                     traversing the value
      * @param GroupSequence             $groupSequence     The group sequence
+<<<<<<< HEAD
      * @param string[]|null             $cascadedGroup     The group that should
+=======
+     * @param string|null               $cascadedGroup     The group that should
+>>>>>>> git-aline/master/master
      *                                                     be passed to cascaded
      *                                                     objects instead of
      *                                                     the group sequence
@@ -800,11 +995,19 @@ class RecursiveContextualValidator implements ContextualValidatorInterface
      */
     private function stepThroughGroupSequence($value, $object, $cacheKey, MetadataInterface $metadata = null, $propertyPath, $traversalStrategy, GroupSequence $groupSequence, $cascadedGroup, ExecutionContextInterface $context)
     {
+<<<<<<< HEAD
         $violationCount = count($context->getViolations());
         $cascadedGroups = $cascadedGroup ? array($cascadedGroup) : null;
 
         foreach ($groupSequence->groups as $groupInSequence) {
             $groups = array($groupInSequence);
+=======
+        $violationCount = \count($context->getViolations());
+        $cascadedGroups = $cascadedGroup ? array($cascadedGroup) : null;
+
+        foreach ($groupSequence->groups as $groupInSequence) {
+            $groups = (array) $groupInSequence;
+>>>>>>> git-aline/master/master
 
             if ($metadata instanceof ClassMetadataInterface) {
                 $this->validateClassNode(
@@ -832,7 +1035,11 @@ class RecursiveContextualValidator implements ContextualValidatorInterface
             }
 
             // Abort sequence validation if a violation was generated
+<<<<<<< HEAD
             if (count($context->getViolations()) > $violationCount) {
+=======
+            if (\count($context->getViolations()) > $violationCount) {
+>>>>>>> git-aline/master/master
                 break;
             }
         }

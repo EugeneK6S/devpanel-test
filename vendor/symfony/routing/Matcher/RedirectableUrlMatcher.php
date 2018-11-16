@@ -27,14 +27,24 @@ abstract class RedirectableUrlMatcher extends UrlMatcher implements Redirectable
         try {
             $parameters = parent::match($pathinfo);
         } catch (ResourceNotFoundException $e) {
+<<<<<<< HEAD
             if ('/' === substr($pathinfo, -1) || !in_array($this->context->getMethod(), array('HEAD', 'GET'))) {
+=======
+            if ('/' === substr($pathinfo, -1) || !\in_array($this->context->getMethod(), array('HEAD', 'GET'))) {
+>>>>>>> git-aline/master/master
                 throw $e;
             }
 
             try {
+<<<<<<< HEAD
                 parent::match($pathinfo.'/');
 
                 return $this->redirect($pathinfo.'/', null);
+=======
+                $parameters = parent::match($pathinfo.'/');
+
+                return array_replace($parameters, $this->redirect($pathinfo.'/', isset($parameters['_route']) ? $parameters['_route'] : null));
+>>>>>>> git-aline/master/master
             } catch (ResourceNotFoundException $e2) {
                 throw $e;
             }
@@ -49,7 +59,11 @@ abstract class RedirectableUrlMatcher extends UrlMatcher implements Redirectable
     protected function handleRouteRequirements($pathinfo, $name, Route $route)
     {
         // expression condition
+<<<<<<< HEAD
         if ($route->getCondition() && !$this->getExpressionLanguage()->evaluate($route->getCondition(), array('context' => $this->context, 'request' => $this->request))) {
+=======
+        if ($route->getCondition() && !$this->getExpressionLanguage()->evaluate($route->getCondition(), array('context' => $this->context, 'request' => $this->request ?: $this->createRequest($pathinfo)))) {
+>>>>>>> git-aline/master/master
             return array(self::REQUIREMENT_MISMATCH, null);
         }
 

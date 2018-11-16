@@ -19,10 +19,13 @@ namespace Symfony\Component\DependencyInjection\Compiler;
  */
 interface RepeatablePassInterface extends CompilerPassInterface
 {
+<<<<<<< HEAD
     /**
      * Sets the RepeatedPass interface.
      *
      * @param RepeatedPass $repeatedPass
      */
+=======
+>>>>>>> git-aline/master/master
     public function setRepeatedPass(RepeatedPass $repeatedPass);
 }

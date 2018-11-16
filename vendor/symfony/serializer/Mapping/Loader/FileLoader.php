@@ -20,6 +20,7 @@ use Symfony\Component\Serializer\Exception\MappingException;
  */
 abstract class FileLoader implements LoaderInterface
 {
+<<<<<<< HEAD
     /**
      * @var string
      */
@@ -28,6 +29,11 @@ abstract class FileLoader implements LoaderInterface
     /**
      * Constructor.
      *
+=======
+    protected $file;
+
+    /**
+>>>>>>> git-aline/master/master
      * @param string $file The mapping file to load
      *
      * @throws MappingException if the mapping file does not exist or is not readable

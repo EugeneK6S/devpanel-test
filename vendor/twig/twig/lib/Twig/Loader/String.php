@@ -3,7 +3,11 @@
 /*
  * This file is part of Twig.
  *
+<<<<<<< HEAD
  * (c) 2009 Fabien Potencier
+=======
+ * (c) Fabien Potencier
+>>>>>>> git-aline/master/master
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
@@ -27,6 +31,7 @@
  *
  * @author Fabien Potencier <fabien@symfony.com>
  */
+<<<<<<< HEAD
 class Twig_Loader_String implements Twig_LoaderInterface, Twig_ExistsLoaderInterface
 {
     /**
@@ -40,22 +45,44 @@ class Twig_Loader_String implements Twig_LoaderInterface, Twig_ExistsLoaderInter
     /**
      * {@inheritdoc}
      */
+=======
+class Twig_Loader_String implements Twig_LoaderInterface, Twig_ExistsLoaderInterface, Twig_SourceContextLoaderInterface
+{
+    public function getSource($name)
+    {
+        @trigger_error(sprintf('Calling "getSource" on "%s" is deprecated since 1.27. Use getSourceContext() instead.', get_class($this)), E_USER_DEPRECATED);
+
+        return $name;
+    }
+
+    public function getSourceContext($name)
+    {
+        return new Twig_Source($name, $name);
+    }
+
+>>>>>>> git-aline/master/master
     public function exists($name)
     {
         return true;
     }
 
+<<<<<<< HEAD
     /**
      * {@inheritdoc}
      */
+=======
+>>>>>>> git-aline/master/master
     public function getCacheKey($name)
     {
         return $name;
     }
 
+<<<<<<< HEAD
     /**
      * {@inheritdoc}
      */
+=======
+>>>>>>> git-aline/master/master
     public function isFresh($name, $time)
     {
         return true;

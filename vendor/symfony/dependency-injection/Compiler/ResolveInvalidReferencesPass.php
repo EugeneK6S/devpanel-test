@@ -11,10 +11,20 @@
 
 namespace Symfony\Component\DependencyInjection\Compiler;
 
+<<<<<<< HEAD
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\DependencyInjection\Reference;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Exception\RuntimeException;
+=======
+use Symfony\Component\DependencyInjection\Argument\ArgumentInterface;
+use Symfony\Component\DependencyInjection\Argument\ServiceClosureArgument;
+use Symfony\Component\DependencyInjection\ContainerBuilder;
+use Symfony\Component\DependencyInjection\ContainerInterface;
+use Symfony\Component\DependencyInjection\Definition;
+use Symfony\Component\DependencyInjection\Exception\RuntimeException;
+use Symfony\Component\DependencyInjection\Reference;
+>>>>>>> git-aline/master/master
 
 /**
  * Emulates the invalid behavior if the reference is not found within the
@@ -25,15 +35,23 @@ use Symfony\Component\DependencyInjection\Exception\RuntimeException;
 class ResolveInvalidReferencesPass implements CompilerPassInterface
 {
     private $container;
+<<<<<<< HEAD
 
     /**
      * Process the ContainerBuilder to resolve invalid references.
      *
      * @param ContainerBuilder $container
+=======
+    private $signalingException;
+
+    /**
+     * Process the ContainerBuilder to resolve invalid references.
+>>>>>>> git-aline/master/master
      */
     public function process(ContainerBuilder $container)
     {
         $this->container = $container;
+<<<<<<< HEAD
         foreach ($container->getDefinitions() as $definition) {
             if ($definition->isSynthetic() || $definition->isAbstract()) {
                 continue;
@@ -63,12 +81,21 @@ class ResolveInvalidReferencesPass implements CompilerPassInterface
                 }
             }
             $definition->setProperties($properties);
+=======
+        $this->signalingException = new RuntimeException('Invalid reference.');
+
+        try {
+            $this->processValue($container->getDefinitions(), 1);
+        } finally {
+            $this->container = $this->signalingException = null;
+>>>>>>> git-aline/master/master
         }
     }
 
     /**
      * Processes arguments to determine invalid references.
      *
+<<<<<<< HEAD
      * @param array $arguments    An array of Reference objects
      * @param bool  $inMethodCall
      *
@@ -101,5 +128,66 @@ class ResolveInvalidReferencesPass implements CompilerPassInterface
         }
 
         return $arguments;
+=======
+     * @throws RuntimeException When an invalid reference is found
+     */
+    private function processValue($value, $rootLevel = 0, $level = 0)
+    {
+        if ($value instanceof ServiceClosureArgument) {
+            $value->setValues($this->processValue($value->getValues(), 1, 1));
+        } elseif ($value instanceof ArgumentInterface) {
+            $value->setValues($this->processValue($value->getValues(), $rootLevel, 1 + $level));
+        } elseif ($value instanceof Definition) {
+            if ($value->isSynthetic() || $value->isAbstract()) {
+                return $value;
+            }
+            $value->setArguments($this->processValue($value->getArguments(), 0));
+            $value->setProperties($this->processValue($value->getProperties(), 1));
+            $value->setMethodCalls($this->processValue($value->getMethodCalls(), 2));
+        } elseif (\is_array($value)) {
+            $i = 0;
+
+            foreach ($value as $k => $v) {
+                try {
+                    if (false !== $i && $k !== $i++) {
+                        $i = false;
+                    }
+                    if ($v !== $processedValue = $this->processValue($v, $rootLevel, 1 + $level)) {
+                        $value[$k] = $processedValue;
+                    }
+                } catch (RuntimeException $e) {
+                    if ($rootLevel < $level || ($rootLevel && !$level)) {
+                        unset($value[$k]);
+                    } elseif ($rootLevel) {
+                        throw $e;
+                    } else {
+                        $value[$k] = null;
+                    }
+                }
+            }
+
+            // Ensure numerically indexed arguments have sequential numeric keys.
+            if (false !== $i) {
+                $value = array_values($value);
+            }
+        } elseif ($value instanceof Reference) {
+            if ($this->container->has($value)) {
+                return $value;
+            }
+            $invalidBehavior = $value->getInvalidBehavior();
+
+            // resolve invalid behavior
+            if (ContainerInterface::NULL_ON_INVALID_REFERENCE === $invalidBehavior) {
+                $value = null;
+            } elseif (ContainerInterface::IGNORE_ON_INVALID_REFERENCE === $invalidBehavior) {
+                if (0 < $level || $rootLevel) {
+                    throw $this->signalingException;
+                }
+                $value = null;
+            }
+        }
+
+        return $value;
+>>>>>>> git-aline/master/master
     }
 }

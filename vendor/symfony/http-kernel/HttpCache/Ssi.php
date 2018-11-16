@@ -13,13 +13,17 @@ namespace Symfony\Component\HttpKernel\HttpCache;
 
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+<<<<<<< HEAD
 use Symfony\Component\HttpKernel\HttpKernelInterface;
+=======
+>>>>>>> git-aline/master/master
 
 /**
  * Ssi implements the SSI capabilities to Request and Response instances.
  *
  * @author Sebastian Krebs <krebs.seb@gmail.com>
  */
+<<<<<<< HEAD
 class Ssi implements SurrogateInterface
 {
     private $contentTypes;
@@ -39,6 +43,10 @@ class Ssi implements SurrogateInterface
         $this->contentTypes = $contentTypes;
     }
 
+=======
+class Ssi extends AbstractSurrogate
+{
+>>>>>>> git-aline/master/master
     /**
      * {@inheritdoc}
      */
@@ -50,6 +58,7 @@ class Ssi implements SurrogateInterface
     /**
      * {@inheritdoc}
      */
+<<<<<<< HEAD
     public function createCacheStrategy()
     {
         return new ResponseCacheStrategy();
@@ -81,6 +90,8 @@ class Ssi implements SurrogateInterface
     /**
      * {@inheritdoc}
      */
+=======
+>>>>>>> git-aline/master/master
     public function addSurrogateControl(Response $response)
     {
         if (false !== strpos($response->getContent(), '<!--#include')) {
@@ -91,6 +102,7 @@ class Ssi implements SurrogateInterface
     /**
      * {@inheritdoc}
      */
+<<<<<<< HEAD
     public function needsParsing(Response $response)
     {
         if (!$control = $response->headers->get('Surrogate-Control')) {
@@ -103,6 +115,8 @@ class Ssi implements SurrogateInterface
     /**
      * {@inheritdoc}
      */
+=======
+>>>>>>> git-aline/master/master
     public function renderIncludeTag($uri, $alt = null, $ignoreErrors = true, $comment = '')
     {
         return sprintf('<!--#include virtual="%s" -->', $uri);
@@ -119,7 +133,11 @@ class Ssi implements SurrogateInterface
         }
 
         $parts = explode(';', $type);
+<<<<<<< HEAD
         if (!in_array($parts[0], $this->contentTypes)) {
+=======
+        if (!\in_array($parts[0], $this->contentTypes)) {
+>>>>>>> git-aline/master/master
             return $response;
         }
 
@@ -154,6 +172,7 @@ class Ssi implements SurrogateInterface
         $response->headers->set('X-Body-Eval', 'SSI');
 
         // remove SSI/1.0 from the Surrogate-Control header
+<<<<<<< HEAD
         if ($response->headers->has('Surrogate-Control')) {
             $value = $response->headers->get('Surrogate-Control');
             if ('content="SSI/1.0"' == $value) {
@@ -190,5 +209,8 @@ class Ssi implements SurrogateInterface
                 throw $e;
             }
         }
+=======
+        $this->removeFromControl($response);
+>>>>>>> git-aline/master/master
     }
 }

@@ -38,7 +38,11 @@ class ConstraintViolationList implements \IteratorAggregate, ConstraintViolation
     /**
      * Converts the violation into a string for debugging purposes.
      *
+<<<<<<< HEAD
      * @return string The violation as string.
+=======
+     * @return string The violation as string
+>>>>>>> git-aline/master/master
      */
     public function __toString()
     {
@@ -107,6 +111,11 @@ class ConstraintViolationList implements \IteratorAggregate, ConstraintViolation
 
     /**
      * {@inheritdoc}
+<<<<<<< HEAD
+=======
+     *
+     * @return \ArrayIterator|ConstraintViolationInterface[]
+>>>>>>> git-aline/master/master
      */
     public function getIterator()
     {
@@ -118,7 +127,11 @@ class ConstraintViolationList implements \IteratorAggregate, ConstraintViolation
      */
     public function count()
     {
+<<<<<<< HEAD
         return count($this->violations);
+=======
+        return \count($this->violations);
+>>>>>>> git-aline/master/master
     }
 
     /**
@@ -156,4 +169,27 @@ class ConstraintViolationList implements \IteratorAggregate, ConstraintViolation
     {
         $this->remove($offset);
     }
+<<<<<<< HEAD
+=======
+
+    /**
+     * Creates iterator for errors with specific codes.
+     *
+     * @param string|string[] $codes The codes to find
+     *
+     * @return static new instance which contains only specific errors
+     */
+    public function findByCodes($codes)
+    {
+        $codes = (array) $codes;
+        $violations = array();
+        foreach ($this as $violation) {
+            if (\in_array($violation->getCode(), $codes, true)) {
+                $violations[] = $violation;
+            }
+        }
+
+        return new static($violations);
+    }
+>>>>>>> git-aline/master/master
 }

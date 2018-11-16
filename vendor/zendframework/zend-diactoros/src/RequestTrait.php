@@ -3,7 +3,11 @@
  * Zend Framework (http://framework.zend.com/)
  *
  * @see       http://github.com/zendframework/zend-diactoros for the canonical source repository
+<<<<<<< HEAD
  * @copyright Copyright (c) 2015 Zend Technologies USA Inc. (http://www.zend.com)
+=======
+ * @copyright Copyright (c) 2015-2016 Zend Technologies USA Inc. (http://www.zend.com)
+>>>>>>> git-aline/master/master
  * @license   https://github.com/zendframework/zend-diactoros/blob/master/LICENSE.md New BSD License
  */
 
@@ -22,6 +26,7 @@ use Psr\Http\Message\UriInterface;
  * the environment. As such, this trait exists to provide the common code
  * between both client-side and server-side requests, and each can then
  * use the headers functionality required by their implementations.
+<<<<<<< HEAD
  *
  * @property array $headers
  * @property array $headerNames
@@ -30,6 +35,13 @@ use Psr\Http\Message\UriInterface;
  */
 trait RequestTrait
 {
+=======
+ */
+trait RequestTrait
+{
+    use MessageTrait;
+
+>>>>>>> git-aline/master/master
     /**
      * @var string
      */
@@ -43,7 +55,11 @@ trait RequestTrait
     private $requestTarget;
 
     /**
+<<<<<<< HEAD
      * @var null|UriInterface
+=======
+     * @var UriInterface
+>>>>>>> git-aline/master/master
      */
     private $uri;
 
@@ -52,7 +68,11 @@ trait RequestTrait
      *
      * Used by constructors.
      *
+<<<<<<< HEAD
      * @param null|string $uri URI for the request, if any.
+=======
+     * @param null|string|UriInterface $uri URI for the request, if any.
+>>>>>>> git-aline/master/master
      * @param null|string $method HTTP method for the request, if any.
      * @param string|resource|StreamInterface $body Message body, if any.
      * @param array $headers Headers for the message, if any.
@@ -60,6 +80,7 @@ trait RequestTrait
      */
     private function initialize($uri = null, $method = null, $body = 'php://memory', array $headers = [])
     {
+<<<<<<< HEAD
         if (! $uri instanceof UriInterface && ! is_string($uri) && null !== $uri) {
             throw new InvalidArgumentException(
                 'Invalid URI provided; must be null, a string, or a Psr\Http\Message\UriInterface instance'
@@ -87,6 +108,54 @@ trait RequestTrait
         list($this->headerNames, $headers) = $this->filterHeaders($headers);
         $this->assertHeaders($headers);
         $this->headers = $headers;
+=======
+        $this->validateMethod($method);
+
+        $this->method = $method ?: '';
+        $this->uri    = $this->createUri($uri);
+        $this->stream = $this->getStream($body, 'wb+');
+
+        $this->setHeaders($headers);
+
+        // per PSR-7: attempt to set the Host header from a provided URI if no
+        // Host header is provided
+        if (! $this->hasHeader('Host') && $this->uri->getHost()) {
+            $this->headerNames['host'] = 'Host';
+            $this->headers['Host'] = [$this->getHostFromUri()];
+        }
+    }
+
+    /**
+     * Create and return a URI instance.
+     *
+     * If `$uri` is a already a `UriInterface` instance, returns it.
+     *
+     * If `$uri` is a string, passes it to the `Uri` constructor to return an
+     * instance.
+     *
+     * If `$uri is null, creates and returns an empty `Uri` instance.
+     *
+     * Otherwise, it raises an exception.
+     *
+     * @param null|string|UriInterface $uri
+     * @return UriInterface
+     * @throws InvalidArgumentException
+     */
+    private function createUri($uri)
+    {
+        if ($uri instanceof UriInterface) {
+            return $uri;
+        }
+        if (is_string($uri)) {
+            return new Uri($uri);
+        }
+        if ($uri === null) {
+            return new Uri();
+        }
+        throw new InvalidArgumentException(
+            'Invalid URI provided; must be null, a string, or a Psr\Http\Message\UriInterface instance'
+        );
+>>>>>>> git-aline/master/master
     }
 
     /**
@@ -111,10 +180,13 @@ trait RequestTrait
             return $this->requestTarget;
         }
 
+<<<<<<< HEAD
         if (! $this->uri) {
             return '/';
         }
 
+=======
+>>>>>>> git-aline/master/master
         $target = $this->uri->getPath();
         if ($this->uri->getQuery()) {
             $target .= '?' . $this->uri->getQuery();
@@ -249,6 +321,19 @@ trait RequestTrait
         }
 
         $new->headerNames['host'] = 'Host';
+<<<<<<< HEAD
+=======
+
+        // Remove an existing host header if present, regardless of current
+        // de-normalization of the header name.
+        // @see https://github.com/zendframework/zend-diactoros/issues/91
+        foreach (array_keys($new->headers) as $header) {
+            if (strtolower($header) === 'host') {
+                unset($new->headers[$header]);
+            }
+        }
+
+>>>>>>> git-aline/master/master
         $new->headers['Host'] = [$host];
 
         return $new;
@@ -292,6 +377,7 @@ trait RequestTrait
         $host .= $this->uri->getPort() ? ':' . $this->uri->getPort() : '';
         return $host;
     }
+<<<<<<< HEAD
 
     /**
      * Ensure header names and values are valid.
@@ -306,4 +392,6 @@ trait RequestTrait
             array_walk($headerValues, __NAMESPACE__ . '\HeaderSecurity::assertValid');
         }
     }
+=======
+>>>>>>> git-aline/master/master
 }

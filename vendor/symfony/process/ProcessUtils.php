@@ -35,14 +35,28 @@ class ProcessUtils
      * @param string $argument The argument that will be escaped
      *
      * @return string The escaped argument
+<<<<<<< HEAD
      */
     public static function escapeArgument($argument)
     {
+=======
+     *
+     * @deprecated since version 3.3, to be removed in 4.0. Use a command line array or give env vars to the `Process::start/run()` method instead.
+     */
+    public static function escapeArgument($argument)
+    {
+        @trigger_error('The '.__METHOD__.'() method is deprecated since Symfony 3.3 and will be removed in 4.0. Use a command line array or give env vars to the Process::start/run() method instead.', E_USER_DEPRECATED);
+
+>>>>>>> git-aline/master/master
         //Fix for PHP bug #43784 escapeshellarg removes % from given string
         //Fix for PHP bug #49446 escapeshellarg doesn't work on Windows
         //@see https://bugs.php.net/bug.php?id=43784
         //@see https://bugs.php.net/bug.php?id=49446
+<<<<<<< HEAD
         if ('\\' === DIRECTORY_SEPARATOR) {
+=======
+        if ('\\' === \DIRECTORY_SEPARATOR) {
+>>>>>>> git-aline/master/master
             if ('' === $argument) {
                 return escapeshellarg($argument);
             }
@@ -71,7 +85,11 @@ class ProcessUtils
             return $escapedArgument;
         }
 
+<<<<<<< HEAD
         return escapeshellarg($argument);
+=======
+        return "'".str_replace("'", "'\\''", $argument)."'";
+>>>>>>> git-aline/master/master
     }
 
     /**
@@ -80,21 +98,35 @@ class ProcessUtils
      * @param string $caller The name of method call that validates the input
      * @param mixed  $input  The input to validate
      *
+<<<<<<< HEAD
      * @return string The validated input
      *
      * @throws InvalidArgumentException In case the input is not valid
      *
      * Passing an object as an input is deprecated since version 2.5 and will be removed in 3.0.
+=======
+     * @return mixed The validated input
+     *
+     * @throws InvalidArgumentException In case the input is not valid
+>>>>>>> git-aline/master/master
      */
     public static function validateInput($caller, $input)
     {
         if (null !== $input) {
+<<<<<<< HEAD
             if (is_resource($input)) {
+=======
+            if (\is_resource($input)) {
+                return $input;
+            }
+            if (\is_string($input)) {
+>>>>>>> git-aline/master/master
                 return $input;
             }
             if (is_scalar($input)) {
                 return (string) $input;
             }
+<<<<<<< HEAD
             // deprecated as of Symfony 2.5, to be removed in 3.0
             if (is_object($input) && method_exists($input, '__toString')) {
                 @trigger_error('Passing an object as an input is deprecated since version 2.5 and will be removed in 3.0.', E_USER_DEPRECATED);
@@ -103,6 +135,19 @@ class ProcessUtils
             }
 
             throw new InvalidArgumentException(sprintf('%s only accepts strings or stream resources.', $caller));
+=======
+            if ($input instanceof Process) {
+                return $input->getIterator($input::ITER_SKIP_ERR);
+            }
+            if ($input instanceof \Iterator) {
+                return $input;
+            }
+            if ($input instanceof \Traversable) {
+                return new \IteratorIterator($input);
+            }
+
+            throw new InvalidArgumentException(sprintf('%s only accepts strings, Traversable objects or stream resources.', $caller));
+>>>>>>> git-aline/master/master
         }
 
         return $input;
@@ -110,6 +155,10 @@ class ProcessUtils
 
     private static function isSurroundedBy($arg, $char)
     {
+<<<<<<< HEAD
         return 2 < strlen($arg) && $char === $arg[0] && $char === $arg[strlen($arg) - 1];
+=======
+        return 2 < \strlen($arg) && $char === $arg[0] && $char === $arg[\strlen($arg) - 1];
+>>>>>>> git-aline/master/master
     }
 }

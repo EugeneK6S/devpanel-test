@@ -11,10 +11,16 @@
 
 namespace Symfony\Component\HttpKernel\Fragment;
 
+<<<<<<< HEAD
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\StreamedResponse;
 use Symfony\Component\HttpFoundation\RequestStack;
+=======
+use Symfony\Component\HttpFoundation\RequestStack;
+use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpFoundation\StreamedResponse;
+>>>>>>> git-aline/master/master
 use Symfony\Component\HttpKernel\Controller\ControllerReference;
 
 /**
@@ -23,11 +29,14 @@ use Symfony\Component\HttpKernel\Controller\ControllerReference;
  * This class handles the rendering of resource fragments that are included into
  * a main resource. The handling of the rendering is managed by specialized renderers.
  *
+<<<<<<< HEAD
  * This listener works in 2 modes:
  *
  *  * 2.3 compatibility mode where you must call setRequest whenever the Request changes.
  *  * 2.4+ mode where you must pass a RequestStack instance in the constructor.
  *
+=======
+>>>>>>> git-aline/master/master
  * @author Fabien Potencier <fabien@symfony.com>
  *
  * @see FragmentRendererInterface
@@ -36,6 +45,7 @@ class FragmentHandler
 {
     private $debug;
     private $renderers = array();
+<<<<<<< HEAD
     private $request;
     private $requestStack;
 
@@ -49,6 +59,16 @@ class FragmentHandler
      * @param RequestStack|null           $requestStack The Request stack that controls the lifecycle of requests
      */
     public function __construct(array $renderers = array(), $debug = false, RequestStack $requestStack = null)
+=======
+    private $requestStack;
+
+    /**
+     * @param RequestStack                $requestStack The Request stack that controls the lifecycle of requests
+     * @param FragmentRendererInterface[] $renderers    An array of FragmentRendererInterface instances
+     * @param bool                        $debug        Whether the debug mode is enabled or not
+     */
+    public function __construct(RequestStack $requestStack, array $renderers = array(), $debug = false)
+>>>>>>> git-aline/master/master
     {
         $this->requestStack = $requestStack;
         foreach ($renderers as $renderer) {
@@ -59,8 +79,11 @@ class FragmentHandler
 
     /**
      * Adds a renderer.
+<<<<<<< HEAD
      *
      * @param FragmentRendererInterface $renderer A FragmentRendererInterface instance
+=======
+>>>>>>> git-aline/master/master
      */
     public function addRenderer(FragmentRendererInterface $renderer)
     {
@@ -68,6 +91,7 @@ class FragmentHandler
     }
 
     /**
+<<<<<<< HEAD
      * Sets the current Request.
      *
      * This method was used to synchronize the Request, but as the HttpKernel
@@ -86,6 +110,8 @@ class FragmentHandler
     }
 
     /**
+=======
+>>>>>>> git-aline/master/master
      * Renders a URI and returns the Response content.
      *
      * Available options:
@@ -111,7 +137,11 @@ class FragmentHandler
             throw new \InvalidArgumentException(sprintf('The "%s" renderer does not exist.', $renderer));
         }
 
+<<<<<<< HEAD
         if (!$request = $this->getRequest()) {
+=======
+        if (!$request = $this->requestStack->getCurrentRequest()) {
+>>>>>>> git-aline/master/master
             throw new \LogicException('Rendering a fragment can only be done when handling a Request.');
         }
 
@@ -124,8 +154,11 @@ class FragmentHandler
      * When the Response is a StreamedResponse, the content is streamed immediately
      * instead of being returned.
      *
+<<<<<<< HEAD
      * @param Response $response A Response instance
      *
+=======
+>>>>>>> git-aline/master/master
      * @return string|null The Response content or null when the Response is streamed
      *
      * @throws \RuntimeException when the Response is not successful
@@ -133,7 +166,11 @@ class FragmentHandler
     protected function deliver(Response $response)
     {
         if (!$response->isSuccessful()) {
+<<<<<<< HEAD
             throw new \RuntimeException(sprintf('Error when rendering "%s" (Status code is %s).', $this->getRequest()->getUri(), $response->getStatusCode()));
+=======
+            throw new \RuntimeException(sprintf('Error when rendering "%s" (Status code is %s).', $this->requestStack->getCurrentRequest()->getUri(), $response->getStatusCode()));
+>>>>>>> git-aline/master/master
         }
 
         if (!$response instanceof StreamedResponse) {
@@ -142,9 +179,12 @@ class FragmentHandler
 
         $response->sendContent();
     }
+<<<<<<< HEAD
 
     private function getRequest()
     {
         return $this->requestStack ? $this->requestStack->getCurrentRequest() : $this->request;
     }
+=======
+>>>>>>> git-aline/master/master
 }

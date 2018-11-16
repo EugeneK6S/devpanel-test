@@ -11,6 +11,11 @@
 
 namespace Symfony\Component\Translation;
 
+<<<<<<< HEAD
+=======
+use Symfony\Component\Translation\Exception\InvalidArgumentException;
+
+>>>>>>> git-aline/master/master
 /**
  * TranslatorInterface.
  *
@@ -26,9 +31,15 @@ interface TranslatorInterface
      * @param string|null $domain     The domain for the message or null to use the default
      * @param string|null $locale     The locale or null to use the default
      *
+<<<<<<< HEAD
      * @throws \InvalidArgumentException If the locale contains invalid characters
      *
      * @return string The translated string
+=======
+     * @return string The translated string
+     *
+     * @throws InvalidArgumentException If the locale contains invalid characters
+>>>>>>> git-aline/master/master
      */
     public function trans($id, array $parameters = array(), $domain = null, $locale = null);
 
@@ -41,9 +52,15 @@ interface TranslatorInterface
      * @param string|null $domain     The domain for the message or null to use the default
      * @param string|null $locale     The locale or null to use the default
      *
+<<<<<<< HEAD
      * @throws \InvalidArgumentException If the locale contains invalid characters
      *
      * @return string The translated string
+=======
+     * @return string The translated string
+     *
+     * @throws InvalidArgumentException If the locale contains invalid characters
+>>>>>>> git-aline/master/master
      */
     public function transChoice($id, $number, array $parameters = array(), $domain = null, $locale = null);
 
@@ -52,7 +69,11 @@ interface TranslatorInterface
      *
      * @param string $locale The locale
      *
+<<<<<<< HEAD
      * @throws \InvalidArgumentException If the locale contains invalid characters
+=======
+     * @throws InvalidArgumentException If the locale contains invalid characters
+>>>>>>> git-aline/master/master
      */
     public function setLocale($locale);
 

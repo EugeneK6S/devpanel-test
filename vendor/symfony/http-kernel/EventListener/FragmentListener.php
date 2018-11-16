@@ -11,12 +11,21 @@
 
 namespace Symfony\Component\HttpKernel\EventListener;
 
+<<<<<<< HEAD
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Event\GetResponseEvent;
 use Symfony\Component\HttpKernel\KernelEvents;
 use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
 use Symfony\Component\HttpKernel\UriSigner;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
+=======
+use Symfony\Component\EventDispatcher\EventSubscriberInterface;
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpKernel\Event\GetResponseEvent;
+use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
+use Symfony\Component\HttpKernel\KernelEvents;
+use Symfony\Component\HttpKernel\UriSigner;
+>>>>>>> git-aline/master/master
 
 /**
  * Handles content fragments represented by special URIs.
@@ -35,8 +44,11 @@ class FragmentListener implements EventSubscriberInterface
     private $fragmentPath;
 
     /**
+<<<<<<< HEAD
      * Constructor.
      *
+=======
+>>>>>>> git-aline/master/master
      * @param UriSigner $signer       A UriSigner instance
      * @param string    $fragmentPath The path that triggers this listener
      */
@@ -49,15 +61,30 @@ class FragmentListener implements EventSubscriberInterface
     /**
      * Fixes request attributes when the path is '/_fragment'.
      *
+<<<<<<< HEAD
      * @param GetResponseEvent $event A GetResponseEvent instance
      *
      * @throws AccessDeniedHttpException if the request does not come from a trusted IP.
+=======
+     * @throws AccessDeniedHttpException if the request does not come from a trusted IP
+>>>>>>> git-aline/master/master
      */
     public function onKernelRequest(GetResponseEvent $event)
     {
         $request = $event->getRequest();
 
+<<<<<<< HEAD
         if ($request->attributes->has('_controller') || $this->fragmentPath !== rawurldecode($request->getPathInfo())) {
+=======
+        if ($this->fragmentPath !== rawurldecode($request->getPathInfo())) {
+            return;
+        }
+
+        if ($request->attributes->has('_controller')) {
+            // Is a sub-request: no need to parse _path but it should still be removed from query parameters as below.
+            $request->query->remove('_path');
+
+>>>>>>> git-aline/master/master
             return;
         }
 
@@ -74,7 +101,11 @@ class FragmentListener implements EventSubscriberInterface
     protected function validateRequest(Request $request)
     {
         // is the Request safe?
+<<<<<<< HEAD
         if (!$request->isMethodSafe()) {
+=======
+        if (!$request->isMethodSafe(false)) {
+>>>>>>> git-aline/master/master
             throw new AccessDeniedHttpException();
         }
 
@@ -87,6 +118,7 @@ class FragmentListener implements EventSubscriberInterface
         throw new AccessDeniedHttpException();
     }
 
+<<<<<<< HEAD
     /**
      * @deprecated since version 2.3.19, to be removed in 3.0.
      *
@@ -99,6 +131,8 @@ class FragmentListener implements EventSubscriberInterface
         return array('127.0.0.1', 'fe80::1', '::1');
     }
 
+=======
+>>>>>>> git-aline/master/master
     public static function getSubscribedEvents()
     {
         return array(

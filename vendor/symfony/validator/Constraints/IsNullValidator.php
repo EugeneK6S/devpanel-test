@@ -11,7 +11,10 @@
 
 namespace Symfony\Component\Validator\Constraints;
 
+<<<<<<< HEAD
 use Symfony\Component\Validator\Context\ExecutionContextInterface;
+=======
+>>>>>>> git-aline/master/master
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\ConstraintValidator;
 use Symfony\Component\Validator\Exception\UnexpectedTypeException;
@@ -31,6 +34,7 @@ class IsNullValidator extends ConstraintValidator
         }
 
         if (null !== $value) {
+<<<<<<< HEAD
             if ($this->context instanceof ExecutionContextInterface) {
                 $this->context->buildViolation($constraint->message)
                     ->setParameter('{{ value }}', $this->formatValue($value))
@@ -40,6 +44,12 @@ class IsNullValidator extends ConstraintValidator
                     ->setParameter('{{ value }}', $this->formatValue($value))
                     ->addViolation();
             }
+=======
+            $this->context->buildViolation($constraint->message)
+                ->setParameter('{{ value }}', $this->formatValue($value))
+                ->setCode(IsNull::NOT_NULL_ERROR)
+                ->addViolation();
+>>>>>>> git-aline/master/master
         }
     }
 }

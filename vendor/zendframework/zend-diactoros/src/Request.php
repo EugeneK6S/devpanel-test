@@ -3,7 +3,11 @@
  * Zend Framework (http://framework.zend.com/)
  *
  * @see       http://github.com/zendframework/zend-diactoros for the canonical source repository
+<<<<<<< HEAD
  * @copyright Copyright (c) 2015 Zend Technologies USA Inc. (http://www.zend.com)
+=======
+ * @copyright Copyright (c) 2015-2016 Zend Technologies USA Inc. (http://www.zend.com)
+>>>>>>> git-aline/master/master
  * @license   https://github.com/zendframework/zend-diactoros/blob/master/LICENSE.md New BSD License
  */
 
@@ -11,6 +15,10 @@ namespace Zend\Diactoros;
 
 use Psr\Http\Message\RequestInterface;
 use Psr\Http\Message\StreamInterface;
+<<<<<<< HEAD
+=======
+use Psr\Http\Message\UriInterface;
+>>>>>>> git-aline/master/master
 
 /**
  * HTTP Request encapsulation
@@ -21,10 +29,17 @@ use Psr\Http\Message\StreamInterface;
  */
 class Request implements RequestInterface
 {
+<<<<<<< HEAD
     use MessageTrait, RequestTrait;
 
     /**
      * @param null|string $uri URI for the request, if any.
+=======
+    use RequestTrait;
+
+    /**
+     * @param null|string|UriInterface $uri URI for the request, if any.
+>>>>>>> git-aline/master/master
      * @param null|string $method HTTP method for the request, if any.
      * @param string|resource|StreamInterface $body Message body, if any.
      * @param array $headers Headers for the message, if any.
@@ -42,7 +57,11 @@ class Request implements RequestInterface
     {
         $headers = $this->headers;
         if (! $this->hasHeader('host')
+<<<<<<< HEAD
             && ($this->uri && $this->uri->getHost())
+=======
+            && $this->uri->getHost()
+>>>>>>> git-aline/master/master
         ) {
             $headers['Host'] = [$this->getHostFromUri()];
         }
@@ -57,7 +76,11 @@ class Request implements RequestInterface
     {
         if (! $this->hasHeader($header)) {
             if (strtolower($header) === 'host'
+<<<<<<< HEAD
                 && ($this->uri && $this->uri->getHost())
+=======
+                && $this->uri->getHost()
+>>>>>>> git-aline/master/master
             ) {
                 return [$this->getHostFromUri()];
             }
@@ -66,9 +89,14 @@ class Request implements RequestInterface
         }
 
         $header = $this->headerNames[strtolower($header)];
+<<<<<<< HEAD
         $value  = $this->headers[$header];
         $value  = is_array($value) ? $value : [$value];
 
         return $value;
+=======
+
+        return $this->headers[$header];
+>>>>>>> git-aline/master/master
     }
 }

@@ -24,6 +24,7 @@ class ResponseHeaderBag extends HeaderBag
     const DISPOSITION_ATTACHMENT = 'attachment';
     const DISPOSITION_INLINE = 'inline';
 
+<<<<<<< HEAD
     /**
      * @var array
      */
@@ -44,6 +45,12 @@ class ResponseHeaderBag extends HeaderBag
      *
      * @param array $headers An array of HTTP headers
      */
+=======
+    protected $computedCacheControl = array();
+    protected $cookies = array();
+    protected $headerNames = array();
+
+>>>>>>> git-aline/master/master
     public function __construct(array $headers = array())
     {
         parent::__construct($headers);
@@ -51,6 +58,7 @@ class ResponseHeaderBag extends HeaderBag
         if (!isset($this->headers['cache-control'])) {
             $this->set('Cache-Control', '');
         }
+<<<<<<< HEAD
     }
 
     /**
@@ -66,6 +74,13 @@ class ResponseHeaderBag extends HeaderBag
         ksort($this->headerNames);
 
         return parent::__toString().$cookies;
+=======
+
+        /* RFC2616 - 14.18 says all Responses need to have a Date */
+        if (!isset($this->headers['date'])) {
+            $this->initDate();
+        }
+>>>>>>> git-aline/master/master
     }
 
     /**
@@ -75,7 +90,26 @@ class ResponseHeaderBag extends HeaderBag
      */
     public function allPreserveCase()
     {
+<<<<<<< HEAD
         return array_combine($this->headerNames, $this->headers);
+=======
+        $headers = array();
+        foreach ($this->all() as $name => $value) {
+            $headers[isset($this->headerNames[$name]) ? $this->headerNames[$name] : $name] = $value;
+        }
+
+        return $headers;
+    }
+
+    public function allPreserveCaseWithoutCookies()
+    {
+        $headers = $this->allPreserveCase();
+        if (isset($this->headerNames['set-cookie'])) {
+            unset($headers[$this->headerNames['set-cookie']]);
+        }
+
+        return $headers;
+>>>>>>> git-aline/master/master
     }
 
     /**
@@ -90,6 +124,26 @@ class ResponseHeaderBag extends HeaderBag
         if (!isset($this->headers['cache-control'])) {
             $this->set('Cache-Control', '');
         }
+<<<<<<< HEAD
+=======
+
+        if (!isset($this->headers['date'])) {
+            $this->initDate();
+        }
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function all()
+    {
+        $headers = parent::all();
+        foreach ($this->getCookies() as $cookie) {
+            $headers['set-cookie'][] = (string) $cookie;
+        }
+
+        return $headers;
+>>>>>>> git-aline/master/master
     }
 
     /**
@@ -97,6 +151,7 @@ class ResponseHeaderBag extends HeaderBag
      */
     public function set($key, $values, $replace = true)
     {
+<<<<<<< HEAD
         parent::set($key, $values, $replace);
 
         $uniqueKey = strtr(strtolower($key), '_', '-');
@@ -104,6 +159,28 @@ class ResponseHeaderBag extends HeaderBag
 
         // ensure the cache-control header has sensible defaults
         if (in_array($uniqueKey, array('cache-control', 'etag', 'last-modified', 'expires'))) {
+=======
+        $uniqueKey = str_replace('_', '-', strtolower($key));
+
+        if ('set-cookie' === $uniqueKey) {
+            if ($replace) {
+                $this->cookies = array();
+            }
+            foreach ((array) $values as $cookie) {
+                $this->setCookie(Cookie::fromString($cookie));
+            }
+            $this->headerNames[$uniqueKey] = $key;
+
+            return;
+        }
+
+        $this->headerNames[$uniqueKey] = $key;
+
+        parent::set($key, $values, $replace);
+
+        // ensure the cache-control header has sensible defaults
+        if (\in_array($uniqueKey, array('cache-control', 'etag', 'last-modified', 'expires'), true)) {
+>>>>>>> git-aline/master/master
             $computed = $this->computeCacheControlValue();
             $this->headers['cache-control'] = array($computed);
             $this->headerNames['cache-control'] = 'Cache-Control';
@@ -116,6 +193,7 @@ class ResponseHeaderBag extends HeaderBag
      */
     public function remove($key)
     {
+<<<<<<< HEAD
         parent::remove($key);
 
         $uniqueKey = strtr(strtolower($key), '_', '-');
@@ -124,6 +202,26 @@ class ResponseHeaderBag extends HeaderBag
         if ('cache-control' === $uniqueKey) {
             $this->computedCacheControl = array();
         }
+=======
+        $uniqueKey = str_replace('_', '-', strtolower($key));
+        unset($this->headerNames[$uniqueKey]);
+
+        if ('set-cookie' === $uniqueKey) {
+            $this->cookies = array();
+
+            return;
+        }
+
+        parent::remove($key);
+
+        if ('cache-control' === $uniqueKey) {
+            $this->computedCacheControl = array();
+        }
+
+        if ('date' === $uniqueKey) {
+            $this->initDate();
+        }
+>>>>>>> git-aline/master/master
     }
 
     /**
@@ -142,6 +240,7 @@ class ResponseHeaderBag extends HeaderBag
         return array_key_exists($key, $this->computedCacheControl) ? $this->computedCacheControl[$key] : null;
     }
 
+<<<<<<< HEAD
     /**
      * Sets a cookie.
      *
@@ -150,6 +249,12 @@ class ResponseHeaderBag extends HeaderBag
     public function setCookie(Cookie $cookie)
     {
         $this->cookies[$cookie->getDomain()][$cookie->getPath()][$cookie->getName()] = $cookie;
+=======
+    public function setCookie(Cookie $cookie)
+    {
+        $this->cookies[$cookie->getDomain()][$cookie->getPath()][$cookie->getName()] = $cookie;
+        $this->headerNames['set-cookie'] = 'Set-Cookie';
+>>>>>>> git-aline/master/master
     }
 
     /**
@@ -174,6 +279,13 @@ class ResponseHeaderBag extends HeaderBag
                 unset($this->cookies[$domain]);
             }
         }
+<<<<<<< HEAD
+=======
+
+        if (empty($this->cookies)) {
+            unset($this->headerNames['set-cookie']);
+        }
+>>>>>>> git-aline/master/master
     }
 
     /**
@@ -181,6 +293,7 @@ class ResponseHeaderBag extends HeaderBag
      *
      * @param string $format
      *
+<<<<<<< HEAD
      * @throws \InvalidArgumentException When the $format is invalid
      *
      * @return array
@@ -188,6 +301,15 @@ class ResponseHeaderBag extends HeaderBag
     public function getCookies($format = self::COOKIES_FLAT)
     {
         if (!in_array($format, array(self::COOKIES_FLAT, self::COOKIES_ARRAY))) {
+=======
+     * @return Cookie[]
+     *
+     * @throws \InvalidArgumentException When the $format is invalid
+     */
+    public function getCookies($format = self::COOKIES_FLAT)
+    {
+        if (!\in_array($format, array(self::COOKIES_FLAT, self::COOKIES_ARRAY))) {
+>>>>>>> git-aline/master/master
             throw new \InvalidArgumentException(sprintf('Format "%s" invalid (%s).', $format, implode(', ', array(self::COOKIES_FLAT, self::COOKIES_ARRAY))));
         }
 
@@ -230,7 +352,11 @@ class ResponseHeaderBag extends HeaderBag
      *                                 is semantically equivalent to $filename. If the filename is already ASCII,
      *                                 it can be omitted, or just copied from $filename
      *
+<<<<<<< HEAD
      * @return string A string suitable for use as a Content-Disposition field-value.
+=======
+     * @return string A string suitable for use as a Content-Disposition field-value
+>>>>>>> git-aline/master/master
      *
      * @throws \InvalidArgumentException
      *
@@ -238,7 +364,11 @@ class ResponseHeaderBag extends HeaderBag
      */
     public function makeDisposition($disposition, $filename, $filenameFallback = '')
     {
+<<<<<<< HEAD
         if (!in_array($disposition, array(self::DISPOSITION_ATTACHMENT, self::DISPOSITION_INLINE))) {
+=======
+        if (!\in_array($disposition, array(self::DISPOSITION_ATTACHMENT, self::DISPOSITION_INLINE))) {
+>>>>>>> git-aline/master/master
             throw new \InvalidArgumentException(sprintf('The disposition must be either "%s" or "%s".', self::DISPOSITION_ATTACHMENT, self::DISPOSITION_INLINE));
         }
 
@@ -281,7 +411,11 @@ class ResponseHeaderBag extends HeaderBag
     protected function computeCacheControlValue()
     {
         if (!$this->cacheControl && !$this->has('ETag') && !$this->has('Last-Modified') && !$this->has('Expires')) {
+<<<<<<< HEAD
             return 'no-cache';
+=======
+            return 'no-cache, private';
+>>>>>>> git-aline/master/master
         }
 
         if (!$this->cacheControl) {
@@ -301,4 +435,14 @@ class ResponseHeaderBag extends HeaderBag
 
         return $header;
     }
+<<<<<<< HEAD
+=======
+
+    private function initDate()
+    {
+        $now = \DateTime::createFromFormat('U', time());
+        $now->setTimezone(new \DateTimeZone('UTC'));
+        $this->set('Date', $now->format('D, d M Y H:i:s').' GMT');
+    }
+>>>>>>> git-aline/master/master
 }

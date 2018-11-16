@@ -11,7 +11,10 @@
 
 namespace Symfony\Component\Validator\Constraints;
 
+<<<<<<< HEAD
 use Symfony\Component\Validator\Context\ExecutionContextInterface;
+=======
+>>>>>>> git-aline/master/master
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\ConstraintValidator;
 use Symfony\Component\Validator\Exception\UnexpectedTypeException;
@@ -34,6 +37,7 @@ class IsFalseValidator extends ConstraintValidator
             return;
         }
 
+<<<<<<< HEAD
         if ($this->context instanceof ExecutionContextInterface) {
             $this->context->buildViolation($constraint->message)
                 ->setParameter('{{ value }}', $this->formatValue($value))
@@ -43,5 +47,11 @@ class IsFalseValidator extends ConstraintValidator
                 ->setParameter('{{ value }}', $this->formatValue($value))
                 ->addViolation();
         }
+=======
+        $this->context->buildViolation($constraint->message)
+            ->setParameter('{{ value }}', $this->formatValue($value))
+            ->setCode(IsFalse::NOT_FALSE_ERROR)
+            ->addViolation();
+>>>>>>> git-aline/master/master
     }
 }

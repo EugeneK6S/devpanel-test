@@ -20,9 +20,12 @@ namespace Symfony\Component\Routing\Exception;
  */
 class MethodNotAllowedException extends \RuntimeException implements ExceptionInterface
 {
+<<<<<<< HEAD
     /**
      * @var array
      */
+=======
+>>>>>>> git-aline/master/master
     protected $allowedMethods = array();
 
     public function __construct(array $allowedMethods, $message = null, $code = 0, \Exception $previous = null)

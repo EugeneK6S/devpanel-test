@@ -31,7 +31,11 @@ class MergeExtensionConfigurationPass extends BaseMergeExtensionConfigurationPas
     public function process(ContainerBuilder $container)
     {
         foreach ($this->extensions as $extension) {
+<<<<<<< HEAD
             if (!count($container->getExtensionConfig($extension))) {
+=======
+            if (!\count($container->getExtensionConfig($extension))) {
+>>>>>>> git-aline/master/master
                 $container->loadFromExtension($extension, array());
             }
         }

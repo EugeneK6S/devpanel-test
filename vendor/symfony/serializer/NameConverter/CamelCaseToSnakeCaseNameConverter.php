@@ -18,6 +18,7 @@ namespace Symfony\Component\Serializer\NameConverter;
  */
 class CamelCaseToSnakeCaseNameConverter implements NameConverterInterface
 {
+<<<<<<< HEAD
     /**
      * @var array|null
      */
@@ -30,6 +31,14 @@ class CamelCaseToSnakeCaseNameConverter implements NameConverterInterface
     /**
      * @param null|array $attributes     The list of attributes to rename or null for all attributes.
      * @param bool       $lowerCamelCase Use lowerCamelCase style.
+=======
+    private $attributes;
+    private $lowerCamelCase;
+
+    /**
+     * @param null|array $attributes     The list of attributes to rename or null for all attributes
+     * @param bool       $lowerCamelCase Use lowerCamelCase style
+>>>>>>> git-aline/master/master
      */
     public function __construct(array $attributes = null, $lowerCamelCase = true)
     {
@@ -42,6 +51,7 @@ class CamelCaseToSnakeCaseNameConverter implements NameConverterInterface
      */
     public function normalize($propertyName)
     {
+<<<<<<< HEAD
         if (null === $this->attributes || in_array($propertyName, $this->attributes)) {
             $snakeCasedName = '';
 
@@ -55,6 +65,10 @@ class CamelCaseToSnakeCaseNameConverter implements NameConverterInterface
             }
 
             return $snakeCasedName;
+=======
+        if (null === $this->attributes || \in_array($propertyName, $this->attributes)) {
+            return strtolower(preg_replace('/[A-Z]/', '_\\0', lcfirst($propertyName)));
+>>>>>>> git-aline/master/master
         }
 
         return $propertyName;
@@ -73,8 +87,13 @@ class CamelCaseToSnakeCaseNameConverter implements NameConverterInterface
             $camelCasedName = lcfirst($camelCasedName);
         }
 
+<<<<<<< HEAD
         if (null === $this->attributes || in_array($camelCasedName, $this->attributes)) {
             return $this->lowerCamelCase ? lcfirst($camelCasedName) : $camelCasedName;
+=======
+        if (null === $this->attributes || \in_array($camelCasedName, $this->attributes)) {
+            return $camelCasedName;
+>>>>>>> git-aline/master/master
         }
 
         return $propertyName;

@@ -3,7 +3,11 @@
 /*
  * This file is part of Twig.
  *
+<<<<<<< HEAD
  * (c) 2009 Fabien Potencier
+=======
+ * (c) Fabien Potencier
+>>>>>>> git-aline/master/master
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
@@ -37,9 +41,15 @@ class Twig_Node_Import extends Twig_Node
                 ->raw('$this->loadTemplate(')
                 ->subcompile($this->getNode('expr'))
                 ->raw(', ')
+<<<<<<< HEAD
                 ->repr($compiler->getFilename())
                 ->raw(', ')
                 ->repr($this->getLine())
+=======
+                ->repr($this->getTemplateName())
+                ->raw(', ')
+                ->repr($this->getTemplateLine())
+>>>>>>> git-aline/master/master
                 ->raw(')')
             ;
         }
@@ -47,3 +57,8 @@ class Twig_Node_Import extends Twig_Node
         $compiler->raw(";\n");
     }
 }
+<<<<<<< HEAD
+=======
+
+class_alias('Twig_Node_Import', 'Twig\Node\ImportNode', false);
+>>>>>>> git-aline/master/master

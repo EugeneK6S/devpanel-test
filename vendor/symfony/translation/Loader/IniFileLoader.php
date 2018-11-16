@@ -11,20 +11,28 @@
 
 namespace Symfony\Component\Translation\Loader;
 
+<<<<<<< HEAD
 use Symfony\Component\Translation\Exception\InvalidResourceException;
 use Symfony\Component\Translation\Exception\NotFoundResourceException;
 use Symfony\Component\Config\Resource\FileResource;
 
+=======
+>>>>>>> git-aline/master/master
 /**
  * IniFileLoader loads translations from an ini file.
  *
  * @author stealth35
  */
+<<<<<<< HEAD
 class IniFileLoader extends ArrayLoader
+=======
+class IniFileLoader extends FileLoader
+>>>>>>> git-aline/master/master
 {
     /**
      * {@inheritdoc}
      */
+<<<<<<< HEAD
     public function load($resource, $locale, $domain = 'messages')
     {
         if (!stream_is_local($resource)) {
@@ -44,5 +52,10 @@ class IniFileLoader extends ArrayLoader
         }
 
         return $catalogue;
+=======
+    protected function loadResource($resource)
+    {
+        return parse_ini_file($resource, true);
+>>>>>>> git-aline/master/master
     }
 }

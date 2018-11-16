@@ -3,7 +3,11 @@
 /*
  * This file is part of Twig.
  *
+<<<<<<< HEAD
  * (c) 2010 Fabien Potencier
+=======
+ * (c) Fabien Potencier
+>>>>>>> git-aline/master/master
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
@@ -20,11 +24,20 @@ interface Twig_NodeInterface extends Countable, IteratorAggregate
 {
     /**
      * Compiles the node to PHP.
+<<<<<<< HEAD
      *
      * @param Twig_Compiler $compiler A Twig_Compiler instance
      */
     public function compile(Twig_Compiler $compiler);
 
+=======
+     */
+    public function compile(Twig_Compiler $compiler);
+
+    /**
+     * @deprecated since 1.27 (to be removed in 2.0)
+     */
+>>>>>>> git-aline/master/master
     public function getLine();
 
     public function getNodeTag();

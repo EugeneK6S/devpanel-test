@@ -11,13 +11,24 @@
 
 namespace Symfony\Component\Process;
 
+<<<<<<< HEAD
+=======
+@trigger_error(sprintf('The %s class is deprecated since Symfony 3.4 and will be removed in 4.0. Use the Process class instead.', ProcessBuilder::class), E_USER_DEPRECATED);
+
+>>>>>>> git-aline/master/master
 use Symfony\Component\Process\Exception\InvalidArgumentException;
 use Symfony\Component\Process\Exception\LogicException;
 
 /**
+<<<<<<< HEAD
  * Process builder.
  *
  * @author Kris Wallsmith <kris@symfony.com>
+=======
+ * @author Kris Wallsmith <kris@symfony.com>
+ *
+ * @deprecated since version 3.4, to be removed in 4.0. Use the Process class instead.
+>>>>>>> git-aline/master/master
  */
 class ProcessBuilder
 {
@@ -26,14 +37,21 @@ class ProcessBuilder
     private $env = array();
     private $input;
     private $timeout = 60;
+<<<<<<< HEAD
     private $options = array();
+=======
+    private $options;
+>>>>>>> git-aline/master/master
     private $inheritEnv = true;
     private $prefix = array();
     private $outputDisabled = false;
 
     /**
+<<<<<<< HEAD
      * Constructor.
      *
+=======
+>>>>>>> git-aline/master/master
      * @param string[] $arguments An array of arguments
      */
     public function __construct(array $arguments = array())
@@ -46,7 +64,11 @@ class ProcessBuilder
      *
      * @param string[] $arguments An array of arguments
      *
+<<<<<<< HEAD
      * @return ProcessBuilder
+=======
+     * @return static
+>>>>>>> git-aline/master/master
      */
     public static function create(array $arguments = array())
     {
@@ -58,7 +80,11 @@ class ProcessBuilder
      *
      * @param string $argument A command argument
      *
+<<<<<<< HEAD
      * @return ProcessBuilder
+=======
+     * @return $this
+>>>>>>> git-aline/master/master
      */
     public function add($argument)
     {
@@ -74,11 +100,19 @@ class ProcessBuilder
      *
      * @param string|array $prefix A command prefix or an array of command prefixes
      *
+<<<<<<< HEAD
      * @return ProcessBuilder
      */
     public function setPrefix($prefix)
     {
         $this->prefix = is_array($prefix) ? $prefix : array($prefix);
+=======
+     * @return $this
+     */
+    public function setPrefix($prefix)
+    {
+        $this->prefix = \is_array($prefix) ? $prefix : array($prefix);
+>>>>>>> git-aline/master/master
 
         return $this;
     }
@@ -91,7 +125,11 @@ class ProcessBuilder
      *
      * @param string[] $arguments
      *
+<<<<<<< HEAD
      * @return ProcessBuilder
+=======
+     * @return $this
+>>>>>>> git-aline/master/master
      */
     public function setArguments(array $arguments)
     {
@@ -105,7 +143,11 @@ class ProcessBuilder
      *
      * @param null|string $cwd The working directory
      *
+<<<<<<< HEAD
      * @return ProcessBuilder
+=======
+     * @return $this
+>>>>>>> git-aline/master/master
      */
     public function setWorkingDirectory($cwd)
     {
@@ -119,7 +161,11 @@ class ProcessBuilder
      *
      * @param bool $inheritEnv
      *
+<<<<<<< HEAD
      * @return ProcessBuilder
+=======
+     * @return $this
+>>>>>>> git-aline/master/master
      */
     public function inheritEnvironmentVariables($inheritEnv = true)
     {
@@ -137,7 +183,11 @@ class ProcessBuilder
      * @param string      $name  The variable name
      * @param null|string $value The variable value
      *
+<<<<<<< HEAD
      * @return ProcessBuilder
+=======
+     * @return $this
+>>>>>>> git-aline/master/master
      */
     public function setEnv($name, $value)
     {
@@ -155,7 +205,11 @@ class ProcessBuilder
      *
      * @param array $variables The variables
      *
+<<<<<<< HEAD
      * @return ProcessBuilder
+=======
+     * @return $this
+>>>>>>> git-aline/master/master
      */
     public function addEnvironmentVariables(array $variables)
     {
@@ -167,6 +221,7 @@ class ProcessBuilder
     /**
      * Sets the input of the process.
      *
+<<<<<<< HEAD
      * @param mixed $input The input as a string
      *
      * @return ProcessBuilder
@@ -178,6 +233,17 @@ class ProcessBuilder
     public function setInput($input)
     {
         $this->input = ProcessUtils::validateInput(sprintf('%s::%s', __CLASS__, __FUNCTION__), $input);
+=======
+     * @param resource|string|int|float|bool|\Traversable|null $input The input content
+     *
+     * @return $this
+     *
+     * @throws InvalidArgumentException In case the argument is invalid
+     */
+    public function setInput($input)
+    {
+        $this->input = ProcessUtils::validateInput(__METHOD__, $input);
+>>>>>>> git-aline/master/master
 
         return $this;
     }
@@ -189,7 +255,11 @@ class ProcessBuilder
      *
      * @param float|null $timeout
      *
+<<<<<<< HEAD
      * @return ProcessBuilder
+=======
+     * @return $this
+>>>>>>> git-aline/master/master
      *
      * @throws InvalidArgumentException
      */
@@ -218,7 +288,11 @@ class ProcessBuilder
      * @param string $name  The option name
      * @param string $value The option value
      *
+<<<<<<< HEAD
      * @return ProcessBuilder
+=======
+     * @return $this
+>>>>>>> git-aline/master/master
      */
     public function setOption($name, $value)
     {
@@ -230,7 +304,11 @@ class ProcessBuilder
     /**
      * Disables fetching output and error output from the underlying process.
      *
+<<<<<<< HEAD
      * @return ProcessBuilder
+=======
+     * @return $this
+>>>>>>> git-aline/master/master
      */
     public function disableOutput()
     {
@@ -242,7 +320,11 @@ class ProcessBuilder
     /**
      * Enables fetching output and error output from the underlying process.
      *
+<<<<<<< HEAD
      * @return ProcessBuilder
+=======
+     * @return $this
+>>>>>>> git-aline/master/master
      */
     public function enableOutput()
     {
@@ -260,6 +342,7 @@ class ProcessBuilder
      */
     public function getProcess()
     {
+<<<<<<< HEAD
         if (0 === count($this->prefix) && 0 === count($this->arguments)) {
             throw new LogicException('You must add() command arguments before calling getProcess().');
         }
@@ -278,6 +361,21 @@ class ProcessBuilder
 
         $process = new Process($script, $this->cwd, $env, $this->input, $this->timeout, $options);
 
+=======
+        if (0 === \count($this->prefix) && 0 === \count($this->arguments)) {
+            throw new LogicException('You must add() command arguments before calling getProcess().');
+        }
+
+        $arguments = array_merge($this->prefix, $this->arguments);
+        $process = new Process($arguments, $this->cwd, $this->env, $this->input, $this->timeout, $this->options);
+        // to preserve the BC with symfony <3.3, we convert the array structure
+        // to a string structure to avoid the prefixing with the exec command
+        $process->setCommandLine($process->getCommandLine());
+
+        if ($this->inheritEnv) {
+            $process->inheritEnvironmentVariables();
+        }
+>>>>>>> git-aline/master/master
         if ($this->outputDisabled) {
             $process->disableOutput();
         }

@@ -3,8 +3,13 @@
 /*
  * This file is part of Twig.
  *
+<<<<<<< HEAD
  * (c) 2009 Fabien Potencier
  * (c) 2009 Armin Ronacher
+=======
+ * (c) Fabien Potencier
+ * (c) Armin Ronacher
+>>>>>>> git-aline/master/master
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
@@ -14,6 +19,11 @@
  * Represents a Token.
  *
  * @author Fabien Potencier <fabien@symfony.com>
+<<<<<<< HEAD
+=======
+ *
+ * @final
+>>>>>>> git-aline/master/master
  */
 class Twig_Token
 {
@@ -36,8 +46,11 @@ class Twig_Token
     const INTERPOLATION_END_TYPE = 11;
 
     /**
+<<<<<<< HEAD
      * Constructor.
      *
+=======
+>>>>>>> git-aline/master/master
      * @param int    $type   The type of the token
      * @param string $value  The token value
      * @param int    $lineno The line position in the source
@@ -49,11 +62,14 @@ class Twig_Token
         $this->lineno = $lineno;
     }
 
+<<<<<<< HEAD
     /**
      * Returns a string representation of the token.
      *
      * @return string A string representation of the token
      */
+=======
+>>>>>>> git-aline/master/master
     public function __toString()
     {
         return sprintf('%s(%s)', self::typeToString($this->type, true), $this->value);
@@ -63,11 +79,19 @@ class Twig_Token
      * Tests the current token for a type and/or a value.
      *
      * Parameters may be:
+<<<<<<< HEAD
      * * just type
      * * type and value (or array of possible values)
      * * just value (or array of possible values) (NAME_TYPE is used as type)
      *
      * @param array|int         $type   The type to test
+=======
+     *  * just type
+     *  * type and value (or array of possible values)
+     *  * just value (or array of possible values) (NAME_TYPE is used as type)
+     *
+     * @param array|string|int  $type   The type to test
+>>>>>>> git-aline/master/master
      * @param array|string|null $values The token value
      *
      * @return bool
@@ -87,9 +111,13 @@ class Twig_Token
     }
 
     /**
+<<<<<<< HEAD
      * Gets the line.
      *
      * @return int The source line
+=======
+     * @return int
+>>>>>>> git-aline/master/master
      */
     public function getLine()
     {
@@ -97,9 +125,13 @@ class Twig_Token
     }
 
     /**
+<<<<<<< HEAD
      * Gets the token type.
      *
      * @return int The token type
+=======
+     * @return int
+>>>>>>> git-aline/master/master
      */
     public function getType()
     {
@@ -107,9 +139,13 @@ class Twig_Token
     }
 
     /**
+<<<<<<< HEAD
      * Gets the token value.
      *
      * @return string The token value
+=======
+     * @return string
+>>>>>>> git-aline/master/master
      */
     public function getValue()
     {
@@ -174,7 +210,11 @@ class Twig_Token
     }
 
     /**
+<<<<<<< HEAD
      * Returns the english representation of a given type.
+=======
+     * Returns the English representation of a given type.
+>>>>>>> git-aline/master/master
      *
      * @param int $type The type as an integer
      *
@@ -214,3 +254,8 @@ class Twig_Token
         }
     }
 }
+<<<<<<< HEAD
+=======
+
+class_alias('Twig_Token', 'Twig\Token', false);
+>>>>>>> git-aline/master/master

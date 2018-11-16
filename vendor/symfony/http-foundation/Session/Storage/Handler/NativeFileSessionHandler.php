@@ -12,8 +12,11 @@
 namespace Symfony\Component\HttpFoundation\Session\Storage\Handler;
 
 /**
+<<<<<<< HEAD
  * NativeFileSessionHandler.
  *
+=======
+>>>>>>> git-aline/master/master
  * Native session handler using PHP's built in file storage.
  *
  * @author Drak <drak@zikula.org>
@@ -21,15 +24,23 @@ namespace Symfony\Component\HttpFoundation\Session\Storage\Handler;
 class NativeFileSessionHandler extends NativeSessionHandler
 {
     /**
+<<<<<<< HEAD
      * Constructor.
      *
      * @param string $savePath Path of directory to save session files.
+=======
+     * @param string $savePath Path of directory to save session files
+>>>>>>> git-aline/master/master
      *                         Default null will leave setting as defined by PHP.
      *                         '/path', 'N;/path', or 'N;octal-mode;/path
      *
      * @see http://php.net/session.configuration.php#ini.session.save-path for further details.
      *
      * @throws \InvalidArgumentException On invalid $savePath
+<<<<<<< HEAD
+=======
+     * @throws \RuntimeException         When failing to create the save directory
+>>>>>>> git-aline/master/master
      */
     public function __construct($savePath = null)
     {
@@ -48,8 +59,13 @@ class NativeFileSessionHandler extends NativeSessionHandler
             $baseDir = ltrim(strrchr($savePath, ';'), ';');
         }
 
+<<<<<<< HEAD
         if ($baseDir && !is_dir($baseDir)) {
             mkdir($baseDir, 0777, true);
+=======
+        if ($baseDir && !is_dir($baseDir) && !@mkdir($baseDir, 0777, true) && !is_dir($baseDir)) {
+            throw new \RuntimeException(sprintf('Session Storage was not able to create directory "%s"', $baseDir));
+>>>>>>> git-aline/master/master
         }
 
         ini_set('session.save_path', $savePath);

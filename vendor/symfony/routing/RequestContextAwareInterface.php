@@ -15,8 +15,11 @@ interface RequestContextAwareInterface
 {
     /**
      * Sets the request context.
+<<<<<<< HEAD
      *
      * @param RequestContext $context The context
+=======
+>>>>>>> git-aline/master/master
      */
     public function setContext(RequestContext $context);
 

@@ -17,6 +17,17 @@
     </testsuite>
   </testsuites>
 
+<<<<<<< HEAD
+=======
+  <php>
+    <ini name="error_reporting" value="-1" />
+  </php>
+
+  <listeners>
+    <listener class="Symfony\Bridge\PhpUnit\SymfonyTestsListener" />
+  </listeners>
+
+>>>>>>> git-aline/master/master
   <filter>
     <whitelist>
       <directory suffix=".php">./lib/Twig/</directory>

@@ -21,8 +21,11 @@ class Parameter
     private $id;
 
     /**
+<<<<<<< HEAD
      * Constructor.
      *
+=======
+>>>>>>> git-aline/master/master
      * @param string $id The parameter key
      */
     public function __construct($id)
@@ -31,8 +34,11 @@ class Parameter
     }
 
     /**
+<<<<<<< HEAD
      * __toString.
      *
+=======
+>>>>>>> git-aline/master/master
      * @return string The parameter key
      */
     public function __toString()

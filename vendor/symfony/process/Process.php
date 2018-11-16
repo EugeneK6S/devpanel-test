@@ -27,7 +27,11 @@ use Symfony\Component\Process\Pipes\WindowsPipes;
  * @author Fabien Potencier <fabien@symfony.com>
  * @author Romain Neutron <imprec@gmail.com>
  */
+<<<<<<< HEAD
 class Process
+=======
+class Process implements \IteratorAggregate
+>>>>>>> git-aline/master/master
 {
     const ERR = 'err';
     const OUT = 'out';
@@ -43,7 +47,17 @@ class Process
     // Timeout Precision in seconds.
     const TIMEOUT_PRECISION = 0.2;
 
+<<<<<<< HEAD
     private $callback;
+=======
+    const ITER_NON_BLOCKING = 1; // By default, iterating over outputs is a blocking call, use this flag to make it non-blocking
+    const ITER_KEEP_OUTPUT = 2;  // By default, outputs are cleared while iterating, use this flag to keep them in memory
+    const ITER_SKIP_OUT = 4;     // Use this flag to skip STDOUT while iterating
+    const ITER_SKIP_ERR = 8;     // Use this flag to skip STDERR while iterating
+
+    private $callback;
+    private $hasCallback = false;
+>>>>>>> git-aline/master/master
     private $commandline;
     private $cwd;
     private $env;
@@ -52,9 +66,15 @@ class Process
     private $lastOutputTime;
     private $timeout;
     private $idleTimeout;
+<<<<<<< HEAD
     private $options;
     private $exitcode;
     private $fallbackExitcode;
+=======
+    private $options = array('suppress_errors' => true);
+    private $exitcode;
+    private $fallbackStatus = array();
+>>>>>>> git-aline/master/master
     private $processInformation;
     private $outputDisabled = false;
     private $stdout;
@@ -67,6 +87,10 @@ class Process
     private $incrementalErrorOutputOffset = 0;
     private $tty;
     private $pty;
+<<<<<<< HEAD
+=======
+    private $inheritEnv = false;
+>>>>>>> git-aline/master/master
 
     private $useFileHandles = false;
     /** @var PipesInterface */
@@ -80,8 +104,11 @@ class Process
      * Exit codes translation table.
      *
      * User-defined errors must use exit codes in the 64-113 range.
+<<<<<<< HEAD
      *
      * @var array
+=======
+>>>>>>> git-aline/master/master
      */
     public static $exitCodes = array(
         0 => 'OK',
@@ -127,20 +154,33 @@ class Process
     );
 
     /**
+<<<<<<< HEAD
      * Constructor.
      *
      * @param string         $commandline The command line to run
      * @param string|null    $cwd         The working directory or null to use the working dir of the current PHP process
      * @param array|null     $env         The environment variables or null to use the same environment as the current PHP process
      * @param string|null    $input       The input
+=======
+     * @param string|array   $commandline The command line to run
+     * @param string|null    $cwd         The working directory or null to use the working dir of the current PHP process
+     * @param array|null     $env         The environment variables or null to use the same environment as the current PHP process
+     * @param mixed|null     $input       The input as stream resource, scalar or \Traversable, or null for no input
+>>>>>>> git-aline/master/master
      * @param int|float|null $timeout     The timeout in seconds or null to disable
      * @param array          $options     An array of options for proc_open
      *
      * @throws RuntimeException When proc_open is not installed
      */
+<<<<<<< HEAD
     public function __construct($commandline, $cwd = null, array $env = null, $input = null, $timeout = 60, array $options = array())
     {
         if (!function_exists('proc_open')) {
+=======
+    public function __construct($commandline, $cwd = null, array $env = null, $input = null, $timeout = 60, array $options = null)
+    {
+        if (!\function_exists('proc_open')) {
+>>>>>>> git-aline/master/master
             throw new RuntimeException('The Process class relies on proc_open, which is not available on your PHP installation.');
         }
 
@@ -151,13 +191,18 @@ class Process
         // on Gnu/Linux, PHP builds with --enable-maintainer-zts are also affected
         // @see : https://bugs.php.net/bug.php?id=51800
         // @see : https://bugs.php.net/bug.php?id=50524
+<<<<<<< HEAD
         if (null === $this->cwd && (defined('ZEND_THREAD_SAFE') || '\\' === DIRECTORY_SEPARATOR)) {
+=======
+        if (null === $this->cwd && (\defined('ZEND_THREAD_SAFE') || '\\' === \DIRECTORY_SEPARATOR)) {
+>>>>>>> git-aline/master/master
             $this->cwd = getcwd();
         }
         if (null !== $env) {
             $this->setEnv($env);
         }
 
+<<<<<<< HEAD
         $this->input = $input;
         $this->setTimeout($timeout);
         $this->useFileHandles = '\\' === DIRECTORY_SEPARATOR;
@@ -165,12 +210,27 @@ class Process
         $this->enhanceWindowsCompatibility = true;
         $this->enhanceSigchildCompatibility = '\\' !== DIRECTORY_SEPARATOR && $this->isSigchildEnabled();
         $this->options = array_replace(array('suppress_errors' => true, 'binary_pipes' => true), $options);
+=======
+        $this->setInput($input);
+        $this->setTimeout($timeout);
+        $this->useFileHandles = '\\' === \DIRECTORY_SEPARATOR;
+        $this->pty = false;
+        $this->enhanceSigchildCompatibility = '\\' !== \DIRECTORY_SEPARATOR && $this->isSigchildEnabled();
+        if (null !== $options) {
+            @trigger_error(sprintf('The $options parameter of the %s constructor is deprecated since Symfony 3.3 and will be removed in 4.0.', __CLASS__), E_USER_DEPRECATED);
+            $this->options = array_replace($this->options, $options);
+        }
+>>>>>>> git-aline/master/master
     }
 
     public function __destruct()
     {
+<<<<<<< HEAD
         // stop() will check if we have a process running.
         $this->stop();
+=======
+        $this->stop(0);
+>>>>>>> git-aline/master/master
     }
 
     public function __clone()
@@ -190,16 +250,30 @@ class Process
      *
      * @param callable|null $callback A PHP callback to run whenever there is some
      *                                output available on STDOUT or STDERR
+<<<<<<< HEAD
+=======
+     * @param array         $env      An array of additional env vars to set when running the process
+>>>>>>> git-aline/master/master
      *
      * @return int The exit status code
      *
      * @throws RuntimeException When process can't be launched
      * @throws RuntimeException When process stopped after receiving signal
      * @throws LogicException   In case a callback is provided and output has been disabled
+<<<<<<< HEAD
      */
     public function run($callback = null)
     {
         $this->start($callback);
+=======
+     *
+     * @final since version 3.3
+     */
+    public function run($callback = null/*, array $env = array()*/)
+    {
+        $env = 1 < \func_num_args() ? func_get_arg(1) : null;
+        $this->start($callback, $env);
+>>>>>>> git-aline/master/master
 
         return $this->wait();
     }
@@ -211,11 +285,16 @@ class Process
      * exits with a non-zero exit code.
      *
      * @param callable|null $callback
+<<<<<<< HEAD
+=======
+     * @param array         $env      An array of additional env vars to set when running the process
+>>>>>>> git-aline/master/master
      *
      * @return self
      *
      * @throws RuntimeException       if PHP was compiled with --enable-sigchild and the enhanced sigchild compatibility mode is not enabled
      * @throws ProcessFailedException if the process didn't terminate successfully
+<<<<<<< HEAD
      */
     public function mustRun($callback = null)
     {
@@ -224,6 +303,19 @@ class Process
         }
 
         if (0 !== $this->run($callback)) {
+=======
+     *
+     * @final since version 3.3
+     */
+    public function mustRun(callable $callback = null/*, array $env = array()*/)
+    {
+        if (!$this->enhanceSigchildCompatibility && $this->isSigchildEnabled()) {
+            throw new RuntimeException('This PHP has been compiled with --enable-sigchild. You must use setEnhanceSigchildCompatibility() to use this method.');
+        }
+        $env = 1 < \func_num_args() ? func_get_arg(1) : null;
+
+        if (0 !== $this->run($callback, $env)) {
+>>>>>>> git-aline/master/master
             throw new ProcessFailedException($this);
         }
 
@@ -241,29 +333,54 @@ class Process
      * The callback receives the type of output (out or err) and some bytes from
      * the output in real-time while writing the standard input to the process.
      * It allows to have feedback from the independent process during execution.
+<<<<<<< HEAD
      * If there is no callback passed, the wait() method can be called
      * with true as a second parameter then the callback will get all data occurred
      * in (and since) the start call.
      *
      * @param callable|null $callback A PHP callback to run whenever there is some
      *                                output available on STDOUT or STDERR
+=======
+     *
+     * @param callable|null $callback A PHP callback to run whenever there is some
+     *                                output available on STDOUT or STDERR
+     * @param array         $env      An array of additional env vars to set when running the process
+>>>>>>> git-aline/master/master
      *
      * @throws RuntimeException When process can't be launched
      * @throws RuntimeException When process is already running
      * @throws LogicException   In case a callback is provided and output has been disabled
      */
+<<<<<<< HEAD
     public function start($callback = null)
+=======
+    public function start(callable $callback = null/*, array $env = array()*/)
+>>>>>>> git-aline/master/master
     {
         if ($this->isRunning()) {
             throw new RuntimeException('Process is already running');
         }
+<<<<<<< HEAD
         if ($this->outputDisabled && null !== $callback) {
             throw new LogicException('Output has been disabled, enable it to allow the use of a callback.');
+=======
+        if (2 <= \func_num_args()) {
+            $env = func_get_arg(1);
+        } else {
+            if (__CLASS__ !== static::class) {
+                $r = new \ReflectionMethod($this, __FUNCTION__);
+                if (__CLASS__ !== $r->getDeclaringClass()->getName() && (2 > $r->getNumberOfParameters() || 'env' !== $r->getParameters()[1]->name)) {
+                    @trigger_error(sprintf('The %s::start() method expects a second "$env" argument since Symfony 3.3. It will be made mandatory in 4.0.', static::class), E_USER_DEPRECATED);
+                }
+            }
+            $env = null;
+>>>>>>> git-aline/master/master
         }
 
         $this->resetProcessData();
         $this->starttime = $this->lastOutputTime = microtime(true);
         $this->callback = $this->buildCallback($callback);
+<<<<<<< HEAD
         $descriptors = $this->getDescriptors();
 
         $commandline = $this->commandline;
@@ -283,10 +400,81 @@ class Process
         $this->process = proc_open($commandline, $descriptors, $this->processPipes->pipes, $this->cwd, $this->env, $this->options);
 
         if (!is_resource($this->process)) {
+=======
+        $this->hasCallback = null !== $callback;
+        $descriptors = $this->getDescriptors();
+        $inheritEnv = $this->inheritEnv;
+
+        if (\is_array($commandline = $this->commandline)) {
+            $commandline = implode(' ', array_map(array($this, 'escapeArgument'), $commandline));
+
+            if ('\\' !== \DIRECTORY_SEPARATOR) {
+                // exec is mandatory to deal with sending a signal to the process
+                $commandline = 'exec '.$commandline;
+            }
+        }
+
+        if (null === $env) {
+            $env = $this->env;
+        } else {
+            if ($this->env) {
+                $env += $this->env;
+            }
+            $inheritEnv = true;
+        }
+
+        if (null !== $env && $inheritEnv) {
+            $env += $this->getDefaultEnv();
+        } elseif (null !== $env) {
+            @trigger_error('Not inheriting environment variables is deprecated since Symfony 3.3 and will always happen in 4.0. Set "Process::inheritEnvironmentVariables()" to true instead.', E_USER_DEPRECATED);
+        } else {
+            $env = $this->getDefaultEnv();
+        }
+        if ('\\' === \DIRECTORY_SEPARATOR && $this->enhanceWindowsCompatibility) {
+            $this->options['bypass_shell'] = true;
+            $commandline = $this->prepareWindowsCommandLine($commandline, $env);
+        } elseif (!$this->useFileHandles && $this->enhanceSigchildCompatibility && $this->isSigchildEnabled()) {
+            // last exit code is output on the fourth pipe and caught to work around --enable-sigchild
+            $descriptors[3] = array('pipe', 'w');
+
+            // See https://unix.stackexchange.com/questions/71205/background-process-pipe-input
+            $commandline = '{ ('.$commandline.') <&3 3<&- 3>/dev/null & } 3<&0;';
+            $commandline .= 'pid=$!; echo $pid >&3; wait $pid; code=$?; echo $code >&3; exit $code';
+
+            // Workaround for the bug, when PTS functionality is enabled.
+            // @see : https://bugs.php.net/69442
+            $ptsWorkaround = fopen(__FILE__, 'r');
+        }
+        if (\defined('HHVM_VERSION')) {
+            $envPairs = $env;
+        } else {
+            $envPairs = array();
+            foreach ($env as $k => $v) {
+                if (false !== $v) {
+                    $envPairs[] = $k.'='.$v;
+                }
+            }
+        }
+
+        if (!is_dir($this->cwd)) {
+            @trigger_error('The provided cwd does not exist. Command is currently ran against getcwd(). This behavior is deprecated since Symfony 3.4 and will be removed in 4.0.', E_USER_DEPRECATED);
+        }
+
+        $this->process = proc_open($commandline, $descriptors, $this->processPipes->pipes, $this->cwd, $envPairs, $this->options);
+
+        if (!\is_resource($this->process)) {
+>>>>>>> git-aline/master/master
             throw new RuntimeException('Unable to launch a new process.');
         }
         $this->status = self::STATUS_STARTED;
 
+<<<<<<< HEAD
+=======
+        if (isset($descriptors[3])) {
+            $this->fallbackStatus['pid'] = (int) fgets($this->processPipes->pipes[3]);
+        }
+
+>>>>>>> git-aline/master/master
         if ($this->tty) {
             return;
         }
@@ -302,22 +490,42 @@ class Process
      *
      * @param callable|null $callback A PHP callback to run whenever there is some
      *                                output available on STDOUT or STDERR
+<<<<<<< HEAD
      *
      * @return Process The new process
+=======
+     * @param array         $env      An array of additional env vars to set when running the process
+     *
+     * @return $this
+>>>>>>> git-aline/master/master
      *
      * @throws RuntimeException When process can't be launched
      * @throws RuntimeException When process is already running
      *
      * @see start()
+<<<<<<< HEAD
      */
     public function restart($callback = null)
+=======
+     *
+     * @final since version 3.3
+     */
+    public function restart(callable $callback = null/*, array $env = array()*/)
+>>>>>>> git-aline/master/master
     {
         if ($this->isRunning()) {
             throw new RuntimeException('Process is already running');
         }
+<<<<<<< HEAD
 
         $process = clone $this;
         $process->start($callback);
+=======
+        $env = 1 < \func_num_args() ? func_get_arg(1) : null;
+
+        $process = clone $this;
+        $process->start($callback, $env);
+>>>>>>> git-aline/master/master
 
         return $process;
     }
@@ -337,20 +545,38 @@ class Process
      * @throws RuntimeException When process stopped after receiving signal
      * @throws LogicException   When process is not yet started
      */
+<<<<<<< HEAD
     public function wait($callback = null)
+=======
+    public function wait(callable $callback = null)
+>>>>>>> git-aline/master/master
     {
         $this->requireProcessIsStarted(__FUNCTION__);
 
         $this->updateStatus(false);
+<<<<<<< HEAD
         if (null !== $callback) {
+=======
+
+        if (null !== $callback) {
+            if (!$this->processPipes->haveReadSupport()) {
+                $this->stop(0);
+                throw new \LogicException('Pass the callback to the Process::start method or enableOutput to use a callback with Process::wait');
+            }
+>>>>>>> git-aline/master/master
             $this->callback = $this->buildCallback($callback);
         }
 
         do {
             $this->checkTimeout();
+<<<<<<< HEAD
             $running = '\\' === DIRECTORY_SEPARATOR ? $this->isRunning() : $this->processPipes->areOpen();
             $close = '\\' !== DIRECTORY_SEPARATOR || !$running;
             $this->readPipes(true, $close);
+=======
+            $running = '\\' === \DIRECTORY_SEPARATOR ? $this->isRunning() : $this->processPipes->areOpen();
+            $this->readPipes($running, '\\' !== \DIRECTORY_SEPARATOR || !$running);
+>>>>>>> git-aline/master/master
         } while ($running);
 
         while ($this->isRunning()) {
@@ -368,6 +594,7 @@ class Process
      * Returns the Pid (process identifier), if applicable.
      *
      * @return int|null The process id if running, null otherwise
+<<<<<<< HEAD
      *
      * @throws RuntimeException In case --enable-sigchild is activated
      */
@@ -379,6 +606,11 @@ class Process
 
         $this->updateStatus(false);
 
+=======
+     */
+    public function getPid()
+    {
+>>>>>>> git-aline/master/master
         return $this->isRunning() ? $this->processInformation['pid'] : null;
     }
 
@@ -387,10 +619,17 @@ class Process
      *
      * @param int $signal A valid POSIX signal (see http://www.php.net/manual/en/pcntl.constants.php)
      *
+<<<<<<< HEAD
      * @return Process
      *
      * @throws LogicException   In case the process is not running
      * @throws RuntimeException In case --enable-sigchild is activated
+=======
+     * @return $this
+     *
+     * @throws LogicException   In case the process is not running
+     * @throws RuntimeException In case --enable-sigchild is activated and the process can't be killed
+>>>>>>> git-aline/master/master
      * @throws RuntimeException In case of failure
      */
     public function signal($signal)
@@ -403,7 +642,11 @@ class Process
     /**
      * Disables fetching output and error output from the underlying process.
      *
+<<<<<<< HEAD
      * @return Process
+=======
+     * @return $this
+>>>>>>> git-aline/master/master
      *
      * @throws RuntimeException In case the process is already running
      * @throws LogicException   if an idle timeout is set
@@ -425,7 +668,11 @@ class Process
     /**
      * Enables fetching output and error output from the underlying process.
      *
+<<<<<<< HEAD
      * @return Process
+=======
+     * @return $this
+>>>>>>> git-aline/master/master
      *
      * @throws RuntimeException In case the process is already running
      */
@@ -460,6 +707,7 @@ class Process
      */
     public function getOutput()
     {
+<<<<<<< HEAD
         if ($this->outputDisabled) {
             throw new LogicException('Output has been disabled.');
         }
@@ -469,6 +717,15 @@ class Process
         $this->readPipes(false, '\\' === DIRECTORY_SEPARATOR ? !$this->processInformation['running'] : true);
 
         return $this->stdout;
+=======
+        $this->readPipesForOutput(__FUNCTION__);
+
+        if (false === $ret = stream_get_contents($this->stdout, -1, 0)) {
+            return '';
+        }
+
+        return $ret;
+>>>>>>> git-aline/master/master
     }
 
     /**
@@ -477,6 +734,7 @@ class Process
      * In comparison with the getOutput method which always return the whole
      * output, this one returns the new output since the last call.
      *
+<<<<<<< HEAD
      * @throws LogicException in case the output has been disabled
      * @throws LogicException In case the process is not started
      *
@@ -489,17 +747,34 @@ class Process
         $data = $this->getOutput();
 
         $latest = substr($data, $this->incrementalOutputOffset);
+=======
+     * @return string The process output since the last call
+     *
+     * @throws LogicException in case the output has been disabled
+     * @throws LogicException In case the process is not started
+     */
+    public function getIncrementalOutput()
+    {
+        $this->readPipesForOutput(__FUNCTION__);
+
+        $latest = stream_get_contents($this->stdout, -1, $this->incrementalOutputOffset);
+        $this->incrementalOutputOffset = ftell($this->stdout);
+>>>>>>> git-aline/master/master
 
         if (false === $latest) {
             return '';
         }
 
+<<<<<<< HEAD
         $this->incrementalOutputOffset = strlen($data);
 
+=======
+>>>>>>> git-aline/master/master
         return $latest;
     }
 
     /**
+<<<<<<< HEAD
      * Clears the process output.
      *
      * @return Process
@@ -507,6 +782,73 @@ class Process
     public function clearOutput()
     {
         $this->stdout = '';
+=======
+     * Returns an iterator to the output of the process, with the output type as keys (Process::OUT/ERR).
+     *
+     * @param int $flags A bit field of Process::ITER_* flags
+     *
+     * @throws LogicException in case the output has been disabled
+     * @throws LogicException In case the process is not started
+     *
+     * @return \Generator
+     */
+    public function getIterator($flags = 0)
+    {
+        $this->readPipesForOutput(__FUNCTION__, false);
+
+        $clearOutput = !(self::ITER_KEEP_OUTPUT & $flags);
+        $blocking = !(self::ITER_NON_BLOCKING & $flags);
+        $yieldOut = !(self::ITER_SKIP_OUT & $flags);
+        $yieldErr = !(self::ITER_SKIP_ERR & $flags);
+
+        while (null !== $this->callback || ($yieldOut && !feof($this->stdout)) || ($yieldErr && !feof($this->stderr))) {
+            if ($yieldOut) {
+                $out = stream_get_contents($this->stdout, -1, $this->incrementalOutputOffset);
+
+                if (isset($out[0])) {
+                    if ($clearOutput) {
+                        $this->clearOutput();
+                    } else {
+                        $this->incrementalOutputOffset = ftell($this->stdout);
+                    }
+
+                    yield self::OUT => $out;
+                }
+            }
+
+            if ($yieldErr) {
+                $err = stream_get_contents($this->stderr, -1, $this->incrementalErrorOutputOffset);
+
+                if (isset($err[0])) {
+                    if ($clearOutput) {
+                        $this->clearErrorOutput();
+                    } else {
+                        $this->incrementalErrorOutputOffset = ftell($this->stderr);
+                    }
+
+                    yield self::ERR => $err;
+                }
+            }
+
+            if (!$blocking && !isset($out[0]) && !isset($err[0])) {
+                yield self::OUT => '';
+            }
+
+            $this->checkTimeout();
+            $this->readPipesForOutput(__FUNCTION__, $blocking);
+        }
+    }
+
+    /**
+     * Clears the process output.
+     *
+     * @return $this
+     */
+    public function clearOutput()
+    {
+        ftruncate($this->stdout, 0);
+        fseek($this->stdout, 0);
+>>>>>>> git-aline/master/master
         $this->incrementalOutputOffset = 0;
 
         return $this;
@@ -522,6 +864,7 @@ class Process
      */
     public function getErrorOutput()
     {
+<<<<<<< HEAD
         if ($this->outputDisabled) {
             throw new LogicException('Output has been disabled.');
         }
@@ -531,6 +874,15 @@ class Process
         $this->readPipes(false, '\\' === DIRECTORY_SEPARATOR ? !$this->processInformation['running'] : true);
 
         return $this->stderr;
+=======
+        $this->readPipesForOutput(__FUNCTION__);
+
+        if (false === $ret = stream_get_contents($this->stderr, -1, 0)) {
+            return '';
+        }
+
+        return $ret;
+>>>>>>> git-aline/master/master
     }
 
     /**
@@ -540,6 +892,7 @@ class Process
      * whole error output, this one returns the new error output since the last
      * call.
      *
+<<<<<<< HEAD
      * @throws LogicException in case the output has been disabled
      * @throws LogicException In case the process is not started
      *
@@ -552,24 +905,49 @@ class Process
         $data = $this->getErrorOutput();
 
         $latest = substr($data, $this->incrementalErrorOutputOffset);
+=======
+     * @return string The process error output since the last call
+     *
+     * @throws LogicException in case the output has been disabled
+     * @throws LogicException In case the process is not started
+     */
+    public function getIncrementalErrorOutput()
+    {
+        $this->readPipesForOutput(__FUNCTION__);
+
+        $latest = stream_get_contents($this->stderr, -1, $this->incrementalErrorOutputOffset);
+        $this->incrementalErrorOutputOffset = ftell($this->stderr);
+>>>>>>> git-aline/master/master
 
         if (false === $latest) {
             return '';
         }
 
+<<<<<<< HEAD
         $this->incrementalErrorOutputOffset = strlen($data);
 
+=======
+>>>>>>> git-aline/master/master
         return $latest;
     }
 
     /**
      * Clears the process output.
      *
+<<<<<<< HEAD
      * @return Process
      */
     public function clearErrorOutput()
     {
         $this->stderr = '';
+=======
+     * @return $this
+     */
+    public function clearErrorOutput()
+    {
+        ftruncate($this->stderr, 0);
+        fseek($this->stderr, 0);
+>>>>>>> git-aline/master/master
         $this->incrementalErrorOutputOffset = 0;
 
         return $this;
@@ -584,7 +962,11 @@ class Process
      */
     public function getExitCode()
     {
+<<<<<<< HEAD
         if ($this->isSigchildEnabled() && !$this->enhanceSigchildCompatibility) {
+=======
+        if (!$this->enhanceSigchildCompatibility && $this->isSigchildEnabled()) {
+>>>>>>> git-aline/master/master
             throw new RuntimeException('This PHP has been compiled with --enable-sigchild. You must use setEnhanceSigchildCompatibility() to use this method.');
         }
 
@@ -599,9 +981,13 @@ class Process
      * This method relies on the Unix exit code status standardization
      * and might not be relevant for other operating systems.
      *
+<<<<<<< HEAD
      * @return null|string A string representation for the exit status code, null if the Process is not terminated.
      *
      * @throws RuntimeException In case --enable-sigchild is activated and the sigchild compatibility mode is disabled
+=======
+     * @return null|string A string representation for the exit status code, null if the Process is not terminated
+>>>>>>> git-aline/master/master
      *
      * @see http://tldp.org/LDP/abs/html/exitcodes.html
      * @see http://en.wikipedia.org/wiki/Unix_signal
@@ -639,12 +1025,19 @@ class Process
     {
         $this->requireProcessIsTerminated(__FUNCTION__);
 
+<<<<<<< HEAD
         if ($this->isSigchildEnabled()) {
             throw new RuntimeException('This PHP has been compiled with --enable-sigchild. Term signal can not be retrieved.');
         }
 
         $this->updateStatus(false);
 
+=======
+        if (!$this->enhanceSigchildCompatibility && $this->isSigchildEnabled()) {
+            throw new RuntimeException('This PHP has been compiled with --enable-sigchild. Term signal can not be retrieved.');
+        }
+
+>>>>>>> git-aline/master/master
         return $this->processInformation['signaled'];
     }
 
@@ -662,12 +1055,19 @@ class Process
     {
         $this->requireProcessIsTerminated(__FUNCTION__);
 
+<<<<<<< HEAD
         if ($this->isSigchildEnabled()) {
             throw new RuntimeException('This PHP has been compiled with --enable-sigchild. Term signal can not be retrieved.');
         }
 
         $this->updateStatus(false);
 
+=======
+        if ($this->isSigchildEnabled() && (!$this->enhanceSigchildCompatibility || -1 === $this->processInformation['termsig'])) {
+            throw new RuntimeException('This PHP has been compiled with --enable-sigchild. Term signal can not be retrieved.');
+        }
+
+>>>>>>> git-aline/master/master
         return $this->processInformation['termsig'];
     }
 
@@ -684,8 +1084,11 @@ class Process
     {
         $this->requireProcessIsTerminated(__FUNCTION__);
 
+<<<<<<< HEAD
         $this->updateStatus(false);
 
+=======
+>>>>>>> git-aline/master/master
         return $this->processInformation['stopped'];
     }
 
@@ -702,8 +1105,11 @@ class Process
     {
         $this->requireProcessIsTerminated(__FUNCTION__);
 
+<<<<<<< HEAD
         $this->updateStatus(false);
 
+=======
+>>>>>>> git-aline/master/master
         return $this->processInformation['stopsig'];
     }
 
@@ -730,7 +1136,11 @@ class Process
      */
     public function isStarted()
     {
+<<<<<<< HEAD
         return $this->status != self::STATUS_READY;
+=======
+        return self::STATUS_READY != $this->status;
+>>>>>>> git-aline/master/master
     }
 
     /**
@@ -742,7 +1152,11 @@ class Process
     {
         $this->updateStatus(false);
 
+<<<<<<< HEAD
         return $this->status == self::STATUS_TERMINATED;
+=======
+        return self::STATUS_TERMINATED == $this->status;
+>>>>>>> git-aline/master/master
     }
 
     /**
@@ -763,28 +1177,38 @@ class Process
      * Stops the process.
      *
      * @param int|float $timeout The timeout in seconds
+<<<<<<< HEAD
      * @param int       $signal  A POSIX signal to send in case the process has not stop at timeout, default is SIGKILL
      *
      * @return int The exit-code of the process
      *
      * @throws RuntimeException if the process got signaled
+=======
+     * @param int       $signal  A POSIX signal to send in case the process has not stop at timeout, default is SIGKILL (9)
+     *
+     * @return int The exit-code of the process
+>>>>>>> git-aline/master/master
      */
     public function stop($timeout = 10, $signal = null)
     {
         $timeoutMicro = microtime(true) + $timeout;
         if ($this->isRunning()) {
+<<<<<<< HEAD
             if ('\\' === DIRECTORY_SEPARATOR && !$this->isSigchildEnabled()) {
                 exec(sprintf('taskkill /F /T /PID %d 2>&1', $this->getPid()), $output, $exitCode);
                 if ($exitCode > 0) {
                     throw new RuntimeException('Unable to kill the process');
                 }
             }
+=======
+>>>>>>> git-aline/master/master
             // given `SIGTERM` may not be defined and that `proc_terminate` uses the constant value and not the constant itself, we use the same here
             $this->doSignal(15, false);
             do {
                 usleep(1000);
             } while ($this->isRunning() && microtime(true) < $timeoutMicro);
 
+<<<<<<< HEAD
             if ($this->isRunning() && !$this->isSigchildEnabled()) {
                 if (null !== $signal || defined('SIGKILL')) {
                     // avoid exception here :
@@ -798,6 +1222,21 @@ class Process
 
         $this->updateStatus(false);
         if ($this->processInformation['running']) {
+=======
+            if ($this->isRunning()) {
+                // Avoid exception here: process is supposed to be running, but it might have stopped just
+                // after this line. In any case, let's silently discard the error, we cannot do anything.
+                $this->doSignal($signal ?: 9, false);
+            }
+        }
+
+        if ($this->isRunning()) {
+            if (isset($this->fallbackStatus['pid'])) {
+                unset($this->fallbackStatus['pid']);
+
+                return $this->stop(0, $signal);
+            }
+>>>>>>> git-aline/master/master
             $this->close();
         }
 
@@ -807,23 +1246,47 @@ class Process
     /**
      * Adds a line to the STDOUT stream.
      *
+<<<<<<< HEAD
+=======
+     * @internal
+     *
+>>>>>>> git-aline/master/master
      * @param string $line The line to append
      */
     public function addOutput($line)
     {
         $this->lastOutputTime = microtime(true);
+<<<<<<< HEAD
         $this->stdout .= $line;
+=======
+
+        fseek($this->stdout, 0, SEEK_END);
+        fwrite($this->stdout, $line);
+        fseek($this->stdout, $this->incrementalOutputOffset);
+>>>>>>> git-aline/master/master
     }
 
     /**
      * Adds a line to the STDERR stream.
      *
+<<<<<<< HEAD
+=======
+     * @internal
+     *
+>>>>>>> git-aline/master/master
      * @param string $line The line to append
      */
     public function addErrorOutput($line)
     {
         $this->lastOutputTime = microtime(true);
+<<<<<<< HEAD
         $this->stderr .= $line;
+=======
+
+        fseek($this->stderr, 0, SEEK_END);
+        fwrite($this->stderr, $line);
+        fseek($this->stderr, $this->incrementalErrorOutputOffset);
+>>>>>>> git-aline/master/master
     }
 
     /**
@@ -833,13 +1296,21 @@ class Process
      */
     public function getCommandLine()
     {
+<<<<<<< HEAD
         return $this->commandline;
+=======
+        return \is_array($this->commandline) ? implode(' ', array_map(array($this, 'escapeArgument'), $this->commandline)) : $this->commandline;
+>>>>>>> git-aline/master/master
     }
 
     /**
      * Sets the command line to be executed.
      *
+<<<<<<< HEAD
      * @param string $commandline The command to execute
+=======
+     * @param string|array $commandline The command to execute
+>>>>>>> git-aline/master/master
      *
      * @return self The current Process instance
      */
@@ -895,7 +1366,11 @@ class Process
      *
      * @param int|float|null $timeout The timeout in seconds
      *
+<<<<<<< HEAD
      * @return self The current Process instance.
+=======
+     * @return self The current Process instance
+>>>>>>> git-aline/master/master
      *
      * @throws LogicException           if the output is disabled
      * @throws InvalidArgumentException if the timeout is negative
@@ -922,11 +1397,27 @@ class Process
      */
     public function setTty($tty)
     {
+<<<<<<< HEAD
         if ('\\' === DIRECTORY_SEPARATOR && $tty) {
             throw new RuntimeException('TTY mode is not supported on Windows platform.');
         }
         if ($tty && (!file_exists('/dev/tty') || !is_readable('/dev/tty'))) {
             throw new RuntimeException('TTY mode requires /dev/tty to be readable.');
+=======
+        if ('\\' === \DIRECTORY_SEPARATOR && $tty) {
+            throw new RuntimeException('TTY mode is not supported on Windows platform.');
+        }
+        if ($tty) {
+            static $isTtySupported;
+
+            if (null === $isTtySupported) {
+                $isTtySupported = (bool) @proc_open('echo 1 >/dev/null', array(array('file', '/dev/tty', 'r'), array('file', '/dev/tty', 'w'), array('file', '/dev/tty', 'w')), $pipes);
+            }
+
+            if (!$isTtySupported) {
+                throw new RuntimeException('TTY mode requires /dev/tty to be read/writable.');
+            }
+>>>>>>> git-aline/master/master
         }
 
         $this->tty = (bool) $tty;
@@ -1011,8 +1502,15 @@ class Process
     /**
      * Sets the environment variables.
      *
+<<<<<<< HEAD
      * An environment variable value should be a string.
      * If it is an array, the variable is ignored.
+=======
+     * Each environment variable value should be a string.
+     * If it is an array, the variable is ignored.
+     * If it is false or null, it will be removed when
+     * env vars are otherwise inherited.
+>>>>>>> git-aline/master/master
      *
      * That happens in PHP when 'argv' is registered into
      * the $_ENV array for instance.
@@ -1025,6 +1523,7 @@ class Process
     {
         // Process can not handle env values that are arrays
         $env = array_filter($env, function ($value) {
+<<<<<<< HEAD
             return !is_array($value);
         });
 
@@ -1032,11 +1531,18 @@ class Process
         foreach ($env as $key => $value) {
             $this->env[$key] = (string) $value;
         }
+=======
+            return !\is_array($value);
+        });
+
+        $this->env = $env;
+>>>>>>> git-aline/master/master
 
         return $this;
     }
 
     /**
+<<<<<<< HEAD
      * Gets the contents of STDIN.
      *
      * @return string|null The current contents
@@ -1056,6 +1562,11 @@ class Process
      * Gets the Process input.
      *
      * @return null|string The Process input
+=======
+     * Gets the Process input.
+     *
+     * @return resource|string|\Iterator|null The Process input
+>>>>>>> git-aline/master/master
      */
     public function getInput()
     {
@@ -1063,6 +1574,7 @@ class Process
     }
 
     /**
+<<<<<<< HEAD
      * Sets the contents of STDIN.
      *
      * @param string|null $stdin The new contents
@@ -1083,17 +1595,26 @@ class Process
     }
 
     /**
+=======
+>>>>>>> git-aline/master/master
      * Sets the input.
      *
      * This content will be passed to the underlying process standard input.
      *
+<<<<<<< HEAD
      * @param mixed $input The content
+=======
+     * @param string|int|float|bool|resource|\Traversable|null $input The content
+>>>>>>> git-aline/master/master
      *
      * @return self The current Process instance
      *
      * @throws LogicException In case the process is running
+<<<<<<< HEAD
      *
      * Passing an object as an input is deprecated since version 2.5 and will be removed in 3.0.
+=======
+>>>>>>> git-aline/master/master
      */
     public function setInput($input)
     {
@@ -1101,7 +1622,11 @@ class Process
             throw new LogicException('Input can not be set while the process is running.');
         }
 
+<<<<<<< HEAD
         $this->input = ProcessUtils::validateInput(sprintf('%s::%s', __CLASS__, __FUNCTION__), $input);
+=======
+        $this->input = ProcessUtils::validateInput(__METHOD__, $input);
+>>>>>>> git-aline/master/master
 
         return $this;
     }
@@ -1110,9 +1635,19 @@ class Process
      * Gets the options for proc_open.
      *
      * @return array The current options
+<<<<<<< HEAD
      */
     public function getOptions()
     {
+=======
+     *
+     * @deprecated since version 3.3, to be removed in 4.0.
+     */
+    public function getOptions()
+    {
+        @trigger_error(sprintf('The %s() method is deprecated since Symfony 3.3 and will be removed in 4.0.', __METHOD__), E_USER_DEPRECATED);
+
+>>>>>>> git-aline/master/master
         return $this->options;
     }
 
@@ -1122,9 +1657,19 @@ class Process
      * @param array $options The new options
      *
      * @return self The current Process instance
+<<<<<<< HEAD
      */
     public function setOptions(array $options)
     {
+=======
+     *
+     * @deprecated since version 3.3, to be removed in 4.0.
+     */
+    public function setOptions(array $options)
+    {
+        @trigger_error(sprintf('The %s() method is deprecated since Symfony 3.3 and will be removed in 4.0.', __METHOD__), E_USER_DEPRECATED);
+
+>>>>>>> git-aline/master/master
         $this->options = $options;
 
         return $this;
@@ -1136,9 +1681,19 @@ class Process
      * This is true by default.
      *
      * @return bool
+<<<<<<< HEAD
      */
     public function getEnhanceWindowsCompatibility()
     {
+=======
+     *
+     * @deprecated since version 3.3, to be removed in 4.0. Enhanced Windows compatibility will always be enabled.
+     */
+    public function getEnhanceWindowsCompatibility()
+    {
+        @trigger_error(sprintf('The %s() method is deprecated since Symfony 3.3 and will be removed in 4.0. Enhanced Windows compatibility will always be enabled.', __METHOD__), E_USER_DEPRECATED);
+
+>>>>>>> git-aline/master/master
         return $this->enhanceWindowsCompatibility;
     }
 
@@ -1148,9 +1703,19 @@ class Process
      * @param bool $enhance
      *
      * @return self The current Process instance
+<<<<<<< HEAD
      */
     public function setEnhanceWindowsCompatibility($enhance)
     {
+=======
+     *
+     * @deprecated since version 3.3, to be removed in 4.0. Enhanced Windows compatibility will always be enabled.
+     */
+    public function setEnhanceWindowsCompatibility($enhance)
+    {
+        @trigger_error(sprintf('The %s() method is deprecated since Symfony 3.3 and will be removed in 4.0. Enhanced Windows compatibility will always be enabled.', __METHOD__), E_USER_DEPRECATED);
+
+>>>>>>> git-aline/master/master
         $this->enhanceWindowsCompatibility = (bool) $enhance;
 
         return $this;
@@ -1160,9 +1725,19 @@ class Process
      * Returns whether sigchild compatibility mode is activated or not.
      *
      * @return bool
+<<<<<<< HEAD
      */
     public function getEnhanceSigchildCompatibility()
     {
+=======
+     *
+     * @deprecated since version 3.3, to be removed in 4.0. Sigchild compatibility will always be enabled.
+     */
+    public function getEnhanceSigchildCompatibility()
+    {
+        @trigger_error(sprintf('The %s() method is deprecated since Symfony 3.3 and will be removed in 4.0. Sigchild compatibility will always be enabled.', __METHOD__), E_USER_DEPRECATED);
+
+>>>>>>> git-aline/master/master
         return $this->enhanceSigchildCompatibility;
     }
 
@@ -1176,15 +1751,60 @@ class Process
      * @param bool $enhance
      *
      * @return self The current Process instance
+<<<<<<< HEAD
      */
     public function setEnhanceSigchildCompatibility($enhance)
     {
+=======
+     *
+     * @deprecated since version 3.3, to be removed in 4.0.
+     */
+    public function setEnhanceSigchildCompatibility($enhance)
+    {
+        @trigger_error(sprintf('The %s() method is deprecated since Symfony 3.3 and will be removed in 4.0. Sigchild compatibility will always be enabled.', __METHOD__), E_USER_DEPRECATED);
+
+>>>>>>> git-aline/master/master
         $this->enhanceSigchildCompatibility = (bool) $enhance;
 
         return $this;
     }
 
     /**
+<<<<<<< HEAD
+=======
+     * Sets whether environment variables will be inherited or not.
+     *
+     * @param bool $inheritEnv
+     *
+     * @return self The current Process instance
+     */
+    public function inheritEnvironmentVariables($inheritEnv = true)
+    {
+        if (!$inheritEnv) {
+            @trigger_error('Not inheriting environment variables is deprecated since Symfony 3.3 and will always happen in 4.0. Set "Process::inheritEnvironmentVariables()" to true instead.', E_USER_DEPRECATED);
+        }
+
+        $this->inheritEnv = (bool) $inheritEnv;
+
+        return $this;
+    }
+
+    /**
+     * Returns whether environment variables will be inherited or not.
+     *
+     * @return bool
+     *
+     * @deprecated since version 3.3, to be removed in 4.0. Environment variables will always be inherited.
+     */
+    public function areEnvironmentVariablesInherited()
+    {
+        @trigger_error(sprintf('The %s() method is deprecated since Symfony 3.3 and will be removed in 4.0. Environment variables will always be inherited.', __METHOD__), E_USER_DEPRECATED);
+
+        return $this->inheritEnv;
+    }
+
+    /**
+>>>>>>> git-aline/master/master
      * Performs a check between the timeout definition and the time the process started.
      *
      * In case you run a background process (with the start method), you should
@@ -1194,7 +1814,11 @@ class Process
      */
     public function checkTimeout()
     {
+<<<<<<< HEAD
         if ($this->status !== self::STATUS_STARTED) {
+=======
+        if (self::STATUS_STARTED !== $this->status) {
+>>>>>>> git-aline/master/master
             return;
         }
 
@@ -1224,6 +1848,7 @@ class Process
             return $result;
         }
 
+<<<<<<< HEAD
         if ('\\' === DIRECTORY_SEPARATOR) {
             return $result = false;
         }
@@ -1236,6 +1861,13 @@ class Process
         }
 
         return $result = false;
+=======
+        if ('\\' === \DIRECTORY_SEPARATOR) {
+            return $result = false;
+        }
+
+        return $result = (bool) @proc_open('echo 1 >/dev/null', array(array('pty'), array('pty'), array('pty')), $pipes);
+>>>>>>> git-aline/master/master
     }
 
     /**
@@ -1245,6 +1877,7 @@ class Process
      */
     private function getDescriptors()
     {
+<<<<<<< HEAD
         if ('\\' === DIRECTORY_SEPARATOR) {
             $this->processPipes = WindowsPipes::create($this, $this->input);
         } else {
@@ -1260,6 +1893,18 @@ class Process
         }
 
         return $descriptors;
+=======
+        if ($this->input instanceof \Iterator) {
+            $this->input->rewind();
+        }
+        if ('\\' === \DIRECTORY_SEPARATOR) {
+            $this->processPipes = new WindowsPipes($this->input, !$this->outputDisabled || $this->hasCallback);
+        } else {
+            $this->processPipes = new UnixPipes($this->isTty(), $this->isPty(), $this->input, !$this->outputDisabled || $this->hasCallback);
+        }
+
+        return $this->processPipes->getDescriptors();
+>>>>>>> git-aline/master/master
     }
 
     /**
@@ -1272,6 +1917,7 @@ class Process
      *
      * @return \Closure A PHP closure
      */
+<<<<<<< HEAD
     protected function buildCallback($callback)
     {
         $that = $this;
@@ -1289,12 +1935,41 @@ class Process
         };
 
         return $callback;
+=======
+    protected function buildCallback(callable $callback = null)
+    {
+        if ($this->outputDisabled) {
+            return function ($type, $data) use ($callback) {
+                if (null !== $callback) {
+                    \call_user_func($callback, $type, $data);
+                }
+            };
+        }
+
+        $out = self::OUT;
+
+        return function ($type, $data) use ($callback, $out) {
+            if ($out == $type) {
+                $this->addOutput($data);
+            } else {
+                $this->addErrorOutput($data);
+            }
+
+            if (null !== $callback) {
+                \call_user_func($callback, $type, $data);
+            }
+        };
+>>>>>>> git-aline/master/master
     }
 
     /**
      * Updates the status of the process, reads pipes.
      *
+<<<<<<< HEAD
      * @param bool $blocking Whether to use a blocking read call.
+=======
+     * @param bool $blocking Whether to use a blocking read call
+>>>>>>> git-aline/master/master
      */
     protected function updateStatus($blocking)
     {
@@ -1303,11 +1978,23 @@ class Process
         }
 
         $this->processInformation = proc_get_status($this->process);
+<<<<<<< HEAD
         $this->captureExitCode();
 
         $this->readPipes($blocking, '\\' === DIRECTORY_SEPARATOR ? !$this->processInformation['running'] : true);
 
         if (!$this->processInformation['running']) {
+=======
+        $running = $this->processInformation['running'];
+
+        $this->readPipes($running && $blocking, '\\' !== \DIRECTORY_SEPARATOR || !$running);
+
+        if ($this->fallbackStatus && $this->enhanceSigchildCompatibility && $this->isSigchildEnabled()) {
+            $this->processInformation = $this->fallbackStatus + $this->processInformation;
+        }
+
+        if (!$running) {
+>>>>>>> git-aline/master/master
             $this->close();
         }
     }
@@ -1323,7 +2010,11 @@ class Process
             return self::$sigchild;
         }
 
+<<<<<<< HEAD
         if (!function_exists('phpinfo')) {
+=======
+        if (!\function_exists('phpinfo') || \defined('HHVM_VERSION')) {
+>>>>>>> git-aline/master/master
             return self::$sigchild = false;
         }
 
@@ -1334,6 +2025,28 @@ class Process
     }
 
     /**
+<<<<<<< HEAD
+=======
+     * Reads pipes for the freshest output.
+     *
+     * @param string $caller   The name of the method that needs fresh outputs
+     * @param bool   $blocking Whether to use blocking calls or not
+     *
+     * @throws LogicException in case output has been disabled or process is not started
+     */
+    private function readPipesForOutput($caller, $blocking = false)
+    {
+        if ($this->outputDisabled) {
+            throw new LogicException('Output has been disabled.');
+        }
+
+        $this->requireProcessIsStarted($caller);
+
+        $this->updateStatus($blocking);
+    }
+
+    /**
+>>>>>>> git-aline/master/master
      * Validates and returns the filtered timeout.
      *
      * @param int|float|null $timeout
@@ -1358,8 +2071,13 @@ class Process
     /**
      * Reads pipes, executes callback.
      *
+<<<<<<< HEAD
      * @param bool $blocking Whether to use blocking calls or not.
      * @param bool $close    Whether to close file handles or not.
+=======
+     * @param bool $blocking Whether to use blocking calls or not
+     * @param bool $close    Whether to close file handles or not
+>>>>>>> git-aline/master/master
      */
     private function readPipes($blocking, $close)
     {
@@ -1367,15 +2085,23 @@ class Process
 
         $callback = $this->callback;
         foreach ($result as $type => $data) {
+<<<<<<< HEAD
             if (3 == $type) {
                 $this->fallbackExitcode = (int) $data;
             } else {
                 $callback($type === self::STDOUT ? self::OUT : self::ERR, $data);
+=======
+            if (3 !== $type) {
+                $callback(self::STDOUT === $type ? self::OUT : self::ERR, $data);
+            } elseif (!isset($this->fallbackStatus['signaled'])) {
+                $this->fallbackStatus['exitcode'] = (int) $data;
+>>>>>>> git-aline/master/master
             }
         }
     }
 
     /**
+<<<<<<< HEAD
      * Captures the exitcode if mentioned in the process information.
      */
     private function captureExitCode()
@@ -1386,6 +2112,8 @@ class Process
     }
 
     /**
+=======
+>>>>>>> git-aline/master/master
      * Closes process resource, closes file handles, sets the exitcode.
      *
      * @return int The exitcode
@@ -1393,6 +2121,7 @@ class Process
     private function close()
     {
         $this->processPipes->close();
+<<<<<<< HEAD
         if (is_resource($this->process)) {
             $exitcode = proc_close($this->process);
         } else {
@@ -1409,6 +2138,29 @@ class Process
             $this->exitcode = 128 + $this->processInformation['termsig'];
         }
 
+=======
+        if (\is_resource($this->process)) {
+            proc_close($this->process);
+        }
+        $this->exitcode = $this->processInformation['exitcode'];
+        $this->status = self::STATUS_TERMINATED;
+
+        if (-1 === $this->exitcode) {
+            if ($this->processInformation['signaled'] && 0 < $this->processInformation['termsig']) {
+                // if process has been signaled, no exitcode but a valid termsig, apply Unix convention
+                $this->exitcode = 128 + $this->processInformation['termsig'];
+            } elseif ($this->enhanceSigchildCompatibility && $this->isSigchildEnabled()) {
+                $this->processInformation['signaled'] = true;
+                $this->processInformation['termsig'] = -1;
+            }
+        }
+
+        // Free memory from self-reference callback created by buildCallback
+        // Doing so in other contexts like __destruct or by garbage collector is ineffective
+        // Now pipes are closed, so the callback is no longer necessary
+        $this->callback = null;
+
+>>>>>>> git-aline/master/master
         return $this->exitcode;
     }
 
@@ -1420,10 +2172,17 @@ class Process
         $this->starttime = null;
         $this->callback = null;
         $this->exitcode = null;
+<<<<<<< HEAD
         $this->fallbackExitcode = null;
         $this->processInformation = null;
         $this->stdout = null;
         $this->stderr = null;
+=======
+        $this->fallbackStatus = array();
+        $this->processInformation = null;
+        $this->stdout = fopen('php://temp/maxmemory:'.(1024 * 1024), 'wb+');
+        $this->stderr = fopen('php://temp/maxmemory:'.(1024 * 1024), 'wb+');
+>>>>>>> git-aline/master/master
         $this->process = null;
         $this->latestSignal = null;
         $this->status = self::STATUS_READY;
@@ -1440,12 +2199,20 @@ class Process
      * @return bool True if the signal was sent successfully, false otherwise
      *
      * @throws LogicException   In case the process is not running
+<<<<<<< HEAD
      * @throws RuntimeException In case --enable-sigchild is activated
+=======
+     * @throws RuntimeException In case --enable-sigchild is activated and the process can't be killed
+>>>>>>> git-aline/master/master
      * @throws RuntimeException In case of failure
      */
     private function doSignal($signal, $throwException)
     {
+<<<<<<< HEAD
         if (!$this->isRunning()) {
+=======
+        if (null === $pid = $this->getPid()) {
+>>>>>>> git-aline/master/master
             if ($throwException) {
                 throw new LogicException('Can not send signal on a non running process.');
             }
@@ -1453,6 +2220,7 @@ class Process
             return false;
         }
 
+<<<<<<< HEAD
         if ($this->isSigchildEnabled()) {
             if ($throwException) {
                 throw new RuntimeException('This PHP has been compiled with --enable-sigchild. The process can not be signaled.');
@@ -1470,16 +2238,103 @@ class Process
         }
 
         $this->latestSignal = $signal;
+=======
+        if ('\\' === \DIRECTORY_SEPARATOR) {
+            exec(sprintf('taskkill /F /T /PID %d 2>&1', $pid), $output, $exitCode);
+            if ($exitCode && $this->isRunning()) {
+                if ($throwException) {
+                    throw new RuntimeException(sprintf('Unable to kill the process (%s).', implode(' ', $output)));
+                }
+
+                return false;
+            }
+        } else {
+            if (!$this->enhanceSigchildCompatibility || !$this->isSigchildEnabled()) {
+                $ok = @proc_terminate($this->process, $signal);
+            } elseif (\function_exists('posix_kill')) {
+                $ok = @posix_kill($pid, $signal);
+            } elseif ($ok = proc_open(sprintf('kill -%d %d', $signal, $pid), array(2 => array('pipe', 'w')), $pipes)) {
+                $ok = false === fgets($pipes[2]);
+            }
+            if (!$ok) {
+                if ($throwException) {
+                    throw new RuntimeException(sprintf('Error while sending signal `%s`.', $signal));
+                }
+
+                return false;
+            }
+        }
+
+        $this->latestSignal = (int) $signal;
+        $this->fallbackStatus['signaled'] = true;
+        $this->fallbackStatus['exitcode'] = -1;
+        $this->fallbackStatus['termsig'] = $this->latestSignal;
+>>>>>>> git-aline/master/master
 
         return true;
     }
 
+<<<<<<< HEAD
     /**
      * Ensures the process is running or terminated, throws a LogicException if the process has a not started.
      *
      * @param string $functionName The function name that was called.
      *
      * @throws LogicException If the process has not run.
+=======
+    private function prepareWindowsCommandLine($cmd, array &$env)
+    {
+        $uid = uniqid('', true);
+        $varCount = 0;
+        $varCache = array();
+        $cmd = preg_replace_callback(
+            '/"(?:(
+                [^"%!^]*+
+                (?:
+                    (?: !LF! | "(?:\^[%!^])?+" )
+                    [^"%!^]*+
+                )++
+            ) | [^"]*+ )"/x',
+            function ($m) use (&$env, &$varCache, &$varCount, $uid) {
+                if (!isset($m[1])) {
+                    return $m[0];
+                }
+                if (isset($varCache[$m[0]])) {
+                    return $varCache[$m[0]];
+                }
+                if (false !== strpos($value = $m[1], "\0")) {
+                    $value = str_replace("\0", '?', $value);
+                }
+                if (false === strpbrk($value, "\"%!\n")) {
+                    return '"'.$value.'"';
+                }
+
+                $value = str_replace(array('!LF!', '"^!"', '"^%"', '"^^"', '""'), array("\n", '!', '%', '^', '"'), $value);
+                $value = '"'.preg_replace('/(\\\\*)"/', '$1$1\\"', $value).'"';
+                $var = $uid.++$varCount;
+
+                $env[$var] = $value;
+
+                return $varCache[$m[0]] = '!'.$var.'!';
+            },
+            $cmd
+        );
+
+        $cmd = 'cmd /V:ON /E:ON /D /C ('.str_replace("\n", ' ', $cmd).')';
+        foreach ($this->processPipes->getFiles() as $offset => $filename) {
+            $cmd .= ' '.$offset.'>"'.$filename.'"';
+        }
+
+        return $cmd;
+    }
+
+    /**
+     * Ensures the process is running or terminated, throws a LogicException if the process has a not started.
+     *
+     * @param string $functionName The function name that was called
+     *
+     * @throws LogicException if the process has not run
+>>>>>>> git-aline/master/master
      */
     private function requireProcessIsStarted($functionName)
     {
@@ -1491,9 +2346,15 @@ class Process
     /**
      * Ensures the process is terminated, throws a LogicException if the process has a status different than `terminated`.
      *
+<<<<<<< HEAD
      * @param string $functionName The function name that was called.
      *
      * @throws LogicException If the process is not yet terminated.
+=======
+     * @param string $functionName The function name that was called
+     *
+     * @throws LogicException if the process is not yet terminated
+>>>>>>> git-aline/master/master
      */
     private function requireProcessIsTerminated($functionName)
     {
@@ -1501,4 +2362,52 @@ class Process
             throw new LogicException(sprintf('Process must be terminated before calling %s.', $functionName));
         }
     }
+<<<<<<< HEAD
+=======
+
+    /**
+     * Escapes a string to be used as a shell argument.
+     *
+     * @param string $argument The argument that will be escaped
+     *
+     * @return string The escaped argument
+     */
+    private function escapeArgument($argument)
+    {
+        if ('\\' !== \DIRECTORY_SEPARATOR) {
+            return "'".str_replace("'", "'\\''", $argument)."'";
+        }
+        if ('' === $argument = (string) $argument) {
+            return '""';
+        }
+        if (false !== strpos($argument, "\0")) {
+            $argument = str_replace("\0", '?', $argument);
+        }
+        if (!preg_match('/[\/()%!^"<>&|\s]/', $argument)) {
+            return $argument;
+        }
+        $argument = preg_replace('/(\\\\+)$/', '$1$1', $argument);
+
+        return '"'.str_replace(array('"', '^', '%', '!', "\n"), array('""', '"^^"', '"^%"', '"^!"', '!LF!'), $argument).'"';
+    }
+
+    private function getDefaultEnv()
+    {
+        $env = array();
+
+        foreach ($_SERVER as $k => $v) {
+            if (\is_string($v) && false !== $v = getenv($k)) {
+                $env[$k] = $v;
+            }
+        }
+
+        foreach ($_ENV as $k => $v) {
+            if (\is_string($v)) {
+                $env[$k] = $v;
+            }
+        }
+
+        return $env;
+    }
+>>>>>>> git-aline/master/master
 }

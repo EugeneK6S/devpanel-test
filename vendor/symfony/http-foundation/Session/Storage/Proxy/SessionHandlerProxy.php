@@ -12,6 +12,7 @@
 namespace Symfony\Component\HttpFoundation\Session\Storage\Proxy;
 
 /**
+<<<<<<< HEAD
  * SessionHandler proxy.
  *
  * @author Drak <drak@zikula.org>
@@ -28,6 +29,14 @@ class SessionHandlerProxy extends AbstractProxy implements \SessionHandlerInterf
      *
      * @param \SessionHandlerInterface $handler
      */
+=======
+ * @author Drak <drak@zikula.org>
+ */
+class SessionHandlerProxy extends AbstractProxy implements \SessionHandlerInterface, \SessionUpdateTimestampHandlerInterface
+{
+    protected $handler;
+
+>>>>>>> git-aline/master/master
     public function __construct(\SessionHandlerInterface $handler)
     {
         $this->handler = $handler;
@@ -35,6 +44,17 @@ class SessionHandlerProxy extends AbstractProxy implements \SessionHandlerInterf
         $this->saveHandlerName = $this->wrapper ? ini_get('session.save_handler') : 'user';
     }
 
+<<<<<<< HEAD
+=======
+    /**
+     * @return \SessionHandlerInterface
+     */
+    public function getHandler()
+    {
+        return $this->handler;
+    }
+
+>>>>>>> git-aline/master/master
     // \SessionHandlerInterface
 
     /**
@@ -42,6 +62,7 @@ class SessionHandlerProxy extends AbstractProxy implements \SessionHandlerInterf
      */
     public function open($savePath, $sessionName)
     {
+<<<<<<< HEAD
         $return = (bool) $this->handler->open($savePath, $sessionName);
 
         if (true === $return) {
@@ -49,6 +70,9 @@ class SessionHandlerProxy extends AbstractProxy implements \SessionHandlerInterf
         }
 
         return $return;
+=======
+        return (bool) $this->handler->open($savePath, $sessionName);
+>>>>>>> git-aline/master/master
     }
 
     /**
@@ -56,8 +80,11 @@ class SessionHandlerProxy extends AbstractProxy implements \SessionHandlerInterf
      */
     public function close()
     {
+<<<<<<< HEAD
         $this->active = false;
 
+=======
+>>>>>>> git-aline/master/master
         return (bool) $this->handler->close();
     }
 
@@ -92,4 +119,23 @@ class SessionHandlerProxy extends AbstractProxy implements \SessionHandlerInterf
     {
         return (bool) $this->handler->gc($maxlifetime);
     }
+<<<<<<< HEAD
+=======
+
+    /**
+     * {@inheritdoc}
+     */
+    public function validateId($sessionId)
+    {
+        return !$this->handler instanceof \SessionUpdateTimestampHandlerInterface || $this->handler->validateId($sessionId);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function updateTimestamp($sessionId, $data)
+    {
+        return $this->handler instanceof \SessionUpdateTimestampHandlerInterface ? $this->handler->updateTimestamp($sessionId, $data) : $this->write($sessionId, $data);
+    }
+>>>>>>> git-aline/master/master
 }

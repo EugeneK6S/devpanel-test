@@ -16,9 +16,12 @@ namespace Symfony\Component\Console\Output;
  */
 class BufferedOutput extends Output
 {
+<<<<<<< HEAD
     /**
      * @var string
      */
+=======
+>>>>>>> git-aline/master/master
     private $buffer = '';
 
     /**
@@ -42,7 +45,11 @@ class BufferedOutput extends Output
         $this->buffer .= $message;
 
         if ($newline) {
+<<<<<<< HEAD
             $this->buffer .= "\n";
+=======
+            $this->buffer .= PHP_EOL;
+>>>>>>> git-aline/master/master
         }
     }
 }

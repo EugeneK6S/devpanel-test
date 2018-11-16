@@ -22,8 +22,11 @@ class HeaderBag implements \IteratorAggregate, \Countable
     protected $cacheControl = array();
 
     /**
+<<<<<<< HEAD
      * Constructor.
      *
+=======
+>>>>>>> git-aline/master/master
      * @param array $headers An array of HTTP headers
      */
     public function __construct(array $headers = array())
@@ -40,6 +43,7 @@ class HeaderBag implements \IteratorAggregate, \Countable
      */
     public function __toString()
     {
+<<<<<<< HEAD
         if (!$this->headers) {
             return '';
         }
@@ -48,6 +52,16 @@ class HeaderBag implements \IteratorAggregate, \Countable
         $content = '';
         ksort($this->headers);
         foreach ($this->headers as $name => $values) {
+=======
+        if (!$headers = $this->all()) {
+            return '';
+        }
+
+        ksort($headers);
+        $max = max(array_map('strlen', array_keys($headers))) + 1;
+        $content = '';
+        foreach ($headers as $name => $values) {
+>>>>>>> git-aline/master/master
             $name = implode('-', array_map('ucfirst', explode('-', $name)));
             foreach ($values as $value) {
                 $content .= sprintf("%-{$max}s %s\r\n", $name.':', $value);
@@ -74,7 +88,11 @@ class HeaderBag implements \IteratorAggregate, \Countable
      */
     public function keys()
     {
+<<<<<<< HEAD
         return array_keys($this->headers);
+=======
+        return array_keys($this->all());
+>>>>>>> git-aline/master/master
     }
 
     /**
@@ -103,6 +121,7 @@ class HeaderBag implements \IteratorAggregate, \Countable
     /**
      * Returns a header value by name.
      *
+<<<<<<< HEAD
      * @param string $key     The header name
      * @param mixed  $default The default value
      * @param bool   $first   Whether to return the first value or all header values
@@ -114,6 +133,20 @@ class HeaderBag implements \IteratorAggregate, \Countable
         $key = strtr(strtolower($key), '_', '-');
 
         if (!array_key_exists($key, $this->headers)) {
+=======
+     * @param string               $key     The header name
+     * @param string|string[]|null $default The default value
+     * @param bool                 $first   Whether to return the first value or all header values
+     *
+     * @return string|string[]|null The first header value or default value if $first is true, an array of values otherwise
+     */
+    public function get($key, $default = null, $first = true)
+    {
+        $key = str_replace('_', '-', strtolower($key));
+        $headers = $this->all();
+
+        if (!array_key_exists($key, $headers)) {
+>>>>>>> git-aline/master/master
             if (null === $default) {
                 return $first ? null : array();
             }
@@ -122,15 +155,23 @@ class HeaderBag implements \IteratorAggregate, \Countable
         }
 
         if ($first) {
+<<<<<<< HEAD
             return count($this->headers[$key]) ? $this->headers[$key][0] : $default;
         }
 
         return $this->headers[$key];
+=======
+            return \count($headers[$key]) ? $headers[$key][0] : $default;
+        }
+
+        return $headers[$key];
+>>>>>>> git-aline/master/master
     }
 
     /**
      * Sets a header by name.
      *
+<<<<<<< HEAD
      * @param string       $key     The key
      * @param string|array $values  The value or an array of values
      * @param bool         $replace Whether to replace the actual value or not (true by default)
@@ -149,6 +190,34 @@ class HeaderBag implements \IteratorAggregate, \Countable
 
         if ('cache-control' === $key) {
             $this->cacheControl = $this->parseCacheControl($values[0]);
+=======
+     * @param string          $key     The key
+     * @param string|string[] $values  The value or an array of values
+     * @param bool            $replace Whether to replace the actual value or not (true by default)
+     */
+    public function set($key, $values, $replace = true)
+    {
+        $key = str_replace('_', '-', strtolower($key));
+
+        if (\is_array($values)) {
+            $values = array_values($values);
+
+            if (true === $replace || !isset($this->headers[$key])) {
+                $this->headers[$key] = $values;
+            } else {
+                $this->headers[$key] = array_merge($this->headers[$key], $values);
+            }
+        } else {
+            if (true === $replace || !isset($this->headers[$key])) {
+                $this->headers[$key] = array($values);
+            } else {
+                $this->headers[$key][] = $values;
+            }
+        }
+
+        if ('cache-control' === $key) {
+            $this->cacheControl = $this->parseCacheControl(implode(', ', $this->headers[$key]));
+>>>>>>> git-aline/master/master
         }
     }
 
@@ -161,7 +230,11 @@ class HeaderBag implements \IteratorAggregate, \Countable
      */
     public function has($key)
     {
+<<<<<<< HEAD
         return array_key_exists(strtr(strtolower($key), '_', '-'), $this->headers);
+=======
+        return array_key_exists(str_replace('_', '-', strtolower($key)), $this->all());
+>>>>>>> git-aline/master/master
     }
 
     /**
@@ -174,7 +247,11 @@ class HeaderBag implements \IteratorAggregate, \Countable
      */
     public function contains($key, $value)
     {
+<<<<<<< HEAD
         return in_array($value, $this->get($key, null, false));
+=======
+        return \in_array($value, $this->get($key, null, false));
+>>>>>>> git-aline/master/master
     }
 
     /**
@@ -184,7 +261,11 @@ class HeaderBag implements \IteratorAggregate, \Countable
      */
     public function remove($key)
     {
+<<<<<<< HEAD
         $key = strtr(strtolower($key), '_', '-');
+=======
+        $key = str_replace('_', '-', strtolower($key));
+>>>>>>> git-aline/master/master
 
         unset($this->headers[$key]);
 
@@ -282,7 +363,11 @@ class HeaderBag implements \IteratorAggregate, \Countable
      */
     public function count()
     {
+<<<<<<< HEAD
         return count($this->headers);
+=======
+        return \count($this->headers);
+>>>>>>> git-aline/master/master
     }
 
     protected function getCacheControlHeader()

@@ -32,17 +32,34 @@ class ResponseCacheStrategy implements ResponseCacheStrategyInterface
     private $embeddedResponses = 0;
     private $ttls = array();
     private $maxAges = array();
+<<<<<<< HEAD
+=======
+    private $isNotCacheableResponseEmbedded = false;
+>>>>>>> git-aline/master/master
 
     /**
      * {@inheritdoc}
      */
     public function add(Response $response)
     {
+<<<<<<< HEAD
         if ($response->isValidateable()) {
             $this->cacheable = false;
         } else {
             $this->ttls[] = $response->getTtl();
             $this->maxAges[] = $response->getMaxAge();
+=======
+        if (!$response->isFresh() || !$response->isCacheable()) {
+            $this->cacheable = false;
+        } else {
+            $maxAge = $response->getMaxAge();
+            $this->ttls[] = $response->getTtl();
+            $this->maxAges[] = $maxAge;
+
+            if (null === $maxAge) {
+                $this->isNotCacheableResponseEmbedded = true;
+            }
+>>>>>>> git-aline/master/master
         }
 
         ++$this->embeddedResponses;
@@ -64,6 +81,12 @@ class ResponseCacheStrategy implements ResponseCacheStrategyInterface
         if ($response->isValidateable()) {
             $response->setEtag(null);
             $response->setLastModified(null);
+<<<<<<< HEAD
+=======
+        }
+
+        if (!$response->isFresh() || !$response->isCacheable()) {
+>>>>>>> git-aline/master/master
             $this->cacheable = false;
         }
 
@@ -76,7 +99,13 @@ class ResponseCacheStrategy implements ResponseCacheStrategyInterface
         $this->ttls[] = $response->getTtl();
         $this->maxAges[] = $response->getMaxAge();
 
+<<<<<<< HEAD
         if (null !== $maxAge = min($this->maxAges)) {
+=======
+        if ($this->isNotCacheableResponseEmbedded) {
+            $response->headers->removeCacheControlDirective('s-maxage');
+        } elseif (null !== $maxAge = min($this->maxAges)) {
+>>>>>>> git-aline/master/master
             $response->setSharedMaxAge($maxAge);
             $response->headers->set('Age', $maxAge - min($this->ttls));
         }

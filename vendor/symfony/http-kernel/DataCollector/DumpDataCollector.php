@@ -18,8 +18,14 @@ use Symfony\Component\Stopwatch\Stopwatch;
 use Symfony\Component\VarDumper\Cloner\Data;
 use Symfony\Component\VarDumper\Cloner\VarCloner;
 use Symfony\Component\VarDumper\Dumper\CliDumper;
+<<<<<<< HEAD
 use Symfony\Component\VarDumper\Dumper\HtmlDumper;
 use Symfony\Component\VarDumper\Dumper\DataDumperInterface;
+=======
+use Symfony\Component\VarDumper\Dumper\DataDumperInterface;
+use Symfony\Component\VarDumper\Dumper\HtmlDumper;
+use Twig\Template;
+>>>>>>> git-aline/master/master
 
 /**
  * @author Nicolas Grekas <p@tchwork.com>
@@ -66,6 +72,7 @@ class DumpDataCollector extends DataCollector implements DataDumperInterface
         if ($this->stopwatch) {
             $this->stopwatch->start('dump');
         }
+<<<<<<< HEAD
         if ($this->isCollected) {
             $this->isCollected = false;
         }
@@ -76,6 +83,13 @@ class DumpDataCollector extends DataCollector implements DataDumperInterface
         } else {
             $trace = debug_backtrace($trace);
         }
+=======
+        if ($this->isCollected && !$this->dumper) {
+            $this->isCollected = false;
+        }
+
+        $trace = debug_backtrace(DEBUG_BACKTRACE_PROVIDE_OBJECT | DEBUG_BACKTRACE_IGNORE_ARGS, 7);
+>>>>>>> git-aline/master/master
 
         $file = $trace[0]['file'];
         $line = $trace[0]['line'];
@@ -96,6 +110,7 @@ class DumpDataCollector extends DataCollector implements DataDumperInterface
                         $line = $trace[$i]['line'];
 
                         break;
+<<<<<<< HEAD
                     } elseif (isset($trace[$i]['object']) && $trace[$i]['object'] instanceof \Twig_Template) {
                         $info = $trace[$i]['object'];
                         $name = $info->getTemplateName();
@@ -112,6 +127,27 @@ class DumpDataCollector extends DataCollector implements DataDumperInterface
                             }
 
                             $fileExcerpt = '<ol start="'.max($line - 3, 1).'">'.implode("\n", $fileExcerpt).'</ol>';
+=======
+                    } elseif (isset($trace[$i]['object']) && $trace[$i]['object'] instanceof Template) {
+                        $template = $trace[$i]['object'];
+                        $name = $template->getTemplateName();
+                        $src = method_exists($template, 'getSourceContext') ? $template->getSourceContext()->getCode() : (method_exists($template, 'getSource') ? $template->getSource() : false);
+                        $info = $template->getDebugInfo();
+                        if (isset($info[$trace[$i - 1]['line']])) {
+                            $line = $info[$trace[$i - 1]['line']];
+                            $file = method_exists($template, 'getSourceContext') ? $template->getSourceContext()->getPath() : null;
+
+                            if ($src) {
+                                $src = explode("\n", $src);
+                                $fileExcerpt = array();
+
+                                for ($i = max($line - 3, 1), $max = min($line + 3, \count($src)); $i <= $max; ++$i) {
+                                    $fileExcerpt[] = '<li'.($i === $line ? ' class="selected"' : '').'><code>'.$this->htmlEncode($src[$i - 1]).'</code></li>';
+                                }
+
+                                $fileExcerpt = '<ol start="'.max($line - 3, 1).'">'.implode("\n", $fileExcerpt).'</ol>';
+                            }
+>>>>>>> git-aline/master/master
                         }
                         break;
                     }
@@ -154,6 +190,10 @@ class DumpDataCollector extends DataCollector implements DataDumperInterface
         ) {
             if ($response->headers->has('Content-Type') && false !== strpos($response->headers->get('Content-Type'), 'html')) {
                 $this->dumper = new HtmlDumper('php://output', $this->charset);
+<<<<<<< HEAD
+=======
+                $this->dumper->setDisplayOptions(array('fileLinkFormat' => $this->fileLinkFormat));
+>>>>>>> git-aline/master/master
             } else {
                 $this->dumper = new CliDumper('php://output', $this->charset);
             }
@@ -164,12 +204,32 @@ class DumpDataCollector extends DataCollector implements DataDumperInterface
         }
     }
 
+<<<<<<< HEAD
+=======
+    public function reset()
+    {
+        if ($this->stopwatch) {
+            $this->stopwatch->reset();
+        }
+        $this->data = array();
+        $this->dataCount = 0;
+        $this->isCollected = true;
+        $this->clonesCount = 0;
+        $this->clonesIndex = 0;
+    }
+
+>>>>>>> git-aline/master/master
     public function serialize()
     {
         if ($this->clonesCount !== $this->clonesIndex) {
             return 'a:0:{}';
         }
 
+<<<<<<< HEAD
+=======
+        $this->data[] = $this->fileLinkFormat;
+        $this->data[] = $this->charset;
+>>>>>>> git-aline/master/master
         $ser = serialize($this->data);
         $this->data = array();
         $this->dataCount = 0;
@@ -184,8 +244,15 @@ class DumpDataCollector extends DataCollector implements DataDumperInterface
     public function unserialize($data)
     {
         parent::unserialize($data);
+<<<<<<< HEAD
         $this->dataCount = count($this->data);
         self::__construct($this->stopwatch);
+=======
+        $charset = array_pop($this->data);
+        $fileLinkFormat = array_pop($this->data);
+        $this->dataCount = \count($this->data);
+        self::__construct($this->stopwatch, $fileLinkFormat, $charset);
+>>>>>>> git-aline/master/master
     }
 
     public function getDumpsCount()
@@ -199,12 +266,17 @@ class DumpDataCollector extends DataCollector implements DataDumperInterface
 
         if ('html' === $format) {
             $dumper = new HtmlDumper($data, $this->charset);
+<<<<<<< HEAD
+=======
+            $dumper->setDisplayOptions(array('fileLinkFormat' => $this->fileLinkFormat));
+>>>>>>> git-aline/master/master
         } else {
             throw new \InvalidArgumentException(sprintf('Invalid dump format: %s', $format));
         }
         $dumps = array();
 
         foreach ($this->data as $dump) {
+<<<<<<< HEAD
             if (method_exists($dump['data'], 'withMaxDepth')) {
                 $dumper->dump($dump['data']->withMaxDepth($maxDepthLimit)->withMaxItemsPerDepth($maxItemsPerDepth));
             } else {
@@ -213,6 +285,10 @@ class DumpDataCollector extends DataCollector implements DataDumperInterface
             }
             rewind($data);
             $dump['data'] = stream_get_contents($data);
+=======
+            $dumper->dump($dump['data']->withMaxDepth($maxDepthLimit)->withMaxItemsPerDepth($maxItemsPerDepth));
+            $dump['data'] = stream_get_contents($data, -1, 0);
+>>>>>>> git-aline/master/master
             ftruncate($data, 0);
             rewind($data);
             $dumps[] = $dump;
@@ -233,14 +309,24 @@ class DumpDataCollector extends DataCollector implements DataDumperInterface
             $this->isCollected = true;
 
             $h = headers_list();
+<<<<<<< HEAD
             $i = count($h);
+=======
+            $i = \count($h);
+>>>>>>> git-aline/master/master
             array_unshift($h, 'Content-Type: '.ini_get('default_mimetype'));
             while (0 !== stripos($h[$i], 'Content-Type:')) {
                 --$i;
             }
 
+<<<<<<< HEAD
             if ('cli' !== PHP_SAPI && stripos($h[$i], 'html')) {
                 $this->dumper = new HtmlDumper('php://output', $this->charset);
+=======
+            if (!\in_array(\PHP_SAPI, array('cli', 'phpdbg'), true) && stripos($h[$i], 'html')) {
+                $this->dumper = new HtmlDumper('php://output', $this->charset);
+                $this->dumper->setDisplayOptions(array('fileLinkFormat' => $this->fileLinkFormat));
+>>>>>>> git-aline/master/master
             } else {
                 $this->dumper = new CliDumper('php://output', $this->charset);
             }
@@ -257,6 +343,7 @@ class DumpDataCollector extends DataCollector implements DataDumperInterface
 
     private function doDump($data, $name, $file, $line)
     {
+<<<<<<< HEAD
         if (PHP_VERSION_ID >= 50400 && $this->dumper instanceof CliDumper) {
             $contextDumper = function ($name, $file, $line, $fileLinkFormat) {
                 if ($this instanceof HtmlDumper) {
@@ -269,6 +356,19 @@ class DumpDataCollector extends DataCollector implements DataDumperInterface
                             $name = sprintf('<a href="%s" title="%s">'.$s.'</a>', $link, $file, $name);
                         } else {
                             $name = sprintf('<abbr title="%s">'.$s.'</abbr>', $file, $name);
+=======
+        if ($this->dumper instanceof CliDumper) {
+            $contextDumper = function ($name, $file, $line, $fmt) {
+                if ($this instanceof HtmlDumper) {
+                    if ($file) {
+                        $s = $this->style('meta', '%s');
+                        $f = strip_tags($this->style('', $file));
+                        $name = strip_tags($this->style('', $name));
+                        if ($fmt && $link = \is_string($fmt) ? strtr($fmt, array('%f' => $file, '%l' => $line)) : $fmt->format($file, $line)) {
+                            $name = sprintf('<a href="%s" title="%s">'.$s.'</a>', strip_tags($this->style('', $link)), $f, $name);
+                        } else {
+                            $name = sprintf('<abbr title="%s">'.$s.'</abbr>', $f, $name);
+>>>>>>> git-aline/master/master
                         }
                     } else {
                         $name = $this->style('meta', $name);
@@ -292,7 +392,11 @@ class DumpDataCollector extends DataCollector implements DataDumperInterface
     {
         $html = '';
 
+<<<<<<< HEAD
         $dumper = new HtmlDumper(function ($line) use (&$html) {$html .= $line;}, $this->charset);
+=======
+        $dumper = new HtmlDumper(function ($line) use (&$html) { $html .= $line; }, $this->charset);
+>>>>>>> git-aline/master/master
         $dumper->setDumpHeader('');
         $dumper->setDumpBoundaries('', '');
 

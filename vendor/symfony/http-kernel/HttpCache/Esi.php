@@ -13,7 +13,10 @@ namespace Symfony\Component\HttpKernel\HttpCache;
 
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+<<<<<<< HEAD
 use Symfony\Component\HttpKernel\HttpKernelInterface;
+=======
+>>>>>>> git-aline/master/master
 
 /**
  * Esi implements the ESI capabilities to Request and Response instances.
@@ -26,6 +29,7 @@ use Symfony\Component\HttpKernel\HttpKernelInterface;
  *
  * @author Fabien Potencier <fabien@symfony.com>
  */
+<<<<<<< HEAD
 class Esi implements SurrogateInterface
 {
     private $contentTypes;
@@ -45,12 +49,17 @@ class Esi implements SurrogateInterface
         $this->contentTypes = $contentTypes;
     }
 
+=======
+class Esi extends AbstractSurrogate
+{
+>>>>>>> git-aline/master/master
     public function getName()
     {
         return 'esi';
     }
 
     /**
+<<<<<<< HEAD
      * Returns a new cache strategy instance.
      *
      * @return ResponseCacheStrategyInterface A ResponseCacheStrategyInterface instance
@@ -125,6 +134,9 @@ class Esi implements SurrogateInterface
      * This method only adds an ESI HTTP header if the Response has some ESI tags.
      *
      * @param Response $response A Response instance
+=======
+     * {@inheritdoc}
+>>>>>>> git-aline/master/master
      */
     public function addSurrogateControl(Response $response)
     {
@@ -134,6 +146,7 @@ class Esi implements SurrogateInterface
     }
 
     /**
+<<<<<<< HEAD
      * Checks that the Response needs to be parsed for ESI tags.
      *
      * @param Response $response A Response instance
@@ -174,6 +187,9 @@ class Esi implements SurrogateInterface
      * @param string $comment      A comment to add as an esi:include tag
      *
      * @return string
+=======
+     * {@inheritdoc}
+>>>>>>> git-aline/master/master
      */
     public function renderIncludeTag($uri, $alt = null, $ignoreErrors = true, $comment = '')
     {
@@ -191,12 +207,16 @@ class Esi implements SurrogateInterface
     }
 
     /**
+<<<<<<< HEAD
      * Replaces a Response ESI tags with the included resource content.
      *
      * @param Request  $request  A Request instance
      * @param Response $response A Response instance
      *
      * @return Response
+=======
+     * {@inheritdoc}
+>>>>>>> git-aline/master/master
      */
     public function process(Request $request, Response $response)
     {
@@ -206,7 +226,11 @@ class Esi implements SurrogateInterface
         }
 
         $parts = explode(';', $type);
+<<<<<<< HEAD
         if (!in_array($parts[0], $this->contentTypes)) {
+=======
+        if (!\in_array($parts[0], $this->contentTypes)) {
+>>>>>>> git-aline/master/master
             return $response;
         }
 
@@ -245,6 +269,7 @@ class Esi implements SurrogateInterface
         $response->headers->set('X-Body-Eval', 'ESI');
 
         // remove ESI/1.0 from the Surrogate-Control header
+<<<<<<< HEAD
         if ($response->headers->has('Surrogate-Control')) {
             $value = $response->headers->get('Surrogate-Control');
             if ('content="ESI/1.0"' == $value) {
@@ -291,5 +316,8 @@ class Esi implements SurrogateInterface
                 throw $e;
             }
         }
+=======
+        $this->removeFromControl($response);
+>>>>>>> git-aline/master/master
     }
 }

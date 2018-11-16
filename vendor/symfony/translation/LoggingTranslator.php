@@ -12,6 +12,10 @@
 namespace Symfony\Component\Translation;
 
 use Psr\Log\LoggerInterface;
+<<<<<<< HEAD
+=======
+use Symfony\Component\Translation\Exception\InvalidArgumentException;
+>>>>>>> git-aline/master/master
 
 /**
  * @author Abdellatif Ait boudad <a.aitboudad@gmail.com>
@@ -23,9 +27,12 @@ class LoggingTranslator implements TranslatorInterface, TranslatorBagInterface
      */
     private $translator;
 
+<<<<<<< HEAD
     /**
      * @var LoggerInterface
      */
+=======
+>>>>>>> git-aline/master/master
     private $logger;
 
     /**
@@ -35,7 +42,11 @@ class LoggingTranslator implements TranslatorInterface, TranslatorBagInterface
     public function __construct(TranslatorInterface $translator, LoggerInterface $logger)
     {
         if (!$translator instanceof TranslatorBagInterface) {
+<<<<<<< HEAD
             throw new \InvalidArgumentException(sprintf('The Translator "%s" must implement TranslatorInterface and TranslatorBagInterface.', get_class($translator)));
+=======
+            throw new InvalidArgumentException(sprintf('The Translator "%s" must implement TranslatorInterface and TranslatorBagInterface.', \get_class($translator)));
+>>>>>>> git-aline/master/master
         }
 
         $this->translator = $translator;
@@ -89,11 +100,32 @@ class LoggingTranslator implements TranslatorInterface, TranslatorBagInterface
     }
 
     /**
+<<<<<<< HEAD
+=======
+     * Gets the fallback locales.
+     *
+     * @return array $locales The fallback locales
+     */
+    public function getFallbackLocales()
+    {
+        if ($this->translator instanceof Translator || method_exists($this->translator, 'getFallbackLocales')) {
+            return $this->translator->getFallbackLocales();
+        }
+
+        return array();
+    }
+
+    /**
+>>>>>>> git-aline/master/master
      * Passes through all unknown calls onto the translator object.
      */
     public function __call($method, $args)
     {
+<<<<<<< HEAD
         return call_user_func_array(array($this->translator, $method), $args);
+=======
+        return \call_user_func_array(array($this->translator, $method), $args);
+>>>>>>> git-aline/master/master
     }
 
     /**

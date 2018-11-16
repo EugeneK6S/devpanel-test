@@ -11,9 +11,18 @@
 
 namespace Symfony\Component\Validator\Constraints;
 
+<<<<<<< HEAD
 use Symfony\Component\Validator\Context\ExecutionContextInterface;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\ConstraintValidator;
+=======
+use Symfony\Component\PropertyAccess\Exception\NoSuchPropertyException;
+use Symfony\Component\PropertyAccess\PropertyAccess;
+use Symfony\Component\PropertyAccess\PropertyAccessor;
+use Symfony\Component\Validator\Constraint;
+use Symfony\Component\Validator\ConstraintValidator;
+use Symfony\Component\Validator\Exception\ConstraintDefinitionException;
+>>>>>>> git-aline/master/master
 use Symfony\Component\Validator\Exception\UnexpectedTypeException;
 
 /**
@@ -24,6 +33,16 @@ use Symfony\Component\Validator\Exception\UnexpectedTypeException;
  */
 abstract class AbstractComparisonValidator extends ConstraintValidator
 {
+<<<<<<< HEAD
+=======
+    private $propertyAccessor;
+
+    public function __construct(PropertyAccessor $propertyAccessor = null)
+    {
+        $this->propertyAccessor = $propertyAccessor;
+    }
+
+>>>>>>> git-aline/master/master
     /**
      * {@inheritdoc}
      */
@@ -37,24 +56,50 @@ abstract class AbstractComparisonValidator extends ConstraintValidator
             return;
         }
 
+<<<<<<< HEAD
         $comparedValue = $constraint->value;
+=======
+        if ($path = $constraint->propertyPath) {
+            if (null === $object = $this->context->getObject()) {
+                return;
+            }
+
+            try {
+                $comparedValue = $this->getPropertyAccessor()->getValue($object, $path);
+            } catch (NoSuchPropertyException $e) {
+                throw new ConstraintDefinitionException(sprintf('Invalid property path "%s" provided to "%s" constraint: %s', $path, \get_class($constraint), $e->getMessage()), 0, $e);
+            }
+        } else {
+            $comparedValue = $constraint->value;
+        }
+>>>>>>> git-aline/master/master
 
         // Convert strings to DateTimes if comparing another DateTime
         // This allows to compare with any date/time value supported by
         // the DateTime constructor:
         // http://php.net/manual/en/datetime.formats.php
+<<<<<<< HEAD
         if (is_string($comparedValue)) {
             if ($value instanceof \DatetimeImmutable) {
                 // If $value is immutable, convert the compared value to a
                 // DateTimeImmutable too
                 $comparedValue = new \DatetimeImmutable($comparedValue);
             } elseif ($value instanceof \DateTime || $value instanceof \DateTimeInterface) {
+=======
+        if (\is_string($comparedValue)) {
+            if ($value instanceof \DateTimeImmutable) {
+                // If $value is immutable, convert the compared value to a
+                // DateTimeImmutable too
+                $comparedValue = new \DateTimeImmutable($comparedValue);
+            } elseif ($value instanceof \DateTimeInterface) {
+>>>>>>> git-aline/master/master
                 // Otherwise use DateTime
                 $comparedValue = new \DateTime($comparedValue);
             }
         }
 
         if (!$this->compareValues($value, $comparedValue)) {
+<<<<<<< HEAD
             if ($this->context instanceof ExecutionContextInterface) {
                 $this->context->buildViolation($constraint->message)
                     ->setParameter('{{ value }}', $this->formatValue($value, self::OBJECT_TO_STRING | self::PRETTY_DATE))
@@ -69,6 +114,24 @@ abstract class AbstractComparisonValidator extends ConstraintValidator
                     ->addViolation();
             }
         }
+=======
+            $this->context->buildViolation($constraint->message)
+                ->setParameter('{{ value }}', $this->formatValue($value, self::OBJECT_TO_STRING | self::PRETTY_DATE))
+                ->setParameter('{{ compared_value }}', $this->formatValue($comparedValue, self::OBJECT_TO_STRING | self::PRETTY_DATE))
+                ->setParameter('{{ compared_value_type }}', $this->formatTypeOf($comparedValue))
+                ->setCode($this->getErrorCode())
+                ->addViolation();
+        }
+    }
+
+    private function getPropertyAccessor()
+    {
+        if (null === $this->propertyAccessor) {
+            $this->propertyAccessor = PropertyAccess::createPropertyAccessor();
+        }
+
+        return $this->propertyAccessor;
+>>>>>>> git-aline/master/master
     }
 
     /**
@@ -80,4 +143,16 @@ abstract class AbstractComparisonValidator extends ConstraintValidator
      * @return bool true if the relationship is valid, false otherwise
      */
     abstract protected function compareValues($value1, $value2);
+<<<<<<< HEAD
+=======
+
+    /**
+     * Returns the error code used if the comparison fails.
+     *
+     * @return string|null The error code or `null` if no code should be set
+     */
+    protected function getErrorCode()
+    {
+    }
+>>>>>>> git-aline/master/master
 }

@@ -11,7 +11,11 @@
 
 namespace Symfony\Component\Serializer\Encoder;
 
+<<<<<<< HEAD
 use Symfony\Component\Serializer\Exception\UnexpectedValueException;
+=======
+use Symfony\Component\Serializer\Exception\NotEncodableValueException;
+>>>>>>> git-aline/master/master
 
 /**
  * Decodes JSON data.
@@ -20,6 +24,7 @@ use Symfony\Component\Serializer\Exception\UnexpectedValueException;
  */
 class JsonDecode implements DecoderInterface
 {
+<<<<<<< HEAD
     /**
      * Specifies if the returned result should be an associative array or a nested stdClass object hierarchy.
      *
@@ -38,6 +43,13 @@ class JsonDecode implements DecoderInterface
 
     protected $serializer;
 
+=======
+    protected $serializer;
+
+    private $associative;
+    private $recursionDepth;
+
+>>>>>>> git-aline/master/master
     /**
      * Constructs a new JsonDecode instance.
      *
@@ -51,6 +63,7 @@ class JsonDecode implements DecoderInterface
     }
 
     /**
+<<<<<<< HEAD
      * Returns the last decoding error (if any).
      *
      * @return int
@@ -67,6 +80,8 @@ class JsonDecode implements DecoderInterface
     }
 
     /**
+=======
+>>>>>>> git-aline/master/master
      * Decodes data.
      *
      * @param string $data    The encoded JSON string to decode
@@ -89,7 +104,11 @@ class JsonDecode implements DecoderInterface
      *
      * @return mixed
      *
+<<<<<<< HEAD
      * @throws UnexpectedValueException
+=======
+     * @throws NotEncodableValueException
+>>>>>>> git-aline/master/master
      *
      * @see http://php.net/json_decode json_decode
      */
@@ -101,6 +120,7 @@ class JsonDecode implements DecoderInterface
         $recursionDepth = $context['json_decode_recursion_depth'];
         $options = $context['json_decode_options'];
 
+<<<<<<< HEAD
         if (PHP_VERSION_ID >= 50400) {
             $decodedData = json_decode($data, $associative, $recursionDepth, $options);
         } else {
@@ -109,6 +129,12 @@ class JsonDecode implements DecoderInterface
 
         if (JSON_ERROR_NONE !== $this->lastError = json_last_error()) {
             throw new UnexpectedValueException(JsonEncoder::getLastErrorMessage());
+=======
+        $decodedData = json_decode($data, $associative, $recursionDepth, $options);
+
+        if (JSON_ERROR_NONE !== json_last_error()) {
+            throw new NotEncodableValueException(json_last_error_msg());
+>>>>>>> git-aline/master/master
         }
 
         return $decodedData;
@@ -125,8 +151,11 @@ class JsonDecode implements DecoderInterface
     /**
      * Merges the default options of the Json Decoder with the passed context.
      *
+<<<<<<< HEAD
      * @param array $context
      *
+=======
+>>>>>>> git-aline/master/master
      * @return array
      */
     private function resolveContext(array $context)

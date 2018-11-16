@@ -11,6 +11,7 @@
 
 namespace Symfony\Component\HttpKernel\EventListener;
 
+<<<<<<< HEAD
 use Symfony\Component\HttpKernel\Event\GetResponseEvent;
 use Symfony\Component\HttpKernel\Event\FinishRequestEvent;
 use Symfony\Component\HttpKernel\KernelEvents;
@@ -18,15 +19,27 @@ use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\RequestContextAwareInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
+=======
+use Symfony\Component\EventDispatcher\EventSubscriberInterface;
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\RequestStack;
+use Symfony\Component\HttpKernel\Event\FinishRequestEvent;
+use Symfony\Component\HttpKernel\Event\GetResponseEvent;
+use Symfony\Component\HttpKernel\KernelEvents;
+use Symfony\Component\Routing\RequestContextAwareInterface;
+>>>>>>> git-aline/master/master
 
 /**
  * Initializes the locale based on the current request.
  *
+<<<<<<< HEAD
  * This listener works in 2 modes:
  *
  *  * 2.3 compatibility mode where you must call setRequest whenever the Request changes.
  *  * 2.4+ mode where you must pass a RequestStack instance in the constructor.
  *
+=======
+>>>>>>> git-aline/master/master
  * @author Fabien Potencier <fabien@symfony.com>
  */
 class LocaleListener implements EventSubscriberInterface
@@ -36,15 +49,24 @@ class LocaleListener implements EventSubscriberInterface
     private $requestStack;
 
     /**
+<<<<<<< HEAD
      * RequestStack will become required in 3.0.
      */
     public function __construct($defaultLocale = 'en', RequestContextAwareInterface $router = null, RequestStack $requestStack = null)
+=======
+     * @param RequestStack                      $requestStack  A RequestStack instance
+     * @param string                            $defaultLocale The default locale
+     * @param RequestContextAwareInterface|null $router        The router
+     */
+    public function __construct(RequestStack $requestStack, $defaultLocale = 'en', RequestContextAwareInterface $router = null)
+>>>>>>> git-aline/master/master
     {
         $this->defaultLocale = $defaultLocale;
         $this->requestStack = $requestStack;
         $this->router = $router;
     }
 
+<<<<<<< HEAD
     /**
      * Sets the current Request.
      *
@@ -68,6 +90,8 @@ class LocaleListener implements EventSubscriberInterface
         $this->setRouterContext($request);
     }
 
+=======
+>>>>>>> git-aline/master/master
     public function onKernelRequest(GetResponseEvent $event)
     {
         $request = $event->getRequest();
@@ -79,10 +103,13 @@ class LocaleListener implements EventSubscriberInterface
 
     public function onKernelFinishRequest(FinishRequestEvent $event)
     {
+<<<<<<< HEAD
         if (null === $this->requestStack) {
             return; // removed when requestStack is required
         }
 
+=======
+>>>>>>> git-aline/master/master
         if (null !== $parentRequest = $this->requestStack->getParentRequest()) {
             $this->setRouterContext($parentRequest);
         }

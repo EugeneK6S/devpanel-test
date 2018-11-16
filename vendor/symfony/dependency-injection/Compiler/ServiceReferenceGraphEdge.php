@@ -23,6 +23,7 @@ class ServiceReferenceGraphEdge
     private $sourceNode;
     private $destNode;
     private $value;
+<<<<<<< HEAD
 
     /**
      * Constructor.
@@ -32,16 +33,38 @@ class ServiceReferenceGraphEdge
      * @param string                    $value
      */
     public function __construct(ServiceReferenceGraphNode $sourceNode, ServiceReferenceGraphNode $destNode, $value = null)
+=======
+    private $lazy;
+    private $weak;
+
+    /**
+     * @param ServiceReferenceGraphNode $sourceNode
+     * @param ServiceReferenceGraphNode $destNode
+     * @param mixed                     $value
+     * @param bool                      $lazy
+     * @param bool                      $weak
+     */
+    public function __construct(ServiceReferenceGraphNode $sourceNode, ServiceReferenceGraphNode $destNode, $value = null, $lazy = false, $weak = false)
+>>>>>>> git-aline/master/master
     {
         $this->sourceNode = $sourceNode;
         $this->destNode = $destNode;
         $this->value = $value;
+<<<<<<< HEAD
+=======
+        $this->lazy = $lazy;
+        $this->weak = $weak;
+>>>>>>> git-aline/master/master
     }
 
     /**
      * Returns the value of the edge.
      *
+<<<<<<< HEAD
      * @return ServiceReferenceGraphNode
+=======
+     * @return string
+>>>>>>> git-aline/master/master
      */
     public function getValue()
     {
@@ -67,4 +90,27 @@ class ServiceReferenceGraphEdge
     {
         return $this->destNode;
     }
+<<<<<<< HEAD
+=======
+
+    /**
+     * Returns true if the edge is lazy, meaning it's a dependency not requiring direct instantiation.
+     *
+     * @return bool
+     */
+    public function isLazy()
+    {
+        return $this->lazy;
+    }
+
+    /**
+     * Returns true if the edge is weak, meaning it shouldn't prevent removing the target service.
+     *
+     * @return bool
+     */
+    public function isWeak()
+    {
+        return $this->weak;
+    }
+>>>>>>> git-aline/master/master
 }

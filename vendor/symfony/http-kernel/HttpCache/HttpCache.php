@@ -15,10 +15,17 @@
 
 namespace Symfony\Component\HttpKernel\HttpCache;
 
+<<<<<<< HEAD
 use Symfony\Component\HttpKernel\HttpKernelInterface;
 use Symfony\Component\HttpKernel\TerminableInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+=======
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpKernel\HttpKernelInterface;
+use Symfony\Component\HttpKernel\TerminableInterface;
+>>>>>>> git-aline/master/master
 
 /**
  * Cache provides HTTP caching.
@@ -69,11 +76,14 @@ class HttpCache implements HttpKernelInterface, TerminableInterface
      *                            the cache can serve a stale response when an error is encountered (default: 60).
      *                            This setting is overridden by the stale-if-error HTTP Cache-Control extension
      *                            (see RFC 5861).
+<<<<<<< HEAD
      *
      * @param HttpKernelInterface $kernel    An HttpKernelInterface instance
      * @param StoreInterface      $store     A Store instance
      * @param SurrogateInterface  $surrogate A SurrogateInterface instance
      * @param array               $options   An array of options
+=======
+>>>>>>> git-aline/master/master
      */
     public function __construct(HttpKernelInterface $kernel, StoreInterface $store, SurrogateInterface $surrogate = null, array $options = array())
     {
@@ -153,6 +163,7 @@ class HttpCache implements HttpKernelInterface, TerminableInterface
     /**
      * Gets the Surrogate instance.
      *
+<<<<<<< HEAD
      * @throws \LogicException
      *
      * @return SurrogateInterface A Surrogate instance
@@ -180,6 +191,15 @@ class HttpCache implements HttpKernelInterface, TerminableInterface
         @trigger_error('The '.__METHOD__.' method is deprecated since version 2.6 and will be removed in 3.0. Use the getSurrogate() method instead.', E_USER_DEPRECATED);
 
         return $this->getSurrogate();
+=======
+     * @return SurrogateInterface A Surrogate instance
+     *
+     * @throws \LogicException
+     */
+    public function getSurrogate()
+    {
+        return $this->surrogate;
+>>>>>>> git-aline/master/master
     }
 
     /**
@@ -190,12 +210,21 @@ class HttpCache implements HttpKernelInterface, TerminableInterface
         // FIXME: catch exceptions and implement a 500 error page here? -> in Varnish, there is a built-in error page mechanism
         if (HttpKernelInterface::MASTER_REQUEST === $type) {
             $this->traces = array();
+<<<<<<< HEAD
             $this->request = $request;
+=======
+            // Keep a clone of the original request for surrogates so they can access it.
+            // We must clone here to get a separate instance because the application will modify the request during
+            // the application flow (we know it always does because we do ourselves by setting REMOTE_ADDR to 127.0.0.1
+            // and adding the X-Forwarded-For header, see HttpCache::forward()).
+            $this->request = clone $request;
+>>>>>>> git-aline/master/master
             if (null !== $this->surrogate) {
                 $this->surrogateCacheStrategy = $this->surrogate->createCacheStrategy();
             }
         }
 
+<<<<<<< HEAD
         $path = $request->getPathInfo();
         if ($qs = $request->getQueryString()) {
             $path .= '?'.$qs;
@@ -206,14 +235,32 @@ class HttpCache implements HttpKernelInterface, TerminableInterface
             $response = $this->invalidate($request, $catch);
         } elseif ($request->headers->has('expect')) {
             $response = $this->pass($request, $catch);
+=======
+        $this->traces[$this->getTraceKey($request)] = array();
+
+        if (!$request->isMethodSafe(false)) {
+            $response = $this->invalidate($request, $catch);
+        } elseif ($request->headers->has('expect') || !$request->isMethodCacheable()) {
+            $response = $this->pass($request, $catch);
+        } elseif ($this->options['allow_reload'] && $request->isNoCache()) {
+            /*
+                If allow_reload is configured and the client requests "Cache-Control: no-cache",
+                reload the cache by fetching a fresh response and caching it (if possible).
+            */
+            $this->record($request, 'reload');
+            $response = $this->fetch($request, $catch);
+>>>>>>> git-aline/master/master
         } else {
             $response = $this->lookup($request, $catch);
         }
 
         $this->restoreResponseBody($request, $response);
 
+<<<<<<< HEAD
         $response->setDate(\DateTime::createFromFormat('U', time(), new \DateTimeZone('UTC')));
 
+=======
+>>>>>>> git-aline/master/master
         if (HttpKernelInterface::MASTER_REQUEST === $type && $this->options['debug']) {
             $response->headers->set('X-Symfony-Cache', $this->getLog());
         }
@@ -277,7 +324,11 @@ class HttpCache implements HttpKernelInterface, TerminableInterface
         // invalidate only when the response is successful
         if ($response->isSuccessful() || $response->isRedirect()) {
             try {
+<<<<<<< HEAD
                 $this->store->invalidate($request, $catch);
+=======
+                $this->store->invalidate($request);
+>>>>>>> git-aline/master/master
 
                 // As per the RFC, invalidate Location and Content-Location URLs if present
                 foreach (array('Location', 'Content-Location') as $header) {
@@ -311,7 +362,11 @@ class HttpCache implements HttpKernelInterface, TerminableInterface
      * it triggers "miss" processing.
      *
      * @param Request $request A Request instance
+<<<<<<< HEAD
      * @param bool    $catch   whether to process exceptions
+=======
+     * @param bool    $catch   Whether to process exceptions
+>>>>>>> git-aline/master/master
      *
      * @return Response A Response instance
      *
@@ -319,6 +374,7 @@ class HttpCache implements HttpKernelInterface, TerminableInterface
      */
     protected function lookup(Request $request, $catch = false)
     {
+<<<<<<< HEAD
         // if allow_reload and no-cache Cache-Control, allow a cache reload
         if ($this->options['allow_reload'] && $request->isNoCache()) {
             $this->record($request, 'reload');
@@ -326,6 +382,8 @@ class HttpCache implements HttpKernelInterface, TerminableInterface
             return $this->fetch($request, $catch);
         }
 
+=======
+>>>>>>> git-aline/master/master
         try {
             $entry = $this->store->lookup($request);
         } catch (\Exception $e) {
@@ -374,7 +432,13 @@ class HttpCache implements HttpKernelInterface, TerminableInterface
         $subRequest = clone $request;
 
         // send no head requests because we want content
+<<<<<<< HEAD
         $subRequest->setMethod('GET');
+=======
+        if ('HEAD' === $request->getMethod()) {
+            $subRequest->setMethod('GET');
+        }
+>>>>>>> git-aline/master/master
 
         // add our cached last-modified validator
         $subRequest->headers->set('if_modified_since', $entry->headers->get('Last-Modified'));
@@ -395,7 +459,11 @@ class HttpCache implements HttpKernelInterface, TerminableInterface
 
             // return the response and not the cache entry if the response is valid but not cached
             $etag = $response->getEtag();
+<<<<<<< HEAD
             if ($etag && in_array($etag, $requestEtags) && !in_array($etag, $cachedEtags)) {
+=======
+            if ($etag && \in_array($etag, $requestEtags) && !\in_array($etag, $cachedEtags)) {
+>>>>>>> git-aline/master/master
                 return $response;
             }
 
@@ -421,12 +489,20 @@ class HttpCache implements HttpKernelInterface, TerminableInterface
     }
 
     /**
+<<<<<<< HEAD
      * Forwards the Request to the backend and determines whether the response should be stored.
      *
      * This methods is triggered when the cache missed or a reload is required.
      *
      * @param Request $request A Request instance
      * @param bool    $catch   whether to process exceptions
+=======
+     * Unconditionally fetches a fresh response from the backend and
+     * stores it in the cache if is cacheable.
+     *
+     * @param Request $request A Request instance
+     * @param bool    $catch   Whether to process exceptions
+>>>>>>> git-aline/master/master
      *
      * @return Response A Response instance
      */
@@ -435,7 +511,13 @@ class HttpCache implements HttpKernelInterface, TerminableInterface
         $subRequest = clone $request;
 
         // send no head requests because we want content
+<<<<<<< HEAD
         $subRequest->setMethod('GET');
+=======
+        if ('HEAD' === $request->getMethod()) {
+            $subRequest->setMethod('GET');
+        }
+>>>>>>> git-aline/master/master
 
         // avoid that the backend sends no content
         $subRequest->headers->remove('if_modified_since');
@@ -453,6 +535,12 @@ class HttpCache implements HttpKernelInterface, TerminableInterface
     /**
      * Forwards the Request to the backend and returns the Response.
      *
+<<<<<<< HEAD
+=======
+     * All backend requests (cache passes, fetches, cache validations)
+     * run through this method.
+     *
+>>>>>>> git-aline/master/master
      * @param Request  $request A Request instance
      * @param bool     $catch   Whether to catch exceptions or not
      * @param Response $entry   A Response instance (the stale entry if present, null otherwise)
@@ -465,6 +553,7 @@ class HttpCache implements HttpKernelInterface, TerminableInterface
             $this->surrogate->addSurrogateCapability($request);
         }
 
+<<<<<<< HEAD
         // modify the X-Forwarded-For header if needed
         $forwardedFor = $request->headers->get('X-Forwarded-For');
         if ($forwardedFor) {
@@ -489,6 +578,13 @@ class HttpCache implements HttpKernelInterface, TerminableInterface
 
         // we don't implement the stale-if-error on Requests, which is nonetheless part of the RFC
         if (null !== $entry && in_array($response->getStatusCode(), array(500, 502, 503, 504))) {
+=======
+        // always a "master" request (as the real master request can be in cache)
+        $response = SubRequestHandler::handle($this->kernel, $request, HttpKernelInterface::MASTER_REQUEST, $catch);
+
+        // we don't implement the stale-if-error on Requests, which is nonetheless part of the RFC
+        if (null !== $entry && \in_array($response->getStatusCode(), array(500, 502, 503, 504))) {
+>>>>>>> git-aline/master/master
             if (null === $age = $entry->headers->getCacheControlDirective('stale-if-error')) {
                 $age = $this->options['stale_if_error'];
             }
@@ -500,10 +596,28 @@ class HttpCache implements HttpKernelInterface, TerminableInterface
             }
         }
 
+<<<<<<< HEAD
         $this->processResponseBody($request, $response);
 
         if ($this->isPrivateRequest($request) && !$response->headers->hasCacheControlDirective('public')) {
             $response->setPrivate(true);
+=======
+        /*
+            RFC 7231 Sect. 7.1.1.2 says that a server that does not have a reasonably accurate
+            clock MUST NOT send a "Date" header, although it MUST send one in most other cases
+            except for 1xx or 5xx responses where it MAY do so.
+
+            Anyway, a client that received a message without a "Date" header MUST add it.
+        */
+        if (!$response->headers->has('Date')) {
+            $response->setDate(\DateTime::createFromFormat('U', time()));
+        }
+
+        $this->processResponseBody($request, $response);
+
+        if ($this->isPrivateRequest($request) && !$response->headers->hasCacheControlDirective('public')) {
+            $response->setPrivate();
+>>>>>>> git-aline/master/master
         } elseif ($this->options['default_ttl'] > 0 && null === $response->getTtl() && !$response->headers->getCacheControlDirective('must-revalidate')) {
             $response->setTtl($this->options['default_ttl']);
         }
@@ -514,9 +628,12 @@ class HttpCache implements HttpKernelInterface, TerminableInterface
     /**
      * Checks whether the cache entry is "fresh enough" to satisfy the Request.
      *
+<<<<<<< HEAD
      * @param Request  $request A Request instance
      * @param Response $entry   A Response instance
      *
+=======
+>>>>>>> git-aline/master/master
      * @return bool true if the cache entry if fresh enough, false otherwise
      */
     protected function isFreshEnough(Request $request, Response $entry)
@@ -535,9 +652,12 @@ class HttpCache implements HttpKernelInterface, TerminableInterface
     /**
      * Locks a Request during the call to the backend.
      *
+<<<<<<< HEAD
      * @param Request  $request A Request instance
      * @param Response $entry   A Response instance
      *
+=======
+>>>>>>> git-aline/master/master
      * @return bool true if the cache entry can be returned even if it is staled, false otherwise
      */
     protected function lock(Request $request, Response $entry)
@@ -545,6 +665,7 @@ class HttpCache implements HttpKernelInterface, TerminableInterface
         // try to acquire a lock to call the backend
         $lock = $this->store->lock($request);
 
+<<<<<<< HEAD
         // there is already another process calling the backend
         if (true !== $lock) {
             // check if we can serve the stale entry
@@ -588,14 +709,52 @@ class HttpCache implements HttpKernelInterface, TerminableInterface
 
         // we have the lock, call the backend
         return false;
+=======
+        if (true === $lock) {
+            // we have the lock, call the backend
+            return false;
+        }
+
+        // there is already another process calling the backend
+
+        // May we serve a stale response?
+        if ($this->mayServeStaleWhileRevalidate($entry)) {
+            $this->record($request, 'stale-while-revalidate');
+
+            return true;
+        }
+
+        // wait for the lock to be released
+        if ($this->waitForLock($request)) {
+            // replace the current entry with the fresh one
+            $new = $this->lookup($request);
+            $entry->headers = $new->headers;
+            $entry->setContent($new->getContent());
+            $entry->setStatusCode($new->getStatusCode());
+            $entry->setProtocolVersion($new->getProtocolVersion());
+            foreach ($new->headers->getCookies() as $cookie) {
+                $entry->headers->setCookie($cookie);
+            }
+        } else {
+            // backend is slow as hell, send a 503 response (to avoid the dog pile effect)
+            $entry->setStatusCode(503);
+            $entry->setContent('503 Service Unavailable');
+            $entry->headers->set('Retry-After', 10);
+        }
+
+        return true;
+>>>>>>> git-aline/master/master
     }
 
     /**
      * Writes the Response to the cache.
      *
+<<<<<<< HEAD
      * @param Request  $request  A Request instance
      * @param Response $response A Response instance
      *
+=======
+>>>>>>> git-aline/master/master
      * @throws \Exception
      */
     protected function store(Request $request, Response $response)
@@ -620,6 +779,7 @@ class HttpCache implements HttpKernelInterface, TerminableInterface
 
     /**
      * Restores the Response body.
+<<<<<<< HEAD
      *
      * @param Request  $request  A Request instance
      * @param Response $response A Response instance
@@ -634,6 +794,11 @@ class HttpCache implements HttpKernelInterface, TerminableInterface
             return;
         }
 
+=======
+     */
+    private function restoreResponseBody(Request $request, Response $response)
+    {
+>>>>>>> git-aline/master/master
         if ($response->headers->has('X-Body-Eval')) {
             ob_start();
 
@@ -646,10 +811,21 @@ class HttpCache implements HttpKernelInterface, TerminableInterface
             $response->setContent(ob_get_clean());
             $response->headers->remove('X-Body-Eval');
             if (!$response->headers->has('Transfer-Encoding')) {
+<<<<<<< HEAD
                 $response->headers->set('Content-Length', strlen($response->getContent()));
             }
         } elseif ($response->headers->has('X-Body-File')) {
             $response->setContent(file_get_contents($response->headers->get('X-Body-File')));
+=======
+                $response->headers->set('Content-Length', \strlen($response->getContent()));
+            }
+        } elseif ($response->headers->has('X-Body-File')) {
+            // Response does not include possibly dynamic content (ESI, SSI), so we need
+            // not handle the content for HEAD requests
+            if (!$request->isMethod('HEAD')) {
+                $response->setContent(file_get_contents($response->headers->get('X-Body-File')));
+            }
+>>>>>>> git-aline/master/master
         } else {
             return;
         }
@@ -668,8 +844,11 @@ class HttpCache implements HttpKernelInterface, TerminableInterface
      * Checks if the Request includes authorization or other sensitive information
      * that should cause the Response to be considered private by default.
      *
+<<<<<<< HEAD
      * @param Request $request A Request instance
      *
+=======
+>>>>>>> git-aline/master/master
      * @return bool true if the Request is private, false otherwise
      */
     private function isPrivateRequest(Request $request)
@@ -678,7 +857,11 @@ class HttpCache implements HttpKernelInterface, TerminableInterface
             $key = strtolower(str_replace('HTTP_', '', $key));
 
             if ('cookie' === $key) {
+<<<<<<< HEAD
                 if (count($request->cookies->all())) {
+=======
+                if (\count($request->cookies->all())) {
+>>>>>>> git-aline/master/master
                     return true;
                 }
             } elseif ($request->headers->has($key)) {
@@ -697,10 +880,67 @@ class HttpCache implements HttpKernelInterface, TerminableInterface
      */
     private function record(Request $request, $event)
     {
+<<<<<<< HEAD
+=======
+        $this->traces[$this->getTraceKey($request)][] = $event;
+    }
+
+    /**
+     * Calculates the key we use in the "trace" array for a given request.
+     *
+     * @param Request $request
+     *
+     * @return string
+     */
+    private function getTraceKey(Request $request)
+    {
+>>>>>>> git-aline/master/master
         $path = $request->getPathInfo();
         if ($qs = $request->getQueryString()) {
             $path .= '?'.$qs;
         }
+<<<<<<< HEAD
         $this->traces[$request->getMethod().' '.$path][] = $event;
+=======
+
+        return $request->getMethod().' '.$path;
+    }
+
+    /**
+     * Checks whether the given (cached) response may be served as "stale" when a revalidation
+     * is currently in progress.
+     *
+     * @param Response $entry
+     *
+     * @return bool true when the stale response may be served, false otherwise
+     */
+    private function mayServeStaleWhileRevalidate(Response $entry)
+    {
+        $timeout = $entry->headers->getCacheControlDirective('stale-while-revalidate');
+
+        if (null === $timeout) {
+            $timeout = $this->options['stale_while_revalidate'];
+        }
+
+        return abs($entry->getTtl()) < $timeout;
+    }
+
+    /**
+     * Waits for the store to release a locked entry.
+     *
+     * @param Request $request The request to wait for
+     *
+     * @return bool true if the lock was released before the internal timeout was hit; false if the wait timeout was exceeded
+     */
+    private function waitForLock(Request $request)
+    {
+        $wait = 0;
+        while ($this->store->isLocked($request) && $wait < 100) {
+            usleep(50000);
+            ++$wait;
+        }
+
+        return $wait < 100;
+>>>>>>> git-aline/master/master
     }
 }

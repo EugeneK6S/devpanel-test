@@ -22,6 +22,7 @@ use Symfony\Component\Translation\DataCollectorTranslator;
  */
 class TranslationDataCollector extends DataCollector implements LateDataCollectorInterface
 {
+<<<<<<< HEAD
     /**
      * @var DataCollectorTranslator
      */
@@ -30,6 +31,10 @@ class TranslationDataCollector extends DataCollector implements LateDataCollecto
     /**
      * @param DataCollectorTranslator $translator
      */
+=======
+    private $translator;
+
+>>>>>>> git-aline/master/master
     public function __construct(DataCollectorTranslator $translator)
     {
         $this->translator = $translator;
@@ -44,6 +49,14 @@ class TranslationDataCollector extends DataCollector implements LateDataCollecto
 
         $this->data = $this->computeCount($messages);
         $this->data['messages'] = $messages;
+<<<<<<< HEAD
+=======
+
+        $this->data['locale'] = $this->translator->getLocale();
+        $this->data['fallback_locales'] = $this->translator->getFallbackLocales();
+
+        $this->data = $this->cloneVar($this->data);
+>>>>>>> git-aline/master/master
     }
 
     /**
@@ -54,6 +67,17 @@ class TranslationDataCollector extends DataCollector implements LateDataCollecto
     }
 
     /**
+<<<<<<< HEAD
+=======
+     * {@inheritdoc}
+     */
+    public function reset()
+    {
+        $this->data = array();
+    }
+
+    /**
+>>>>>>> git-aline/master/master
      * @return array
      */
     public function getMessages()
@@ -85,6 +109,19 @@ class TranslationDataCollector extends DataCollector implements LateDataCollecto
         return isset($this->data[DataCollectorTranslator::MESSAGE_DEFINED]) ? $this->data[DataCollectorTranslator::MESSAGE_DEFINED] : 0;
     }
 
+<<<<<<< HEAD
+=======
+    public function getLocale()
+    {
+        return !empty($this->data['locale']) ? $this->data['locale'] : null;
+    }
+
+    public function getFallbackLocales()
+    {
+        return (isset($this->data['fallback_locales']) && \count($this->data['fallback_locales']) > 0) ? $this->data['fallback_locales'] : array();
+    }
+
+>>>>>>> git-aline/master/master
     /**
      * {@inheritdoc}
      */
@@ -101,9 +138,20 @@ class TranslationDataCollector extends DataCollector implements LateDataCollecto
 
             if (!isset($result[$messageId])) {
                 $message['count'] = 1;
+<<<<<<< HEAD
                 $messages[$key]['translation'] = $this->sanitizeString($message['translation']);
                 $result[$messageId] = $message;
             } else {
+=======
+                $message['parameters'] = !empty($message['parameters']) ? array($message['parameters']) : array();
+                $messages[$key]['translation'] = $this->sanitizeString($message['translation']);
+                $result[$messageId] = $message;
+            } else {
+                if (!empty($message['parameters'])) {
+                    $result[$messageId]['parameters'][] = $message['parameters'];
+                }
+
+>>>>>>> git-aline/master/master
                 ++$result[$messageId]['count'];
             }
 
@@ -132,11 +180,19 @@ class TranslationDataCollector extends DataCollector implements LateDataCollecto
     {
         $string = trim(preg_replace('/\s+/', ' ', $string));
 
+<<<<<<< HEAD
         if (function_exists('mb_strlen') && false !== $encoding = mb_detect_encoding($string)) {
             if (mb_strlen($string, $encoding) > $length) {
                 return mb_substr($string, 0, $length - 3, $encoding).'...';
             }
         } elseif (strlen($string) > $length) {
+=======
+        if (false !== $encoding = mb_detect_encoding($string, null, true)) {
+            if (mb_strlen($string, $encoding) > $length) {
+                return mb_substr($string, 0, $length - 3, $encoding).'...';
+            }
+        } elseif (\strlen($string) > $length) {
+>>>>>>> git-aline/master/master
             return substr($string, 0, $length - 3).'...';
         }
 

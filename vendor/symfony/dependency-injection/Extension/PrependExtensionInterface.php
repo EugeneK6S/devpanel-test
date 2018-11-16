@@ -17,8 +17,11 @@ interface PrependExtensionInterface
 {
     /**
      * Allow an extension to prepend the extension configurations.
+<<<<<<< HEAD
      *
      * @param ContainerBuilder $container
+=======
+>>>>>>> git-aline/master/master
      */
     public function prepend(ContainerBuilder $container);
 }

@@ -39,10 +39,17 @@ interface PipesInterface
     /**
      * Reads data in file handles and pipes.
      *
+<<<<<<< HEAD
      * @param bool $blocking Whether to use blocking calls or not.
      * @param bool $close    Whether to close pipes if they've reached EOF.
      *
      * @return string[] An array of read data indexed by their fd.
+=======
+     * @param bool $blocking Whether to use blocking calls or not
+     * @param bool $close    Whether to close pipes if they've reached EOF
+     *
+     * @return string[] An array of read data indexed by their fd
+>>>>>>> git-aline/master/master
      */
     public function readAndWrite($blocking, $close = false);
 
@@ -54,6 +61,16 @@ interface PipesInterface
     public function areOpen();
 
     /**
+<<<<<<< HEAD
+=======
+     * Returns if pipes are able to read output.
+     *
+     * @return bool
+     */
+    public function haveReadSupport();
+
+    /**
+>>>>>>> git-aline/master/master
      * Closes file handles and pipes.
      */
     public function close();

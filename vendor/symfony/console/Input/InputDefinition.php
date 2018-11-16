@@ -11,9 +11,14 @@
 
 namespace Symfony\Component\Console\Input;
 
+<<<<<<< HEAD
 use Symfony\Component\Console\Descriptor\TextDescriptor;
 use Symfony\Component\Console\Descriptor\XmlDescriptor;
 use Symfony\Component\Console\Output\BufferedOutput;
+=======
+use Symfony\Component\Console\Exception\InvalidArgumentException;
+use Symfony\Component\Console\Exception\LogicException;
+>>>>>>> git-aline/master/master
 
 /**
  * A InputDefinition represents a set of valid command line arguments and options.
@@ -37,8 +42,11 @@ class InputDefinition
     private $shortcuts;
 
     /**
+<<<<<<< HEAD
      * Constructor.
      *
+=======
+>>>>>>> git-aline/master/master
      * @param array $definition An array of InputArgument and InputOption instance
      */
     public function __construct(array $definition = array())
@@ -48,8 +56,11 @@ class InputDefinition
 
     /**
      * Sets the definition of the input.
+<<<<<<< HEAD
      *
      * @param array $definition The definition array
+=======
+>>>>>>> git-aline/master/master
      */
     public function setDefinition(array $definition)
     {
@@ -96,15 +107,20 @@ class InputDefinition
     }
 
     /**
+<<<<<<< HEAD
      * Adds an InputArgument object.
      *
      * @param InputArgument $argument An InputArgument object
      *
      * @throws \LogicException When incorrect argument is given
+=======
+     * @throws LogicException When incorrect argument is given
+>>>>>>> git-aline/master/master
      */
     public function addArgument(InputArgument $argument)
     {
         if (isset($this->arguments[$argument->getName()])) {
+<<<<<<< HEAD
             throw new \LogicException(sprintf('An argument with name "%s" already exists.', $argument->getName()));
         }
 
@@ -114,6 +130,17 @@ class InputDefinition
 
         if ($argument->isRequired() && $this->hasOptional) {
             throw new \LogicException('Cannot add a required argument after an optional one.');
+=======
+            throw new LogicException(sprintf('An argument with name "%s" already exists.', $argument->getName()));
+        }
+
+        if ($this->hasAnArrayArgument) {
+            throw new LogicException('Cannot add an argument after an array argument.');
+        }
+
+        if ($argument->isRequired() && $this->hasOptional) {
+            throw new LogicException('Cannot add a required argument after an optional one.');
+>>>>>>> git-aline/master/master
         }
 
         if ($argument->isArray()) {
@@ -136,15 +163,26 @@ class InputDefinition
      *
      * @return InputArgument An InputArgument object
      *
+<<<<<<< HEAD
      * @throws \InvalidArgumentException When argument given doesn't exist
+=======
+     * @throws InvalidArgumentException When argument given doesn't exist
+>>>>>>> git-aline/master/master
      */
     public function getArgument($name)
     {
         if (!$this->hasArgument($name)) {
+<<<<<<< HEAD
             throw new \InvalidArgumentException(sprintf('The "%s" argument does not exist.', $name));
         }
 
         $arguments = is_int($name) ? array_values($this->arguments) : $this->arguments;
+=======
+            throw new InvalidArgumentException(sprintf('The "%s" argument does not exist.', $name));
+        }
+
+        $arguments = \is_int($name) ? array_values($this->arguments) : $this->arguments;
+>>>>>>> git-aline/master/master
 
         return $arguments[$name];
     }
@@ -158,7 +196,11 @@ class InputDefinition
      */
     public function hasArgument($name)
     {
+<<<<<<< HEAD
         $arguments = is_int($name) ? array_values($this->arguments) : $this->arguments;
+=======
+        $arguments = \is_int($name) ? array_values($this->arguments) : $this->arguments;
+>>>>>>> git-aline/master/master
 
         return isset($arguments[$name]);
     }
@@ -180,7 +222,11 @@ class InputDefinition
      */
     public function getArgumentCount()
     {
+<<<<<<< HEAD
         return $this->hasAnArrayArgument ? PHP_INT_MAX : count($this->arguments);
+=======
+        return $this->hasAnArrayArgument ? PHP_INT_MAX : \count($this->arguments);
+>>>>>>> git-aline/master/master
     }
 
     /**
@@ -233,22 +279,34 @@ class InputDefinition
     }
 
     /**
+<<<<<<< HEAD
      * Adds an InputOption object.
      *
      * @param InputOption $option An InputOption object
      *
      * @throws \LogicException When option given already exist
+=======
+     * @throws LogicException When option given already exist
+>>>>>>> git-aline/master/master
      */
     public function addOption(InputOption $option)
     {
         if (isset($this->options[$option->getName()]) && !$option->equals($this->options[$option->getName()])) {
+<<<<<<< HEAD
             throw new \LogicException(sprintf('An option named "%s" already exists.', $option->getName()));
+=======
+            throw new LogicException(sprintf('An option named "%s" already exists.', $option->getName()));
+>>>>>>> git-aline/master/master
         }
 
         if ($option->getShortcut()) {
             foreach (explode('|', $option->getShortcut()) as $shortcut) {
                 if (isset($this->shortcuts[$shortcut]) && !$option->equals($this->options[$this->shortcuts[$shortcut]])) {
+<<<<<<< HEAD
                     throw new \LogicException(sprintf('An option with shortcut "%s" already exists.', $shortcut));
+=======
+                    throw new LogicException(sprintf('An option with shortcut "%s" already exists.', $shortcut));
+>>>>>>> git-aline/master/master
                 }
             }
         }
@@ -268,12 +326,20 @@ class InputDefinition
      *
      * @return InputOption A InputOption object
      *
+<<<<<<< HEAD
      * @throws \InvalidArgumentException When option given doesn't exist
+=======
+     * @throws InvalidArgumentException When option given doesn't exist
+>>>>>>> git-aline/master/master
      */
     public function getOption($name)
     {
         if (!$this->hasOption($name)) {
+<<<<<<< HEAD
             throw new \InvalidArgumentException(sprintf('The "--%s" option does not exist.', $name));
+=======
+            throw new InvalidArgumentException(sprintf('The "--%s" option does not exist.', $name));
+>>>>>>> git-aline/master/master
         }
 
         return $this->options[$name];
@@ -282,6 +348,12 @@ class InputDefinition
     /**
      * Returns true if an InputOption object exists by name.
      *
+<<<<<<< HEAD
+=======
+     * This method can't be used to check if the user included the option when
+     * executing the command (use getOption() instead).
+     *
+>>>>>>> git-aline/master/master
      * @param string $name The InputOption name
      *
      * @return bool true if the InputOption object exists, false otherwise
@@ -316,7 +388,11 @@ class InputDefinition
     /**
      * Gets an InputOption by shortcut.
      *
+<<<<<<< HEAD
      * @param string $shortcut the Shortcut name
+=======
+     * @param string $shortcut The Shortcut name
+>>>>>>> git-aline/master/master
      *
      * @return InputOption An InputOption object
      */
@@ -347,12 +423,20 @@ class InputDefinition
      *
      * @return string The InputOption name
      *
+<<<<<<< HEAD
      * @throws \InvalidArgumentException When option given does not exist
+=======
+     * @throws InvalidArgumentException When option given does not exist
+>>>>>>> git-aline/master/master
      */
     private function shortcutToName($shortcut)
     {
         if (!isset($this->shortcuts[$shortcut])) {
+<<<<<<< HEAD
             throw new \InvalidArgumentException(sprintf('The "-%s" option does not exist.', $shortcut));
+=======
+            throw new InvalidArgumentException(sprintf('The "-%s" option does not exist.', $shortcut));
+>>>>>>> git-aline/master/master
         }
 
         return $this->shortcuts[$shortcut];
@@ -388,7 +472,11 @@ class InputDefinition
             }
         }
 
+<<<<<<< HEAD
         if (count($elements) && $this->getArguments()) {
+=======
+        if (\count($elements) && $this->getArguments()) {
+>>>>>>> git-aline/master/master
             $elements[] = '[--]';
         }
 
@@ -409,6 +497,7 @@ class InputDefinition
 
         return implode(' ', $elements);
     }
+<<<<<<< HEAD
 
     /**
      * Returns a textual representation of the InputDefinition.
@@ -452,4 +541,6 @@ class InputDefinition
 
         return $output->fetch();
     }
+=======
+>>>>>>> git-aline/master/master
 }

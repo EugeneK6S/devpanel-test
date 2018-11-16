@@ -22,6 +22,7 @@ class ParameterNotFoundException extends InvalidArgumentException
     private $sourceId;
     private $sourceKey;
     private $alternatives;
+<<<<<<< HEAD
 
     /**
      * Constructor.
@@ -33,11 +34,28 @@ class ParameterNotFoundException extends InvalidArgumentException
      * @param string[]   $alternatives Some parameter name alternatives
      */
     public function __construct($key, $sourceId = null, $sourceKey = null, \Exception $previous = null, array $alternatives = array())
+=======
+    private $nonNestedAlternative;
+
+    /**
+     * @param string      $key                  The requested parameter key
+     * @param string      $sourceId             The service id that references the non-existent parameter
+     * @param string      $sourceKey            The parameter key that references the non-existent parameter
+     * @param \Exception  $previous             The previous exception
+     * @param string[]    $alternatives         Some parameter name alternatives
+     * @param string|null $nonNestedAlternative The alternative parameter name when the user expected dot notation for nested parameters
+     */
+    public function __construct($key, $sourceId = null, $sourceKey = null, \Exception $previous = null, array $alternatives = array(), $nonNestedAlternative = null)
+>>>>>>> git-aline/master/master
     {
         $this->key = $key;
         $this->sourceId = $sourceId;
         $this->sourceKey = $sourceKey;
         $this->alternatives = $alternatives;
+<<<<<<< HEAD
+=======
+        $this->nonNestedAlternative = $nonNestedAlternative;
+>>>>>>> git-aline/master/master
 
         parent::__construct('', 0, $previous);
 
@@ -55,12 +73,21 @@ class ParameterNotFoundException extends InvalidArgumentException
         }
 
         if ($this->alternatives) {
+<<<<<<< HEAD
             if (1 == count($this->alternatives)) {
+=======
+            if (1 == \count($this->alternatives)) {
+>>>>>>> git-aline/master/master
                 $this->message .= ' Did you mean this: "';
             } else {
                 $this->message .= ' Did you mean one of these: "';
             }
             $this->message .= implode('", "', $this->alternatives).'"?';
+<<<<<<< HEAD
+=======
+        } elseif (null !== $this->nonNestedAlternative) {
+            $this->message .= ' You cannot access nested array items, do you want to inject "'.$this->nonNestedAlternative.'" instead?';
+>>>>>>> git-aline/master/master
         }
     }
 

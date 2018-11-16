@@ -11,17 +11,24 @@
 
 namespace Symfony\Component\DependencyInjection\Compiler;
 
+<<<<<<< HEAD
 use Symfony\Component\DependencyInjection\Definition;
 use Symfony\Component\DependencyInjection\Exception\ServiceNotFoundException;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\DependencyInjection\Reference;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
+=======
+use Symfony\Component\DependencyInjection\ContainerInterface;
+use Symfony\Component\DependencyInjection\Exception\ServiceNotFoundException;
+use Symfony\Component\DependencyInjection\Reference;
+>>>>>>> git-aline/master/master
 
 /**
  * Checks that all references are pointing to a valid service.
  *
  * @author Johannes M. Schmitt <schmittjoh@gmail.com>
  */
+<<<<<<< HEAD
 class CheckExceptionOnInvalidReferenceBehaviorPass implements CompilerPassInterface
 {
     private $container;
@@ -59,5 +66,19 @@ class CheckExceptionOnInvalidReferenceBehaviorPass implements CompilerPassInterf
                 }
             }
         }
+=======
+class CheckExceptionOnInvalidReferenceBehaviorPass extends AbstractRecursivePass
+{
+    protected function processValue($value, $isRoot = false)
+    {
+        if (!$value instanceof Reference) {
+            return parent::processValue($value, $isRoot);
+        }
+        if (ContainerInterface::EXCEPTION_ON_INVALID_REFERENCE === $value->getInvalidBehavior() && !$this->container->has($id = (string) $value)) {
+            throw new ServiceNotFoundException($id, $this->currentId);
+        }
+
+        return $value;
+>>>>>>> git-aline/master/master
     }
 }

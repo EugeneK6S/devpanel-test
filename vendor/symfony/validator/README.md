@@ -1,6 +1,7 @@
 Validator Component
 ===================
 
+<<<<<<< HEAD
 This component is based on the JSR-303 Bean Validation specification and
 enables specifying validation rules for classes using XML, YAML, PHP or
 annotations, which can then be checked against instances of these classes.
@@ -103,10 +104,15 @@ map constraints to properties and methods. You can also map constraints
 using XML, YAML or plain PHP, if you dislike annotations or don't want
 to include Doctrine. Check the documentation for more information about
 these drivers.
+=======
+The Validator component provides tools to validate values following the
+[JSR-303 Bean Validation specification][1].
+>>>>>>> git-aline/master/master
 
 Resources
 ---------
 
+<<<<<<< HEAD
 Silex integration:
 
 https://github.com/silexphp/Silex/blob/master/src/Silex/Provider/ValidatorServiceProvider.php
@@ -124,3 +130,12 @@ You can run the unit tests with the following command:
     $ cd path/to/Symfony/Component/Validator/
     $ composer install
     $ phpunit
+=======
+  * [Documentation](https://symfony.com/doc/current/components/validator.html)
+  * [Contributing](https://symfony.com/doc/current/contributing/index.html)
+  * [Report issues](https://github.com/symfony/symfony/issues) and
+    [send Pull Requests](https://github.com/symfony/symfony/pulls)
+    in the [main Symfony repository](https://github.com/symfony/symfony)
+
+[1]: http://jcp.org/en/jsr/detail?id=303
+>>>>>>> git-aline/master/master

@@ -12,6 +12,10 @@
 namespace Symfony\Component\DependencyInjection\Compiler;
 
 use Symfony\Component\DependencyInjection\ContainerBuilder;
+<<<<<<< HEAD
+=======
+use Symfony\Component\DependencyInjection\Definition;
+>>>>>>> git-aline/master/master
 use Symfony\Component\DependencyInjection\Exception\ParameterNotFoundException;
 
 /**
@@ -19,17 +23,33 @@ use Symfony\Component\DependencyInjection\Exception\ParameterNotFoundException;
  *
  * @author Johannes M. Schmitt <schmittjoh@gmail.com>
  */
+<<<<<<< HEAD
 class ResolveParameterPlaceHoldersPass implements CompilerPassInterface
 {
     /**
      * Processes the ContainerBuilder to resolve parameter placeholders.
      *
      * @param ContainerBuilder $container
+=======
+class ResolveParameterPlaceHoldersPass extends AbstractRecursivePass
+{
+    private $bag;
+    private $resolveArrays;
+
+    public function __construct($resolveArrays = true)
+    {
+        $this->resolveArrays = $resolveArrays;
+    }
+
+    /**
+     * {@inheritdoc}
+>>>>>>> git-aline/master/master
      *
      * @throws ParameterNotFoundException
      */
     public function process(ContainerBuilder $container)
     {
+<<<<<<< HEAD
         $parameterBag = $container->getParameterBag();
 
         foreach ($container->getDefinitions() as $id => $definition) {
@@ -69,5 +89,53 @@ class ResolveParameterPlaceHoldersPass implements CompilerPassInterface
         $container->setAliases($aliases);
 
         $parameterBag->resolve();
+=======
+        $this->bag = $container->getParameterBag();
+
+        try {
+            parent::process($container);
+
+            $aliases = array();
+            foreach ($container->getAliases() as $name => $target) {
+                $this->currentId = $name;
+                $aliases[$this->bag->resolveValue($name)] = $target;
+            }
+            $container->setAliases($aliases);
+        } catch (ParameterNotFoundException $e) {
+            $e->setSourceId($this->currentId);
+
+            throw $e;
+        }
+
+        $this->bag->resolve();
+        $this->bag = null;
+    }
+
+    protected function processValue($value, $isRoot = false)
+    {
+        if (\is_string($value)) {
+            $v = $this->bag->resolveValue($value);
+
+            return $this->resolveArrays || !$v || !\is_array($v) ? $v : $value;
+        }
+        if ($value instanceof Definition) {
+            $value->setBindings($this->processValue($value->getBindings()));
+            $changes = $value->getChanges();
+            if (isset($changes['class'])) {
+                $value->setClass($this->bag->resolveValue($value->getClass()));
+            }
+            if (isset($changes['file'])) {
+                $value->setFile($this->bag->resolveValue($value->getFile()));
+            }
+        }
+
+        $value = parent::processValue($value, $isRoot);
+
+        if ($value && \is_array($value)) {
+            $value = array_combine($this->bag->resolveValue(array_keys($value)), $value);
+        }
+
+        return $value;
+>>>>>>> git-aline/master/master
     }
 }

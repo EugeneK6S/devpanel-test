@@ -3,8 +3,13 @@
 /*
  * This file is part of Twig.
  *
+<<<<<<< HEAD
  * (c) 2009 Fabien Potencier
  * (c) 2009 Armin Ronacher
+=======
+ * (c) Fabien Potencier
+ * (c) Armin Ronacher
+>>>>>>> git-aline/master/master
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
@@ -27,7 +32,16 @@ class Twig_Node_For extends Twig_Node
             $body = new Twig_Node_If(new Twig_Node(array($ifexpr, $body)), null, $lineno, $tag);
         }
 
+<<<<<<< HEAD
         parent::__construct(array('key_target' => $keyTarget, 'value_target' => $valueTarget, 'seq' => $seq, 'body' => $body, 'else' => $else), array('with_loop' => true, 'ifexpr' => null !== $ifexpr), $lineno, $tag);
+=======
+        $nodes = array('key_target' => $keyTarget, 'value_target' => $valueTarget, 'seq' => $seq, 'body' => $body);
+        if (null !== $else) {
+            $nodes['else'] = $else;
+        }
+
+        parent::__construct($nodes, array('with_loop' => true, 'ifexpr' => null !== $ifexpr), $lineno, $tag);
+>>>>>>> git-aline/master/master
     }
 
     public function compile(Twig_Compiler $compiler)
@@ -40,7 +54,11 @@ class Twig_Node_For extends Twig_Node
             ->raw(");\n")
         ;
 
+<<<<<<< HEAD
         if (null !== $this->getNode('else')) {
+=======
+        if ($this->hasNode('else')) {
+>>>>>>> git-aline/master/master
             $compiler->write("\$context['_iterated'] = false;\n");
         }
 
@@ -69,7 +87,11 @@ class Twig_Node_For extends Twig_Node
             }
         }
 
+<<<<<<< HEAD
         $this->loop->setAttribute('else', null !== $this->getNode('else'));
+=======
+        $this->loop->setAttribute('else', $this->hasNode('else'));
+>>>>>>> git-aline/master/master
         $this->loop->setAttribute('with_loop', $this->getAttribute('with_loop'));
         $this->loop->setAttribute('ifexpr', $this->getAttribute('ifexpr'));
 
@@ -85,7 +107,11 @@ class Twig_Node_For extends Twig_Node
             ->write("}\n")
         ;
 
+<<<<<<< HEAD
         if (null !== $this->getNode('else')) {
+=======
+        if ($this->hasNode('else')) {
+>>>>>>> git-aline/master/master
             $compiler
                 ->write("if (!\$context['_iterated']) {\n")
                 ->indent()
@@ -104,3 +130,8 @@ class Twig_Node_For extends Twig_Node
         $compiler->write("\$context = array_intersect_key(\$context, \$_parent) + \$_parent;\n");
     }
 }
+<<<<<<< HEAD
+=======
+
+class_alias('Twig_Node_For', 'Twig\Node\ForNode', false);
+>>>>>>> git-aline/master/master

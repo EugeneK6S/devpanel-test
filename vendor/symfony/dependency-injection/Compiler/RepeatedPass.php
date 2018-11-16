@@ -26,6 +26,7 @@ class RepeatedPass implements CompilerPassInterface
      */
     private $repeat = false;
 
+<<<<<<< HEAD
     /**
      * @var RepeatablePassInterface[]
      */
@@ -34,6 +35,11 @@ class RepeatedPass implements CompilerPassInterface
     /**
      * Constructor.
      *
+=======
+    private $passes;
+
+    /**
+>>>>>>> git-aline/master/master
      * @param RepeatablePassInterface[] $passes An array of RepeatablePassInterface objects
      *
      * @throws InvalidArgumentException when the passes don't implement RepeatablePassInterface
@@ -53,6 +59,7 @@ class RepeatedPass implements CompilerPassInterface
 
     /**
      * Process the repeatable passes that run more than once.
+<<<<<<< HEAD
      *
      * @param ContainerBuilder $container
      */
@@ -66,6 +73,17 @@ class RepeatedPass implements CompilerPassInterface
         if ($this->repeat) {
             $this->process($container);
         }
+=======
+     */
+    public function process(ContainerBuilder $container)
+    {
+        do {
+            $this->repeat = false;
+            foreach ($this->passes as $pass) {
+                $pass->process($container);
+            }
+        } while ($this->repeat);
+>>>>>>> git-aline/master/master
     }
 
     /**

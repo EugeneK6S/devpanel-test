@@ -46,22 +46,36 @@ use Symfony\Component\Routing\Exception\RouteNotFoundException;
 use Psr\Log\LoggerInterface;
 
 /**
+<<<<<<< HEAD
  * {$options['class']}
  *
+=======
+>>>>>>> git-aline/master/master
  * This class has been auto-generated
  * by the Symfony Routing Component.
  */
 class {$options['class']} extends {$options['base_class']}
 {
+<<<<<<< HEAD
     private static \$declaredRoutes = {$this->generateDeclaredRoutes()};
 
     /**
      * Constructor.
      */
+=======
+    private static \$declaredRoutes;
+
+>>>>>>> git-aline/master/master
     public function __construct(RequestContext \$context, LoggerInterface \$logger = null)
     {
         \$this->context = \$context;
         \$this->logger = \$logger;
+<<<<<<< HEAD
+=======
+        if (null === self::\$declaredRoutes) {
+            self::\$declaredRoutes = {$this->generateDeclaredRoutes()};
+        }
+>>>>>>> git-aline/master/master
     }
 
 {$this->generateGenerateMethod()}
@@ -104,6 +118,7 @@ EOF;
      */
     private function generateGenerateMethod()
     {
+<<<<<<< HEAD
         return <<<EOF
     public function generate(\$name, \$parameters = array(), \$referenceType = self::ABSOLUTE_PATH)
     {
@@ -114,6 +129,18 @@ EOF;
         list(\$variables, \$defaults, \$requirements, \$tokens, \$hostTokens, \$requiredSchemes) = self::\$declaredRoutes[\$name];
 
         return \$this->doGenerate(\$variables, \$defaults, \$requirements, \$tokens, \$parameters, \$name, \$referenceType, \$hostTokens, \$requiredSchemes);
+=======
+        return <<<'EOF'
+    public function generate($name, $parameters = array(), $referenceType = self::ABSOLUTE_PATH)
+    {
+        if (!isset(self::$declaredRoutes[$name])) {
+            throw new RouteNotFoundException(sprintf('Unable to generate a URL for the named route "%s" as such route does not exist.', $name));
+        }
+
+        list($variables, $defaults, $requirements, $tokens, $hostTokens, $requiredSchemes) = self::$declaredRoutes[$name];
+
+        return $this->doGenerate($variables, $defaults, $requirements, $tokens, $parameters, $name, $referenceType, $hostTokens, $requiredSchemes);
+>>>>>>> git-aline/master/master
     }
 EOF;
     }

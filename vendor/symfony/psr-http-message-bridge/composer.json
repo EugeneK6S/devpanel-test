@@ -16,6 +16,7 @@
         }
     ],
     "require": {
+<<<<<<< HEAD
         "php": ">=5.3.3",
         "psr/http-message": "~1.0",
         "symfony/http-foundation": "~2.3|~3.0"
@@ -25,9 +26,30 @@
     },
     "suggest": {
         "zendframework/zend-diactoros": "To use the Zend Diactoros factory"
+=======
+        "php": "^5.3.3 || ^7.0",
+        "psr/http-message": "^1.0",
+        "symfony/http-foundation": "^2.3.42 || ^3.4 || ^4.0"
+    },
+    "require-dev": {
+        "symfony/phpunit-bridge": "^3.4 || 4.0"
+    },
+    "suggest": {
+        "psr/http-message-implementation": "To use the HttpFoundation factory",
+        "zendframework/zend-diactoros": "To use the Zend Diactoros factory",
+        "psr/http-factory-implementation": "To use the PSR-17 factory"
+>>>>>>> git-aline/master/master
     },
     "autoload": {
         "psr-4": { "Symfony\\Bridge\\PsrHttpMessage\\": "" }
     },
+<<<<<<< HEAD
     "minimum-stability": "dev"
+=======
+    "extra": {
+        "branch-alias": {
+            "dev-master": "1.1-dev"
+        }
+    }
+>>>>>>> git-aline/master/master
 }

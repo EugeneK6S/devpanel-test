@@ -11,7 +11,10 @@
 
 namespace Symfony\Component\Validator\Constraints;
 
+<<<<<<< HEAD
 use Symfony\Component\Validator\Context\ExecutionContextInterface;
+=======
+>>>>>>> git-aline/master/master
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\ConstraintValidator;
 use Symfony\Component\Validator\Exception\UnexpectedTypeException;
@@ -50,13 +53,18 @@ class LuhnValidator extends ConstraintValidator
 
         // Work with strings only, because long numbers are represented as floats
         // internally and don't work with strlen()
+<<<<<<< HEAD
         if (!is_string($value) && !(is_object($value) && method_exists($value, '__toString'))) {
+=======
+        if (!\is_string($value) && !(\is_object($value) && method_exists($value, '__toString'))) {
+>>>>>>> git-aline/master/master
             throw new UnexpectedTypeException($value, 'string');
         }
 
         $value = (string) $value;
 
         if (!ctype_digit($value)) {
+<<<<<<< HEAD
             if ($this->context instanceof ExecutionContextInterface) {
                 $this->context->buildViolation($constraint->message)
                     ->setParameter('{{ value }}', $this->formatValue($value))
@@ -68,12 +76,22 @@ class LuhnValidator extends ConstraintValidator
                     ->setCode(Luhn::INVALID_CHARACTERS_ERROR)
                     ->addViolation();
             }
+=======
+            $this->context->buildViolation($constraint->message)
+                ->setParameter('{{ value }}', $this->formatValue($value))
+                ->setCode(Luhn::INVALID_CHARACTERS_ERROR)
+                ->addViolation();
+>>>>>>> git-aline/master/master
 
             return;
         }
 
         $checkSum = 0;
+<<<<<<< HEAD
         $length = strlen($value);
+=======
+        $length = \strlen($value);
+>>>>>>> git-aline/master/master
 
         // Starting with the last digit and walking left, add every second
         // digit to the check sum
@@ -81,7 +99,11 @@ class LuhnValidator extends ConstraintValidator
         //      ^     ^     ^     ^     ^     ^
         //    = 7  +  9  +  7  +  9  +  7  +  3
         for ($i = $length - 1; $i >= 0; $i -= 2) {
+<<<<<<< HEAD
             $checkSum += $value{$i};
+=======
+            $checkSum += $value[$i];
+>>>>>>> git-aline/master/master
         }
 
         // Starting with the second last digit and walking left, double every
@@ -91,6 +113,7 @@ class LuhnValidator extends ConstraintValidator
         //         ^     ^     ^     ^     ^
         //    =    1+8 + 4  +  6  +  1+6 + 2
         for ($i = $length - 2; $i >= 0; $i -= 2) {
+<<<<<<< HEAD
             $checkSum += array_sum(str_split($value{$i} * 2));
         }
 
@@ -106,6 +129,16 @@ class LuhnValidator extends ConstraintValidator
                     ->setCode(Luhn::CHECKSUM_FAILED_ERROR)
                     ->addViolation();
             }
+=======
+            $checkSum += array_sum(str_split($value[$i] * 2));
+        }
+
+        if (0 === $checkSum || 0 !== $checkSum % 10) {
+            $this->context->buildViolation($constraint->message)
+                ->setParameter('{{ value }}', $this->formatValue($value))
+                ->setCode(Luhn::CHECKSUM_FAILED_ERROR)
+                ->addViolation();
+>>>>>>> git-aline/master/master
         }
     }
 }

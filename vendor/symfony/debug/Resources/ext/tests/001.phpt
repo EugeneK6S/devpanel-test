@@ -1,14 +1,25 @@
 --TEST--
 Test symfony_zval_info API
 --SKIPIF--
+<<<<<<< HEAD
 <?php if (!extension_loaded("symfony_debug")) print "skip"; ?>
+=======
+<?php if (!extension_loaded('symfony_debug')) {
+    echo 'skip';
+} ?>
+>>>>>>> git-aline/master/master
 --FILE--
 <?php
 
 $int = 42;
 $float = 42.42;
+<<<<<<< HEAD
 $str = "foobar";
 $object = new StdClass;
+=======
+$str = 'foobar';
+$object = new StdClass();
+>>>>>>> git-aline/master/master
 $array = array('foo', 'bar');
 $resource = tmpfile();
 $null = null;
@@ -17,6 +28,7 @@ $bool = true;
 $anotherint = 42;
 $refcount2 = &$anotherint;
 
+<<<<<<< HEAD
 $var = array('int' => $int,
 			 'float' => $float,
 			 'str' => $str,
@@ -26,6 +38,19 @@ $var = array('int' => $int,
 			 'null' => $null,
 			 'bool' => $bool,
 			 'refcount' => &$refcount2);
+=======
+$var = array(
+    'int' => $int,
+    'float' => $float,
+    'str' => $str,
+    'object' => $object,
+    'array' => $array,
+    'resource' => $resource,
+    'null' => $null,
+    'bool' => $bool,
+    'refcount' => &$refcount2,
+);
+>>>>>>> git-aline/master/master
 
 var_dump(symfony_zval_info('int', $var));
 var_dump(symfony_zval_info('float', $var));

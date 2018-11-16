@@ -92,7 +92,11 @@ class RequestStack
      */
     public function getParentRequest()
     {
+<<<<<<< HEAD
         $pos = count($this->requests) - 2;
+=======
+        $pos = \count($this->requests) - 2;
+>>>>>>> git-aline/master/master
 
         if (!isset($this->requests[$pos])) {
             return;

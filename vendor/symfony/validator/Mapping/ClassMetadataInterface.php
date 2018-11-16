@@ -11,9 +11,12 @@
 
 namespace Symfony\Component\Validator\Mapping;
 
+<<<<<<< HEAD
 use Symfony\Component\Validator\ClassBasedInterface;
 use Symfony\Component\Validator\PropertyMetadataContainerInterface as LegacyPropertyMetadataContainerInterface;
 
+=======
+>>>>>>> git-aline/master/master
 /**
  * Stores all metadata needed for validating objects of specific class.
  *
@@ -24,8 +27,11 @@ use Symfony\Component\Validator\PropertyMetadataContainerInterface as LegacyProp
  * by a group sequence for that class and whether instances of that class
  * should be traversed or not.
  *
+<<<<<<< HEAD
  * @since  2.5
  *
+=======
+>>>>>>> git-aline/master/master
  * @author Bernhard Schussek <bschussek@gmail.com>
  *
  * @see MetadataInterface
@@ -33,7 +39,11 @@ use Symfony\Component\Validator\PropertyMetadataContainerInterface as LegacyProp
  * @see \Symfony\Component\Validator\GroupSequenceProviderInterface
  * @see TraversalStrategy
  */
+<<<<<<< HEAD
 interface ClassMetadataInterface extends MetadataInterface, LegacyPropertyMetadataContainerInterface, ClassBasedInterface
+=======
+interface ClassMetadataInterface extends MetadataInterface
+>>>>>>> git-aline/master/master
 {
     /**
      * Returns the names of all constrained properties.
@@ -78,4 +88,36 @@ interface ClassMetadataInterface extends MetadataInterface, LegacyPropertyMetada
      * @see \Symfony\Component\Validator\GroupSequenceProviderInterface
      */
     public function isGroupSequenceProvider();
+<<<<<<< HEAD
+=======
+
+    /**
+     * Check if there's any metadata attached to the given named property.
+     *
+     * @param string $property The property name
+     *
+     * @return bool
+     */
+    public function hasPropertyMetadata($property);
+
+    /**
+     * Returns all metadata instances for the given named property.
+     *
+     * If your implementation does not support properties, simply throw an
+     * exception in this method (for example a <tt>BadMethodCallException</tt>).
+     *
+     * @param string $property The property name
+     *
+     * @return PropertyMetadataInterface[] A list of metadata instances. Empty if
+     *                                     no metadata exists for the property.
+     */
+    public function getPropertyMetadata($property);
+
+    /**
+     * Returns the name of the backing PHP class.
+     *
+     * @return string The name of the backing class
+     */
+    public function getClassName();
+>>>>>>> git-aline/master/master
 }

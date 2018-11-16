@@ -14,8 +14,13 @@ namespace Symfony\Component\Serializer\Normalizer;
 use Symfony\Component\PropertyAccess\Exception\NoSuchPropertyException;
 use Symfony\Component\PropertyAccess\PropertyAccess;
 use Symfony\Component\PropertyAccess\PropertyAccessorInterface;
+<<<<<<< HEAD
 use Symfony\Component\Serializer\Exception\CircularReferenceException;
 use Symfony\Component\Serializer\Exception\LogicException;
+=======
+use Symfony\Component\PropertyInfo\PropertyTypeExtractorInterface;
+use Symfony\Component\Serializer\Exception\RuntimeException;
+>>>>>>> git-aline/master/master
 use Symfony\Component\Serializer\Mapping\Factory\ClassMetadataFactoryInterface;
 use Symfony\Component\Serializer\NameConverter\NameConverterInterface;
 
@@ -24,6 +29,7 @@ use Symfony\Component\Serializer\NameConverter\NameConverterInterface;
  *
  * @author Kévin Dunglas <dunglas@gmail.com>
  */
+<<<<<<< HEAD
 class ObjectNormalizer extends AbstractNormalizer
 {
     /**
@@ -44,10 +50,26 @@ class ObjectNormalizer extends AbstractNormalizer
     public function supportsNormalization($data, $format = null)
     {
         return is_object($data) && !$data instanceof \Traversable;
+=======
+class ObjectNormalizer extends AbstractObjectNormalizer
+{
+    protected $propertyAccessor;
+
+    public function __construct(ClassMetadataFactoryInterface $classMetadataFactory = null, NameConverterInterface $nameConverter = null, PropertyAccessorInterface $propertyAccessor = null, PropertyTypeExtractorInterface $propertyTypeExtractor = null)
+    {
+        if (!\class_exists(PropertyAccess::class)) {
+            throw new RuntimeException('The ObjectNormalizer class requires the "PropertyAccess" component. Install "symfony/property-access" to use it.');
+        }
+
+        parent::__construct($classMetadataFactory, $nameConverter, $propertyTypeExtractor);
+
+        $this->propertyAccessor = $propertyAccessor ?: PropertyAccess::createPropertyAccessor();
+>>>>>>> git-aline/master/master
     }
 
     /**
      * {@inheritdoc}
+<<<<<<< HEAD
      *
      * @throws CircularReferenceException
      */
@@ -119,19 +141,80 @@ class ObjectNormalizer extends AbstractNormalizer
         }
 
         return $data;
+=======
+     */
+    protected function extractAttributes($object, $format = null, array $context = array())
+    {
+        // If not using groups, detect manually
+        $attributes = array();
+
+        // methods
+        $reflClass = new \ReflectionClass($object);
+        foreach ($reflClass->getMethods(\ReflectionMethod::IS_PUBLIC) as $reflMethod) {
+            if (
+                0 !== $reflMethod->getNumberOfRequiredParameters() ||
+                $reflMethod->isStatic() ||
+                $reflMethod->isConstructor() ||
+                $reflMethod->isDestructor()
+            ) {
+                continue;
+            }
+
+            $name = $reflMethod->name;
+            $attributeName = null;
+
+            if (0 === strpos($name, 'get') || 0 === strpos($name, 'has')) {
+                // getters and hassers
+                $attributeName = substr($name, 3);
+
+                if (!$reflClass->hasProperty($attributeName)) {
+                    $attributeName = lcfirst($attributeName);
+                }
+            } elseif (0 === strpos($name, 'is')) {
+                // issers
+                $attributeName = substr($name, 2);
+
+                if (!$reflClass->hasProperty($attributeName)) {
+                    $attributeName = lcfirst($attributeName);
+                }
+            }
+
+            if (null !== $attributeName && $this->isAllowedAttribute($object, $attributeName, $format, $context)) {
+                $attributes[$attributeName] = true;
+            }
+        }
+
+        // properties
+        foreach ($reflClass->getProperties(\ReflectionProperty::IS_PUBLIC) as $reflProperty) {
+            if ($reflProperty->isStatic() || !$this->isAllowedAttribute($object, $reflProperty->name, $format, $context)) {
+                continue;
+            }
+
+            $attributes[$reflProperty->name] = true;
+        }
+
+        return array_keys($attributes);
+>>>>>>> git-aline/master/master
     }
 
     /**
      * {@inheritdoc}
      */
+<<<<<<< HEAD
     public function supportsDenormalization($data, $type, $format = null)
     {
         return class_exists($type);
+=======
+    protected function getAttributeValue($object, $attribute, $format = null, array $context = array())
+    {
+        return $this->propertyAccessor->getValue($object, $attribute);
+>>>>>>> git-aline/master/master
     }
 
     /**
      * {@inheritdoc}
      */
+<<<<<<< HEAD
     public function denormalize($data, $class, $format = null, array $context = array())
     {
         $allowedAttributes = $this->getAllowedAttributes($class, $context, true);
@@ -158,5 +241,14 @@ class ObjectNormalizer extends AbstractNormalizer
         }
 
         return $object;
+=======
+    protected function setAttributeValue($object, $attribute, $value, $format = null, array $context = array())
+    {
+        try {
+            $this->propertyAccessor->setValue($object, $attribute, $value);
+        } catch (NoSuchPropertyException $exception) {
+            // Properties not found are ignored
+        }
+>>>>>>> git-aline/master/master
     }
 }

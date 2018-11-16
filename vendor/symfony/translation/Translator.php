@@ -11,6 +11,7 @@
 
 namespace Symfony\Component\Translation;
 
+<<<<<<< HEAD
 use Symfony\Component\Translation\Loader\LoaderInterface;
 use Symfony\Component\Translation\Exception\NotFoundResourceException;
 use Symfony\Component\Config\ConfigCacheInterface;
@@ -20,6 +21,21 @@ use Symfony\Component\Config\ConfigCacheFactory;
 /**
  * Translator.
  *
+=======
+use Symfony\Component\Config\ConfigCacheFactory;
+use Symfony\Component\Config\ConfigCacheFactoryInterface;
+use Symfony\Component\Config\ConfigCacheInterface;
+use Symfony\Component\Translation\Exception\InvalidArgumentException;
+use Symfony\Component\Translation\Exception\LogicException;
+use Symfony\Component\Translation\Exception\NotFoundResourceException;
+use Symfony\Component\Translation\Exception\RuntimeException;
+use Symfony\Component\Translation\Formatter\ChoiceMessageFormatterInterface;
+use Symfony\Component\Translation\Formatter\MessageFormatter;
+use Symfony\Component\Translation\Formatter\MessageFormatterInterface;
+use Symfony\Component\Translation\Loader\LoaderInterface;
+
+/**
+>>>>>>> git-aline/master/master
  * @author Fabien Potencier <fabien@symfony.com>
  */
 class Translator implements TranslatorInterface, TranslatorBagInterface
@@ -32,7 +48,11 @@ class Translator implements TranslatorInterface, TranslatorBagInterface
     /**
      * @var string
      */
+<<<<<<< HEAD
     protected $locale;
+=======
+    private $locale;
+>>>>>>> git-aline/master/master
 
     /**
      * @var array
@@ -50,9 +70,15 @@ class Translator implements TranslatorInterface, TranslatorBagInterface
     private $resources = array();
 
     /**
+<<<<<<< HEAD
      * @var MessageSelector
      */
     private $selector;
+=======
+     * @var MessageFormatterInterface
+     */
+    private $formatter;
+>>>>>>> git-aline/master/master
 
     /**
      * @var string
@@ -70,6 +96,7 @@ class Translator implements TranslatorInterface, TranslatorBagInterface
     private $configCacheFactory;
 
     /**
+<<<<<<< HEAD
      * Constructor.
      *
      * @param string               $locale   The locale
@@ -83,15 +110,39 @@ class Translator implements TranslatorInterface, TranslatorBagInterface
     {
         $this->setLocale($locale);
         $this->selector = $selector ?: new MessageSelector();
+=======
+     * @param string                         $locale    The locale
+     * @param MessageFormatterInterface|null $formatter The message formatter
+     * @param string|null                    $cacheDir  The directory to use for the cache
+     * @param bool                           $debug     Use cache in debug mode ?
+     *
+     * @throws InvalidArgumentException If a locale contains invalid characters
+     */
+    public function __construct($locale, $formatter = null, $cacheDir = null, $debug = false)
+    {
+        $this->setLocale($locale);
+
+        if ($formatter instanceof MessageSelector) {
+            $formatter = new MessageFormatter($formatter);
+            @trigger_error(sprintf('Passing a "%s" instance into the "%s()" method as a second argument is deprecated since Symfony 3.4 and will be removed in 4.0. Inject a "%s" implementation instead.', MessageSelector::class, __METHOD__, MessageFormatterInterface::class), E_USER_DEPRECATED);
+        } elseif (null === $formatter) {
+            $formatter = new MessageFormatter();
+        }
+
+        $this->formatter = $formatter;
+>>>>>>> git-aline/master/master
         $this->cacheDir = $cacheDir;
         $this->debug = $debug;
     }
 
+<<<<<<< HEAD
     /**
      * Sets the ConfigCache factory to use.
      *
      * @param ConfigCacheFactoryInterface $configCacheFactory
      */
+=======
+>>>>>>> git-aline/master/master
     public function setConfigCacheFactory(ConfigCacheFactoryInterface $configCacheFactory)
     {
         $this->configCacheFactory = $configCacheFactory;
@@ -116,7 +167,11 @@ class Translator implements TranslatorInterface, TranslatorBagInterface
      * @param string $locale   The locale
      * @param string $domain   The domain
      *
+<<<<<<< HEAD
      * @throws \InvalidArgumentException If the locale contains invalid characters
+=======
+     * @throws InvalidArgumentException If the locale contains invalid characters
+>>>>>>> git-aline/master/master
      */
     public function addResource($format, $resource, $locale, $domain = null)
     {
@@ -128,7 +183,11 @@ class Translator implements TranslatorInterface, TranslatorBagInterface
 
         $this->resources[$locale][] = array($format, $resource, $domain);
 
+<<<<<<< HEAD
         if (in_array($locale, $this->fallbackLocales)) {
+=======
+        if (\in_array($locale, $this->fallbackLocales)) {
+>>>>>>> git-aline/master/master
             $this->catalogues = array();
         } else {
             unset($this->catalogues[$locale]);
@@ -153,6 +212,7 @@ class Translator implements TranslatorInterface, TranslatorBagInterface
     }
 
     /**
+<<<<<<< HEAD
      * Sets the fallback locale(s).
      *
      * @param string|array $locales The fallback locale(s)
@@ -169,11 +229,17 @@ class Translator implements TranslatorInterface, TranslatorBagInterface
     }
 
     /**
+=======
+>>>>>>> git-aline/master/master
      * Sets the fallback locales.
      *
      * @param array $locales The fallback locales
      *
+<<<<<<< HEAD
      * @throws \InvalidArgumentException If a locale contains invalid characters
+=======
+     * @throws InvalidArgumentException If a locale contains invalid characters
+>>>>>>> git-aline/master/master
      */
     public function setFallbackLocales(array $locales)
     {
@@ -206,7 +272,11 @@ class Translator implements TranslatorInterface, TranslatorBagInterface
             $domain = 'messages';
         }
 
+<<<<<<< HEAD
         return strtr($this->getCatalogue($locale)->get((string) $id, $domain), $parameters);
+=======
+        return $this->formatter->format($this->getCatalogue($locale)->get((string) $id, $domain), $locale, $parameters);
+>>>>>>> git-aline/master/master
     }
 
     /**
@@ -214,6 +284,13 @@ class Translator implements TranslatorInterface, TranslatorBagInterface
      */
     public function transChoice($id, $number, array $parameters = array(), $domain = null, $locale = null)
     {
+<<<<<<< HEAD
+=======
+        if (!$this->formatter instanceof ChoiceMessageFormatterInterface) {
+            throw new LogicException(sprintf('The formatter "%s" does not support plural translations.', \get_class($this->formatter)));
+        }
+
+>>>>>>> git-aline/master/master
         if (null === $domain) {
             $domain = 'messages';
         }
@@ -230,7 +307,11 @@ class Translator implements TranslatorInterface, TranslatorBagInterface
             }
         }
 
+<<<<<<< HEAD
         return strtr($this->selector->choose($catalogue->get($id, $domain), (int) $number, $locale), $parameters);
+=======
+        return $this->formatter->choiceFormat($catalogue->get($id, $domain), $number, $locale, $parameters);
+>>>>>>> git-aline/master/master
     }
 
     /**
@@ -262,6 +343,7 @@ class Translator implements TranslatorInterface, TranslatorBagInterface
     }
 
     /**
+<<<<<<< HEAD
      * Collects all messages for the given locale.
      *
      * @param string|null $locale Locale of translations, by default is current locale
@@ -280,6 +362,8 @@ class Translator implements TranslatorInterface, TranslatorBagInterface
     }
 
     /**
+=======
+>>>>>>> git-aline/master/master
      * @param string $locale
      */
     protected function loadCatalogue($locale)
@@ -319,10 +403,16 @@ class Translator implements TranslatorInterface, TranslatorBagInterface
         }
 
         $this->assertValidLocale($locale);
+<<<<<<< HEAD
         $self = $this; // required for PHP 5.3 where "$this" cannot be use()d in anonymous functions. Change in Symfony 3.0.
         $cache = $this->getConfigCacheFactory()->cache($this->getCatalogueCachePath($locale),
             function (ConfigCacheInterface $cache) use ($self, $locale) {
                 $self->dumpCatalogue($locale, $cache);
+=======
+        $cache = $this->getConfigCacheFactory()->cache($this->getCatalogueCachePath($locale),
+            function (ConfigCacheInterface $cache) use ($locale) {
+                $this->dumpCatalogue($locale, $cache);
+>>>>>>> git-aline/master/master
             }
         );
 
@@ -335,12 +425,16 @@ class Translator implements TranslatorInterface, TranslatorBagInterface
         $this->catalogues[$locale] = include $cache->getPath();
     }
 
+<<<<<<< HEAD
     /**
      * This method is public because it needs to be callable from a closure in PHP 5.3. It should be made protected (or even private, if possible) in 3.0.
      *
      * @internal
      */
     public function dumpCatalogue($locale, ConfigCacheInterface $cache)
+=======
+    private function dumpCatalogue($locale, ConfigCacheInterface $cache)
+>>>>>>> git-aline/master/master
     {
         $this->initializeCatalogue($locale);
         $fallbackContent = $this->getFallbackContent($this->catalogues[$locale]);
@@ -376,9 +470,15 @@ EOF
             $fallbackSuffix = ucfirst(preg_replace($replacementPattern, '_', $fallback));
             $currentSuffix = ucfirst(preg_replace($replacementPattern, '_', $current));
 
+<<<<<<< HEAD
             $fallbackContent .= sprintf(<<<EOF
 \$catalogue%s = new MessageCatalogue('%s', %s);
 \$catalogue%s->addFallbackCatalogue(\$catalogue%s);
+=======
+            $fallbackContent .= sprintf(<<<'EOF'
+$catalogue%s = new MessageCatalogue('%s', %s);
+$catalogue%s->addFallbackCatalogue($catalogue%s);
+>>>>>>> git-aline/master/master
 
 EOF
                 ,
@@ -397,7 +497,11 @@ EOF
 
     private function getCatalogueCachePath($locale)
     {
+<<<<<<< HEAD
         return $this->cacheDir.'/catalogue.'.$locale.'.'.sha1(serialize($this->fallbackLocales)).'.php';
+=======
+        return $this->cacheDir.'/catalogue.'.$locale.'.'.strtr(substr(base64_encode(hash('sha256', serialize($this->fallbackLocales), true)), 0, 7), '/', '_').'.php';
+>>>>>>> git-aline/master/master
     }
 
     private function doLoadCatalogue($locale)
@@ -407,7 +511,11 @@ EOF
         if (isset($this->resources[$locale])) {
             foreach ($this->resources[$locale] as $resource) {
                 if (!isset($this->loaders[$resource[0]])) {
+<<<<<<< HEAD
                     throw new \RuntimeException(sprintf('The "%s" translation loader is not registered.', $resource[0]));
+=======
+                    throw new RuntimeException(sprintf('The "%s" translation loader is not registered.', $resource[0]));
+>>>>>>> git-aline/master/master
                 }
                 $this->catalogues[$locale]->addCatalogue($this->loaders[$resource[0]]->load($resource[1], $locale, $resource[2]));
             }
@@ -420,10 +528,20 @@ EOF
 
         foreach ($this->computeFallbackLocales($locale) as $fallback) {
             if (!isset($this->catalogues[$fallback])) {
+<<<<<<< HEAD
                 $this->doLoadCatalogue($fallback);
             }
 
             $fallbackCatalogue = new MessageCatalogue($fallback, $this->catalogues[$fallback]->all());
+=======
+                $this->initializeCatalogue($fallback);
+            }
+
+            $fallbackCatalogue = new MessageCatalogue($fallback, $this->catalogues[$fallback]->all());
+            foreach ($this->catalogues[$fallback]->getResources() as $resource) {
+                $fallbackCatalogue->addResource($resource);
+            }
+>>>>>>> git-aline/master/master
             $current->addFallbackCatalogue($fallbackCatalogue);
             $current = $fallbackCatalogue;
         }
@@ -440,8 +558,13 @@ EOF
             $locales[] = $fallback;
         }
 
+<<<<<<< HEAD
         if (strrchr($locale, '_') !== false) {
             array_unshift($locales, substr($locale, 0, -strlen(strrchr($locale, '_'))));
+=======
+        if (false !== strrchr($locale, '_')) {
+            array_unshift($locales, substr($locale, 0, -\strlen(strrchr($locale, '_'))));
+>>>>>>> git-aline/master/master
         }
 
         return array_unique($locales);
@@ -452,12 +575,20 @@ EOF
      *
      * @param string $locale Locale to tests
      *
+<<<<<<< HEAD
      * @throws \InvalidArgumentException If the locale contains invalid characters
+=======
+     * @throws InvalidArgumentException If the locale contains invalid characters
+>>>>>>> git-aline/master/master
      */
     protected function assertValidLocale($locale)
     {
         if (1 !== preg_match('/^[a-z0-9@_\\.\\-]*$/i', $locale)) {
+<<<<<<< HEAD
             throw new \InvalidArgumentException(sprintf('Invalid "%s" locale.', $locale));
+=======
+            throw new InvalidArgumentException(sprintf('Invalid "%s" locale.', $locale));
+>>>>>>> git-aline/master/master
         }
     }
 

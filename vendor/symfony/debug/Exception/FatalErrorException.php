@@ -9,6 +9,7 @@
  * file that was distributed with this source code.
  */
 
+<<<<<<< HEAD
 namespace Symfony\Component\HttpKernel\Exception;
 
 /**
@@ -28,16 +29,28 @@ namespace Symfony\Component\Debug\Exception;
 
 use Symfony\Component\HttpKernel\Exception\FatalErrorException as LegacyFatalErrorException;
 
+=======
+namespace Symfony\Component\Debug\Exception;
+
+>>>>>>> git-aline/master/master
 /**
  * Fatal Error Exception.
  *
  * @author Konstanton Myakshin <koc-dp@yandex.ru>
  */
+<<<<<<< HEAD
 class FatalErrorException extends LegacyFatalErrorException
 {
     public function __construct($message, $code, $severity, $filename, $lineno, $traceOffset = null, $traceArgs = true, array $trace = null)
     {
         parent::__construct($message, $code, $severity, $filename, $lineno);
+=======
+class FatalErrorException extends \ErrorException
+{
+    public function __construct($message, $code, $severity, $filename, $lineno, $traceOffset = null, $traceArgs = true, array $trace = null, $previous = null)
+    {
+        parent::__construct($message, $code, $severity, $filename, $lineno, $previous);
+>>>>>>> git-aline/master/master
 
         if (null !== $trace) {
             if (!$traceArgs) {
@@ -48,7 +61,11 @@ class FatalErrorException extends LegacyFatalErrorException
 
             $this->setTrace($trace);
         } elseif (null !== $traceOffset) {
+<<<<<<< HEAD
             if (function_exists('xdebug_get_function_stack')) {
+=======
+            if (\function_exists('xdebug_get_function_stack')) {
+>>>>>>> git-aline/master/master
                 $trace = xdebug_get_function_stack();
                 if (0 < $traceOffset) {
                     array_splice($trace, -$traceOffset);
@@ -77,7 +94,11 @@ class FatalErrorException extends LegacyFatalErrorException
 
                 unset($frame);
                 $trace = array_reverse($trace);
+<<<<<<< HEAD
             } elseif (function_exists('symfony_debug_backtrace')) {
+=======
+            } elseif (\function_exists('symfony_debug_backtrace')) {
+>>>>>>> git-aline/master/master
                 $trace = symfony_debug_backtrace();
                 if (0 < $traceOffset) {
                     array_splice($trace, 0, $traceOffset);

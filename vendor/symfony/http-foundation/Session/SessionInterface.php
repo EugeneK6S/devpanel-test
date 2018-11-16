@@ -23,16 +23,26 @@ interface SessionInterface
     /**
      * Starts the session storage.
      *
+<<<<<<< HEAD
      * @return bool True if session started.
      *
      * @throws \RuntimeException If session fails to start.
+=======
+     * @return bool True if session started
+     *
+     * @throws \RuntimeException if session fails to start
+>>>>>>> git-aline/master/master
      */
     public function start();
 
     /**
      * Returns the session ID.
      *
+<<<<<<< HEAD
      * @return string The session ID.
+=======
+     * @return string The session ID
+>>>>>>> git-aline/master/master
      */
     public function getId();
 
@@ -46,7 +56,11 @@ interface SessionInterface
     /**
      * Returns the session name.
      *
+<<<<<<< HEAD
      * @return mixed The session name.
+=======
+     * @return mixed The session name
+>>>>>>> git-aline/master/master
      */
     public function getName();
 
@@ -68,7 +82,11 @@ interface SessionInterface
      *                      to expire with browser session. Time is in seconds, and is
      *                      not a Unix timestamp.
      *
+<<<<<<< HEAD
      * @return bool True if session invalidated, false if error.
+=======
+     * @return bool True if session invalidated, false if error
+>>>>>>> git-aline/master/master
      */
     public function invalidate($lifetime = null);
 
@@ -76,13 +94,21 @@ interface SessionInterface
      * Migrates the current session to a new session id while maintaining all
      * session attributes.
      *
+<<<<<<< HEAD
      * @param bool $destroy  Whether to delete the old session or leave it to garbage collection.
+=======
+     * @param bool $destroy  Whether to delete the old session or leave it to garbage collection
+>>>>>>> git-aline/master/master
      * @param int  $lifetime Sets the cookie lifetime for the session cookie. A null value
      *                       will leave the system settings unchanged, 0 sets the cookie
      *                       to expire with browser session. Time is in seconds, and is
      *                       not a Unix timestamp.
      *
+<<<<<<< HEAD
      * @return bool True if session migrated, false if error.
+=======
+     * @return bool True if session migrated, false if error
+>>>>>>> git-aline/master/master
      */
     public function migrate($destroy = false, $lifetime = null);
 
@@ -108,7 +134,11 @@ interface SessionInterface
      * Returns an attribute.
      *
      * @param string $name    The attribute name
+<<<<<<< HEAD
      * @param mixed  $default The default value if not found.
+=======
+     * @param mixed  $default The default value if not found
+>>>>>>> git-aline/master/master
      *
      * @return mixed
      */
@@ -159,8 +189,11 @@ interface SessionInterface
 
     /**
      * Registers a SessionBagInterface with the session.
+<<<<<<< HEAD
      *
      * @param SessionBagInterface $bag
+=======
+>>>>>>> git-aline/master/master
      */
     public function registerBag(SessionBagInterface $bag);
 

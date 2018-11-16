@@ -20,6 +20,7 @@ use Symfony\Component\Routing\RouteCollection;
  */
 abstract class MatcherDumper implements MatcherDumperInterface
 {
+<<<<<<< HEAD
     /**
      * @var RouteCollection
      */
@@ -30,6 +31,10 @@ abstract class MatcherDumper implements MatcherDumperInterface
      *
      * @param RouteCollection $routes The RouteCollection to dump
      */
+=======
+    private $routes;
+
+>>>>>>> git-aline/master/master
     public function __construct(RouteCollection $routes)
     {
         $this->routes = $routes;

@@ -11,6 +11,11 @@
 
 namespace Symfony\Component\Validator;
 
+<<<<<<< HEAD
+=======
+use Symfony\Component\Validator\Context\ExecutionContextInterface;
+
+>>>>>>> git-aline/master/master
 /**
  * @author Bernhard Schussek <bschussek@gmail.com>
  */

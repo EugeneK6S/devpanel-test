@@ -11,9 +11,20 @@
 
 namespace Symfony\Component\DependencyInjection\Compiler;
 
+<<<<<<< HEAD
 use Symfony\Component\DependencyInjection\Definition;
 use Symfony\Component\DependencyInjection\Reference;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
+=======
+use Symfony\Component\DependencyInjection\Argument\ArgumentInterface;
+use Symfony\Component\DependencyInjection\ContainerBuilder;
+use Symfony\Component\DependencyInjection\ContainerInterface;
+use Symfony\Component\DependencyInjection\Definition;
+use Symfony\Component\DependencyInjection\Exception\RuntimeException;
+use Symfony\Component\DependencyInjection\ExpressionLanguage;
+use Symfony\Component\DependencyInjection\Reference;
+use Symfony\Component\ExpressionLanguage\Expression;
+>>>>>>> git-aline/master/master
 
 /**
  * Run this pass before passes that need to know more about the relation of
@@ -24,6 +35,7 @@ use Symfony\Component\DependencyInjection\ContainerBuilder;
  *
  * @author Johannes M. Schmitt <schmittjoh@gmail.com>
  */
+<<<<<<< HEAD
 class AnalyzeServiceReferencesPass implements RepeatablePassInterface
 {
     private $graph;
@@ -41,6 +53,24 @@ class AnalyzeServiceReferencesPass implements RepeatablePassInterface
     public function __construct($onlyConstructorArguments = false)
     {
         $this->onlyConstructorArguments = (bool) $onlyConstructorArguments;
+=======
+class AnalyzeServiceReferencesPass extends AbstractRecursivePass implements RepeatablePassInterface
+{
+    private $graph;
+    private $currentDefinition;
+    private $onlyConstructorArguments;
+    private $hasProxyDumper;
+    private $lazy;
+    private $expressionLanguage;
+
+    /**
+     * @param bool $onlyConstructorArguments Sets this Service Reference pass to ignore method calls
+     */
+    public function __construct($onlyConstructorArguments = false, $hasProxyDumper = true)
+    {
+        $this->onlyConstructorArguments = (bool) $onlyConstructorArguments;
+        $this->hasProxyDumper = (bool) $hasProxyDumper;
+>>>>>>> git-aline/master/master
     }
 
     /**
@@ -48,19 +78,27 @@ class AnalyzeServiceReferencesPass implements RepeatablePassInterface
      */
     public function setRepeatedPass(RepeatedPass $repeatedPass)
     {
+<<<<<<< HEAD
         $this->repeatedPass = $repeatedPass;
+=======
+        // no-op for BC
+>>>>>>> git-aline/master/master
     }
 
     /**
      * Processes a ContainerBuilder object to populate the service reference graph.
+<<<<<<< HEAD
      *
      * @param ContainerBuilder $container
+=======
+>>>>>>> git-aline/master/master
      */
     public function process(ContainerBuilder $container)
     {
         $this->container = $container;
         $this->graph = $container->getCompiler()->getServiceReferenceGraph();
         $this->graph->clear();
+<<<<<<< HEAD
 
         foreach ($container->getDefinitions() as $id => $definition) {
             if ($definition->isSynthetic() || $definition->isAbstract()) {
@@ -123,19 +161,92 @@ class AnalyzeServiceReferencesPass implements RepeatablePassInterface
                 }
             }
         }
+=======
+        $this->lazy = false;
+
+        foreach ($container->getAliases() as $id => $alias) {
+            $targetId = $this->getDefinitionId((string) $alias);
+            $this->graph->connect($id, $alias, $targetId, $this->getDefinition($targetId), null);
+        }
+
+        parent::process($container);
+    }
+
+    protected function processValue($value, $isRoot = false)
+    {
+        $lazy = $this->lazy;
+
+        if ($value instanceof ArgumentInterface) {
+            $this->lazy = true;
+            parent::processValue($value->getValues());
+            $this->lazy = $lazy;
+
+            return $value;
+        }
+        if ($value instanceof Expression) {
+            $this->getExpressionLanguage()->compile((string) $value, array('this' => 'container'));
+
+            return $value;
+        }
+        if ($value instanceof Reference) {
+            $targetId = $this->getDefinitionId((string) $value);
+            $targetDefinition = $this->getDefinition($targetId);
+
+            $this->graph->connect(
+                $this->currentId,
+                $this->currentDefinition,
+                $targetId,
+                $targetDefinition,
+                $value,
+                $this->lazy || ($this->hasProxyDumper && $targetDefinition && $targetDefinition->isLazy()),
+                ContainerInterface::IGNORE_ON_UNINITIALIZED_REFERENCE === $value->getInvalidBehavior()
+            );
+
+            return $value;
+        }
+        if (!$value instanceof Definition) {
+            return parent::processValue($value, $isRoot);
+        }
+        if ($isRoot) {
+            if ($value->isSynthetic() || $value->isAbstract()) {
+                return $value;
+            }
+            $this->currentDefinition = $value;
+        }
+        $this->lazy = false;
+
+        $this->processValue($value->getFactory());
+        $this->processValue($value->getArguments());
+
+        if (!$this->onlyConstructorArguments) {
+            $this->processValue($value->getProperties());
+            $this->processValue($value->getMethodCalls());
+            $this->processValue($value->getConfigurator());
+        }
+        $this->lazy = $lazy;
+
+        return $value;
+>>>>>>> git-aline/master/master
     }
 
     /**
      * Returns a service definition given the full name or an alias.
      *
+<<<<<<< HEAD
      * @param string $id A full id or alias for a service definition.
+=======
+     * @param string $id A full id or alias for a service definition
+>>>>>>> git-aline/master/master
      *
      * @return Definition|null The definition related to the supplied id
      */
     private function getDefinition($id)
     {
+<<<<<<< HEAD
         $id = $this->getDefinitionId($id);
 
+=======
+>>>>>>> git-aline/master/master
         return null === $id ? null : $this->container->getDefinition($id);
     }
 
@@ -149,6 +260,38 @@ class AnalyzeServiceReferencesPass implements RepeatablePassInterface
             return;
         }
 
+<<<<<<< HEAD
         return $id;
+=======
+        return $this->container->normalizeId($id);
+    }
+
+    private function getExpressionLanguage()
+    {
+        if (null === $this->expressionLanguage) {
+            if (!class_exists(ExpressionLanguage::class)) {
+                throw new RuntimeException('Unable to use expressions as the Symfony ExpressionLanguage component is not installed.');
+            }
+
+            $providers = $this->container->getExpressionLanguageProviders();
+            $this->expressionLanguage = new ExpressionLanguage(null, $providers, function ($arg) {
+                if ('""' === substr_replace($arg, '', 1, -1)) {
+                    $id = stripcslashes(substr($arg, 1, -1));
+                    $id = $this->getDefinitionId($id);
+
+                    $this->graph->connect(
+                        $this->currentId,
+                        $this->currentDefinition,
+                        $id,
+                        $this->getDefinition($id)
+                    );
+                }
+
+                return sprintf('$this->get(%s)', $arg);
+            });
+        }
+
+        return $this->expressionLanguage;
+>>>>>>> git-aline/master/master
     }
 }

@@ -26,9 +26,12 @@ use Symfony\Component\Validator\Mapping\ClassMetadata;
  */
 class AnnotationLoader implements LoaderInterface
 {
+<<<<<<< HEAD
     /**
      * @var Reader
      */
+=======
+>>>>>>> git-aline/master/master
     protected $reader;
 
     public function __construct(Reader $reader)
@@ -74,12 +77,19 @@ class AnnotationLoader implements LoaderInterface
                 foreach ($this->reader->getMethodAnnotations($method) as $constraint) {
                     if ($constraint instanceof Callback) {
                         $constraint->callback = $method->getName();
+<<<<<<< HEAD
                         $constraint->methods = null;
+=======
+>>>>>>> git-aline/master/master
 
                         $metadata->addConstraint($constraint);
                     } elseif ($constraint instanceof Constraint) {
                         if (preg_match('/^(get|is|has)(.+)$/i', $method->name, $matches)) {
+<<<<<<< HEAD
                             $metadata->addGetterConstraint(lcfirst($matches[2]), $constraint);
+=======
+                            $metadata->addGetterMethodConstraint(lcfirst($matches[2]), $matches[0], $constraint);
+>>>>>>> git-aline/master/master
                         } else {
                             throw new MappingException(sprintf('The constraint on "%s::%s" cannot be added. Constraints can only be added on methods beginning with "get", "is" or "has".', $className, $method->name));
                         }

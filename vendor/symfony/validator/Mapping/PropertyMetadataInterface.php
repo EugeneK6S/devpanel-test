@@ -11,9 +11,12 @@
 
 namespace Symfony\Component\Validator\Mapping;
 
+<<<<<<< HEAD
 use Symfony\Component\Validator\ClassBasedInterface;
 use Symfony\Component\Validator\PropertyMetadataInterface as LegacyPropertyMetadataInterface;
 
+=======
+>>>>>>> git-aline/master/master
 /**
  * Stores all metadata needed for validating the value of a class property.
  *
@@ -24,14 +27,37 @@ use Symfony\Component\Validator\PropertyMetadataInterface as LegacyPropertyMetad
  * should be validated against their class' metadata and whether traversable
  * objects should be traversed or not.
  *
+<<<<<<< HEAD
  * @since  2.5
  *
+=======
+>>>>>>> git-aline/master/master
  * @author Bernhard Schussek <bschussek@gmail.com>
  *
  * @see MetadataInterface
  * @see CascadingStrategy
  * @see TraversalStrategy
  */
+<<<<<<< HEAD
 interface PropertyMetadataInterface extends MetadataInterface, LegacyPropertyMetadataInterface, ClassBasedInterface
 {
+=======
+interface PropertyMetadataInterface extends MetadataInterface
+{
+    /**
+     * Returns the name of the property.
+     *
+     * @return string The property name
+     */
+    public function getPropertyName();
+
+    /**
+     * Extracts the value of the property from the given container.
+     *
+     * @param mixed $containingValue The container to extract the property value from
+     *
+     * @return mixed The value of the property
+     */
+    public function getPropertyValue($containingValue);
+>>>>>>> git-aline/master/master
 }

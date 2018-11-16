@@ -23,12 +23,16 @@ class Callback extends Constraint
 {
     /**
      * @var string|callable
+<<<<<<< HEAD
      *
      * @since 2.4
+=======
+>>>>>>> git-aline/master/master
      */
     public $callback;
 
     /**
+<<<<<<< HEAD
      * @var array
      *
      * @deprecated since version 2.4, to be removed in 3.0.
@@ -36,11 +40,14 @@ class Callback extends Constraint
     public $methods;
 
     /**
+=======
+>>>>>>> git-aline/master/master
      * {@inheritdoc}
      */
     public function __construct($options = null)
     {
         // Invocation through annotations with an array parameter only
+<<<<<<< HEAD
         if (is_array($options) && 1 === count($options) && isset($options['value'])) {
             $options = $options['value'];
         }
@@ -56,6 +63,14 @@ class Callback extends Constraint
                 // @deprecated, to be removed in 3.0
                 $options = array('methods' => $options);
             }
+=======
+        if (\is_array($options) && 1 === \count($options) && isset($options['value'])) {
+            $options = $options['value'];
+        }
+
+        if (\is_array($options) && !isset($options['callback']) && !isset($options['groups']) && !isset($options['payload'])) {
+            $options = array('callback' => $options);
+>>>>>>> git-aline/master/master
         }
 
         parent::__construct($options);

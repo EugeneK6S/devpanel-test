@@ -16,6 +16,11 @@ namespace Symfony\Component\Validator\Constraints;
  *
  * @Annotation
  * @Target({"CLASS", "ANNOTATION"})
+<<<<<<< HEAD
+=======
+ *
+ * @author Bernhard Schussek <bschussek@gmail.com>
+>>>>>>> git-aline/master/master
  */
 class GroupSequenceProvider
 {

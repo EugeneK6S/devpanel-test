@@ -13,7 +13,10 @@ namespace Symfony\Component\Validator\Constraints;
 
 use Symfony\Component\HttpFoundation\File\File as FileObject;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
+<<<<<<< HEAD
 use Symfony\Component\Validator\Context\ExecutionContextInterface;
+=======
+>>>>>>> git-aline/master/master
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\ConstraintValidator;
 use Symfony\Component\Validator\Exception\UnexpectedTypeException;
@@ -62,6 +65,7 @@ class FileValidator extends ConstraintValidator
                     }
 
                     list($sizeAsString, $limitAsString, $suffix) = $this->factorizeSizes(0, $limitInBytes, $binaryFormat);
+<<<<<<< HEAD
                     if ($this->context instanceof ExecutionContextInterface) {
                         $this->context->buildViolation($constraint->uploadIniSizeErrorMessage)
                             ->setParameter('{{ limit }}', $limitAsString)
@@ -159,18 +163,72 @@ class FileValidator extends ConstraintValidator
                             ->setCode($value->getError())
                             ->addViolation();
                     }
+=======
+                    $this->context->buildViolation($constraint->uploadIniSizeErrorMessage)
+                        ->setParameter('{{ limit }}', $limitAsString)
+                        ->setParameter('{{ suffix }}', $suffix)
+                        ->setCode(UPLOAD_ERR_INI_SIZE)
+                        ->addViolation();
+
+                    return;
+                case UPLOAD_ERR_FORM_SIZE:
+                    $this->context->buildViolation($constraint->uploadFormSizeErrorMessage)
+                        ->setCode(UPLOAD_ERR_FORM_SIZE)
+                        ->addViolation();
+
+                    return;
+                case UPLOAD_ERR_PARTIAL:
+                    $this->context->buildViolation($constraint->uploadPartialErrorMessage)
+                        ->setCode(UPLOAD_ERR_PARTIAL)
+                        ->addViolation();
+
+                    return;
+                case UPLOAD_ERR_NO_FILE:
+                    $this->context->buildViolation($constraint->uploadNoFileErrorMessage)
+                        ->setCode(UPLOAD_ERR_NO_FILE)
+                        ->addViolation();
+
+                    return;
+                case UPLOAD_ERR_NO_TMP_DIR:
+                    $this->context->buildViolation($constraint->uploadNoTmpDirErrorMessage)
+                        ->setCode(UPLOAD_ERR_NO_TMP_DIR)
+                        ->addViolation();
+
+                    return;
+                case UPLOAD_ERR_CANT_WRITE:
+                    $this->context->buildViolation($constraint->uploadCantWriteErrorMessage)
+                        ->setCode(UPLOAD_ERR_CANT_WRITE)
+                        ->addViolation();
+
+                    return;
+                case UPLOAD_ERR_EXTENSION:
+                    $this->context->buildViolation($constraint->uploadExtensionErrorMessage)
+                        ->setCode(UPLOAD_ERR_EXTENSION)
+                        ->addViolation();
+
+                    return;
+                default:
+                    $this->context->buildViolation($constraint->uploadErrorMessage)
+                        ->setCode($value->getError())
+                        ->addViolation();
+>>>>>>> git-aline/master/master
 
                     return;
             }
         }
 
+<<<<<<< HEAD
         if (!is_scalar($value) && !$value instanceof FileObject && !(is_object($value) && method_exists($value, '__toString'))) {
+=======
+        if (!is_scalar($value) && !$value instanceof FileObject && !(\is_object($value) && method_exists($value, '__toString'))) {
+>>>>>>> git-aline/master/master
             throw new UnexpectedTypeException($value, 'string');
         }
 
         $path = $value instanceof FileObject ? $value->getPathname() : (string) $value;
 
         if (!is_file($path)) {
+<<<<<<< HEAD
             if ($this->context instanceof ExecutionContextInterface) {
                 $this->context->buildViolation($constraint->notFoundMessage)
                     ->setParameter('{{ file }}', $this->formatValue($path))
@@ -182,11 +240,18 @@ class FileValidator extends ConstraintValidator
                     ->setCode(File::NOT_FOUND_ERROR)
                     ->addViolation();
             }
+=======
+            $this->context->buildViolation($constraint->notFoundMessage)
+                ->setParameter('{{ file }}', $this->formatValue($path))
+                ->setCode(File::NOT_FOUND_ERROR)
+                ->addViolation();
+>>>>>>> git-aline/master/master
 
             return;
         }
 
         if (!is_readable($path)) {
+<<<<<<< HEAD
             if ($this->context instanceof ExecutionContextInterface) {
                 $this->context->buildViolation($constraint->notReadableMessage)
                     ->setParameter('{{ file }}', $this->formatValue($path))
@@ -198,6 +263,12 @@ class FileValidator extends ConstraintValidator
                     ->setCode(File::NOT_READABLE_ERROR)
                     ->addViolation();
             }
+=======
+            $this->context->buildViolation($constraint->notReadableMessage)
+                ->setParameter('{{ file }}', $this->formatValue($path))
+                ->setCode(File::NOT_READABLE_ERROR)
+                ->addViolation();
+>>>>>>> git-aline/master/master
 
             return;
         }
@@ -205,6 +276,7 @@ class FileValidator extends ConstraintValidator
         $sizeInBytes = filesize($path);
 
         if (0 === $sizeInBytes) {
+<<<<<<< HEAD
             if ($this->context instanceof ExecutionContextInterface) {
                 $this->context->buildViolation($constraint->disallowEmptyMessage)
                     ->setParameter('{{ file }}', $this->formatValue($path))
@@ -216,6 +288,12 @@ class FileValidator extends ConstraintValidator
                     ->setCode(File::EMPTY_ERROR)
                     ->addViolation();
             }
+=======
+            $this->context->buildViolation($constraint->disallowEmptyMessage)
+                ->setParameter('{{ file }}', $this->formatValue($path))
+                ->setCode(File::EMPTY_ERROR)
+                ->addViolation();
+>>>>>>> git-aline/master/master
 
             return;
         }
@@ -225,6 +303,7 @@ class FileValidator extends ConstraintValidator
 
             if ($sizeInBytes > $limitInBytes) {
                 list($sizeAsString, $limitAsString, $suffix) = $this->factorizeSizes($sizeInBytes, $limitInBytes, $constraint->binaryFormat);
+<<<<<<< HEAD
                 if ($this->context instanceof ExecutionContextInterface) {
                     $this->context->buildViolation($constraint->maxSizeMessage)
                         ->setParameter('{{ file }}', $this->formatValue($path))
@@ -242,6 +321,15 @@ class FileValidator extends ConstraintValidator
                         ->setCode(File::TOO_LARGE_ERROR)
                         ->addViolation();
                 }
+=======
+                $this->context->buildViolation($constraint->maxSizeMessage)
+                    ->setParameter('{{ file }}', $this->formatValue($path))
+                    ->setParameter('{{ size }}', $sizeAsString)
+                    ->setParameter('{{ limit }}', $limitAsString)
+                    ->setParameter('{{ suffix }}', $suffix)
+                    ->setCode(File::TOO_LARGE_ERROR)
+                    ->addViolation();
+>>>>>>> git-aline/master/master
 
                 return;
             }
@@ -267,6 +355,7 @@ class FileValidator extends ConstraintValidator
                 }
             }
 
+<<<<<<< HEAD
             if ($this->context instanceof ExecutionContextInterface) {
                 $this->context->buildViolation($constraint->mimeTypesMessage)
                     ->setParameter('{{ file }}', $this->formatValue($path))
@@ -282,12 +371,24 @@ class FileValidator extends ConstraintValidator
                     ->setCode(File::INVALID_MIME_TYPE_ERROR)
                     ->addViolation();
             }
+=======
+            $this->context->buildViolation($constraint->mimeTypesMessage)
+                ->setParameter('{{ file }}', $this->formatValue($path))
+                ->setParameter('{{ type }}', $this->formatValue($mime))
+                ->setParameter('{{ types }}', $this->formatValues($mimeTypes))
+                ->setCode(File::INVALID_MIME_TYPE_ERROR)
+                ->addViolation();
+>>>>>>> git-aline/master/master
         }
     }
 
     private static function moreDecimalsThan($double, $numberOfDecimals)
     {
+<<<<<<< HEAD
         return strlen((string) $double) > strlen(round($double, $numberOfDecimals));
+=======
+        return \strlen((string) $double) > \strlen(round($double, $numberOfDecimals));
+>>>>>>> git-aline/master/master
     }
 
     /**

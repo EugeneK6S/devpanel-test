@@ -17,6 +17,7 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
 /**
  * Creates new {@link ExecutionContext} instances.
  *
+<<<<<<< HEAD
  * @since  2.5
  *
  * @author Bernhard Schussek <bschussek@gmail.com>
@@ -34,6 +35,15 @@ class ExecutionContextFactory implements ExecutionContextFactoryInterface
     /**
      * @var string|null
      */
+=======
+ * @author Bernhard Schussek <bschussek@gmail.com>
+ *
+ * @internal version 2.5. Code against ExecutionContextFactoryInterface instead.
+ */
+class ExecutionContextFactory implements ExecutionContextFactoryInterface
+{
+    private $translator;
+>>>>>>> git-aline/master/master
     private $translationDomain;
 
     /**

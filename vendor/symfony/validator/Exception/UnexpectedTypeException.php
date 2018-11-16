@@ -15,6 +15,10 @@ class UnexpectedTypeException extends ValidatorException
 {
     public function __construct($value, $expectedType)
     {
+<<<<<<< HEAD
         parent::__construct(sprintf('Expected argument of type "%s", "%s" given', $expectedType, is_object($value) ? get_class($value) : gettype($value)));
+=======
+        parent::__construct(sprintf('Expected argument of type "%s", "%s" given', $expectedType, \is_object($value) ? \get_class($value) : \gettype($value)));
+>>>>>>> git-aline/master/master
     }
 }

@@ -11,14 +11,18 @@
 
 namespace Symfony\Component\Translation\Loader;
 
+<<<<<<< HEAD
 use Symfony\Component\Translation\Exception\InvalidResourceException;
 use Symfony\Component\Translation\Exception\NotFoundResourceException;
 use Symfony\Component\Config\Resource\FileResource;
 
+=======
+>>>>>>> git-aline/master/master
 /**
  * @copyright Copyright (c) 2010, Union of RAD http://union-of-rad.org (http://lithify.me/)
  * @copyright Copyright (c) 2012, Clemens Tolboom
  */
+<<<<<<< HEAD
 class PoFileLoader extends ArrayLoader
 {
     public function load($resource, $locale, $domain = 'messages')
@@ -52,6 +56,10 @@ class PoFileLoader extends ArrayLoader
         return $catalogue;
     }
 
+=======
+class PoFileLoader extends FileLoader
+{
+>>>>>>> git-aline/master/master
     /**
      * Parses portable object (PO) format.
      *
@@ -93,11 +101,17 @@ class PoFileLoader extends ArrayLoader
      *
      * Items with an empty id are ignored.
      *
+<<<<<<< HEAD
      * @param resource $resource
      *
      * @return array
      */
     private function parse($resource)
+=======
+     * {@inheritdoc}
+     */
+    protected function loadResource($resource)
+>>>>>>> git-aline/master/master
     {
         $stream = fopen($resource, 'r');
 
@@ -108,40 +122,78 @@ class PoFileLoader extends ArrayLoader
 
         $messages = array();
         $item = $defaults;
+<<<<<<< HEAD
+=======
+        $flags = array();
+>>>>>>> git-aline/master/master
 
         while ($line = fgets($stream)) {
             $line = trim($line);
 
+<<<<<<< HEAD
             if ($line === '') {
                 // Whitespace indicated current item is done
                 $this->addMessage($messages, $item);
                 $item = $defaults;
             } elseif (substr($line, 0, 7) === 'msgid "') {
+=======
+            if ('' === $line) {
+                // Whitespace indicated current item is done
+                if (!\in_array('fuzzy', $flags)) {
+                    $this->addMessage($messages, $item);
+                }
+                $item = $defaults;
+                $flags = array();
+            } elseif ('#,' === substr($line, 0, 2)) {
+                $flags = array_map('trim', explode(',', substr($line, 2)));
+            } elseif ('msgid "' === substr($line, 0, 7)) {
+>>>>>>> git-aline/master/master
                 // We start a new msg so save previous
                 // TODO: this fails when comments or contexts are added
                 $this->addMessage($messages, $item);
                 $item = $defaults;
                 $item['ids']['singular'] = substr($line, 7, -1);
+<<<<<<< HEAD
             } elseif (substr($line, 0, 8) === 'msgstr "') {
                 $item['translated'] = substr($line, 8, -1);
             } elseif ($line[0] === '"') {
                 $continues = isset($item['translated']) ? 'translated' : 'ids';
 
                 if (is_array($item[$continues])) {
+=======
+            } elseif ('msgstr "' === substr($line, 0, 8)) {
+                $item['translated'] = substr($line, 8, -1);
+            } elseif ('"' === $line[0]) {
+                $continues = isset($item['translated']) ? 'translated' : 'ids';
+
+                if (\is_array($item[$continues])) {
+>>>>>>> git-aline/master/master
                     end($item[$continues]);
                     $item[$continues][key($item[$continues])] .= substr($line, 1, -1);
                 } else {
                     $item[$continues] .= substr($line, 1, -1);
                 }
+<<<<<<< HEAD
             } elseif (substr($line, 0, 14) === 'msgid_plural "') {
                 $item['ids']['plural'] = substr($line, 14, -1);
             } elseif (substr($line, 0, 7) === 'msgstr[') {
+=======
+            } elseif ('msgid_plural "' === substr($line, 0, 14)) {
+                $item['ids']['plural'] = substr($line, 14, -1);
+            } elseif ('msgstr[' === substr($line, 0, 7)) {
+>>>>>>> git-aline/master/master
                 $size = strpos($line, ']');
                 $item['translated'][(int) substr($line, 7, 1)] = substr($line, $size + 3, -1);
             }
         }
         // save last item
+<<<<<<< HEAD
         $this->addMessage($messages, $item);
+=======
+        if (!\in_array('fuzzy', $flags)) {
+            $this->addMessage($messages, $item);
+        }
+>>>>>>> git-aline/master/master
         fclose($stream);
 
         return $messages;
@@ -152,6 +204,7 @@ class PoFileLoader extends ArrayLoader
      *
      * A .po file could contain by error missing plural indexes. We need to
      * fix these before saving them.
+<<<<<<< HEAD
      *
      * @param array $messages
      * @param array $item
@@ -159,6 +212,12 @@ class PoFileLoader extends ArrayLoader
     private function addMessage(array &$messages, array $item)
     {
         if (is_array($item['translated'])) {
+=======
+     */
+    private function addMessage(array &$messages, array $item)
+    {
+        if (\is_array($item['translated'])) {
+>>>>>>> git-aline/master/master
             $messages[stripcslashes($item['ids']['singular'])] = stripcslashes($item['translated'][0]);
             if (isset($item['ids']['plural'])) {
                 $plurals = $item['translated'];

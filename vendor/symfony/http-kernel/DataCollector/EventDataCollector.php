@@ -11,10 +11,17 @@
 
 namespace Symfony\Component\HttpKernel\DataCollector;
 
+<<<<<<< HEAD
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\EventDispatcher\Debug\TraceableEventDispatcherInterface;
+=======
+use Symfony\Component\EventDispatcher\Debug\TraceableEventDispatcherInterface;
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
+>>>>>>> git-aline/master/master
 
 /**
  * EventDataCollector.
@@ -27,6 +34,12 @@ class EventDataCollector extends DataCollector implements LateDataCollectorInter
 
     public function __construct(EventDispatcherInterface $dispatcher = null)
     {
+<<<<<<< HEAD
+=======
+        if ($dispatcher instanceof TraceableEventDispatcherInterface && !method_exists($dispatcher, 'reset')) {
+            @trigger_error(sprintf('Implementing "%s" without the "reset()" method is deprecated since Symfony 3.4 and will be unsupported in 4.0 for class "%s".', TraceableEventDispatcherInterface::class, \get_class($dispatcher)), E_USER_DEPRECATED);
+        }
+>>>>>>> git-aline/master/master
         $this->dispatcher = $dispatcher;
     }
 
@@ -41,12 +54,32 @@ class EventDataCollector extends DataCollector implements LateDataCollectorInter
         );
     }
 
+<<<<<<< HEAD
+=======
+    public function reset()
+    {
+        $this->data = array();
+
+        if ($this->dispatcher instanceof TraceableEventDispatcherInterface) {
+            if (!method_exists($this->dispatcher, 'reset')) {
+                return; // @deprecated
+            }
+
+            $this->dispatcher->reset();
+        }
+    }
+
+>>>>>>> git-aline/master/master
     public function lateCollect()
     {
         if ($this->dispatcher instanceof TraceableEventDispatcherInterface) {
             $this->setCalledListeners($this->dispatcher->getCalledListeners());
             $this->setNotCalledListeners($this->dispatcher->getNotCalledListeners());
         }
+<<<<<<< HEAD
+=======
+        $this->data = $this->cloneVar($this->data);
+>>>>>>> git-aline/master/master
     }
 
     /**

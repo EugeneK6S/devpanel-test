@@ -11,7 +11,10 @@
 
 namespace Symfony\Component\Validator\Constraints;
 
+<<<<<<< HEAD
 use Symfony\Component\Validator\Context\ExecutionContextInterface;
+=======
+>>>>>>> git-aline/master/master
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\ConstraintValidator;
 use Symfony\Component\Validator\Exception\UnexpectedTypeException;
@@ -34,6 +37,7 @@ class RangeValidator extends ConstraintValidator
             return;
         }
 
+<<<<<<< HEAD
         if (!is_numeric($value) && !$value instanceof \DateTime && !$value instanceof \DateTimeInterface) {
             if ($this->context instanceof ExecutionContextInterface) {
                 $this->context->buildViolation($constraint->invalidMessage)
@@ -46,6 +50,13 @@ class RangeValidator extends ConstraintValidator
                     ->setCode(Range::INVALID_VALUE_ERROR)
                     ->addViolation();
             }
+=======
+        if (!is_numeric($value) && !$value instanceof \DateTimeInterface) {
+            $this->context->buildViolation($constraint->invalidMessage)
+                ->setParameter('{{ value }}', $this->formatValue($value, self::PRETTY_DATE))
+                ->setCode(Range::INVALID_CHARACTERS_ERROR)
+                ->addViolation();
+>>>>>>> git-aline/master/master
 
             return;
         }
@@ -57,17 +68,27 @@ class RangeValidator extends ConstraintValidator
         // This allows to compare with any date/time value supported by
         // the DateTime constructor:
         // http://php.net/manual/en/datetime.formats.php
+<<<<<<< HEAD
         if ($value instanceof \DateTime || $value instanceof \DateTimeInterface) {
             if (is_string($min)) {
                 $min = new \DateTime($min);
             }
 
             if (is_string($max)) {
+=======
+        if ($value instanceof \DateTimeInterface) {
+            if (\is_string($min)) {
+                $min = new \DateTime($min);
+            }
+
+            if (\is_string($max)) {
+>>>>>>> git-aline/master/master
                 $max = new \DateTime($max);
             }
         }
 
         if (null !== $constraint->max && $value > $max) {
+<<<<<<< HEAD
             if ($this->context instanceof ExecutionContextInterface) {
                 $this->context->buildViolation($constraint->maxMessage)
                     ->setParameter('{{ value }}', $this->formatValue($value, self::PRETTY_DATE))
@@ -81,11 +102,19 @@ class RangeValidator extends ConstraintValidator
                     ->setCode(Range::BEYOND_RANGE_ERROR)
                     ->addViolation();
             }
+=======
+            $this->context->buildViolation($constraint->maxMessage)
+                ->setParameter('{{ value }}', $this->formatValue($value, self::PRETTY_DATE))
+                ->setParameter('{{ limit }}', $this->formatValue($max, self::PRETTY_DATE))
+                ->setCode(Range::TOO_HIGH_ERROR)
+                ->addViolation();
+>>>>>>> git-aline/master/master
 
             return;
         }
 
         if (null !== $constraint->min && $value < $min) {
+<<<<<<< HEAD
             if ($this->context instanceof ExecutionContextInterface) {
                 $this->context->buildViolation($constraint->minMessage)
                     ->setParameter('{{ value }}', $this->formatValue($value, self::PRETTY_DATE))
@@ -99,6 +128,13 @@ class RangeValidator extends ConstraintValidator
                     ->setCode(Range::BELOW_RANGE_ERROR)
                     ->addViolation();
             }
+=======
+            $this->context->buildViolation($constraint->minMessage)
+                ->setParameter('{{ value }}', $this->formatValue($value, self::PRETTY_DATE))
+                ->setParameter('{{ limit }}', $this->formatValue($min, self::PRETTY_DATE))
+                ->setCode(Range::TOO_LOW_ERROR)
+                ->addViolation();
+>>>>>>> git-aline/master/master
         }
     }
 }

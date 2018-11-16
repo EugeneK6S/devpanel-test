@@ -12,8 +12,13 @@
 namespace Symfony\Component\HttpKernel\EventListener;
 
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
+<<<<<<< HEAD
 use Symfony\Component\HttpKernel\KernelEvents;
 use Symfony\Component\HttpKernel\Event\GetResponseEvent;
+=======
+use Symfony\Component\HttpKernel\Event\GetResponseEvent;
+use Symfony\Component\HttpKernel\KernelEvents;
+>>>>>>> git-aline/master/master
 
 /**
  * Adds configured formats to each request.
@@ -22,6 +27,7 @@ use Symfony\Component\HttpKernel\Event\GetResponseEvent;
  */
 class AddRequestFormatsListener implements EventSubscriberInterface
 {
+<<<<<<< HEAD
     /**
      * @var array
      */
@@ -30,6 +36,10 @@ class AddRequestFormatsListener implements EventSubscriberInterface
     /**
      * @param array $formats
      */
+=======
+    protected $formats;
+
+>>>>>>> git-aline/master/master
     public function __construct(array $formats)
     {
         $this->formats = $formats;
@@ -37,6 +47,7 @@ class AddRequestFormatsListener implements EventSubscriberInterface
 
     /**
      * Adds request formats.
+<<<<<<< HEAD
      *
      * @param GetResponseEvent $event
      */
@@ -44,6 +55,14 @@ class AddRequestFormatsListener implements EventSubscriberInterface
     {
         foreach ($this->formats as $format => $mimeTypes) {
             $event->getRequest()->setFormat($format, $mimeTypes);
+=======
+     */
+    public function onKernelRequest(GetResponseEvent $event)
+    {
+        $request = $event->getRequest();
+        foreach ($this->formats as $format => $mimeTypes) {
+            $request->setFormat($format, $mimeTypes);
+>>>>>>> git-aline/master/master
         }
     }
 
@@ -52,6 +71,10 @@ class AddRequestFormatsListener implements EventSubscriberInterface
      */
     public static function getSubscribedEvents()
     {
+<<<<<<< HEAD
         return array(KernelEvents::REQUEST => 'onKernelRequest');
+=======
+        return array(KernelEvents::REQUEST => array('onKernelRequest', 1));
+>>>>>>> git-aline/master/master
     }
 }

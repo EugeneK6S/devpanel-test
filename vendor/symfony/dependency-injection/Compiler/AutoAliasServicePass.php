@@ -33,7 +33,11 @@ class AutoAliasServicePass implements CompilerPassInterface
 
                 $aliasId = $container->getParameterBag()->resolveValue($tag['format']);
                 if ($container->hasDefinition($aliasId) || $container->hasAlias($aliasId)) {
+<<<<<<< HEAD
                     $container->setAlias($serviceId, new Alias($aliasId));
+=======
+                    $container->setAlias($serviceId, new Alias($aliasId, true));
+>>>>>>> git-aline/master/master
                 }
             }
         }

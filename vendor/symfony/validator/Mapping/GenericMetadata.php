@@ -14,17 +14,24 @@ namespace Symfony\Component\Validator\Mapping;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\Constraints\Traverse;
 use Symfony\Component\Validator\Constraints\Valid;
+<<<<<<< HEAD
 use Symfony\Component\Validator\Exception\BadMethodCallException;
 use Symfony\Component\Validator\Exception\ConstraintDefinitionException;
 use Symfony\Component\Validator\ValidationVisitorInterface;
+=======
+use Symfony\Component\Validator\Exception\ConstraintDefinitionException;
+>>>>>>> git-aline/master/master
 
 /**
  * A generic container of {@link Constraint} objects.
  *
  * This class supports serialization and cloning.
  *
+<<<<<<< HEAD
  * @since  2.5
  *
+=======
+>>>>>>> git-aline/master/master
  * @author Bernhard Schussek <bschussek@gmail.com>
  */
 class GenericMetadata implements MetadataInterface
@@ -112,6 +119,7 @@ class GenericMetadata implements MetadataInterface
      *
      * If the constraint {@link Valid} is added, the cascading strategy will be
      * changed to {@link CascadingStrategy::CASCADE}. Depending on the
+<<<<<<< HEAD
      * properties $traverse and $deep of that constraint, the traversal strategy
      * will be set to one of the following:
      *
@@ -124,6 +132,15 @@ class GenericMetadata implements MetadataInterface
      * @param Constraint $constraint The constraint to add
      *
      * @return GenericMetadata This object
+=======
+     * $traverse property of that constraint, the traversal strategy
+     * will be set to one of the following:
+     *
+     *  - {@link TraversalStrategy::IMPLICIT} if $traverse is enabled
+     *  - {@link TraversalStrategy::NONE} if $traverse is disabled
+     *
+     * @return $this
+>>>>>>> git-aline/master/master
      *
      * @throws ConstraintDefinitionException When trying to add the
      *                                       {@link Traverse} constraint
@@ -134,6 +151,7 @@ class GenericMetadata implements MetadataInterface
             throw new ConstraintDefinitionException(sprintf(
                 'The constraint "%s" can only be put on classes. Please use '.
                 '"Symfony\Component\Validator\Constraints\Valid" instead.',
+<<<<<<< HEAD
                 get_class($constraint)
             ));
         }
@@ -148,6 +166,17 @@ class GenericMetadata implements MetadataInterface
                 if (!$constraint->deep) {
                     $this->traversalStrategy |= TraversalStrategy::STOP_RECURSION;
                 }
+=======
+                \get_class($constraint)
+            ));
+        }
+
+        if ($constraint instanceof Valid && null === $constraint->groups) {
+            $this->cascadingStrategy = CascadingStrategy::CASCADE;
+
+            if ($constraint->traverse) {
+                $this->traversalStrategy = TraversalStrategy::IMPLICIT;
+>>>>>>> git-aline/master/master
             } else {
                 $this->traversalStrategy = TraversalStrategy::NONE;
             }
@@ -169,7 +198,11 @@ class GenericMetadata implements MetadataInterface
      *
      * @param Constraint[] $constraints The constraints to add
      *
+<<<<<<< HEAD
      * @return GenericMetadata This object
+=======
+     * @return $this
+>>>>>>> git-aline/master/master
      */
     public function addConstraints(array $constraints)
     {
@@ -195,7 +228,11 @@ class GenericMetadata implements MetadataInterface
      */
     public function hasConstraints()
     {
+<<<<<<< HEAD
         return count($this->constraints) > 0;
+=======
+        return \count($this->constraints) > 0;
+>>>>>>> git-aline/master/master
     }
 
     /**
@@ -225,6 +262,7 @@ class GenericMetadata implements MetadataInterface
     {
         return $this->traversalStrategy;
     }
+<<<<<<< HEAD
 
     /**
      * Exists for compatibility with the deprecated
@@ -242,4 +280,6 @@ class GenericMetadata implements MetadataInterface
     {
         throw new BadMethodCallException('Not supported.');
     }
+=======
+>>>>>>> git-aline/master/master
 }

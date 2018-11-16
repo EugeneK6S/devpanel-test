@@ -38,8 +38,11 @@ interface CacheInterface
 
     /**
      * Stores a class metadata in the cache.
+<<<<<<< HEAD
      *
      * @param ClassMetadata $metadata A Class Metadata
+=======
+>>>>>>> git-aline/master/master
      */
     public function write(ClassMetadata $metadata);
 }

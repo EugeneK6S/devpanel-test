@@ -11,14 +11,21 @@
 
 namespace Symfony\Component\HttpKernel\Event;
 
+<<<<<<< HEAD
 use Symfony\Component\HttpKernel\HttpKernelInterface;
 use Symfony\Component\EventDispatcher\Event;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+=======
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpKernel\HttpKernelInterface;
+>>>>>>> git-aline/master/master
 
 /**
  * Allows to execute logic after a response was sent.
  *
+<<<<<<< HEAD
  * @author Jordi Boggiano <j.boggiano@seld.be>
  */
 class PostResponseEvent extends Event
@@ -32,10 +39,20 @@ class PostResponseEvent extends Event
 
     private $request;
 
+=======
+ * Since it's only triggered on master requests, the `getRequestType()` method
+ * will always return the value of `HttpKernelInterface::MASTER_REQUEST`.
+ *
+ * @author Jordi Boggiano <j.boggiano@seld.be>
+ */
+class PostResponseEvent extends KernelEvent
+{
+>>>>>>> git-aline/master/master
     private $response;
 
     public function __construct(HttpKernelInterface $kernel, Request $request, Response $response)
     {
+<<<<<<< HEAD
         $this->kernel = $kernel;
         $this->request = $request;
         $this->response = $response;
@@ -59,6 +76,11 @@ class PostResponseEvent extends Event
     public function getRequest()
     {
         return $this->request;
+=======
+        parent::__construct($kernel, $request, HttpKernelInterface::MASTER_REQUEST);
+
+        $this->response = $response;
+>>>>>>> git-aline/master/master
     }
 
     /**

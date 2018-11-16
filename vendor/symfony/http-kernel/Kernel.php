@@ -13,6 +13,7 @@ namespace Symfony\Component\HttpKernel;
 
 use Symfony\Bridge\ProxyManager\LazyProxy\Instantiator\RuntimeInstantiator;
 use Symfony\Bridge\ProxyManager\LazyProxy\PhpDumper\ProxyDumper;
+<<<<<<< HEAD
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Dumper\PhpDumper;
@@ -22,17 +23,41 @@ use Symfony\Component\DependencyInjection\Loader\YamlFileLoader;
 use Symfony\Component\DependencyInjection\Loader\IniFileLoader;
 use Symfony\Component\DependencyInjection\Loader\PhpFileLoader;
 use Symfony\Component\DependencyInjection\Loader\ClosureLoader;
+=======
+use Symfony\Component\ClassLoader\ClassCollectionLoader;
+use Symfony\Component\Config\ConfigCache;
+use Symfony\Component\Config\Loader\DelegatingLoader;
+use Symfony\Component\Config\Loader\LoaderResolver;
+use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
+use Symfony\Component\DependencyInjection\Compiler\PassConfig;
+use Symfony\Component\DependencyInjection\ContainerBuilder;
+use Symfony\Component\DependencyInjection\ContainerInterface;
+use Symfony\Component\DependencyInjection\Dumper\PhpDumper;
+use Symfony\Component\DependencyInjection\Loader\ClosureLoader;
+use Symfony\Component\DependencyInjection\Loader\DirectoryLoader;
+use Symfony\Component\DependencyInjection\Loader\GlobFileLoader;
+use Symfony\Component\DependencyInjection\Loader\IniFileLoader;
+use Symfony\Component\DependencyInjection\Loader\PhpFileLoader;
+use Symfony\Component\DependencyInjection\Loader\XmlFileLoader;
+use Symfony\Component\DependencyInjection\Loader\YamlFileLoader;
+use Symfony\Component\Filesystem\Filesystem;
+>>>>>>> git-aline/master/master
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Bundle\BundleInterface;
 use Symfony\Component\HttpKernel\Config\EnvParametersResource;
 use Symfony\Component\HttpKernel\Config\FileLocator;
+<<<<<<< HEAD
 use Symfony\Component\HttpKernel\DependencyInjection\MergeExtensionConfigurationPass;
 use Symfony\Component\HttpKernel\DependencyInjection\AddClassesToCachePass;
 use Symfony\Component\Config\Loader\LoaderResolver;
 use Symfony\Component\Config\Loader\DelegatingLoader;
 use Symfony\Component\Config\ConfigCache;
 use Symfony\Component\ClassLoader\ClassCollectionLoader;
+=======
+use Symfony\Component\HttpKernel\DependencyInjection\AddAnnotatedClassesToCachePass;
+use Symfony\Component\HttpKernel\DependencyInjection\MergeExtensionConfigurationPass;
+>>>>>>> git-aline/master/master
 
 /**
  * The Kernel is the heart of the Symfony system.
@@ -41,7 +66,11 @@ use Symfony\Component\ClassLoader\ClassCollectionLoader;
  *
  * @author Fabien Potencier <fabien@symfony.com>
  */
+<<<<<<< HEAD
 abstract class Kernel implements KernelInterface, TerminableInterface
+=======
+abstract class Kernel implements KernelInterface, RebootableInterface, TerminableInterface
+>>>>>>> git-aline/master/master
 {
     /**
      * @var BundleInterface[]
@@ -58,6 +87,7 @@ abstract class Kernel implements KernelInterface, TerminableInterface
     protected $startTime;
     protected $loadClassCache;
 
+<<<<<<< HEAD
     const VERSION = '2.7.6';
     const VERSION_ID = 20706;
     const MAJOR_VERSION = 2;
@@ -71,6 +101,24 @@ abstract class Kernel implements KernelInterface, TerminableInterface
     /**
      * Constructor.
      *
+=======
+    private $projectDir;
+    private $warmupDir;
+    private $requestStackSize = 0;
+    private $resetServices = false;
+
+    const VERSION = '3.4.15';
+    const VERSION_ID = 30415;
+    const MAJOR_VERSION = 3;
+    const MINOR_VERSION = 4;
+    const RELEASE_VERSION = 15;
+    const EXTRA_VERSION = '';
+
+    const END_OF_MAINTENANCE = '11/2020';
+    const END_OF_LIFE = '11/2021';
+
+    /**
+>>>>>>> git-aline/master/master
      * @param string $environment The environment
      * @param bool   $debug       Whether to enable debugging or not
      */
@@ -80,6 +128,7 @@ abstract class Kernel implements KernelInterface, TerminableInterface
         $this->debug = (bool) $debug;
         $this->rootDir = $this->getRootDir();
         $this->name = $this->getName();
+<<<<<<< HEAD
 
         if ($this->debug) {
             $this->startTime = microtime(true);
@@ -100,16 +149,25 @@ abstract class Kernel implements KernelInterface, TerminableInterface
     public function init()
     {
         @trigger_error('The '.__METHOD__.' method is deprecated since version 2.3 and will be removed in 3.0. Move your logic to the constructor method instead.', E_USER_DEPRECATED);
+=======
+>>>>>>> git-aline/master/master
     }
 
     public function __clone()
     {
+<<<<<<< HEAD
         if ($this->debug) {
             $this->startTime = microtime(true);
         }
 
         $this->booted = false;
         $this->container = null;
+=======
+        $this->booted = false;
+        $this->container = null;
+        $this->requestStackSize = 0;
+        $this->resetServices = false;
+>>>>>>> git-aline/master/master
     }
 
     /**
@@ -118,8 +176,31 @@ abstract class Kernel implements KernelInterface, TerminableInterface
     public function boot()
     {
         if (true === $this->booted) {
+<<<<<<< HEAD
             return;
         }
+=======
+            if (!$this->requestStackSize && $this->resetServices) {
+                if ($this->container->has('services_resetter')) {
+                    $this->container->get('services_resetter')->reset();
+                }
+                $this->resetServices = false;
+                if ($this->debug) {
+                    $this->startTime = microtime(true);
+                }
+            }
+
+            return;
+        }
+        if ($this->debug) {
+            $this->startTime = microtime(true);
+        }
+        if ($this->debug && !isset($_ENV['SHELL_VERBOSITY']) && !isset($_SERVER['SHELL_VERBOSITY'])) {
+            putenv('SHELL_VERBOSITY=3');
+            $_ENV['SHELL_VERBOSITY'] = 3;
+            $_SERVER['SHELL_VERBOSITY'] = 3;
+        }
+>>>>>>> git-aline/master/master
 
         if ($this->loadClassCache) {
             $this->doLoadClassCache($this->loadClassCache[0], $this->loadClassCache[1]);
@@ -142,6 +223,19 @@ abstract class Kernel implements KernelInterface, TerminableInterface
     /**
      * {@inheritdoc}
      */
+<<<<<<< HEAD
+=======
+    public function reboot($warmupDir)
+    {
+        $this->shutdown();
+        $this->warmupDir = $warmupDir;
+        $this->boot();
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+>>>>>>> git-aline/master/master
     public function terminate(Request $request, Response $response)
     {
         if (false === $this->booted) {
@@ -170,6 +264,11 @@ abstract class Kernel implements KernelInterface, TerminableInterface
         }
 
         $this->container = null;
+<<<<<<< HEAD
+=======
+        $this->requestStackSize = 0;
+        $this->resetServices = false;
+>>>>>>> git-aline/master/master
     }
 
     /**
@@ -177,11 +276,23 @@ abstract class Kernel implements KernelInterface, TerminableInterface
      */
     public function handle(Request $request, $type = HttpKernelInterface::MASTER_REQUEST, $catch = true)
     {
+<<<<<<< HEAD
         if (false === $this->booted) {
             $this->boot();
         }
 
         return $this->getHttpKernel()->handle($request, $type, $catch);
+=======
+        $this->boot();
+        ++$this->requestStackSize;
+        $this->resetServices = true;
+
+        try {
+            return $this->getHttpKernel()->handle($request, $type, $catch);
+        } finally {
+            --$this->requestStackSize;
+        }
+>>>>>>> git-aline/master/master
     }
 
     /**
@@ -204,6 +315,7 @@ abstract class Kernel implements KernelInterface, TerminableInterface
 
     /**
      * {@inheritdoc}
+<<<<<<< HEAD
      *
      * @deprecated since version 2.6, to be removed in 3.0.
      */
@@ -227,6 +339,22 @@ abstract class Kernel implements KernelInterface, TerminableInterface
     {
         if (!isset($this->bundleMap[$name])) {
             throw new \InvalidArgumentException(sprintf('Bundle "%s" does not exist or it is not enabled. Maybe you forgot to add it in the registerBundles() method of your %s.php file?', $name, get_class($this)));
+=======
+     */
+    public function getBundle($name, $first = true/*, $noDeprecation = false */)
+    {
+        $noDeprecation = false;
+        if (\func_num_args() >= 3) {
+            $noDeprecation = func_get_arg(2);
+        }
+
+        if (!$first && !$noDeprecation) {
+            @trigger_error(sprintf('Passing "false" as the second argument to "%s()" is deprecated as of 3.4 and will be removed in 4.0.', __METHOD__), E_USER_DEPRECATED);
+        }
+
+        if (!isset($this->bundleMap[$name])) {
+            throw new \InvalidArgumentException(sprintf('Bundle "%s" does not exist or it is not enabled. Maybe you forgot to add it in the registerBundles() method of your %s.php file?', $name, \get_class($this)));
+>>>>>>> git-aline/master/master
         }
 
         if (true === $first) {
@@ -260,7 +388,11 @@ abstract class Kernel implements KernelInterface, TerminableInterface
         $isResource = 0 === strpos($path, 'Resources') && null !== $dir;
         $overridePath = substr($path, 9);
         $resourceBundle = null;
+<<<<<<< HEAD
         $bundles = $this->getBundle($bundleName, false);
+=======
+        $bundles = $this->getBundle($bundleName, false, true);
+>>>>>>> git-aline/master/master
         $files = array();
 
         foreach ($bundles as $bundle) {
@@ -288,7 +420,11 @@ abstract class Kernel implements KernelInterface, TerminableInterface
             }
         }
 
+<<<<<<< HEAD
         if (count($files) > 0) {
+=======
+        if (\count($files) > 0) {
+>>>>>>> git-aline/master/master
             return $first && $isResource ? $files[0] : $files;
         }
 
@@ -302,6 +438,12 @@ abstract class Kernel implements KernelInterface, TerminableInterface
     {
         if (null === $this->name) {
             $this->name = preg_replace('/[^a-zA-Z0-9_]+/', '', basename($this->rootDir));
+<<<<<<< HEAD
+=======
+            if (ctype_digit($this->name[0])) {
+                $this->name = '_'.$this->name;
+            }
+>>>>>>> git-aline/master/master
         }
 
         return $this->name;
@@ -330,13 +472,42 @@ abstract class Kernel implements KernelInterface, TerminableInterface
     {
         if (null === $this->rootDir) {
             $r = new \ReflectionObject($this);
+<<<<<<< HEAD
             $this->rootDir = dirname($r->getFileName());
+=======
+            $this->rootDir = \dirname($r->getFileName());
+>>>>>>> git-aline/master/master
         }
 
         return $this->rootDir;
     }
 
     /**
+<<<<<<< HEAD
+=======
+     * Gets the application root dir (path of the project's composer file).
+     *
+     * @return string The project root dir
+     */
+    public function getProjectDir()
+    {
+        if (null === $this->projectDir) {
+            $r = new \ReflectionObject($this);
+            $dir = $rootDir = \dirname($r->getFileName());
+            while (!file_exists($dir.'/composer.json')) {
+                if ($dir === \dirname($dir)) {
+                    return $this->projectDir = $rootDir;
+                }
+                $dir = \dirname($dir);
+            }
+            $this->projectDir = $dir;
+        }
+
+        return $this->projectDir;
+    }
+
+    /**
+>>>>>>> git-aline/master/master
      * {@inheritdoc}
      */
     public function getContainer()
@@ -355,18 +526,52 @@ abstract class Kernel implements KernelInterface, TerminableInterface
      *
      * @param string $name      The cache name prefix
      * @param string $extension File extension of the resulting file
+<<<<<<< HEAD
      */
     public function loadClassCache($name = 'classes', $extension = '.php')
     {
+=======
+     *
+     * @deprecated since version 3.3, to be removed in 4.0. The class cache is not needed anymore when using PHP 7.0.
+     */
+    public function loadClassCache($name = 'classes', $extension = '.php')
+    {
+        if (\PHP_VERSION_ID >= 70000) {
+            @trigger_error(__METHOD__.'() is deprecated since Symfony 3.3, to be removed in 4.0.', E_USER_DEPRECATED);
+        }
+
+>>>>>>> git-aline/master/master
         $this->loadClassCache = array($name, $extension);
     }
 
     /**
+<<<<<<< HEAD
      * Used internally.
      */
     public function setClassCache(array $classes)
     {
         file_put_contents($this->getCacheDir().'/classes.map', sprintf('<?php return %s;', var_export($classes, true)));
+=======
+     * @internal
+     *
+     * @deprecated since version 3.3, to be removed in 4.0.
+     */
+    public function setClassCache(array $classes)
+    {
+        if (\PHP_VERSION_ID >= 70000) {
+            @trigger_error(__METHOD__.'() is deprecated since Symfony 3.3, to be removed in 4.0.', E_USER_DEPRECATED);
+        }
+
+        file_put_contents(($this->warmupDir ?: $this->getCacheDir()).'/classes.map', sprintf('<?php return %s;', var_export($classes, true)));
+    }
+
+    /**
+     * @internal
+     */
+    public function setAnnotatedClassCache(array $annotatedClasses)
+    {
+        file_put_contents(($this->warmupDir ?: $this->getCacheDir()).'/annotations.map', sprintf('<?php return %s;', var_export($annotatedClasses, true)));
+>>>>>>> git-aline/master/master
     }
 
     /**
@@ -401,10 +606,25 @@ abstract class Kernel implements KernelInterface, TerminableInterface
         return 'UTF-8';
     }
 
+<<<<<<< HEAD
     protected function doLoadClassCache($name, $extension)
     {
         if (!$this->booted && is_file($this->getCacheDir().'/classes.map')) {
             ClassCollectionLoader::load(include($this->getCacheDir().'/classes.map'), $this->getCacheDir(), $name, $this->debug, false, $extension);
+=======
+    /**
+     * @deprecated since version 3.3, to be removed in 4.0.
+     */
+    protected function doLoadClassCache($name, $extension)
+    {
+        if (\PHP_VERSION_ID >= 70000) {
+            @trigger_error(__METHOD__.'() is deprecated since Symfony 3.3, to be removed in 4.0.', E_USER_DEPRECATED);
+        }
+        $cacheDir = $this->warmupDir ?: $this->getCacheDir();
+
+        if (!$this->booted && is_file($cacheDir.'/classes.map')) {
+            ClassCollectionLoader::load(include($cacheDir.'/classes.map'), $cacheDir, $name, $this->debug, false, $extension);
+>>>>>>> git-aline/master/master
         }
     }
 
@@ -434,6 +654,11 @@ abstract class Kernel implements KernelInterface, TerminableInterface
             $this->bundles[$name] = $bundle;
 
             if ($parentName = $bundle->getParent()) {
+<<<<<<< HEAD
+=======
+                @trigger_error('Bundle inheritance is deprecated as of 3.4 and will be removed in 4.0.', E_USER_DEPRECATED);
+
+>>>>>>> git-aline/master/master
                 if (isset($directChildren[$parentName])) {
                     throw new \LogicException(sprintf('Bundle "%s" is directly extended by two bundles "%s" and "%s".', $parentName, $name, $directChildren[$parentName]));
                 }
@@ -447,7 +672,11 @@ abstract class Kernel implements KernelInterface, TerminableInterface
         }
 
         // look for orphans
+<<<<<<< HEAD
         if (!empty($directChildren) && count($diff = array_diff_key($directChildren, $this->bundles))) {
+=======
+        if (!empty($directChildren) && \count($diff = array_diff_key($directChildren, $this->bundles))) {
+>>>>>>> git-aline/master/master
             $diff = array_keys($diff);
 
             throw new \LogicException(sprintf('Bundle "%s" extends bundle "%s", which is not registered.', $directChildren[$diff[0]], $diff[0]));
@@ -465,14 +694,31 @@ abstract class Kernel implements KernelInterface, TerminableInterface
                 $hierarchy[] = $name;
             }
 
+<<<<<<< HEAD
             foreach ($hierarchy as $bundle) {
                 $this->bundleMap[$bundle] = $bundleMap;
+=======
+            foreach ($hierarchy as $hierarchyBundle) {
+                $this->bundleMap[$hierarchyBundle] = $bundleMap;
+>>>>>>> git-aline/master/master
                 array_pop($bundleMap);
             }
         }
     }
 
     /**
+<<<<<<< HEAD
+=======
+     * The extension point similar to the Bundle::build() method.
+     *
+     * Use this method to register compiler passes and manipulate the container during the building process.
+     */
+    protected function build(ContainerBuilder $container)
+    {
+    }
+
+    /**
+>>>>>>> git-aline/master/master
      * Gets the container class.
      *
      * @return string The container class
@@ -503,6 +749,7 @@ abstract class Kernel implements KernelInterface, TerminableInterface
     protected function initializeContainer()
     {
         $class = $this->getContainerClass();
+<<<<<<< HEAD
         $cache = new ConfigCache($this->getCacheDir().'/'.$class.'.php', $this->debug);
         $fresh = true;
         if (!$cache->isFresh()) {
@@ -519,6 +766,112 @@ abstract class Kernel implements KernelInterface, TerminableInterface
         $this->container->set('kernel', $this);
 
         if (!$fresh && $this->container->has('cache_warmer')) {
+=======
+        $cacheDir = $this->warmupDir ?: $this->getCacheDir();
+        $cache = new ConfigCache($cacheDir.'/'.$class.'.php', $this->debug);
+        $oldContainer = null;
+        if ($fresh = $cache->isFresh()) {
+            // Silence E_WARNING to ignore "include" failures - don't use "@" to prevent silencing fatal errors
+            $errorLevel = error_reporting(\E_ALL ^ \E_WARNING);
+            $fresh = $oldContainer = false;
+            try {
+                if (file_exists($cache->getPath()) && \is_object($this->container = include $cache->getPath())) {
+                    $this->container->set('kernel', $this);
+                    $oldContainer = $this->container;
+                    $fresh = true;
+                }
+            } catch (\Throwable $e) {
+            } catch (\Exception $e) {
+            } finally {
+                error_reporting($errorLevel);
+            }
+        }
+
+        if ($fresh) {
+            return;
+        }
+
+        if ($this->debug) {
+            $collectedLogs = array();
+            $previousHandler = \defined('PHPUNIT_COMPOSER_INSTALL');
+            $previousHandler = $previousHandler ?: set_error_handler(function ($type, $message, $file, $line) use (&$collectedLogs, &$previousHandler) {
+                if (E_USER_DEPRECATED !== $type && E_DEPRECATED !== $type) {
+                    return $previousHandler ? $previousHandler($type, $message, $file, $line) : false;
+                }
+
+                if (isset($collectedLogs[$message])) {
+                    ++$collectedLogs[$message]['count'];
+
+                    return;
+                }
+
+                $backtrace = debug_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS, 3);
+                // Clean the trace by removing first frames added by the error handler itself.
+                for ($i = 0; isset($backtrace[$i]); ++$i) {
+                    if (isset($backtrace[$i]['file'], $backtrace[$i]['line']) && $backtrace[$i]['line'] === $line && $backtrace[$i]['file'] === $file) {
+                        $backtrace = \array_slice($backtrace, 1 + $i);
+                        break;
+                    }
+                }
+
+                $collectedLogs[$message] = array(
+                    'type' => $type,
+                    'message' => $message,
+                    'file' => $file,
+                    'line' => $line,
+                    'trace' => $backtrace,
+                    'count' => 1,
+                );
+            });
+        }
+
+        try {
+            $container = null;
+            $container = $this->buildContainer();
+            $container->compile();
+        } finally {
+            if ($this->debug && true !== $previousHandler) {
+                restore_error_handler();
+
+                file_put_contents($cacheDir.'/'.$class.'Deprecations.log', serialize(array_values($collectedLogs)));
+                file_put_contents($cacheDir.'/'.$class.'Compiler.log', null !== $container ? implode("\n", $container->getCompiler()->getLog()) : '');
+            }
+        }
+
+        if (null === $oldContainer && file_exists($cache->getPath())) {
+            $errorLevel = error_reporting(\E_ALL ^ \E_WARNING);
+            try {
+                $oldContainer = include $cache->getPath();
+            } catch (\Throwable $e) {
+            } catch (\Exception $e) {
+            } finally {
+                error_reporting($errorLevel);
+            }
+        }
+        $oldContainer = \is_object($oldContainer) ? new \ReflectionClass($oldContainer) : false;
+
+        $this->dumpContainer($cache, $container, $class, $this->getContainerBaseClass());
+        $this->container = require $cache->getPath();
+        $this->container->set('kernel', $this);
+
+        if ($oldContainer && \get_class($this->container) !== $oldContainer->name) {
+            // Because concurrent requests might still be using them,
+            // old container files are not removed immediately,
+            // but on a next dump of the container.
+            static $legacyContainers = array();
+            $oldContainerDir = \dirname($oldContainer->getFileName());
+            $legacyContainers[$oldContainerDir.'.legacy'] = true;
+            foreach (glob(\dirname($oldContainerDir).\DIRECTORY_SEPARATOR.'*.legacy') as $legacyContainer) {
+                if (!isset($legacyContainers[$legacyContainer]) && @unlink($legacyContainer)) {
+                    (new Filesystem())->remove(substr($legacyContainer, 0, -7));
+                }
+            }
+
+            touch($oldContainerDir.'.legacy');
+        }
+
+        if ($this->container->has('cache_warmer')) {
+>>>>>>> git-aline/master/master
             $this->container->get('cache_warmer')->warmUp($this->container->getParameter('kernel.cache_dir'));
         }
     }
@@ -531,13 +884,26 @@ abstract class Kernel implements KernelInterface, TerminableInterface
     protected function getKernelParameters()
     {
         $bundles = array();
+<<<<<<< HEAD
         foreach ($this->bundles as $name => $bundle) {
             $bundles[$name] = get_class($bundle);
+=======
+        $bundlesMetadata = array();
+
+        foreach ($this->bundles as $name => $bundle) {
+            $bundles[$name] = \get_class($bundle);
+            $bundlesMetadata[$name] = array(
+                'parent' => $bundle->getParent(),
+                'path' => $bundle->getPath(),
+                'namespace' => $bundle->getNamespace(),
+            );
+>>>>>>> git-aline/master/master
         }
 
         return array_merge(
             array(
                 'kernel.root_dir' => realpath($this->rootDir) ?: $this->rootDir,
+<<<<<<< HEAD
                 'kernel.environment' => $this->environment,
                 'kernel.debug' => $this->debug,
                 'kernel.name' => $this->name,
@@ -548,6 +914,20 @@ abstract class Kernel implements KernelInterface, TerminableInterface
                 'kernel.container_class' => $this->getContainerClass(),
             ),
             $this->getEnvParameters()
+=======
+                'kernel.project_dir' => realpath($this->getProjectDir()) ?: $this->getProjectDir(),
+                'kernel.environment' => $this->environment,
+                'kernel.debug' => $this->debug,
+                'kernel.name' => $this->name,
+                'kernel.cache_dir' => realpath($cacheDir = $this->warmupDir ?: $this->getCacheDir()) ?: $cacheDir,
+                'kernel.logs_dir' => realpath($this->getLogDir()) ?: $this->getLogDir(),
+                'kernel.bundles' => $bundles,
+                'kernel.bundles_metadata' => $bundlesMetadata,
+                'kernel.charset' => $this->getCharset(),
+                'kernel.container_class' => $this->getContainerClass(),
+            ),
+            $this->getEnvParameters(false)
+>>>>>>> git-aline/master/master
         );
     }
 
@@ -557,12 +937,28 @@ abstract class Kernel implements KernelInterface, TerminableInterface
      * Only the parameters starting with "SYMFONY__" are considered.
      *
      * @return array An array of parameters
+<<<<<<< HEAD
      */
     protected function getEnvParameters()
     {
         $parameters = array();
         foreach ($_SERVER as $key => $value) {
             if (0 === strpos($key, 'SYMFONY__')) {
+=======
+     *
+     * @deprecated since version 3.3, to be removed in 4.0
+     */
+    protected function getEnvParameters()
+    {
+        if (0 === \func_num_args() || func_get_arg(0)) {
+            @trigger_error(sprintf('The "%s()" method is deprecated as of 3.3 and will be removed in 4.0. Use the %%env()%% syntax to get the value of any environment variable from configuration files instead.', __METHOD__), E_USER_DEPRECATED);
+        }
+
+        $parameters = array();
+        foreach ($_SERVER as $key => $value) {
+            if (0 === strpos($key, 'SYMFONY__')) {
+                @trigger_error(sprintf('The support of special environment variables that start with SYMFONY__ (such as "%s") is deprecated as of 3.3 and will be removed in 4.0. Use the %%env()%% syntax instead to get the value of environment variables in configuration files.', $key), E_USER_DEPRECATED);
+>>>>>>> git-aline/master/master
                 $parameters[strtolower(str_replace('__', '.', substr($key, 9)))] = $value;
             }
         }
@@ -579,7 +975,11 @@ abstract class Kernel implements KernelInterface, TerminableInterface
      */
     protected function buildContainer()
     {
+<<<<<<< HEAD
         foreach (array('cache' => $this->getCacheDir(), 'logs' => $this->getLogDir()) as $name => $dir) {
+=======
+        foreach (array('cache' => $this->warmupDir ?: $this->getCacheDir(), 'logs' => $this->getLogDir()) as $name => $dir) {
+>>>>>>> git-aline/master/master
             if (!is_dir($dir)) {
                 if (false === @mkdir($dir, 0777, true) && !is_dir($dir)) {
                     throw new \RuntimeException(sprintf("Unable to create the %s directory (%s)\n", $name, $dir));
@@ -597,7 +997,11 @@ abstract class Kernel implements KernelInterface, TerminableInterface
             $container->merge($cont);
         }
 
+<<<<<<< HEAD
         $container->addCompilerPass(new AddClassesToCachePass($this));
+=======
+        $container->addCompilerPass(new AddAnnotatedClassesToCachePass($this));
+>>>>>>> git-aline/master/master
         $container->addResource(new EnvParametersResource('SYMFONY__'));
 
         return $container;
@@ -605,8 +1009,11 @@ abstract class Kernel implements KernelInterface, TerminableInterface
 
     /**
      * Prepares the ContainerBuilder before it is compiled.
+<<<<<<< HEAD
      *
      * @param ContainerBuilder $container A ContainerBuilder instance
+=======
+>>>>>>> git-aline/master/master
      */
     protected function prepareContainer(ContainerBuilder $container)
     {
@@ -614,17 +1021,33 @@ abstract class Kernel implements KernelInterface, TerminableInterface
         foreach ($this->bundles as $bundle) {
             if ($extension = $bundle->getContainerExtension()) {
                 $container->registerExtension($extension);
+<<<<<<< HEAD
                 $extensions[] = $extension->getAlias();
+=======
+>>>>>>> git-aline/master/master
             }
 
             if ($this->debug) {
                 $container->addObjectResource($bundle);
             }
         }
+<<<<<<< HEAD
+=======
+
+>>>>>>> git-aline/master/master
         foreach ($this->bundles as $bundle) {
             $bundle->build($container);
         }
 
+<<<<<<< HEAD
+=======
+        $this->build($container);
+
+        foreach ($container->getExtensions() as $extension) {
+            $extensions[] = $extension->getAlias();
+        }
+
+>>>>>>> git-aline/master/master
         // ensure these extensions are implicitly loaded
         $container->getCompilerPassConfig()->setMergePass(new MergeExtensionConfigurationPass($extensions));
     }
@@ -636,8 +1059,17 @@ abstract class Kernel implements KernelInterface, TerminableInterface
      */
     protected function getContainerBuilder()
     {
+<<<<<<< HEAD
         $container = new ContainerBuilder(new ParameterBag($this->getKernelParameters()));
 
+=======
+        $container = new ContainerBuilder();
+        $container->getParameterBag()->add($this->getKernelParameters());
+
+        if ($this instanceof CompilerPassInterface) {
+            $container->addCompilerPass($this, PassConfig::TYPE_BEFORE_OPTIMIZATION, -10000);
+        }
+>>>>>>> git-aline/master/master
         if (class_exists('ProxyManager\Configuration') && class_exists('Symfony\Bridge\ProxyManager\LazyProxy\Instantiator\RuntimeInstantiator')) {
             $container->setProxyInstantiator(new RuntimeInstantiator());
         }
@@ -659,6 +1091,7 @@ abstract class Kernel implements KernelInterface, TerminableInterface
         $dumper = new PhpDumper($container);
 
         if (class_exists('ProxyManager\Configuration') && class_exists('Symfony\Bridge\ProxyManager\LazyProxy\PhpDumper\ProxyDumper')) {
+<<<<<<< HEAD
             $dumper->setProxyDumper(new ProxyDumper(md5($cache->getPath())));
         }
 
@@ -668,13 +1101,42 @@ abstract class Kernel implements KernelInterface, TerminableInterface
         }
 
         $cache->write($content, $container->getResources());
+=======
+            $dumper->setProxyDumper(new ProxyDumper());
+        }
+
+        $content = $dumper->dump(array(
+            'class' => $class,
+            'base_class' => $baseClass,
+            'file' => $cache->getPath(),
+            'as_files' => true,
+            'debug' => $this->debug,
+            'inline_class_loader_parameter' => \PHP_VERSION_ID >= 70000 && !$this->loadClassCache && !class_exists(ClassCollectionLoader::class, false) ? 'container.dumper.inline_class_loader' : null,
+            'build_time' => $container->hasParameter('kernel.container_build_time') ? $container->getParameter('kernel.container_build_time') : time(),
+        ));
+
+        $rootCode = array_pop($content);
+        $dir = \dirname($cache->getPath()).'/';
+        $fs = new Filesystem();
+
+        foreach ($content as $file => $code) {
+            $fs->dumpFile($dir.$file, $code);
+            @chmod($dir.$file, 0666 & ~umask());
+        }
+        @unlink(\dirname($dir.$file).'.legacy');
+
+        $cache->write($rootCode, $container->getResources());
+>>>>>>> git-aline/master/master
     }
 
     /**
      * Returns a loader for the container.
      *
+<<<<<<< HEAD
      * @param ContainerInterface $container The service container
      *
+=======
+>>>>>>> git-aline/master/master
      * @return DelegatingLoader The loader
      */
     protected function getContainerLoader(ContainerInterface $container)
@@ -685,6 +1147,11 @@ abstract class Kernel implements KernelInterface, TerminableInterface
             new YamlFileLoader($container, $locator),
             new IniFileLoader($container, $locator),
             new PhpFileLoader($container, $locator),
+<<<<<<< HEAD
+=======
+            new GlobFileLoader($container, $locator),
+            new DirectoryLoader($container, $locator),
+>>>>>>> git-aline/master/master
             new ClosureLoader($container),
         ));
 
@@ -703,7 +1170,11 @@ abstract class Kernel implements KernelInterface, TerminableInterface
      */
     public static function stripComments($source)
     {
+<<<<<<< HEAD
         if (!function_exists('token_get_all')) {
+=======
+        if (!\function_exists('token_get_all')) {
+>>>>>>> git-aline/master/master
             return $source;
         }
 
@@ -711,15 +1182,27 @@ abstract class Kernel implements KernelInterface, TerminableInterface
         $output = '';
         $tokens = token_get_all($source);
         $ignoreSpace = false;
+<<<<<<< HEAD
         for (reset($tokens); false !== $token = current($tokens); next($tokens)) {
             if (is_string($token)) {
+=======
+        for ($i = 0; isset($tokens[$i]); ++$i) {
+            $token = $tokens[$i];
+            if (!isset($token[1]) || 'b"' === $token) {
+>>>>>>> git-aline/master/master
                 $rawChunk .= $token;
             } elseif (T_START_HEREDOC === $token[0]) {
                 $output .= $rawChunk.$token[1];
                 do {
+<<<<<<< HEAD
                     $token = next($tokens);
                     $output .= $token[1];
                 } while ($token[0] !== T_END_HEREDOC);
+=======
+                    $token = $tokens[++$i];
+                    $output .= isset($token[1]) && 'b"' !== $token ? $token[1] : $token;
+                } while (T_END_HEREDOC !== $token[0]);
+>>>>>>> git-aline/master/master
                 $rawChunk = '';
             } elseif (T_WHITESPACE === $token[0]) {
                 if ($ignoreSpace) {
@@ -730,7 +1213,11 @@ abstract class Kernel implements KernelInterface, TerminableInterface
 
                 // replace multiple new lines with a single newline
                 $rawChunk .= preg_replace(array('/\n{2,}/S'), "\n", $token[1]);
+<<<<<<< HEAD
             } elseif (in_array($token[0], array(T_COMMENT, T_DOC_COMMENT))) {
+=======
+            } elseif (\in_array($token[0], array(T_COMMENT, T_DOC_COMMENT))) {
+>>>>>>> git-aline/master/master
                 $ignoreSpace = true;
             } else {
                 $rawChunk .= $token[1];
@@ -744,6 +1231,15 @@ abstract class Kernel implements KernelInterface, TerminableInterface
 
         $output .= $rawChunk;
 
+<<<<<<< HEAD
+=======
+        if (\PHP_VERSION_ID >= 70000) {
+            // PHP 7 memory manager will not release after token_get_all(), see https://bugs.php.net/70098
+            unset($tokens, $rawChunk);
+            gc_mem_caches();
+        }
+
+>>>>>>> git-aline/master/master
         return $output;
     }
 
@@ -754,7 +1250,15 @@ abstract class Kernel implements KernelInterface, TerminableInterface
 
     public function unserialize($data)
     {
+<<<<<<< HEAD
         list($environment, $debug) = unserialize($data);
+=======
+        if (\PHP_VERSION_ID >= 70000) {
+            list($environment, $debug) = unserialize($data, array('allowed_classes' => false));
+        } else {
+            list($environment, $debug) = unserialize($data);
+        }
+>>>>>>> git-aline/master/master
 
         $this->__construct($environment, $debug);
     }

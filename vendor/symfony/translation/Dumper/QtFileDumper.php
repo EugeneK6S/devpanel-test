@@ -23,7 +23,11 @@ class QtFileDumper extends FileDumper
     /**
      * {@inheritdoc}
      */
+<<<<<<< HEAD
     public function format(MessageCatalogue $messages, $domain)
+=======
+    public function formatCatalogue(MessageCatalogue $messages, $domain, array $options = array())
+>>>>>>> git-aline/master/master
     {
         $dom = new \DOMDocument('1.0', 'utf-8');
         $dom->formatOutput = true;

@@ -12,15 +12,21 @@
 namespace Symfony\Component\HttpKernel\Exception;
 
 /**
+<<<<<<< HEAD
  * UnauthorizedHttpException.
  *
+=======
+>>>>>>> git-aline/master/master
  * @author Ben Ramsey <ben@benramsey.com>
  */
 class UnauthorizedHttpException extends HttpException
 {
     /**
+<<<<<<< HEAD
      * Constructor.
      *
+=======
+>>>>>>> git-aline/master/master
      * @param string     $challenge WWW-Authenticate challenge string
      * @param string     $message   The internal exception message
      * @param \Exception $previous  The previous exception

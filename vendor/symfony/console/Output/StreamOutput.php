@@ -11,6 +11,11 @@
 
 namespace Symfony\Component\Console\Output;
 
+<<<<<<< HEAD
+=======
+use Symfony\Component\Console\Exception\InvalidArgumentException;
+use Symfony\Component\Console\Exception\RuntimeException;
+>>>>>>> git-aline/master/master
 use Symfony\Component\Console\Formatter\OutputFormatterInterface;
 
 /**
@@ -31,19 +36,31 @@ class StreamOutput extends Output
     private $stream;
 
     /**
+<<<<<<< HEAD
      * Constructor.
      *
+=======
+>>>>>>> git-aline/master/master
      * @param resource                      $stream    A stream resource
      * @param int                           $verbosity The verbosity level (one of the VERBOSITY constants in OutputInterface)
      * @param bool|null                     $decorated Whether to decorate messages (null for auto-guessing)
      * @param OutputFormatterInterface|null $formatter Output formatter instance (null to use default OutputFormatter)
      *
+<<<<<<< HEAD
      * @throws \InvalidArgumentException When first argument is not a real stream
      */
     public function __construct($stream, $verbosity = self::VERBOSITY_NORMAL, $decorated = null, OutputFormatterInterface $formatter = null)
     {
         if (!is_resource($stream) || 'stream' !== get_resource_type($stream)) {
             throw new \InvalidArgumentException('The StreamOutput class needs a stream as its first argument.');
+=======
+     * @throws InvalidArgumentException When first argument is not a real stream
+     */
+    public function __construct($stream, $verbosity = self::VERBOSITY_NORMAL, $decorated = null, OutputFormatterInterface $formatter = null)
+    {
+        if (!\is_resource($stream) || 'stream' !== get_resource_type($stream)) {
+            throw new InvalidArgumentException('The StreamOutput class needs a stream as its first argument.');
+>>>>>>> git-aline/master/master
         }
 
         $this->stream = $stream;
@@ -70,9 +87,15 @@ class StreamOutput extends Output
      */
     protected function doWrite($message, $newline)
     {
+<<<<<<< HEAD
         if (false === @fwrite($this->stream, $message.($newline ? PHP_EOL : ''))) {
             // should never happen
             throw new \RuntimeException('Unable to write output.');
+=======
+        if (false === @fwrite($this->stream, $message) || ($newline && (false === @fwrite($this->stream, PHP_EOL)))) {
+            // should never happen
+            throw new RuntimeException('Unable to write output.');
+>>>>>>> git-aline/master/master
         }
 
         fflush($this->stream);
@@ -83,17 +106,51 @@ class StreamOutput extends Output
      *
      * Colorization is disabled if not supported by the stream:
      *
+<<<<<<< HEAD
      *  -  Windows without Ansicon, ConEmu or Mintty
      *  -  non tty consoles
+=======
+     * This is tricky on Windows, because Cygwin, Msys2 etc emulate pseudo
+     * terminals via named pipes, so we can only check the environment.
+     *
+     * Reference: Composer\XdebugHandler\Process::supportsColor
+     * https://github.com/composer/xdebug-handler
+>>>>>>> git-aline/master/master
      *
      * @return bool true if the stream supports colorization, false otherwise
      */
     protected function hasColorSupport()
     {
+<<<<<<< HEAD
         if (DIRECTORY_SEPARATOR === '\\') {
             return false !== getenv('ANSICON') || 'ON' === getenv('ConEmuANSI') || 'xterm' === getenv('TERM');
         }
 
         return function_exists('posix_isatty') && @posix_isatty($this->stream);
+=======
+        if ('Hyper' === getenv('TERM_PROGRAM')) {
+            return true;
+        }
+
+        if (\DIRECTORY_SEPARATOR === '\\') {
+            return (\function_exists('sapi_windows_vt100_support')
+                && @sapi_windows_vt100_support($this->stream))
+                || false !== getenv('ANSICON')
+                || 'ON' === getenv('ConEmuANSI')
+                || 'xterm' === getenv('TERM');
+        }
+
+        if (\function_exists('stream_isatty')) {
+            return @stream_isatty($this->stream);
+        }
+
+        if (\function_exists('posix_isatty')) {
+            return @posix_isatty($this->stream);
+        }
+
+        $stat = @fstat($this->stream);
+        // Check if formatted mode is S_IFCHR
+        return $stat ? 0020000 === ($stat['mode'] & 0170000) : false;
+>>>>>>> git-aline/master/master
     }
 }

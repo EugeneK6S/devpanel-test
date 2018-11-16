@@ -21,6 +21,10 @@ class Response
     const HTTP_CONTINUE = 100;
     const HTTP_SWITCHING_PROTOCOLS = 101;
     const HTTP_PROCESSING = 102;            // RFC2518
+<<<<<<< HEAD
+=======
+    const HTTP_EARLY_HINTS = 103;           // RFC8297
+>>>>>>> git-aline/master/master
     const HTTP_OK = 200;
     const HTTP_CREATED = 201;
     const HTTP_ACCEPTED = 202;
@@ -59,14 +63,31 @@ class Response
     const HTTP_REQUESTED_RANGE_NOT_SATISFIABLE = 416;
     const HTTP_EXPECTATION_FAILED = 417;
     const HTTP_I_AM_A_TEAPOT = 418;                                               // RFC2324
+<<<<<<< HEAD
     const HTTP_UNPROCESSABLE_ENTITY = 422;                                        // RFC4918
     const HTTP_LOCKED = 423;                                                      // RFC4918
     const HTTP_FAILED_DEPENDENCY = 424;                                           // RFC4918
     const HTTP_RESERVED_FOR_WEBDAV_ADVANCED_COLLECTIONS_EXPIRED_PROPOSAL = 425;   // RFC2817
+=======
+    const HTTP_MISDIRECTED_REQUEST = 421;                                         // RFC7540
+    const HTTP_UNPROCESSABLE_ENTITY = 422;                                        // RFC4918
+    const HTTP_LOCKED = 423;                                                      // RFC4918
+    const HTTP_FAILED_DEPENDENCY = 424;                                           // RFC4918
+
+    /**
+     * @deprecated
+     */
+    const HTTP_RESERVED_FOR_WEBDAV_ADVANCED_COLLECTIONS_EXPIRED_PROPOSAL = 425;   // RFC2817
+    const HTTP_TOO_EARLY = 425;                                                   // RFC-ietf-httpbis-replay-04
+>>>>>>> git-aline/master/master
     const HTTP_UPGRADE_REQUIRED = 426;                                            // RFC2817
     const HTTP_PRECONDITION_REQUIRED = 428;                                       // RFC6585
     const HTTP_TOO_MANY_REQUESTS = 429;                                           // RFC6585
     const HTTP_REQUEST_HEADER_FIELDS_TOO_LARGE = 431;                             // RFC6585
+<<<<<<< HEAD
+=======
+    const HTTP_UNAVAILABLE_FOR_LEGAL_REASONS = 451;
+>>>>>>> git-aline/master/master
     const HTTP_INTERNAL_SERVER_ERROR = 500;
     const HTTP_NOT_IMPLEMENTED = 501;
     const HTTP_BAD_GATEWAY = 502;
@@ -114,7 +135,11 @@ class Response
      *
      * The list of codes is complete according to the
      * {@link http://www.iana.org/assignments/http-status-codes/ Hypertext Transfer Protocol (HTTP) Status Code Registry}
+<<<<<<< HEAD
      * (last updated 2012-02-13).
+=======
+     * (last updated 2016-03-01).
+>>>>>>> git-aline/master/master
      *
      * Unless otherwise noted, the status code is defined in RFC2616.
      *
@@ -124,6 +149,10 @@ class Response
         100 => 'Continue',
         101 => 'Switching Protocols',
         102 => 'Processing',            // RFC2518
+<<<<<<< HEAD
+=======
+        103 => 'Early Hints',
+>>>>>>> git-aline/master/master
         200 => 'OK',
         201 => 'Created',
         202 => 'Accepted',
@@ -140,7 +169,10 @@ class Response
         303 => 'See Other',
         304 => 'Not Modified',
         305 => 'Use Proxy',
+<<<<<<< HEAD
         306 => 'Reserved',
+=======
+>>>>>>> git-aline/master/master
         307 => 'Temporary Redirect',
         308 => 'Permanent Redirect',    // RFC7238
         400 => 'Bad Request',
@@ -156,6 +188,7 @@ class Response
         410 => 'Gone',
         411 => 'Length Required',
         412 => 'Precondition Failed',
+<<<<<<< HEAD
         413 => 'Request Entity Too Large',
         414 => 'Request-URI Too Long',
         415 => 'Unsupported Media Type',
@@ -166,17 +199,38 @@ class Response
         423 => 'Locked',                                                      // RFC4918
         424 => 'Failed Dependency',                                           // RFC4918
         425 => 'Reserved for WebDAV advanced collections expired proposal',   // RFC2817
+=======
+        413 => 'Payload Too Large',
+        414 => 'URI Too Long',
+        415 => 'Unsupported Media Type',
+        416 => 'Range Not Satisfiable',
+        417 => 'Expectation Failed',
+        418 => 'I\'m a teapot',                                               // RFC2324
+        421 => 'Misdirected Request',                                         // RFC7540
+        422 => 'Unprocessable Entity',                                        // RFC4918
+        423 => 'Locked',                                                      // RFC4918
+        424 => 'Failed Dependency',                                           // RFC4918
+        425 => 'Too Early',                                                   // RFC-ietf-httpbis-replay-04
+>>>>>>> git-aline/master/master
         426 => 'Upgrade Required',                                            // RFC2817
         428 => 'Precondition Required',                                       // RFC6585
         429 => 'Too Many Requests',                                           // RFC6585
         431 => 'Request Header Fields Too Large',                             // RFC6585
+<<<<<<< HEAD
+=======
+        451 => 'Unavailable For Legal Reasons',                               // RFC7725
+>>>>>>> git-aline/master/master
         500 => 'Internal Server Error',
         501 => 'Not Implemented',
         502 => 'Bad Gateway',
         503 => 'Service Unavailable',
         504 => 'Gateway Timeout',
         505 => 'HTTP Version Not Supported',
+<<<<<<< HEAD
         506 => 'Variant Also Negotiates (Experimental)',                      // RFC2295
+=======
+        506 => 'Variant Also Negotiates',                                     // RFC2295
+>>>>>>> git-aline/master/master
         507 => 'Insufficient Storage',                                        // RFC4918
         508 => 'Loop Detected',                                               // RFC5842
         510 => 'Not Extended',                                                // RFC2774
@@ -184,8 +238,11 @@ class Response
     );
 
     /**
+<<<<<<< HEAD
      * Constructor.
      *
+=======
+>>>>>>> git-aline/master/master
      * @param mixed $content The response content, see setContent()
      * @param int   $status  The response status code
      * @param array $headers An array of response headers
@@ -198,9 +255,12 @@ class Response
         $this->setContent($content);
         $this->setStatusCode($status);
         $this->setProtocolVersion('1.0');
+<<<<<<< HEAD
         if (!$this->headers->has('Date')) {
             $this->setDate(\DateTime::createFromFormat('U', time(), new \DateTimeZone('UTC')));
         }
+=======
+>>>>>>> git-aline/master/master
     }
 
     /**
@@ -215,7 +275,11 @@ class Response
      * @param int   $status  The response status code
      * @param array $headers An array of response headers
      *
+<<<<<<< HEAD
      * @return Response
+=======
+     * @return static
+>>>>>>> git-aline/master/master
      */
     public static function create($content = '', $status = 200, $headers = array())
     {
@@ -256,9 +320,13 @@ class Response
      * compliant with RFC 2616. Most of the changes are based on
      * the Request that is "associated" with this Response.
      *
+<<<<<<< HEAD
      * @param Request $request A Request instance
      *
      * @return Response The current response.
+=======
+     * @return $this
+>>>>>>> git-aline/master/master
      */
     public function prepare(Request $request)
     {
@@ -307,7 +375,11 @@ class Response
         }
 
         // Check if we need to send extra expire info headers
+<<<<<<< HEAD
         if ('1.0' == $this->getProtocolVersion() && 'no-cache' == $this->headers->get('Cache-Control')) {
+=======
+        if ('1.0' == $this->getProtocolVersion() && false !== strpos($this->headers->get('Cache-Control'), 'no-cache')) {
+>>>>>>> git-aline/master/master
             $this->headers->set('pragma', 'no-cache');
             $this->headers->set('expires', -1);
         }
@@ -320,7 +392,11 @@ class Response
     /**
      * Sends HTTP headers.
      *
+<<<<<<< HEAD
      * @return Response
+=======
+     * @return $this
+>>>>>>> git-aline/master/master
      */
     public function sendHeaders()
     {
@@ -329,11 +405,16 @@ class Response
             return $this;
         }
 
+<<<<<<< HEAD
         // status
         header(sprintf('HTTP/%s %s %s', $this->version, $this->statusCode, $this->statusText), true, $this->statusCode);
 
         // headers
         foreach ($this->headers->allPreserveCase() as $name => $values) {
+=======
+        // headers
+        foreach ($this->headers->allPreserveCaseWithoutCookies() as $name => $values) {
+>>>>>>> git-aline/master/master
             foreach ($values as $value) {
                 header($name.': '.$value, false, $this->statusCode);
             }
@@ -341,16 +422,29 @@ class Response
 
         // cookies
         foreach ($this->headers->getCookies() as $cookie) {
+<<<<<<< HEAD
             setcookie($cookie->getName(), $cookie->getValue(), $cookie->getExpiresTime(), $cookie->getPath(), $cookie->getDomain(), $cookie->isSecure(), $cookie->isHttpOnly());
         }
 
+=======
+            header('Set-Cookie: '.$cookie->getName().strstr($cookie, '='), false, $this->statusCode);
+        }
+
+        // status
+        header(sprintf('HTTP/%s %s %s', $this->version, $this->statusCode, $this->statusText), true, $this->statusCode);
+
+>>>>>>> git-aline/master/master
         return $this;
     }
 
     /**
      * Sends content for the current web response.
      *
+<<<<<<< HEAD
      * @return Response
+=======
+     * @return $this
+>>>>>>> git-aline/master/master
      */
     public function sendContent()
     {
@@ -362,16 +456,26 @@ class Response
     /**
      * Sends HTTP headers and content.
      *
+<<<<<<< HEAD
      * @return Response
+=======
+     * @return $this
+>>>>>>> git-aline/master/master
      */
     public function send()
     {
         $this->sendHeaders();
         $this->sendContent();
 
+<<<<<<< HEAD
         if (function_exists('fastcgi_finish_request')) {
             fastcgi_finish_request();
         } elseif ('cli' !== PHP_SAPI) {
+=======
+        if (\function_exists('fastcgi_finish_request')) {
+            fastcgi_finish_request();
+        } elseif (!\in_array(\PHP_SAPI, array('cli', 'phpdbg'), true)) {
+>>>>>>> git-aline/master/master
             static::closeOutputBuffers(0, true);
         }
 
@@ -385,14 +489,23 @@ class Response
      *
      * @param mixed $content Content that can be cast to string
      *
+<<<<<<< HEAD
      * @return Response
+=======
+     * @return $this
+>>>>>>> git-aline/master/master
      *
      * @throws \UnexpectedValueException
      */
     public function setContent($content)
     {
+<<<<<<< HEAD
         if (null !== $content && !is_string($content) && !is_numeric($content) && !is_callable(array($content, '__toString'))) {
             throw new \UnexpectedValueException(sprintf('The Response content must be a string or object implementing __toString(), "%s" given.', gettype($content)));
+=======
+        if (null !== $content && !\is_string($content) && !is_numeric($content) && !\is_callable(array($content, '__toString'))) {
+            throw new \UnexpectedValueException(sprintf('The Response content must be a string or object implementing __toString(), "%s" given.', \gettype($content)));
+>>>>>>> git-aline/master/master
         }
 
         $this->content = (string) $content;
@@ -415,7 +528,13 @@ class Response
      *
      * @param string $version The HTTP protocol version
      *
+<<<<<<< HEAD
      * @return Response
+=======
+     * @return $this
+     *
+     * @final since version 3.2
+>>>>>>> git-aline/master/master
      */
     public function setProtocolVersion($version)
     {
@@ -428,6 +547,11 @@ class Response
      * Gets the HTTP protocol version.
      *
      * @return string The HTTP protocol version
+<<<<<<< HEAD
+=======
+     *
+     * @final since version 3.2
+>>>>>>> git-aline/master/master
      */
     public function getProtocolVersion()
     {
@@ -437,6 +561,7 @@ class Response
     /**
      * Sets the response status code.
      *
+<<<<<<< HEAD
      * @param int   $code HTTP status code
      * @param mixed $text HTTP status text
      *
@@ -446,6 +571,19 @@ class Response
      * @return Response
      *
      * @throws \InvalidArgumentException When the HTTP status code is not valid
+=======
+     * If the status text is null it will be automatically populated for the known
+     * status codes and left empty otherwise.
+     *
+     * @param int   $code HTTP status code
+     * @param mixed $text HTTP status text
+     *
+     * @return $this
+     *
+     * @throws \InvalidArgumentException When the HTTP status code is not valid
+     *
+     * @final since version 3.2
+>>>>>>> git-aline/master/master
      */
     public function setStatusCode($code, $text = null)
     {
@@ -455,7 +593,11 @@ class Response
         }
 
         if (null === $text) {
+<<<<<<< HEAD
             $this->statusText = isset(self::$statusTexts[$code]) ? self::$statusTexts[$code] : '';
+=======
+            $this->statusText = isset(self::$statusTexts[$code]) ? self::$statusTexts[$code] : 'unknown status';
+>>>>>>> git-aline/master/master
 
             return $this;
         }
@@ -475,6 +617,11 @@ class Response
      * Retrieves the status code for the current web response.
      *
      * @return int Status code
+<<<<<<< HEAD
+=======
+     *
+     * @final since version 3.2
+>>>>>>> git-aline/master/master
      */
     public function getStatusCode()
     {
@@ -486,7 +633,13 @@ class Response
      *
      * @param string $charset Character set
      *
+<<<<<<< HEAD
      * @return Response
+=======
+     * @return $this
+     *
+     * @final since version 3.2
+>>>>>>> git-aline/master/master
      */
     public function setCharset($charset)
     {
@@ -499,6 +652,11 @@ class Response
      * Retrieves the response charset.
      *
      * @return string Character set
+<<<<<<< HEAD
+=======
+     *
+     * @final since version 3.2
+>>>>>>> git-aline/master/master
      */
     public function getCharset()
     {
@@ -506,12 +664,17 @@ class Response
     }
 
     /**
+<<<<<<< HEAD
      * Returns true if the response is worth caching under any circumstance.
+=======
+     * Returns true if the response may safely be kept in a shared (surrogate) cache.
+>>>>>>> git-aline/master/master
      *
      * Responses marked "private" with an explicit Cache-Control directive are
      * considered uncacheable.
      *
      * Responses with neither a freshness lifetime (Expires, max-age) nor cache
+<<<<<<< HEAD
      * validator (Last-Modified, ETag) are considered uncacheable.
      *
      * @return bool true if the response is worth caching, false otherwise
@@ -519,6 +682,23 @@ class Response
     public function isCacheable()
     {
         if (!in_array($this->statusCode, array(200, 203, 300, 301, 302, 404, 410))) {
+=======
+     * validator (Last-Modified, ETag) are considered uncacheable because there is
+     * no way to tell when or how to remove them from the cache.
+     *
+     * Note that RFC 7231 and RFC 7234 possibly allow for a more permissive implementation,
+     * for example "status codes that are defined as cacheable by default [...]
+     * can be reused by a cache with heuristic expiration unless otherwise indicated"
+     * (https://tools.ietf.org/html/rfc7231#section-6.1)
+     *
+     * @return bool true if the response is worth caching, false otherwise
+     *
+     * @final since version 3.3
+     */
+    public function isCacheable()
+    {
+        if (!\in_array($this->statusCode, array(200, 203, 300, 301, 302, 404, 410))) {
+>>>>>>> git-aline/master/master
             return false;
         }
 
@@ -537,6 +717,11 @@ class Response
      * indicator or Expires header and the calculated age is less than the freshness lifetime.
      *
      * @return bool true if the response is fresh, false otherwise
+<<<<<<< HEAD
+=======
+     *
+     * @final since version 3.3
+>>>>>>> git-aline/master/master
      */
     public function isFresh()
     {
@@ -548,6 +733,11 @@ class Response
      * the response with the origin server using a conditional GET request.
      *
      * @return bool true if the response is validateable, false otherwise
+<<<<<<< HEAD
+=======
+     *
+     * @final since version 3.3
+>>>>>>> git-aline/master/master
      */
     public function isValidateable()
     {
@@ -559,7 +749,13 @@ class Response
      *
      * It makes the response ineligible for serving other clients.
      *
+<<<<<<< HEAD
      * @return Response
+=======
+     * @return $this
+     *
+     * @final since version 3.2
+>>>>>>> git-aline/master/master
      */
     public function setPrivate()
     {
@@ -574,7 +770,13 @@ class Response
      *
      * It makes the response eligible for serving other clients.
      *
+<<<<<<< HEAD
      * @return Response
+=======
+     * @return $this
+     *
+     * @final since version 3.2
+>>>>>>> git-aline/master/master
      */
     public function setPublic()
     {
@@ -585,6 +787,41 @@ class Response
     }
 
     /**
+<<<<<<< HEAD
+=======
+     * Marks the response as "immutable".
+     *
+     * @param bool $immutable enables or disables the immutable directive
+     *
+     * @return $this
+     *
+     * @final
+     */
+    public function setImmutable($immutable = true)
+    {
+        if ($immutable) {
+            $this->headers->addCacheControlDirective('immutable');
+        } else {
+            $this->headers->removeCacheControlDirective('immutable');
+        }
+
+        return $this;
+    }
+
+    /**
+     * Returns true if the response is marked as "immutable".
+     *
+     * @return bool returns true if the response is marked as "immutable"; otherwise false
+     *
+     * @final
+     */
+    public function isImmutable()
+    {
+        return $this->headers->hasCacheControlDirective('immutable');
+    }
+
+    /**
+>>>>>>> git-aline/master/master
      * Returns true if the response must be revalidated by caches.
      *
      * This method indicates that the response must not be served stale by a
@@ -593,6 +830,11 @@ class Response
      * greater than the value provided by the origin.
      *
      * @return bool true if the response must be revalidated by a cache, false otherwise
+<<<<<<< HEAD
+=======
+     *
+     * @final since version 3.3
+>>>>>>> git-aline/master/master
      */
     public function mustRevalidate()
     {
@@ -605,18 +847,33 @@ class Response
      * @return \DateTime A \DateTime instance
      *
      * @throws \RuntimeException When the header is not parseable
+<<<<<<< HEAD
      */
     public function getDate()
     {
         return $this->headers->getDate('Date', new \DateTime());
+=======
+     *
+     * @final since version 3.2
+     */
+    public function getDate()
+    {
+        return $this->headers->getDate('Date');
+>>>>>>> git-aline/master/master
     }
 
     /**
      * Sets the Date header.
      *
+<<<<<<< HEAD
      * @param \DateTime $date A \DateTime instance
      *
      * @return Response
+=======
+     * @return $this
+     *
+     * @final since version 3.2
+>>>>>>> git-aline/master/master
      */
     public function setDate(\DateTime $date)
     {
@@ -630,6 +887,11 @@ class Response
      * Returns the age of the response.
      *
      * @return int The age of the response in seconds
+<<<<<<< HEAD
+=======
+     *
+     * @final since version 3.2
+>>>>>>> git-aline/master/master
      */
     public function getAge()
     {
@@ -643,12 +905,20 @@ class Response
     /**
      * Marks the response stale by setting the Age header to be equal to the maximum age of the response.
      *
+<<<<<<< HEAD
      * @return Response
+=======
+     * @return $this
+>>>>>>> git-aline/master/master
      */
     public function expire()
     {
         if ($this->isFresh()) {
             $this->headers->set('Age', $this->getMaxAge());
+<<<<<<< HEAD
+=======
+            $this->headers->remove('Expires');
+>>>>>>> git-aline/master/master
         }
 
         return $this;
@@ -658,6 +928,11 @@ class Response
      * Returns the value of the Expires header as a DateTime instance.
      *
      * @return \DateTime|null A DateTime instance or null if the header does not exist
+<<<<<<< HEAD
+=======
+     *
+     * @final since version 3.2
+>>>>>>> git-aline/master/master
      */
     public function getExpires()
     {
@@ -676,7 +951,13 @@ class Response
      *
      * @param \DateTime|null $date A \DateTime instance or null to remove the header
      *
+<<<<<<< HEAD
      * @return Response
+=======
+     * @return $this
+     *
+     * @final since version 3.2
+>>>>>>> git-aline/master/master
      */
     public function setExpires(\DateTime $date = null)
     {
@@ -699,6 +980,11 @@ class Response
      * back on an expires header. It returns null when no maximum age can be established.
      *
      * @return int|null Number of seconds
+<<<<<<< HEAD
+=======
+     *
+     * @final since version 3.2
+>>>>>>> git-aline/master/master
      */
     public function getMaxAge()
     {
@@ -722,7 +1008,13 @@ class Response
      *
      * @param int $value Number of seconds
      *
+<<<<<<< HEAD
      * @return Response
+=======
+     * @return $this
+     *
+     * @final since version 3.2
+>>>>>>> git-aline/master/master
      */
     public function setMaxAge($value)
     {
@@ -738,7 +1030,13 @@ class Response
      *
      * @param int $value Number of seconds
      *
+<<<<<<< HEAD
      * @return Response
+=======
+     * @return $this
+     *
+     * @final since version 3.2
+>>>>>>> git-aline/master/master
      */
     public function setSharedMaxAge($value)
     {
@@ -757,6 +1055,11 @@ class Response
      * revalidating with the origin.
      *
      * @return int|null The TTL in seconds
+<<<<<<< HEAD
+=======
+     *
+     * @final since version 3.2
+>>>>>>> git-aline/master/master
      */
     public function getTtl()
     {
@@ -772,7 +1075,13 @@ class Response
      *
      * @param int $seconds Number of seconds
      *
+<<<<<<< HEAD
      * @return Response
+=======
+     * @return $this
+     *
+     * @final since version 3.2
+>>>>>>> git-aline/master/master
      */
     public function setTtl($seconds)
     {
@@ -788,7 +1097,13 @@ class Response
      *
      * @param int $seconds Number of seconds
      *
+<<<<<<< HEAD
      * @return Response
+=======
+     * @return $this
+     *
+     * @final since version 3.2
+>>>>>>> git-aline/master/master
      */
     public function setClientTtl($seconds)
     {
@@ -803,6 +1118,11 @@ class Response
      * @return \DateTime|null A DateTime instance or null if the header does not exist
      *
      * @throws \RuntimeException When the HTTP header is not parseable
+<<<<<<< HEAD
+=======
+     *
+     * @final since version 3.2
+>>>>>>> git-aline/master/master
      */
     public function getLastModified()
     {
@@ -816,7 +1136,13 @@ class Response
      *
      * @param \DateTime|null $date A \DateTime instance or null to remove the header
      *
+<<<<<<< HEAD
      * @return Response
+=======
+     * @return $this
+     *
+     * @final since version 3.2
+>>>>>>> git-aline/master/master
      */
     public function setLastModified(\DateTime $date = null)
     {
@@ -835,6 +1161,11 @@ class Response
      * Returns the literal value of the ETag HTTP header.
      *
      * @return string|null The ETag HTTP header or null if it does not exist
+<<<<<<< HEAD
+=======
+     *
+     * @final since version 3.2
+>>>>>>> git-aline/master/master
      */
     public function getEtag()
     {
@@ -847,7 +1178,13 @@ class Response
      * @param string|null $etag The ETag unique identifier or null to remove the header
      * @param bool        $weak Whether you want a weak ETag or not
      *
+<<<<<<< HEAD
      * @return Response
+=======
+     * @return $this
+     *
+     * @final since version 3.2
+>>>>>>> git-aline/master/master
      */
     public function setEtag($etag = null, $weak = false)
     {
@@ -867,6 +1204,7 @@ class Response
     /**
      * Sets the response's cache headers (validation and/or expiration).
      *
+<<<<<<< HEAD
      * Available options are: etag, last_modified, max_age, s_maxage, private, and public.
      *
      * @param array $options An array of cache options
@@ -878,6 +1216,21 @@ class Response
     public function setCache(array $options)
     {
         if ($diff = array_diff(array_keys($options), array('etag', 'last_modified', 'max_age', 's_maxage', 'private', 'public'))) {
+=======
+     * Available options are: etag, last_modified, max_age, s_maxage, private, public and immutable.
+     *
+     * @param array $options An array of cache options
+     *
+     * @return $this
+     *
+     * @throws \InvalidArgumentException
+     *
+     * @final since version 3.3
+     */
+    public function setCache(array $options)
+    {
+        if ($diff = array_diff(array_keys($options), array('etag', 'last_modified', 'max_age', 's_maxage', 'private', 'public', 'immutable'))) {
+>>>>>>> git-aline/master/master
             throw new \InvalidArgumentException(sprintf('Response does not support the following options: "%s".', implode('", "', array_values($diff))));
         }
 
@@ -913,6 +1266,13 @@ class Response
             }
         }
 
+<<<<<<< HEAD
+=======
+        if (isset($options['immutable'])) {
+            $this->setImmutable((bool) $options['immutable']);
+        }
+
+>>>>>>> git-aline/master/master
         return $this;
     }
 
@@ -922,9 +1282,17 @@ class Response
      * This sets the status, removes the body, and discards any headers
      * that MUST NOT be included in 304 responses.
      *
+<<<<<<< HEAD
      * @return Response
      *
      * @see http://tools.ietf.org/html/rfc2616#section-10.3.5
+=======
+     * @return $this
+     *
+     * @see http://tools.ietf.org/html/rfc2616#section-10.3.5
+     *
+     * @final since version 3.3
+>>>>>>> git-aline/master/master
      */
     public function setNotModified()
     {
@@ -943,6 +1311,11 @@ class Response
      * Returns true if the response includes a Vary header.
      *
      * @return bool true if the response includes a Vary header, false otherwise
+<<<<<<< HEAD
+=======
+     *
+     * @final since version 3.2
+>>>>>>> git-aline/master/master
      */
     public function hasVary()
     {
@@ -953,6 +1326,11 @@ class Response
      * Returns an array of header names given in the Vary header.
      *
      * @return array An array of Vary names
+<<<<<<< HEAD
+=======
+     *
+     * @final since version 3.2
+>>>>>>> git-aline/master/master
      */
     public function getVary()
     {
@@ -972,9 +1350,17 @@ class Response
      * Sets the Vary header.
      *
      * @param string|array $headers
+<<<<<<< HEAD
      * @param bool         $replace Whether to replace the actual value of not (true by default)
      *
      * @return Response
+=======
+     * @param bool         $replace Whether to replace the actual value or not (true by default)
+     *
+     * @return $this
+     *
+     * @final since version 3.2
+>>>>>>> git-aline/master/master
      */
     public function setVary($headers, $replace = true)
     {
@@ -990,6 +1376,7 @@ class Response
      * If the Response is not modified, it sets the status code to 304 and
      * removes the actual content by calling the setNotModified() method.
      *
+<<<<<<< HEAD
      * @param Request $request A Request instance
      *
      * @return bool true if the Response validators match the Request, false otherwise
@@ -997,6 +1384,15 @@ class Response
     public function isNotModified(Request $request)
     {
         if (!$request->isMethodSafe()) {
+=======
+     * @return bool true if the Response validators match the Request, false otherwise
+     *
+     * @final since version 3.3
+     */
+    public function isNotModified(Request $request)
+    {
+        if (!$request->isMethodCacheable()) {
+>>>>>>> git-aline/master/master
             return false;
         }
 
@@ -1005,7 +1401,11 @@ class Response
         $modifiedSince = $request->headers->get('If-Modified-Since');
 
         if ($etags = $request->getETags()) {
+<<<<<<< HEAD
             $notModified = in_array($this->getEtag(), $etags) || in_array('*', $etags);
+=======
+            $notModified = \in_array($this->getEtag(), $etags) || \in_array('*', $etags);
+>>>>>>> git-aline/master/master
         }
 
         if ($modifiedSince && $lastModified) {
@@ -1019,11 +1419,21 @@ class Response
         return $notModified;
     }
 
+<<<<<<< HEAD
     // http://www.w3.org/Protocols/rfc2616/rfc2616-sec10.html
+=======
+>>>>>>> git-aline/master/master
     /**
      * Is response invalid?
      *
      * @return bool
+<<<<<<< HEAD
+=======
+     *
+     * @see http://www.w3.org/Protocols/rfc2616/rfc2616-sec10.html
+     *
+     * @final since version 3.2
+>>>>>>> git-aline/master/master
      */
     public function isInvalid()
     {
@@ -1034,6 +1444,11 @@ class Response
      * Is response informative?
      *
      * @return bool
+<<<<<<< HEAD
+=======
+     *
+     * @final since version 3.3
+>>>>>>> git-aline/master/master
      */
     public function isInformational()
     {
@@ -1044,6 +1459,11 @@ class Response
      * Is response successful?
      *
      * @return bool
+<<<<<<< HEAD
+=======
+     *
+     * @final since version 3.2
+>>>>>>> git-aline/master/master
      */
     public function isSuccessful()
     {
@@ -1054,6 +1474,11 @@ class Response
      * Is the response a redirect?
      *
      * @return bool
+<<<<<<< HEAD
+=======
+     *
+     * @final since version 3.2
+>>>>>>> git-aline/master/master
      */
     public function isRedirection()
     {
@@ -1064,6 +1489,11 @@ class Response
      * Is there a client error?
      *
      * @return bool
+<<<<<<< HEAD
+=======
+     *
+     * @final since version 3.2
+>>>>>>> git-aline/master/master
      */
     public function isClientError()
     {
@@ -1074,6 +1504,11 @@ class Response
      * Was there a server side error?
      *
      * @return bool
+<<<<<<< HEAD
+=======
+     *
+     * @final since version 3.3
+>>>>>>> git-aline/master/master
      */
     public function isServerError()
     {
@@ -1084,6 +1519,11 @@ class Response
      * Is the response OK?
      *
      * @return bool
+<<<<<<< HEAD
+=======
+     *
+     * @final since version 3.2
+>>>>>>> git-aline/master/master
      */
     public function isOk()
     {
@@ -1094,6 +1534,11 @@ class Response
      * Is the response forbidden?
      *
      * @return bool
+<<<<<<< HEAD
+=======
+     *
+     * @final since version 3.2
+>>>>>>> git-aline/master/master
      */
     public function isForbidden()
     {
@@ -1104,6 +1549,11 @@ class Response
      * Is the response a not found error?
      *
      * @return bool
+<<<<<<< HEAD
+=======
+     *
+     * @final since version 3.2
+>>>>>>> git-aline/master/master
      */
     public function isNotFound()
     {
@@ -1116,20 +1566,38 @@ class Response
      * @param string $location
      *
      * @return bool
+<<<<<<< HEAD
      */
     public function isRedirect($location = null)
     {
         return in_array($this->statusCode, array(201, 301, 302, 303, 307, 308)) && (null === $location ?: $location == $this->headers->get('Location'));
+=======
+     *
+     * @final since version 3.2
+     */
+    public function isRedirect($location = null)
+    {
+        return \in_array($this->statusCode, array(201, 301, 302, 303, 307, 308)) && (null === $location ?: $location == $this->headers->get('Location'));
+>>>>>>> git-aline/master/master
     }
 
     /**
      * Is the response empty?
      *
      * @return bool
+<<<<<<< HEAD
      */
     public function isEmpty()
     {
         return in_array($this->statusCode, array(204, 304));
+=======
+     *
+     * @final since version 3.2
+     */
+    public function isEmpty()
+    {
+        return \in_array($this->statusCode, array(204, 304));
+>>>>>>> git-aline/master/master
     }
 
     /**
@@ -1139,14 +1607,27 @@ class Response
      *
      * @param int  $targetLevel The target output buffering level
      * @param bool $flush       Whether to flush or clean the buffers
+<<<<<<< HEAD
+=======
+     *
+     * @final since version 3.3
+>>>>>>> git-aline/master/master
      */
     public static function closeOutputBuffers($targetLevel, $flush)
     {
         $status = ob_get_status(true);
+<<<<<<< HEAD
         $level = count($status);
         $flags = defined('PHP_OUTPUT_HANDLER_REMOVABLE') ? PHP_OUTPUT_HANDLER_REMOVABLE | ($flush ? PHP_OUTPUT_HANDLER_FLUSHABLE : PHP_OUTPUT_HANDLER_CLEANABLE) : -1;
 
         while ($level-- > $targetLevel && ($s = $status[$level]) && (!isset($s['del']) ? !isset($s['flags']) || $flags === ($s['flags'] & $flags) : $s['del'])) {
+=======
+        $level = \count($status);
+        // PHP_OUTPUT_HANDLER_* are not defined on HHVM 3.3
+        $flags = \defined('PHP_OUTPUT_HANDLER_REMOVABLE') ? PHP_OUTPUT_HANDLER_REMOVABLE | ($flush ? PHP_OUTPUT_HANDLER_FLUSHABLE : PHP_OUTPUT_HANDLER_CLEANABLE) : -1;
+
+        while ($level-- > $targetLevel && ($s = $status[$level]) && (!isset($s['del']) ? !isset($s['flags']) || ($s['flags'] & $flags) === $flags : $s['del'])) {
+>>>>>>> git-aline/master/master
             if ($flush) {
                 ob_end_flush();
             } else {
@@ -1158,11 +1639,21 @@ class Response
     /**
      * Checks if we need to remove Cache-Control for SSL encrypted downloads when using IE < 9.
      *
+<<<<<<< HEAD
      * @link http://support.microsoft.com/kb/323308
      */
     protected function ensureIEOverSSLCompatibility(Request $request)
     {
         if (false !== stripos($this->headers->get('Content-Disposition'), 'attachment') && preg_match('/MSIE (.*?);/i', $request->server->get('HTTP_USER_AGENT'), $match) == 1 && true === $request->isSecure()) {
+=======
+     * @see http://support.microsoft.com/kb/323308
+     *
+     * @final since version 3.3
+     */
+    protected function ensureIEOverSSLCompatibility(Request $request)
+    {
+        if (false !== stripos($this->headers->get('Content-Disposition'), 'attachment') && 1 == preg_match('/MSIE (.*?);/i', $request->server->get('HTTP_USER_AGENT'), $match) && true === $request->isSecure()) {
+>>>>>>> git-aline/master/master
             if ((int) preg_replace('/(MSIE )(.*?);/', '$2', $match[0]) < 9) {
                 $this->headers->remove('Cache-Control');
             }

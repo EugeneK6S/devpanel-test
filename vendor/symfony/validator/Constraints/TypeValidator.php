@@ -11,7 +11,10 @@
 
 namespace Symfony\Component\Validator\Constraints;
 
+<<<<<<< HEAD
 use Symfony\Component\Validator\Context\ExecutionContextInterface;
+=======
+>>>>>>> git-aline/master/master
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\ConstraintValidator;
 use Symfony\Component\Validator\Exception\UnexpectedTypeException;
@@ -35,6 +38,7 @@ class TypeValidator extends ConstraintValidator
         }
 
         $type = strtolower($constraint->type);
+<<<<<<< HEAD
         $type = $type == 'boolean' ? 'bool' : $constraint->type;
         $isFunction = 'is_'.$type;
         $ctypeFunction = 'ctype_'.$type;
@@ -42,11 +46,21 @@ class TypeValidator extends ConstraintValidator
         if (function_exists($isFunction) && $isFunction($value)) {
             return;
         } elseif (function_exists($ctypeFunction) && $ctypeFunction($value)) {
+=======
+        $type = 'boolean' == $type ? 'bool' : $constraint->type;
+        $isFunction = 'is_'.$type;
+        $ctypeFunction = 'ctype_'.$type;
+
+        if (\function_exists($isFunction) && $isFunction($value)) {
+            return;
+        } elseif (\function_exists($ctypeFunction) && $ctypeFunction($value)) {
+>>>>>>> git-aline/master/master
             return;
         } elseif ($value instanceof $constraint->type) {
             return;
         }
 
+<<<<<<< HEAD
         if ($this->context instanceof ExecutionContextInterface) {
             $this->context->buildViolation($constraint->message)
                 ->setParameter('{{ value }}', $this->formatValue($value))
@@ -58,5 +72,12 @@ class TypeValidator extends ConstraintValidator
                 ->setParameter('{{ type }}', $constraint->type)
                 ->addViolation();
         }
+=======
+        $this->context->buildViolation($constraint->message)
+            ->setParameter('{{ value }}', $this->formatValue($value))
+            ->setParameter('{{ type }}', $constraint->type)
+            ->setCode(Type::INVALID_TYPE_ERROR)
+            ->addViolation();
+>>>>>>> git-aline/master/master
     }
 }

@@ -27,7 +27,11 @@ class FatalThrowableError extends FatalErrorException
             $message = 'Type error: '.$e->getMessage();
             $severity = E_RECOVERABLE_ERROR;
         } else {
+<<<<<<< HEAD
             $message = 'Fatal error: '.$e->getMessage();
+=======
+            $message = $e->getMessage();
+>>>>>>> git-aline/master/master
             $severity = E_ERROR;
         }
 
@@ -36,7 +40,12 @@ class FatalThrowableError extends FatalErrorException
             $e->getCode(),
             $severity,
             $e->getFile(),
+<<<<<<< HEAD
             $e->getLine()
+=======
+            $e->getLine(),
+            $e->getPrevious()
+>>>>>>> git-aline/master/master
         );
 
         $this->setTrace($e->getTrace());

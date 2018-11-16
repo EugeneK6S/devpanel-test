@@ -20,6 +20,7 @@ class JsonEncoder implements EncoderInterface, DecoderInterface
 {
     const FORMAT = 'json';
 
+<<<<<<< HEAD
     /**
      * @var JsonEncode
      */
@@ -28,6 +29,9 @@ class JsonEncoder implements EncoderInterface, DecoderInterface
     /**
      * @var JsonDecode
      */
+=======
+    protected $encodingImpl;
+>>>>>>> git-aline/master/master
     protected $decodingImpl;
 
     public function __construct(JsonEncode $encodingImpl = null, JsonDecode $decodingImpl = null)
@@ -37,6 +41,7 @@ class JsonEncoder implements EncoderInterface, DecoderInterface
     }
 
     /**
+<<<<<<< HEAD
      * Returns the last encoding error (if any).
      *
      * @return int
@@ -65,6 +70,8 @@ class JsonEncoder implements EncoderInterface, DecoderInterface
     }
 
     /**
+=======
+>>>>>>> git-aline/master/master
      * {@inheritdoc}
      */
     public function encode($data, $format, array $context = array())
@@ -95,6 +102,7 @@ class JsonEncoder implements EncoderInterface, DecoderInterface
     {
         return self::FORMAT === $format;
     }
+<<<<<<< HEAD
 
     /**
      * Resolves json_last_error message.
@@ -122,4 +130,6 @@ class JsonEncoder implements EncoderInterface, DecoderInterface
                 return 'Unknown error';
         }
     }
+=======
+>>>>>>> git-aline/master/master
 }

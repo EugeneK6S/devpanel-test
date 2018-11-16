@@ -22,8 +22,11 @@ interface CompilerPassInterface
 {
     /**
      * You can modify the container here before it is dumped to PHP code.
+<<<<<<< HEAD
      *
      * @param ContainerBuilder $container
+=======
+>>>>>>> git-aline/master/master
      */
     public function process(ContainerBuilder $container);
 }

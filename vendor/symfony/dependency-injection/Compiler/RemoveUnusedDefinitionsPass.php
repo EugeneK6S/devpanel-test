@@ -32,6 +32,7 @@ class RemoveUnusedDefinitionsPass implements RepeatablePassInterface
 
     /**
      * Processes the ContainerBuilder to remove unused definitions.
+<<<<<<< HEAD
      *
      * @param ContainerBuilder $container
      */
@@ -44,6 +45,16 @@ class RemoveUnusedDefinitionsPass implements RepeatablePassInterface
         $hasChanged = false;
         foreach ($container->getDefinitions() as $id => $definition) {
             if ($definition->isPublic()) {
+=======
+     */
+    public function process(ContainerBuilder $container)
+    {
+        $graph = $container->getCompiler()->getServiceReferenceGraph();
+
+        $hasChanged = false;
+        foreach ($container->getDefinitions() as $id => $definition) {
+            if ($definition->isPublic() || $definition->isPrivate()) {
+>>>>>>> git-aline/master/master
                 continue;
             }
 
@@ -52,6 +63,12 @@ class RemoveUnusedDefinitionsPass implements RepeatablePassInterface
                 $referencingAliases = array();
                 $sourceIds = array();
                 foreach ($edges as $edge) {
+<<<<<<< HEAD
+=======
+                    if ($edge->isWeak()) {
+                        continue;
+                    }
+>>>>>>> git-aline/master/master
                     $node = $edge->getSourceNode();
                     $sourceIds[] = $node->getId();
 
@@ -59,12 +76,17 @@ class RemoveUnusedDefinitionsPass implements RepeatablePassInterface
                         $referencingAliases[] = $node->getValue();
                     }
                 }
+<<<<<<< HEAD
                 $isReferenced = (count(array_unique($sourceIds)) - count($referencingAliases)) > 0;
+=======
+                $isReferenced = (\count(array_unique($sourceIds)) - \count($referencingAliases)) > 0;
+>>>>>>> git-aline/master/master
             } else {
                 $referencingAliases = array();
                 $isReferenced = false;
             }
 
+<<<<<<< HEAD
             if (1 === count($referencingAliases) && false === $isReferenced) {
                 $container->setDefinition((string) reset($referencingAliases), $definition);
                 $definition->setPublic(true);
@@ -73,6 +95,18 @@ class RemoveUnusedDefinitionsPass implements RepeatablePassInterface
             } elseif (0 === count($referencingAliases) && false === $isReferenced) {
                 $container->removeDefinition($id);
                 $compiler->addLogMessage($formatter->formatRemoveService($this, $id, 'unused'));
+=======
+            if (1 === \count($referencingAliases) && false === $isReferenced) {
+                $container->setDefinition((string) reset($referencingAliases), $definition);
+                $definition->setPublic(!$definition->isPrivate());
+                $definition->setPrivate(reset($referencingAliases)->isPrivate());
+                $container->removeDefinition($id);
+                $container->log($this, sprintf('Removed service "%s"; reason: replaces alias %s.', $id, reset($referencingAliases)));
+            } elseif (0 === \count($referencingAliases) && false === $isReferenced) {
+                $container->removeDefinition($id);
+                $container->resolveEnvPlaceholders(serialize($definition));
+                $container->log($this, sprintf('Removed service "%s"; reason: unused.', $id));
+>>>>>>> git-aline/master/master
                 $hasChanged = true;
             }
         }

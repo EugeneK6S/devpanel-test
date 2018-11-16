@@ -32,8 +32,11 @@ class AcceptHeader
     private $sorted = true;
 
     /**
+<<<<<<< HEAD
      * Constructor.
      *
+=======
+>>>>>>> git-aline/master/master
      * @param AcceptHeaderItem[] $items
      */
     public function __construct(array $items)
@@ -48,7 +51,11 @@ class AcceptHeader
      *
      * @param string $headerValue
      *
+<<<<<<< HEAD
      * @return AcceptHeader
+=======
+     * @return self
+>>>>>>> git-aline/master/master
      */
     public static function fromString($headerValue)
     {
@@ -99,9 +106,13 @@ class AcceptHeader
     /**
      * Adds an item.
      *
+<<<<<<< HEAD
      * @param AcceptHeaderItem $item
      *
      * @return AcceptHeader
+=======
+     * @return $this
+>>>>>>> git-aline/master/master
      */
     public function add(AcceptHeaderItem $item)
     {
@@ -128,7 +139,11 @@ class AcceptHeader
      *
      * @param string $pattern
      *
+<<<<<<< HEAD
      * @return AcceptHeader
+=======
+     * @return self
+>>>>>>> git-aline/master/master
      */
     public function filter($pattern)
     {
@@ -155,7 +170,11 @@ class AcceptHeader
     private function sort()
     {
         if (!$this->sorted) {
+<<<<<<< HEAD
             uasort($this->items, function ($a, $b) {
+=======
+            uasort($this->items, function (AcceptHeaderItem $a, AcceptHeaderItem $b) {
+>>>>>>> git-aline/master/master
                 $qA = $a->getQuality();
                 $qB = $b->getQuality();
 

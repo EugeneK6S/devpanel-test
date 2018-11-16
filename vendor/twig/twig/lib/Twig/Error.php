@@ -3,7 +3,11 @@
 /*
  * This file is part of Twig.
  *
+<<<<<<< HEAD
  * (c) 2009 Fabien Potencier
+=======
+ * (c) Fabien Potencier
+>>>>>>> git-aline/master/master
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
@@ -25,8 +29,13 @@
  * and line number) yourself by passing them to the constructor. If some or all
  * these information are not available from where you throw the exception, then
  * this class will guess them automatically (when the line number is set to -1
+<<<<<<< HEAD
  * and/or the filename is set to null). As this is a costly operation, this
  * can be disabled by passing false for both the filename and the line number
+=======
+ * and/or the name is set to null). As this is a costly operation, this
+ * can be disabled by passing false for both the name and the line number
+>>>>>>> git-aline/master/master
  * when creating a new instance of this class.
  *
  * @author Fabien Potencier <fabien@symfony.com>
@@ -34,18 +43,33 @@
 class Twig_Error extends Exception
 {
     protected $lineno;
+<<<<<<< HEAD
+=======
+    // to be renamed to name in 2.0
+>>>>>>> git-aline/master/master
     protected $filename;
     protected $rawMessage;
     protected $previous;
 
+<<<<<<< HEAD
     /**
      * Constructor.
      *
      * Set both the line number and the filename to false to
+=======
+    private $sourcePath;
+    private $sourceCode;
+
+    /**
+     * Constructor.
+     *
+     * Set both the line number and the name to false to
+>>>>>>> git-aline/master/master
      * disable automatic guessing of the original template name
      * and line number.
      *
      * Set the line number to -1 to enable its automatic guessing.
+<<<<<<< HEAD
      * Set the filename to null to enable its automatic guessing.
      *
      * By default, automatic guessing is enabled.
@@ -57,6 +81,29 @@ class Twig_Error extends Exception
      */
     public function __construct($message, $lineno = -1, $filename = null, Exception $previous = null)
     {
+=======
+     * Set the name to null to enable its automatic guessing.
+     *
+     * By default, automatic guessing is enabled.
+     *
+     * @param string                  $message  The error message
+     * @param int                     $lineno   The template line where the error occurred
+     * @param Twig_Source|string|null $source   The source context where the error occurred
+     * @param Exception               $previous The previous exception
+     */
+    public function __construct($message, $lineno = -1, $source = null, Exception $previous = null)
+    {
+        if (null === $source) {
+            $name = null;
+        } elseif (!$source instanceof Twig_Source) {
+            // for compat with the Twig C ext., passing the template name as string is accepted
+            $name = $source;
+        } else {
+            $name = $source->getName();
+            $this->sourceCode = $source->getCode();
+            $this->sourcePath = $source->getPath();
+        }
+>>>>>>> git-aline/master/master
         if (PHP_VERSION_ID < 50300) {
             $this->previous = $previous;
             parent::__construct('');
@@ -65,9 +112,15 @@ class Twig_Error extends Exception
         }
 
         $this->lineno = $lineno;
+<<<<<<< HEAD
         $this->filename = $filename;
 
         if (-1 === $this->lineno || null === $this->filename) {
+=======
+        $this->filename = $name;
+
+        if (-1 === $lineno || null === $name || null === $this->sourcePath) {
+>>>>>>> git-aline/master/master
             $this->guessTemplateInfo();
         }
 
@@ -87,16 +140,30 @@ class Twig_Error extends Exception
     }
 
     /**
+<<<<<<< HEAD
      * Gets the filename where the error occurred.
      *
      * @return string The filename
      */
     public function getTemplateFile()
     {
+=======
+     * Gets the logical name where the error occurred.
+     *
+     * @return string The name
+     *
+     * @deprecated since 1.27 (to be removed in 2.0). Use getSourceContext() instead.
+     */
+    public function getTemplateFile()
+    {
+        @trigger_error(sprintf('The "%s" method is deprecated since version 1.27 and will be removed in 2.0. Use getSourceContext() instead.', __METHOD__), E_USER_DEPRECATED);
+
+>>>>>>> git-aline/master/master
         return $this->filename;
     }
 
     /**
+<<<<<<< HEAD
      * Sets the filename where the error occurred.
      *
      * @param string $filename The filename
@@ -104,6 +171,50 @@ class Twig_Error extends Exception
     public function setTemplateFile($filename)
     {
         $this->filename = $filename;
+=======
+     * Sets the logical name where the error occurred.
+     *
+     * @param string $name The name
+     *
+     * @deprecated since 1.27 (to be removed in 2.0). Use setSourceContext() instead.
+     */
+    public function setTemplateFile($name)
+    {
+        @trigger_error(sprintf('The "%s" method is deprecated since version 1.27 and will be removed in 2.0. Use setSourceContext() instead.', __METHOD__), E_USER_DEPRECATED);
+
+        $this->filename = $name;
+
+        $this->updateRepr();
+    }
+
+    /**
+     * Gets the logical name where the error occurred.
+     *
+     * @return string The name
+     *
+     * @deprecated since 1.29 (to be removed in 2.0). Use getSourceContext() instead.
+     */
+    public function getTemplateName()
+    {
+        @trigger_error(sprintf('The "%s" method is deprecated since version 1.29 and will be removed in 2.0. Use getSourceContext() instead.', __METHOD__), E_USER_DEPRECATED);
+
+        return $this->filename;
+    }
+
+    /**
+     * Sets the logical name where the error occurred.
+     *
+     * @param string $name The name
+     *
+     * @deprecated since 1.29 (to be removed in 2.0). Use setSourceContext() instead.
+     */
+    public function setTemplateName($name)
+    {
+        @trigger_error(sprintf('The "%s" method is deprecated since version 1.29 and will be removed in 2.0. Use setSourceContext() instead.', __METHOD__), E_USER_DEPRECATED);
+
+        $this->filename = $name;
+        $this->sourceCode = $this->sourcePath = null;
+>>>>>>> git-aline/master/master
 
         $this->updateRepr();
     }
@@ -130,6 +241,35 @@ class Twig_Error extends Exception
         $this->updateRepr();
     }
 
+<<<<<<< HEAD
+=======
+    /**
+     * Gets the source context of the Twig template where the error occurred.
+     *
+     * @return Twig_Source|null
+     */
+    public function getSourceContext()
+    {
+        return $this->filename ? new Twig_Source($this->sourceCode, $this->filename, $this->sourcePath) : null;
+    }
+
+    /**
+     * Sets the source context of the Twig template where the error occurred.
+     */
+    public function setSourceContext(Twig_Source $source = null)
+    {
+        if (null === $source) {
+            $this->sourceCode = $this->filename = $this->sourcePath = null;
+        } else {
+            $this->sourceCode = $source->getCode();
+            $this->filename = $source->getName();
+            $this->sourcePath = $source->getPath();
+        }
+
+        $this->updateRepr();
+    }
+
+>>>>>>> git-aline/master/master
     public function guess()
     {
         $this->guessTemplateInfo();
@@ -168,6 +308,16 @@ class Twig_Error extends Exception
     {
         $this->message = $this->rawMessage;
 
+<<<<<<< HEAD
+=======
+        if ($this->sourcePath && $this->lineno > 0) {
+            $this->file = $this->sourcePath;
+            $this->line = $this->lineno;
+
+            return;
+        }
+
+>>>>>>> git-aline/master/master
         $dot = false;
         if ('.' === substr($this->message, -1)) {
             $this->message = substr($this->message, 0, -1);
@@ -182,11 +332,19 @@ class Twig_Error extends Exception
 
         if ($this->filename) {
             if (is_string($this->filename) || (is_object($this->filename) && method_exists($this->filename, '__toString'))) {
+<<<<<<< HEAD
                 $filename = sprintf('"%s"', $this->filename);
             } else {
                 $filename = json_encode($this->filename);
             }
             $this->message .= sprintf(' in %s', $filename);
+=======
+                $name = sprintf('"%s"', $this->filename);
+            } else {
+                $name = json_encode($this->filename);
+            }
+            $this->message .= sprintf(' in %s', $name);
+>>>>>>> git-aline/master/master
         }
 
         if ($this->lineno && $this->lineno >= 0) {
@@ -227,11 +385,25 @@ class Twig_Error extends Exception
             }
         }
 
+<<<<<<< HEAD
         // update template filename
+=======
+        // update template name
+>>>>>>> git-aline/master/master
         if (null !== $template && null === $this->filename) {
             $this->filename = $template->getTemplateName();
         }
 
+<<<<<<< HEAD
+=======
+        // update template path if any
+        if (null !== $template && null === $this->sourcePath) {
+            $src = $template->getSourceContext();
+            $this->sourceCode = $src->getCode();
+            $this->sourcePath = $src->getPath();
+        }
+
+>>>>>>> git-aline/master/master
         if (null === $template || $this->lineno > -1) {
             return;
         }
@@ -239,11 +411,14 @@ class Twig_Error extends Exception
         $r = new ReflectionObject($template);
         $file = $r->getFileName();
 
+<<<<<<< HEAD
         // hhvm has a bug where eval'ed files comes out as the current directory
         if (is_dir($file)) {
             $file = '';
         }
 
+=======
+>>>>>>> git-aline/master/master
         $exceptions = array($e = $this);
         while (($e instanceof self || method_exists($e, 'getPrevious')) && $e = $e->getPrevious()) {
             $exceptions[] = $e;
@@ -270,3 +445,9 @@ class Twig_Error extends Exception
         }
     }
 }
+<<<<<<< HEAD
+=======
+
+class_alias('Twig_Error', 'Twig\Error\Error', false);
+class_exists('Twig_Source');
+>>>>>>> git-aline/master/master

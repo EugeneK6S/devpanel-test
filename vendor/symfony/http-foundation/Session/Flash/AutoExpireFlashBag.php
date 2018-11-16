@@ -19,6 +19,7 @@ namespace Symfony\Component\HttpFoundation\Session\Flash;
 class AutoExpireFlashBag implements FlashBagInterface
 {
     private $name = 'flashes';
+<<<<<<< HEAD
 
     /**
      * Flash messages.
@@ -40,6 +41,15 @@ class AutoExpireFlashBag implements FlashBagInterface
      * @param string $storageKey The key used to store flashes in the session.
      */
     public function __construct($storageKey = '_sf2_flashes')
+=======
+    private $flashes = array('display' => array(), 'new' => array());
+    private $storageKey;
+
+    /**
+     * @param string $storageKey The key used to store flashes in the session
+     */
+    public function __construct($storageKey = '_symfony_flashes')
+>>>>>>> git-aline/master/master
     {
         $this->storageKey = $storageKey;
     }
@@ -120,7 +130,11 @@ class AutoExpireFlashBag implements FlashBagInterface
     public function all()
     {
         $return = $this->flashes['display'];
+<<<<<<< HEAD
         $this->flashes = array('new' => array(), 'display' => array());
+=======
+        $this->flashes['display'] = array();
+>>>>>>> git-aline/master/master
 
         return $return;
     }

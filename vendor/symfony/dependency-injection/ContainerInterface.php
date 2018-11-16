@@ -11,6 +11,10 @@
 
 namespace Symfony\Component\DependencyInjection;
 
+<<<<<<< HEAD
+=======
+use Psr\Container\ContainerInterface as PsrContainerInterface;
+>>>>>>> git-aline/master/master
 use Symfony\Component\DependencyInjection\Exception\InvalidArgumentException;
 use Symfony\Component\DependencyInjection\Exception\ServiceCircularReferenceException;
 use Symfony\Component\DependencyInjection\Exception\ServiceNotFoundException;
@@ -21,22 +25,35 @@ use Symfony\Component\DependencyInjection\Exception\ServiceNotFoundException;
  * @author Fabien Potencier <fabien@symfony.com>
  * @author Johannes M. Schmitt <schmittjoh@gmail.com>
  */
+<<<<<<< HEAD
 interface ContainerInterface
+=======
+interface ContainerInterface extends PsrContainerInterface
+>>>>>>> git-aline/master/master
 {
     const EXCEPTION_ON_INVALID_REFERENCE = 1;
     const NULL_ON_INVALID_REFERENCE = 2;
     const IGNORE_ON_INVALID_REFERENCE = 3;
+<<<<<<< HEAD
     const SCOPE_CONTAINER = 'container';
     const SCOPE_PROTOTYPE = 'prototype';
+=======
+    const IGNORE_ON_UNINITIALIZED_REFERENCE = 4;
+>>>>>>> git-aline/master/master
 
     /**
      * Sets a service.
      *
      * @param string $id      The service identifier
      * @param object $service The service instance
+<<<<<<< HEAD
      * @param string $scope   The scope of the service
      */
     public function set($id, $service, $scope = self::SCOPE_CONTAINER);
+=======
+     */
+    public function set($id, $service);
+>>>>>>> git-aline/master/master
 
     /**
      * Gets a service.
@@ -63,6 +80,18 @@ interface ContainerInterface
     public function has($id);
 
     /**
+<<<<<<< HEAD
+=======
+     * Check for whether or not a service has been initialized.
+     *
+     * @param string $id
+     *
+     * @return bool true if the service has been initialized, false otherwise
+     */
+    public function initialized($id);
+
+    /**
+>>>>>>> git-aline/master/master
      * Gets a parameter.
      *
      * @param string $name The parameter name
@@ -89,6 +118,7 @@ interface ContainerInterface
      * @param mixed  $value The parameter value
      */
     public function setParameter($name, $value);
+<<<<<<< HEAD
 
     /**
      * Enters the given scope.
@@ -130,4 +160,6 @@ interface ContainerInterface
      * @return bool
      */
     public function isScopeActive($name);
+=======
+>>>>>>> git-aline/master/master
 }

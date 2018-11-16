@@ -3,7 +3,11 @@
 /*
  * This file is part of Twig.
  *
+<<<<<<< HEAD
  * (c) 2015 Fabien Potencier
+=======
+ * (c) Fabien Potencier
+>>>>>>> git-aline/master/master
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
@@ -11,6 +15,11 @@
 
 /**
  * @author Fabien Potencier <fabien@symfony.com>
+<<<<<<< HEAD
+=======
+ *
+ * @final
+>>>>>>> git-aline/master/master
  */
 class Twig_Profiler_Profile implements IteratorAggregate, Serializable
 {
@@ -143,6 +152,15 @@ class Twig_Profiler_Profile implements IteratorAggregate, Serializable
         );
     }
 
+<<<<<<< HEAD
+=======
+    public function reset()
+    {
+        $this->starts = $this->ends = $this->profiles = array();
+        $this->enter();
+    }
+
+>>>>>>> git-aline/master/master
     public function getIterator()
     {
         return new ArrayIterator($this->profiles);
@@ -158,3 +176,8 @@ class Twig_Profiler_Profile implements IteratorAggregate, Serializable
         list($this->template, $this->name, $this->type, $this->starts, $this->ends, $this->profiles) = unserialize($data);
     }
 }
+<<<<<<< HEAD
+=======
+
+class_alias('Twig_Profiler_Profile', 'Twig\Profiler\Profile', false);
+>>>>>>> git-aline/master/master

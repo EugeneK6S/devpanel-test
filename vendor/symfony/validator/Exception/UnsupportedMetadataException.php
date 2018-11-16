@@ -12,8 +12,11 @@
 namespace Symfony\Component\Validator\Exception;
 
 /**
+<<<<<<< HEAD
  * @since  2.5
  *
+=======
+>>>>>>> git-aline/master/master
  * @author Bernhard Schussek <bschussek@gmail.com>
  */
 class UnsupportedMetadataException extends InvalidArgumentException

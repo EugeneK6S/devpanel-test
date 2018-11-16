@@ -24,17 +24,24 @@ use Symfony\Component\HttpFoundation\Response;
  */
 class GetResponseEvent extends KernelEvent
 {
+<<<<<<< HEAD
     /**
      * The response object.
      *
      * @var Response
      */
+=======
+>>>>>>> git-aline/master/master
     private $response;
 
     /**
      * Returns the response object.
      *
+<<<<<<< HEAD
      * @return Response
+=======
+     * @return Response|null
+>>>>>>> git-aline/master/master
      */
     public function getResponse()
     {
@@ -43,8 +50,11 @@ class GetResponseEvent extends KernelEvent
 
     /**
      * Sets a response and stops event propagation.
+<<<<<<< HEAD
      *
      * @param Response $response
+=======
+>>>>>>> git-aline/master/master
      */
     public function setResponse(Response $response)
     {

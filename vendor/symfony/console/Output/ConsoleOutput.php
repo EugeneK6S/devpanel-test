@@ -14,20 +14,31 @@ namespace Symfony\Component\Console\Output;
 use Symfony\Component\Console\Formatter\OutputFormatterInterface;
 
 /**
+<<<<<<< HEAD
  * ConsoleOutput is the default class for all CLI output. It uses STDOUT.
  *
  * This class is a convenient wrapper around `StreamOutput`.
+=======
+ * ConsoleOutput is the default class for all CLI output. It uses STDOUT and STDERR.
+ *
+ * This class is a convenient wrapper around `StreamOutput` for both STDOUT and STDERR.
+>>>>>>> git-aline/master/master
  *
  *     $output = new ConsoleOutput();
  *
  * This is equivalent to:
  *
  *     $output = new StreamOutput(fopen('php://stdout', 'w'));
+<<<<<<< HEAD
+=======
+ *     $stdErr = new StreamOutput(fopen('php://stderr', 'w'));
+>>>>>>> git-aline/master/master
  *
  * @author Fabien Potencier <fabien@symfony.com>
  */
 class ConsoleOutput extends StreamOutput implements ConsoleOutputInterface
 {
+<<<<<<< HEAD
     /**
      * @var StreamOutput
      */
@@ -36,6 +47,11 @@ class ConsoleOutput extends StreamOutput implements ConsoleOutputInterface
     /**
      * Constructor.
      *
+=======
+    private $stderr;
+
+    /**
+>>>>>>> git-aline/master/master
      * @param int                           $verbosity The verbosity level (one of the VERBOSITY constants in OutputInterface)
      * @param bool|null                     $decorated Whether to decorate messages (null for auto-guessing)
      * @param OutputFormatterInterface|null $formatter Output formatter instance (null to use default OutputFormatter)
@@ -126,12 +142,20 @@ class ConsoleOutput extends StreamOutput implements ConsoleOutputInterface
     private function isRunningOS400()
     {
         $checks = array(
+<<<<<<< HEAD
             function_exists('php_uname') ? php_uname('s') : '',
+=======
+            \function_exists('php_uname') ? php_uname('s') : '',
+>>>>>>> git-aline/master/master
             getenv('OSTYPE'),
             PHP_OS,
         );
 
+<<<<<<< HEAD
         return false !== stristr(implode(';', $checks), 'OS400');
+=======
+        return false !== stripos(implode(';', $checks), 'OS400');
+>>>>>>> git-aline/master/master
     }
 
     /**
@@ -139,9 +163,17 @@ class ConsoleOutput extends StreamOutput implements ConsoleOutputInterface
      */
     private function openOutputStream()
     {
+<<<<<<< HEAD
         $outputStream = $this->hasStdoutSupport() ? 'php://stdout' : 'php://output';
 
         return @fopen($outputStream, 'w') ?: fopen('php://output', 'w');
+=======
+        if (!$this->hasStdoutSupport()) {
+            return fopen('php://output', 'w');
+        }
+
+        return @fopen('php://stdout', 'w') ?: fopen('php://output', 'w');
+>>>>>>> git-aline/master/master
     }
 
     /**
@@ -149,8 +181,12 @@ class ConsoleOutput extends StreamOutput implements ConsoleOutputInterface
      */
     private function openErrorStream()
     {
+<<<<<<< HEAD
         $errorStream = $this->hasStderrSupport() ? 'php://stderr' : 'php://output';
 
         return fopen($errorStream, 'w');
+=======
+        return fopen($this->hasStderrSupport() ? 'php://stderr' : 'php://output', 'w');
+>>>>>>> git-aline/master/master
     }
 }

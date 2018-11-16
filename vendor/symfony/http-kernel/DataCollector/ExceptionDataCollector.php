@@ -35,6 +35,17 @@ class ExceptionDataCollector extends DataCollector
     }
 
     /**
+<<<<<<< HEAD
+=======
+     * {@inheritdoc}
+     */
+    public function reset()
+    {
+        $this->data = array();
+    }
+
+    /**
+>>>>>>> git-aline/master/master
      * Checks if the exception is not null.
      *
      * @return bool true if the exception is not null, false otherwise

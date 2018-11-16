@@ -35,6 +35,7 @@ class XmlFileLoader extends FileLoader
     public function loadClassMetadata(ClassMetadata $metadata)
     {
         if (null === $this->classes) {
+<<<<<<< HEAD
             // This method may throw an exception. Do not modify the class'
             // state before it completes
             $xml = $this->parseFile($this->file);
@@ -48,6 +49,9 @@ class XmlFileLoader extends FileLoader
             foreach ($xml->class as $class) {
                 $this->classes[(string) $class['name']] = $class;
             }
+=======
+            $this->loadClassesFromXml();
+>>>>>>> git-aline/master/master
         }
 
         if (isset($this->classes[$metadata->getClassName()])) {
@@ -62,6 +66,23 @@ class XmlFileLoader extends FileLoader
     }
 
     /**
+<<<<<<< HEAD
+=======
+     * Return the names of the classes mapped in this file.
+     *
+     * @return string[] The classes names
+     */
+    public function getMappedClasses()
+    {
+        if (null === $this->classes) {
+            $this->loadClassesFromXml();
+        }
+
+        return array_keys($this->classes);
+    }
+
+    /**
+>>>>>>> git-aline/master/master
      * Parses a collection of "constraint" XML nodes.
      *
      * @param \SimpleXMLElement $nodes The XML nodes
@@ -73,18 +94,32 @@ class XmlFileLoader extends FileLoader
         $constraints = array();
 
         foreach ($nodes as $node) {
+<<<<<<< HEAD
             if (count($node) > 0) {
                 if (count($node->value) > 0) {
                     $options = $this->parseValues($node->value);
                 } elseif (count($node->constraint) > 0) {
                     $options = $this->parseConstraints($node->constraint);
                 } elseif (count($node->option) > 0) {
+=======
+            if (\count($node) > 0) {
+                if (\count($node->value) > 0) {
+                    $options = $this->parseValues($node->value);
+                } elseif (\count($node->constraint) > 0) {
+                    $options = $this->parseConstraints($node->constraint);
+                } elseif (\count($node->option) > 0) {
+>>>>>>> git-aline/master/master
                     $options = $this->parseOptions($node->option);
                 } else {
                     $options = array();
                 }
+<<<<<<< HEAD
             } elseif (strlen((string) $node) > 0) {
                 $options = trim($node);
+=======
+            } elseif (\strlen((string) $node) > 0) {
+                $options = XmlUtils::phpize(trim($node));
+>>>>>>> git-aline/master/master
             } else {
                 $options = null;
             }
@@ -107,10 +142,17 @@ class XmlFileLoader extends FileLoader
         $values = array();
 
         foreach ($nodes as $node) {
+<<<<<<< HEAD
             if (count($node) > 0) {
                 if (count($node->value) > 0) {
                     $value = $this->parseValues($node->value);
                 } elseif (count($node->constraint) > 0) {
+=======
+            if (\count($node) > 0) {
+                if (\count($node->value) > 0) {
+                    $value = $this->parseValues($node->value);
+                } elseif (\count($node->constraint) > 0) {
+>>>>>>> git-aline/master/master
                     $value = $this->parseConstraints($node->constraint);
                 } else {
                     $value = array();
@@ -141,17 +183,28 @@ class XmlFileLoader extends FileLoader
         $options = array();
 
         foreach ($nodes as $node) {
+<<<<<<< HEAD
             if (count($node) > 0) {
                 if (count($node->value) > 0) {
                     $value = $this->parseValues($node->value);
                 } elseif (count($node->constraint) > 0) {
+=======
+            if (\count($node) > 0) {
+                if (\count($node->value) > 0) {
+                    $value = $this->parseValues($node->value);
+                } elseif (\count($node->constraint) > 0) {
+>>>>>>> git-aline/master/master
                     $value = $this->parseConstraints($node->constraint);
                 } else {
                     $value = array();
                 }
             } else {
                 $value = XmlUtils::phpize($node);
+<<<<<<< HEAD
                 if (is_string($value)) {
+=======
+                if (\is_string($value)) {
+>>>>>>> git-aline/master/master
                     $value = trim($value);
                 }
             }
@@ -182,6 +235,7 @@ class XmlFileLoader extends FileLoader
         return simplexml_import_dom($dom);
     }
 
+<<<<<<< HEAD
     /**
      * Loads the validation metadata from the given XML class description.
      *
@@ -191,11 +245,37 @@ class XmlFileLoader extends FileLoader
     private function loadClassMetadataFromXml(ClassMetadata $metadata, $classDescription)
     {
         foreach ($classDescription->{'group-sequence-provider'} as $_) {
+=======
+    private function loadClassesFromXml()
+    {
+        // This method may throw an exception. Do not modify the class'
+        // state before it completes
+        $xml = $this->parseFile($this->file);
+
+        $this->classes = array();
+
+        foreach ($xml->namespace as $namespace) {
+            $this->addNamespaceAlias((string) $namespace['prefix'], trim((string) $namespace));
+        }
+
+        foreach ($xml->class as $class) {
+            $this->classes[(string) $class['name']] = $class;
+        }
+    }
+
+    private function loadClassMetadataFromXml(ClassMetadata $metadata, \SimpleXMLElement $classDescription)
+    {
+        if (\count($classDescription->{'group-sequence-provider'}) > 0) {
+>>>>>>> git-aline/master/master
             $metadata->setGroupSequenceProvider(true);
         }
 
         foreach ($classDescription->{'group-sequence'} as $groupSequence) {
+<<<<<<< HEAD
             if (count($groupSequence->value) > 0) {
+=======
+            if (\count($groupSequence->value) > 0) {
+>>>>>>> git-aline/master/master
                 $metadata->setGroupSequence($this->parseValues($groupSequence[0]->value));
             }
         }

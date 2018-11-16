@@ -11,12 +11,21 @@
 
 namespace Symfony\Component\DependencyInjection\Exception;
 
+<<<<<<< HEAD
+=======
+use Psr\Container\ContainerExceptionInterface;
+
+>>>>>>> git-aline/master/master
 /**
  * Base ExceptionInterface for Dependency Injection component.
  *
  * @author Fabien Potencier <fabien@symfony.com>
  * @author Bulat Shakirzyanov <bulat@theopenskyproject.com>
  */
+<<<<<<< HEAD
 interface ExceptionInterface
+=======
+interface ExceptionInterface extends ContainerExceptionInterface
+>>>>>>> git-aline/master/master
 {
 }

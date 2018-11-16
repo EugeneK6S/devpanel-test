@@ -23,8 +23,11 @@ class MimeTypeExtensionGuesser implements ExtensionGuesserInterface
      * This list has been updated from upstream on 2013-04-23.
      *
      * @see http://svn.apache.org/repos/asf/httpd/httpd/trunk/docs/conf/mime.types
+<<<<<<< HEAD
      *
      * @var array
+=======
+>>>>>>> git-aline/master/master
      */
     protected $defaultExtensions = array(
         'application/andrew-inset' => 'ez',
@@ -601,6 +604,10 @@ class MimeTypeExtensionGuesser implements ExtensionGuesserInterface
         'application/x-xliff+xml' => 'xlf',
         'application/x-xpinstall' => 'xpi',
         'application/x-xz' => 'xz',
+<<<<<<< HEAD
+=======
+        'application/x-zip-compressed' => 'zip',
+>>>>>>> git-aline/master/master
         'application/x-zmachine' => 'z1',
         'application/xaml+xml' => 'xaml',
         'application/xcap-diff+xml' => 'xdf',
@@ -661,6 +668,10 @@ class MimeTypeExtensionGuesser implements ExtensionGuesserInterface
         'image/gif' => 'gif',
         'image/ief' => 'ief',
         'image/jpeg' => 'jpeg',
+<<<<<<< HEAD
+=======
+        'image/pjpeg' => 'jpeg',
+>>>>>>> git-aline/master/master
         'image/ktx' => 'ktx',
         'image/png' => 'png',
         'image/prs.btif' => 'btif',
@@ -743,6 +754,10 @@ class MimeTypeExtensionGuesser implements ExtensionGuesserInterface
         'text/vnd.sun.j2me.app-descriptor' => 'jad',
         'text/vnd.wap.wml' => 'wml',
         'text/vnd.wap.wmlscript' => 'wmls',
+<<<<<<< HEAD
+=======
+        'text/vtt' => 'vtt',
+>>>>>>> git-aline/master/master
         'text/x-asm' => 's',
         'text/x-c' => 'c',
         'text/x-fortran' => 'f',

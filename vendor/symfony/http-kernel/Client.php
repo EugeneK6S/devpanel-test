@@ -12,11 +12,18 @@
 namespace Symfony\Component\HttpKernel;
 
 use Symfony\Component\BrowserKit\Client as BaseClient;
+<<<<<<< HEAD
 use Symfony\Component\BrowserKit\Request as DomRequest;
 use Symfony\Component\BrowserKit\Response as DomResponse;
 use Symfony\Component\BrowserKit\Cookie as DomCookie;
 use Symfony\Component\BrowserKit\History;
 use Symfony\Component\BrowserKit\CookieJar;
+=======
+use Symfony\Component\BrowserKit\CookieJar;
+use Symfony\Component\BrowserKit\History;
+use Symfony\Component\BrowserKit\Request as DomRequest;
+use Symfony\Component\BrowserKit\Response as DomResponse;
+>>>>>>> git-aline/master/master
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -25,14 +32,26 @@ use Symfony\Component\HttpFoundation\Response;
  * Client simulates a browser and makes requests to a Kernel object.
  *
  * @author Fabien Potencier <fabien@symfony.com>
+<<<<<<< HEAD
+=======
+ *
+ * @method Request|null  getRequest()  A Request instance
+ * @method Response|null getResponse() A Response instance
+>>>>>>> git-aline/master/master
  */
 class Client extends BaseClient
 {
     protected $kernel;
+<<<<<<< HEAD
 
     /**
      * Constructor.
      *
+=======
+    private $catchExceptions = true;
+
+    /**
+>>>>>>> git-aline/master/master
      * @param HttpKernelInterface $kernel    An HttpKernel instance
      * @param array               $server    The server parameters (equivalent of $_SERVER)
      * @param History             $history   A History instance to store the browser history
@@ -48,6 +67,7 @@ class Client extends BaseClient
     }
 
     /**
+<<<<<<< HEAD
      * {@inheritdoc}
      *
      * @return Request|null A Request instance
@@ -65,18 +85,34 @@ class Client extends BaseClient
     public function getResponse()
     {
         return parent::getResponse();
+=======
+     * Sets whether to catch exceptions when the kernel is handling a request.
+     *
+     * @param bool $catchExceptions Whether to catch exceptions
+     */
+    public function catchExceptions($catchExceptions)
+    {
+        $this->catchExceptions = $catchExceptions;
+>>>>>>> git-aline/master/master
     }
 
     /**
      * Makes a request.
      *
+<<<<<<< HEAD
      * @param Request $request A Request instance
      *
+=======
+>>>>>>> git-aline/master/master
      * @return Response A Response instance
      */
     protected function doRequest($request)
     {
+<<<<<<< HEAD
         $response = $this->kernel->handle($request);
+=======
+        $response = $this->kernel->handle($request, HttpKernelInterface::MASTER_REQUEST, $this->catchExceptions);
+>>>>>>> git-aline/master/master
 
         if ($this->kernel instanceof TerminableInterface) {
             $this->kernel->terminate($request, $response);
@@ -88,14 +124,18 @@ class Client extends BaseClient
     /**
      * Returns the script to execute when the request must be insulated.
      *
+<<<<<<< HEAD
      * @param Request $request A Request instance
      *
+=======
+>>>>>>> git-aline/master/master
      * @return string
      */
     protected function getScript($request)
     {
         $kernel = str_replace("'", "\\'", serialize($this->kernel));
         $request = str_replace("'", "\\'", serialize($request));
+<<<<<<< HEAD
 
         $r = new \ReflectionClass('\\Symfony\\Component\\ClassLoader\\ClassLoader');
         $requirePath = str_replace("'", "\\'", $r->getFileName());
@@ -112,6 +152,31 @@ require_once '$requirePath';
 \$loader = new Symfony\Component\ClassLoader\ClassLoader();
 \$loader->addPrefix('Symfony', '$symfonyPath');
 \$loader->register();
+=======
+        $errorReporting = error_reporting();
+
+        $requires = '';
+        foreach (get_declared_classes() as $class) {
+            if (0 === strpos($class, 'ComposerAutoloaderInit')) {
+                $r = new \ReflectionClass($class);
+                $file = \dirname(\dirname($r->getFileName())).'/autoload.php';
+                if (file_exists($file)) {
+                    $requires .= "require_once '".str_replace("'", "\\'", $file)."';\n";
+                }
+            }
+        }
+
+        if (!$requires) {
+            throw new \RuntimeException('Composer autoloader not found.');
+        }
+
+        $code = <<<EOF
+<?php
+
+error_reporting($errorReporting);
+
+$requires
+>>>>>>> git-aline/master/master
 
 \$kernel = unserialize('$kernel');
 \$request = unserialize('$request');
@@ -136,8 +201,11 @@ EOF;
     /**
      * Converts the BrowserKit request to a HttpKernel request.
      *
+<<<<<<< HEAD
      * @param DomRequest $request A DomRequest instance
      *
+=======
+>>>>>>> git-aline/master/master
      * @return Request A Request instance
      */
     protected function filterRequest(DomRequest $request)
@@ -162,15 +230,22 @@ EOF;
      *
      * @see UploadedFile
      *
+<<<<<<< HEAD
      * @param array $files An array of files
      *
+=======
+>>>>>>> git-aline/master/master
      * @return array An array with all uploaded files marked as already moved
      */
     protected function filterFiles(array $files)
     {
         $filtered = array();
         foreach ($files as $key => $value) {
+<<<<<<< HEAD
             if (is_array($value)) {
+=======
+            if (\is_array($value)) {
+>>>>>>> git-aline/master/master
                 $filtered[$key] = $this->filterFiles($value);
             } elseif ($value instanceof UploadedFile) {
                 if ($value->isValid() && $value->getSize() > UploadedFile::getMaxFilesize()) {
@@ -201,12 +276,16 @@ EOF;
     /**
      * Converts the HttpKernel response to a BrowserKit response.
      *
+<<<<<<< HEAD
      * @param Response $response A Response instance
      *
+=======
+>>>>>>> git-aline/master/master
      * @return DomResponse A DomResponse instance
      */
     protected function filterResponse($response)
     {
+<<<<<<< HEAD
         $headers = $response->headers->all();
         if ($response->headers->getCookies()) {
             $cookies = array();
@@ -216,11 +295,17 @@ EOF;
             $headers['Set-Cookie'] = $cookies;
         }
 
+=======
+>>>>>>> git-aline/master/master
         // this is needed to support StreamedResponse
         ob_start();
         $response->sendContent();
         $content = ob_get_clean();
 
+<<<<<<< HEAD
         return new DomResponse($content, $response->getStatusCode(), $headers);
+=======
+        return new DomResponse($content, $response->getStatusCode(), $response->headers->all());
+>>>>>>> git-aline/master/master
     }
 }

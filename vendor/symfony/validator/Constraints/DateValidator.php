@@ -11,7 +11,10 @@
 
 namespace Symfony\Component\Validator\Constraints;
 
+<<<<<<< HEAD
 use Symfony\Component\Validator\Context\ExecutionContextInterface;
+=======
+>>>>>>> git-aline/master/master
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\ConstraintValidator;
 use Symfony\Component\Validator\Exception\UnexpectedTypeException;
@@ -48,17 +51,26 @@ class DateValidator extends ConstraintValidator
             throw new UnexpectedTypeException($constraint, __NAMESPACE__.'\Date');
         }
 
+<<<<<<< HEAD
         if (null === $value || '' === $value || $value instanceof \DateTime) {
             return;
         }
 
         if (!is_scalar($value) && !(is_object($value) && method_exists($value, '__toString'))) {
+=======
+        if (null === $value || '' === $value || $value instanceof \DateTimeInterface) {
+            return;
+        }
+
+        if (!is_scalar($value) && !(\is_object($value) && method_exists($value, '__toString'))) {
+>>>>>>> git-aline/master/master
             throw new UnexpectedTypeException($value, 'string');
         }
 
         $value = (string) $value;
 
         if (!preg_match(static::PATTERN, $value, $matches)) {
+<<<<<<< HEAD
             if ($this->context instanceof ExecutionContextInterface) {
                 $this->context->buildViolation($constraint->message)
                     ->setParameter('{{ value }}', $this->formatValue($value))
@@ -70,11 +82,18 @@ class DateValidator extends ConstraintValidator
                     ->setCode(Date::INVALID_FORMAT_ERROR)
                     ->addViolation();
             }
+=======
+            $this->context->buildViolation($constraint->message)
+                ->setParameter('{{ value }}', $this->formatValue($value))
+                ->setCode(Date::INVALID_FORMAT_ERROR)
+                ->addViolation();
+>>>>>>> git-aline/master/master
 
             return;
         }
 
         if (!self::checkDate($matches[1], $matches[2], $matches[3])) {
+<<<<<<< HEAD
             if ($this->context instanceof ExecutionContextInterface) {
                 $this->context->buildViolation($constraint->message)
                     ->setParameter('{{ value }}', $this->formatValue($value))
@@ -86,6 +105,12 @@ class DateValidator extends ConstraintValidator
                     ->setCode(Date::INVALID_DATE_ERROR)
                     ->addViolation();
             }
+=======
+            $this->context->buildViolation($constraint->message)
+                ->setParameter('{{ value }}', $this->formatValue($value))
+                ->setCode(Date::INVALID_DATE_ERROR)
+                ->addViolation();
+>>>>>>> git-aline/master/master
         }
     }
 }

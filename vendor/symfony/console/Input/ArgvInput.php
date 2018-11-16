@@ -11,6 +11,11 @@
 
 namespace Symfony\Component\Console\Input;
 
+<<<<<<< HEAD
+=======
+use Symfony\Component\Console\Exception\RuntimeException;
+
+>>>>>>> git-aline/master/master
 /**
  * ArgvInput represents an input coming from the CLI arguments.
  *
@@ -42,10 +47,15 @@ class ArgvInput extends Input
     private $parsed;
 
     /**
+<<<<<<< HEAD
      * Constructor.
      *
      * @param array           $argv       An array of parameters from the CLI (in the argv format)
      * @param InputDefinition $definition A InputDefinition instance
+=======
+     * @param array|null           $argv       An array of parameters from the CLI (in the argv format)
+     * @param InputDefinition|null $definition A InputDefinition instance
+>>>>>>> git-aline/master/master
      */
     public function __construct(array $argv = null, InputDefinition $definition = null)
     {
@@ -67,7 +77,11 @@ class ArgvInput extends Input
     }
 
     /**
+<<<<<<< HEAD
      * Processes command line arguments.
+=======
+     * {@inheritdoc}
+>>>>>>> git-aline/master/master
      */
     protected function parse()
     {
@@ -91,13 +105,21 @@ class ArgvInput extends Input
     /**
      * Parses a short option.
      *
+<<<<<<< HEAD
      * @param string $token The current token.
+=======
+     * @param string $token The current token
+>>>>>>> git-aline/master/master
      */
     private function parseShortOption($token)
     {
         $name = substr($token, 1);
 
+<<<<<<< HEAD
         if (strlen($name) > 1) {
+=======
+        if (\strlen($name) > 1) {
+>>>>>>> git-aline/master/master
             if ($this->definition->hasShortcut($name[0]) && $this->definition->getOptionForShortcut($name[0])->acceptValue()) {
                 // an option with a value (with no space)
                 $this->addShortOption($name[0], substr($name, 1));
@@ -114,6 +136,7 @@ class ArgvInput extends Input
      *
      * @param string $name The current token
      *
+<<<<<<< HEAD
      * @throws \RuntimeException When option given doesn't exist
      */
     private function parseShortOptionSet($name)
@@ -122,6 +145,16 @@ class ArgvInput extends Input
         for ($i = 0; $i < $len; ++$i) {
             if (!$this->definition->hasShortcut($name[$i])) {
                 throw new \RuntimeException(sprintf('The "-%s" option does not exist.', $name[$i]));
+=======
+     * @throws RuntimeException When option given doesn't exist
+     */
+    private function parseShortOptionSet($name)
+    {
+        $len = \strlen($name);
+        for ($i = 0; $i < $len; ++$i) {
+            if (!$this->definition->hasShortcut($name[$i])) {
+                throw new RuntimeException(sprintf('The "-%s" option does not exist.', $name[$i]));
+>>>>>>> git-aline/master/master
             }
 
             $option = $this->definition->getOptionForShortcut($name[$i]);
@@ -145,7 +178,19 @@ class ArgvInput extends Input
         $name = substr($token, 2);
 
         if (false !== $pos = strpos($name, '=')) {
+<<<<<<< HEAD
             $this->addLongOption(substr($name, 0, $pos), substr($name, $pos + 1));
+=======
+            if (0 === \strlen($value = substr($name, $pos + 1))) {
+                // if no value after "=" then substr() returns "" since php7 only, false before
+                // see http://php.net/manual/fr/migration70.incompatible.php#119151
+                if (\PHP_VERSION_ID < 70000 && false === $value) {
+                    $value = '';
+                }
+                array_unshift($this->parsed, $value);
+            }
+            $this->addLongOption(substr($name, 0, $pos), $value);
+>>>>>>> git-aline/master/master
         } else {
             $this->addLongOption($name, null);
         }
@@ -156,11 +201,19 @@ class ArgvInput extends Input
      *
      * @param string $token The current token
      *
+<<<<<<< HEAD
      * @throws \RuntimeException When too many arguments are given
      */
     private function parseArgument($token)
     {
         $c = count($this->arguments);
+=======
+     * @throws RuntimeException When too many arguments are given
+     */
+    private function parseArgument($token)
+    {
+        $c = \count($this->arguments);
+>>>>>>> git-aline/master/master
 
         // if input is expecting another argument, add it
         if ($this->definition->hasArgument($c)) {
@@ -174,7 +227,16 @@ class ArgvInput extends Input
 
         // unexpected argument
         } else {
+<<<<<<< HEAD
             throw new \RuntimeException('Too many arguments.');
+=======
+            $all = $this->definition->getArguments();
+            if (\count($all)) {
+                throw new RuntimeException(sprintf('Too many arguments, expected arguments "%s".', implode('" "', array_keys($all))));
+            }
+
+            throw new RuntimeException(sprintf('No arguments expected, got "%s".', $token));
+>>>>>>> git-aline/master/master
         }
     }
 
@@ -184,12 +246,20 @@ class ArgvInput extends Input
      * @param string $shortcut The short option key
      * @param mixed  $value    The value for the option
      *
+<<<<<<< HEAD
      * @throws \RuntimeException When option given doesn't exist
+=======
+     * @throws RuntimeException When option given doesn't exist
+>>>>>>> git-aline/master/master
      */
     private function addShortOption($shortcut, $value)
     {
         if (!$this->definition->hasShortcut($shortcut)) {
+<<<<<<< HEAD
             throw new \RuntimeException(sprintf('The "-%s" option does not exist.', $shortcut));
+=======
+            throw new RuntimeException(sprintf('The "-%s" option does not exist.', $shortcut));
+>>>>>>> git-aline/master/master
         }
 
         $this->addLongOption($this->definition->getOptionForShortcut($shortcut)->getName(), $value);
@@ -201,16 +271,25 @@ class ArgvInput extends Input
      * @param string $name  The long option key
      * @param mixed  $value The value for the option
      *
+<<<<<<< HEAD
      * @throws \RuntimeException When option given doesn't exist
+=======
+     * @throws RuntimeException When option given doesn't exist
+>>>>>>> git-aline/master/master
      */
     private function addLongOption($name, $value)
     {
         if (!$this->definition->hasOption($name)) {
+<<<<<<< HEAD
             throw new \RuntimeException(sprintf('The "--%s" option does not exist.', $name));
+=======
+            throw new RuntimeException(sprintf('The "--%s" option does not exist.', $name));
+>>>>>>> git-aline/master/master
         }
 
         $option = $this->definition->getOption($name);
 
+<<<<<<< HEAD
         // Convert empty values to null
         if (!isset($value[0])) {
             $value = null;
@@ -228,6 +307,18 @@ class ArgvInput extends Input
                 $value = $next;
             } elseif (empty($next)) {
                 $value = '';
+=======
+        if (null !== $value && !$option->acceptValue()) {
+            throw new RuntimeException(sprintf('The "--%s" option does not accept a value.', $name));
+        }
+
+        if (\in_array($value, array('', null), true) && $option->acceptValue() && \count($this->parsed)) {
+            // if option accepts an optional or mandatory argument
+            // let's see if there is one provided
+            $next = array_shift($this->parsed);
+            if ((isset($next[0]) && '-' !== $next[0]) || \in_array($next, array('', null), true)) {
+                $value = $next;
+>>>>>>> git-aline/master/master
             } else {
                 array_unshift($this->parsed, $next);
             }
@@ -235,11 +326,19 @@ class ArgvInput extends Input
 
         if (null === $value) {
             if ($option->isValueRequired()) {
+<<<<<<< HEAD
                 throw new \RuntimeException(sprintf('The "--%s" option requires a value.', $name));
             }
 
             if (!$option->isArray()) {
                 $value = $option->isValueOptional() ? $option->getDefault() : true;
+=======
+                throw new RuntimeException(sprintf('The "--%s" option requires a value.', $name));
+            }
+
+            if (!$option->isArray() && !$option->isValueOptional()) {
+                $value = true;
+>>>>>>> git-aline/master/master
             }
         }
 
@@ -251,9 +350,13 @@ class ArgvInput extends Input
     }
 
     /**
+<<<<<<< HEAD
      * Returns the first argument from the raw parameters (not parsed).
      *
      * @return string The value of the first argument or null otherwise
+=======
+     * {@inheritdoc}
+>>>>>>> git-aline/master/master
      */
     public function getFirstArgument()
     {
@@ -267,6 +370,7 @@ class ArgvInput extends Input
     }
 
     /**
+<<<<<<< HEAD
      * Returns true if the raw parameters (not parsed) contain a value.
      *
      * This method is to be used to introspect the input parameters
@@ -277,12 +381,29 @@ class ArgvInput extends Input
      * @return bool true if the value is contained in the raw parameters
      */
     public function hasParameterOption($values)
+=======
+     * {@inheritdoc}
+     */
+    public function hasParameterOption($values, $onlyParams = false)
+>>>>>>> git-aline/master/master
     {
         $values = (array) $values;
 
         foreach ($this->tokens as $token) {
+<<<<<<< HEAD
             foreach ($values as $value) {
                 if ($token === $value || 0 === strpos($token, $value.'=')) {
+=======
+            if ($onlyParams && '--' === $token) {
+                return false;
+            }
+            foreach ($values as $value) {
+                // Options with values:
+                //   For long options, test for '--option=' at beginning
+                //   For short options, test for '-o' at beginning
+                $leading = 0 === strpos($value, '--') ? $value.'=' : $value;
+                if ($token === $value || '' !== $leading && 0 === strpos($token, $leading)) {
+>>>>>>> git-aline/master/master
                     return true;
                 }
             }
@@ -292,6 +413,7 @@ class ArgvInput extends Input
     }
 
     /**
+<<<<<<< HEAD
      * Returns the value of a raw option (not parsed).
      *
      * This method is to be used to introspect the input parameters
@@ -303,10 +425,16 @@ class ArgvInput extends Input
      * @return mixed The option value
      */
     public function getParameterOption($values, $default = false)
+=======
+     * {@inheritdoc}
+     */
+    public function getParameterOption($values, $default = false, $onlyParams = false)
+>>>>>>> git-aline/master/master
     {
         $values = (array) $values;
         $tokens = $this->tokens;
 
+<<<<<<< HEAD
         while (0 < count($tokens)) {
             $token = array_shift($tokens);
 
@@ -318,6 +446,25 @@ class ArgvInput extends Input
 
                     return array_shift($tokens);
                 }
+=======
+        while (0 < \count($tokens)) {
+            $token = array_shift($tokens);
+            if ($onlyParams && '--' === $token) {
+                return $default;
+            }
+
+            foreach ($values as $value) {
+                if ($token === $value) {
+                    return array_shift($tokens);
+                }
+                // Options with values:
+                //   For long options, test for '--option=' at beginning
+                //   For short options, test for '-o' at beginning
+                $leading = 0 === strpos($value, '--') ? $value.'=' : $value;
+                if ('' !== $leading && 0 === strpos($token, $leading)) {
+                    return substr($token, \strlen($leading));
+                }
+>>>>>>> git-aline/master/master
             }
         }
 
@@ -331,6 +478,7 @@ class ArgvInput extends Input
      */
     public function __toString()
     {
+<<<<<<< HEAD
         $self = $this;
         $tokens = array_map(function ($token) use ($self) {
             if (preg_match('{^(-[^=]+=)(.+)}', $token, $match)) {
@@ -339,6 +487,15 @@ class ArgvInput extends Input
 
             if ($token && $token[0] !== '-') {
                 return $self->escapeToken($token);
+=======
+        $tokens = array_map(function ($token) {
+            if (preg_match('{^(-[^=]+=)(.+)}', $token, $match)) {
+                return $match[1].$this->escapeToken($match[2]);
+            }
+
+            if ($token && '-' !== $token[0]) {
+                return $this->escapeToken($token);
+>>>>>>> git-aline/master/master
             }
 
             return $token;

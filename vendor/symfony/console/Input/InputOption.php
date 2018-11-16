@@ -11,6 +11,12 @@
 
 namespace Symfony\Component\Console\Input;
 
+<<<<<<< HEAD
+=======
+use Symfony\Component\Console\Exception\InvalidArgumentException;
+use Symfony\Component\Console\Exception\LogicException;
+
+>>>>>>> git-aline/master/master
 /**
  * Represents a command line option.
  *
@@ -30,15 +36,24 @@ class InputOption
     private $description;
 
     /**
+<<<<<<< HEAD
      * Constructor.
      *
+=======
+>>>>>>> git-aline/master/master
      * @param string       $name        The option name
      * @param string|array $shortcut    The shortcuts, can be null, a string of shortcuts delimited by | or an array of shortcuts
      * @param int          $mode        The option mode: One of the VALUE_* constants
      * @param string       $description A description text
+<<<<<<< HEAD
      * @param mixed        $default     The default value (must be null for self::VALUE_REQUIRED or self::VALUE_NONE)
      *
      * @throws \InvalidArgumentException If option mode is invalid or incompatible
+=======
+     * @param mixed        $default     The default value (must be null for self::VALUE_NONE)
+     *
+     * @throws InvalidArgumentException If option mode is invalid or incompatible
+>>>>>>> git-aline/master/master
      */
     public function __construct($name, $shortcut = null, $mode = null, $description = '', $default = null)
     {
@@ -47,7 +62,11 @@ class InputOption
         }
 
         if (empty($name)) {
+<<<<<<< HEAD
             throw new \InvalidArgumentException('An option name cannot be empty.');
+=======
+            throw new InvalidArgumentException('An option name cannot be empty.');
+>>>>>>> git-aline/master/master
         }
 
         if (empty($shortcut)) {
@@ -55,7 +74,11 @@ class InputOption
         }
 
         if (null !== $shortcut) {
+<<<<<<< HEAD
             if (is_array($shortcut)) {
+=======
+            if (\is_array($shortcut)) {
+>>>>>>> git-aline/master/master
                 $shortcut = implode('|', $shortcut);
             }
             $shortcuts = preg_split('{(\|)-?}', ltrim($shortcut, '-'));
@@ -63,14 +86,23 @@ class InputOption
             $shortcut = implode('|', $shortcuts);
 
             if (empty($shortcut)) {
+<<<<<<< HEAD
                 throw new \InvalidArgumentException('An option shortcut cannot be empty.');
+=======
+                throw new InvalidArgumentException('An option shortcut cannot be empty.');
+>>>>>>> git-aline/master/master
             }
         }
 
         if (null === $mode) {
             $mode = self::VALUE_NONE;
+<<<<<<< HEAD
         } elseif (!is_int($mode) || $mode > 15 || $mode < 1) {
             throw new \InvalidArgumentException(sprintf('Option mode "%s" is not valid.', $mode));
+=======
+        } elseif (!\is_int($mode) || $mode > 15 || $mode < 1) {
+            throw new InvalidArgumentException(sprintf('Option mode "%s" is not valid.', $mode));
+>>>>>>> git-aline/master/master
         }
 
         $this->name = $name;
@@ -79,7 +111,11 @@ class InputOption
         $this->description = $description;
 
         if ($this->isArray() && !$this->acceptValue()) {
+<<<<<<< HEAD
             throw new \InvalidArgumentException('Impossible to have an option mode VALUE_IS_ARRAY if the option does not accept a value.');
+=======
+            throw new InvalidArgumentException('Impossible to have an option mode VALUE_IS_ARRAY if the option does not accept a value.');
+>>>>>>> git-aline/master/master
         }
 
         $this->setDefault($default);
@@ -150,19 +186,32 @@ class InputOption
      *
      * @param mixed $default The default value
      *
+<<<<<<< HEAD
      * @throws \LogicException When incorrect default value is given
+=======
+     * @throws LogicException When incorrect default value is given
+>>>>>>> git-aline/master/master
      */
     public function setDefault($default = null)
     {
         if (self::VALUE_NONE === (self::VALUE_NONE & $this->mode) && null !== $default) {
+<<<<<<< HEAD
             throw new \LogicException('Cannot set a default value when using InputOption::VALUE_NONE mode.');
+=======
+            throw new LogicException('Cannot set a default value when using InputOption::VALUE_NONE mode.');
+>>>>>>> git-aline/master/master
         }
 
         if ($this->isArray()) {
             if (null === $default) {
                 $default = array();
+<<<<<<< HEAD
             } elseif (!is_array($default)) {
                 throw new \LogicException('A default value for an array option must be an array.');
+=======
+            } elseif (!\is_array($default)) {
+                throw new LogicException('A default value for an array option must be an array.');
+>>>>>>> git-aline/master/master
             }
         }
 
@@ -192,11 +241,17 @@ class InputOption
     /**
      * Checks whether the given option equals this one.
      *
+<<<<<<< HEAD
      * @param InputOption $option option to compare
      *
      * @return bool
      */
     public function equals(InputOption $option)
+=======
+     * @return bool
+     */
+    public function equals(self $option)
+>>>>>>> git-aline/master/master
     {
         return $option->getName() === $this->getName()
             && $option->getShortcut() === $this->getShortcut()

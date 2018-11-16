@@ -11,8 +11,13 @@
 
 namespace Symfony\Component\HttpKernel\Fragment;
 
+<<<<<<< HEAD
 use Symfony\Component\HttpKernel\Controller\ControllerReference;
 use Symfony\Component\HttpFoundation\Request;
+=======
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpKernel\Controller\ControllerReference;
+>>>>>>> git-aline/master/master
 use Symfony\Component\HttpKernel\EventListener\FragmentListener;
 
 /**
@@ -80,7 +85,11 @@ abstract class RoutableFragmentRenderer implements FragmentRendererInterface
     private function checkNonScalar($values)
     {
         foreach ($values as $key => $value) {
+<<<<<<< HEAD
             if (is_array($value)) {
+=======
+            if (\is_array($value)) {
+>>>>>>> git-aline/master/master
                 $this->checkNonScalar($value);
             } elseif (!is_scalar($value) && null !== $value) {
                 throw new \LogicException(sprintf('Controller attributes cannot contain non-scalar/non-null values (value for key "%s" is not a scalar or null).', $key));

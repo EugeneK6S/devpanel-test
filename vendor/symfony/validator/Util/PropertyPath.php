@@ -16,8 +16,11 @@ namespace Symfony\Component\Validator\Util;
  *
  * For more extensive functionality, use Symfony's PropertyAccess component.
  *
+<<<<<<< HEAD
  * @since  2.5
  *
+=======
+>>>>>>> git-aline/master/master
  * @author Bernhard Schussek <bschussek@gmail.com>
  */
 class PropertyPath
@@ -39,7 +42,11 @@ class PropertyPath
     public static function append($basePath, $subPath)
     {
         if ('' !== (string) $subPath) {
+<<<<<<< HEAD
             if ('[' === $subPath{0}) {
+=======
+            if ('[' === $subPath[0]) {
+>>>>>>> git-aline/master/master
                 return $basePath.$subPath;
             }
 

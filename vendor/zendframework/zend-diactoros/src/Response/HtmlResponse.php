@@ -3,7 +3,11 @@
  * Zend Framework (http://framework.zend.com/)
  *
  * @see       http://github.com/zendframework/zend-diactoros for the canonical source repository
+<<<<<<< HEAD
  * @copyright Copyright (c) 2015 Zend Technologies USA Inc. (http://www.zend.com)
+=======
+ * @copyright Copyright (c) 2015-2016 Zend Technologies USA Inc. (http://www.zend.com)
+>>>>>>> git-aline/master/master
  * @license   https://github.com/zendframework/zend-diactoros/blob/master/LICENSE.md New BSD License
  */
 
@@ -41,7 +45,11 @@ class HtmlResponse extends Response
         parent::__construct(
             $this->createBody($html),
             $status,
+<<<<<<< HEAD
             $this->injectContentType('text/html', $headers)
+=======
+            $this->injectContentType('text/html; charset=utf-8', $headers)
+>>>>>>> git-aline/master/master
         );
     }
 
@@ -68,6 +76,10 @@ class HtmlResponse extends Response
 
         $body = new Stream('php://temp', 'wb+');
         $body->write($html);
+<<<<<<< HEAD
+=======
+        $body->rewind();
+>>>>>>> git-aline/master/master
         return $body;
     }
 }

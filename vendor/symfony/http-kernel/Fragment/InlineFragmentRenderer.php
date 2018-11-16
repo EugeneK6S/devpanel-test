@@ -11,6 +11,7 @@
 
 namespace Symfony\Component\HttpKernel\Fragment;
 
+<<<<<<< HEAD
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\HttpKernelInterface;
@@ -18,6 +19,16 @@ use Symfony\Component\HttpKernel\Controller\ControllerReference;
 use Symfony\Component\HttpKernel\KernelEvents;
 use Symfony\Component\HttpKernel\Event\GetResponseForExceptionEvent;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
+=======
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpKernel\Controller\ControllerReference;
+use Symfony\Component\HttpKernel\Event\GetResponseForExceptionEvent;
+use Symfony\Component\HttpKernel\HttpCache\SubRequestHandler;
+use Symfony\Component\HttpKernel\HttpKernelInterface;
+use Symfony\Component\HttpKernel\KernelEvents;
+>>>>>>> git-aline/master/master
 
 /**
  * Implements the inline rendering strategy where the Request is rendered by the current HTTP kernel.
@@ -29,12 +40,15 @@ class InlineFragmentRenderer extends RoutableFragmentRenderer
     private $kernel;
     private $dispatcher;
 
+<<<<<<< HEAD
     /**
      * Constructor.
      *
      * @param HttpKernelInterface      $kernel     A HttpKernelInterface instance
      * @param EventDispatcherInterface $dispatcher A EventDispatcherInterface instance
      */
+=======
+>>>>>>> git-aline/master/master
     public function __construct(HttpKernelInterface $kernel, EventDispatcherInterface $dispatcher = null)
     {
         $this->kernel = $kernel;
@@ -82,7 +96,11 @@ class InlineFragmentRenderer extends RoutableFragmentRenderer
 
         $level = ob_get_level();
         try {
+<<<<<<< HEAD
             return $this->kernel->handle($subRequest, HttpKernelInterface::SUB_REQUEST, false);
+=======
+            return SubRequestHandler::handle($this->kernel, $subRequest, HttpKernelInterface::SUB_REQUEST, false);
+>>>>>>> git-aline/master/master
         } catch (\Exception $e) {
             // we dispatch the exception event to trigger the logging
             // the response that comes back is simply ignored
@@ -115,6 +133,7 @@ class InlineFragmentRenderer extends RoutableFragmentRenderer
         $cookies = $request->cookies->all();
         $server = $request->server->all();
 
+<<<<<<< HEAD
         // Override the arguments to emulate a sub-request.
         // Sub-request object will point to localhost as client ip and real client ip
         // will be included into trusted header for client ip
@@ -129,6 +148,10 @@ class InlineFragmentRenderer extends RoutableFragmentRenderer
         }
 
         $server['REMOTE_ADDR'] = '127.0.0.1';
+=======
+        unset($server['HTTP_IF_MODIFIED_SINCE']);
+        unset($server['HTTP_IF_NONE_MATCH']);
+>>>>>>> git-aline/master/master
 
         $subRequest = Request::create($uri, 'get', array(), $cookies, array(), $server);
         if ($request->headers->has('Surrogate-Capability')) {

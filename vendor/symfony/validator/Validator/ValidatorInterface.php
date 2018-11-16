@@ -19,8 +19,11 @@ use Symfony\Component\Validator\Mapping\Factory\MetadataFactoryInterface;
 /**
  * Validates PHP values against constraints.
  *
+<<<<<<< HEAD
  * @since  2.5
  *
+=======
+>>>>>>> git-aline/master/master
  * @author Bernhard Schussek <bschussek@gmail.com>
  */
 interface ValidatorInterface extends MetadataFactoryInterface
@@ -38,7 +41,11 @@ interface ValidatorInterface extends MetadataFactoryInterface
      *                                             validate. If none is given,
      *                                             "Default" is assumed
      *
+<<<<<<< HEAD
      * @return ConstraintViolationListInterface A list of constraint violations.
+=======
+     * @return ConstraintViolationListInterface A list of constraint violations
+>>>>>>> git-aline/master/master
      *                                          If the list is empty, validation
      *                                          succeeded
      */
@@ -53,7 +60,11 @@ interface ValidatorInterface extends MetadataFactoryInterface
      * @param array|null $groups       The validation groups to validate. If
      *                                 none is given, "Default" is assumed
      *
+<<<<<<< HEAD
      * @return ConstraintViolationListInterface A list of constraint violations.
+=======
+     * @return ConstraintViolationListInterface A list of constraint violations
+>>>>>>> git-aline/master/master
      *                                          If the list is empty, validation
      *                                          succeeded
      */
@@ -70,7 +81,11 @@ interface ValidatorInterface extends MetadataFactoryInterface
      * @param array|null    $groups        The validation groups to validate. If
      *                                     none is given, "Default" is assumed
      *
+<<<<<<< HEAD
      * @return ConstraintViolationListInterface A list of constraint violations.
+=======
+     * @return ConstraintViolationListInterface A list of constraint violations
+>>>>>>> git-aline/master/master
      *                                          If the list is empty, validation
      *                                          succeeded
      */
@@ -93,8 +108,11 @@ interface ValidatorInterface extends MetadataFactoryInterface
      * The returned validator adds all generated violations to the given
      * context.
      *
+<<<<<<< HEAD
      * @param ExecutionContextInterface $context The execution context
      *
+=======
+>>>>>>> git-aline/master/master
      * @return ContextualValidatorInterface The validator for that context
      */
     public function inContext(ExecutionContextInterface $context);

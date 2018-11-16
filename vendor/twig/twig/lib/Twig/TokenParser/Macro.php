@@ -3,7 +3,11 @@
 /*
  * This file is part of Twig.
  *
+<<<<<<< HEAD
  * (c) 2009 Fabien Potencier
+=======
+ * (c) Fabien Potencier
+>>>>>>> git-aline/master/master
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
@@ -17,6 +21,11 @@
  *    <input type="{{ type|default('text') }}" name="{{ name }}" value="{{ value|e }}" size="{{ size|default(20) }}" />
  * {% endmacro %}
  * </pre>
+<<<<<<< HEAD
+=======
+ *
+ * @final
+>>>>>>> git-aline/master/master
  */
 class Twig_TokenParser_Macro extends Twig_TokenParser
 {
@@ -35,7 +44,11 @@ class Twig_TokenParser_Macro extends Twig_TokenParser
             $value = $token->getValue();
 
             if ($value != $name) {
+<<<<<<< HEAD
                 throw new Twig_Error_Syntax(sprintf('Expected endmacro for macro "%s" (but "%s" given).', $name, $value), $stream->getCurrent()->getLine(), $stream->getFilename());
+=======
+                throw new Twig_Error_Syntax(sprintf('Expected endmacro for macro "%s" (but "%s" given).', $name, $value), $stream->getCurrent()->getLine(), $stream->getSourceContext());
+>>>>>>> git-aline/master/master
             }
         }
         $this->parser->popLocalScope();
@@ -54,3 +67,8 @@ class Twig_TokenParser_Macro extends Twig_TokenParser
         return 'macro';
     }
 }
+<<<<<<< HEAD
+=======
+
+class_alias('Twig_TokenParser_Macro', 'Twig\TokenParser\MacroTokenParser', false);
+>>>>>>> git-aline/master/master

@@ -14,6 +14,10 @@ namespace Symfony\Bridge\PsrHttpMessage\Factory;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\UploadedFileInterface;
+<<<<<<< HEAD
+=======
+use Psr\Http\Message\UriInterface;
+>>>>>>> git-aline/master/master
 use Symfony\Bridge\PsrHttpMessage\HttpFoundationFactoryInterface;
 use Symfony\Component\HttpFoundation\Cookie;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
@@ -32,6 +36,23 @@ class HttpFoundationFactory implements HttpFoundationFactoryInterface
      */
     public function createRequest(ServerRequestInterface $psrRequest)
     {
+<<<<<<< HEAD
+=======
+        $server = array();
+        $uri = $psrRequest->getUri();
+
+        if ($uri instanceof UriInterface) {
+            $server['SERVER_NAME'] = $uri->getHost();
+            $server['SERVER_PORT'] = $uri->getPort();
+            $server['REQUEST_URI'] = $uri->getPath();
+            $server['QUERY_STRING'] = $uri->getQuery();
+        }
+
+        $server['REQUEST_METHOD'] = $psrRequest->getMethod();
+
+        $server = array_replace($server, $psrRequest->getServerParams());
+
+>>>>>>> git-aline/master/master
         $parsedBody = $psrRequest->getParsedBody();
         $parsedBody = is_array($parsedBody) ? $parsedBody : array();
 
@@ -41,7 +62,11 @@ class HttpFoundationFactory implements HttpFoundationFactoryInterface
             $psrRequest->getAttributes(),
             $psrRequest->getCookieParams(),
             $this->getFiles($psrRequest->getUploadedFiles()),
+<<<<<<< HEAD
             $psrRequest->getServerParams(),
+=======
+            $server,
+>>>>>>> git-aline/master/master
             $psrRequest->getBody()->__toString()
         );
         $request->headers->replace($psrRequest->getHeaders());
@@ -80,10 +105,32 @@ class HttpFoundationFactory implements HttpFoundationFactoryInterface
      */
     private function createUploadedFile(UploadedFileInterface $psrUploadedFile)
     {
+<<<<<<< HEAD
         $temporaryPath = $this->getTemporaryPath();
         $psrUploadedFile->moveTo($temporaryPath);
 
         $clientFileName = $psrUploadedFile->getClientFilename();
+=======
+        $temporaryPath = '';
+        $clientFileName = '';
+        if (UPLOAD_ERR_NO_FILE !== $psrUploadedFile->getError()) {
+            $temporaryPath = $this->getTemporaryPath();
+            $psrUploadedFile->moveTo($temporaryPath);
+
+            $clientFileName = $psrUploadedFile->getClientFilename();
+        }
+
+        if (class_exists('Symfony\Component\HttpFoundation\HeaderUtils')) {
+            // Symfony 4.1+
+            return new UploadedFile(
+                $temporaryPath,
+                null === $clientFileName ? '' : $clientFileName,
+                $psrUploadedFile->getClientMediaType(),
+                $psrUploadedFile->getError(),
+                true
+            );
+        }
+>>>>>>> git-aline/master/master
 
         return new UploadedFile(
             $temporaryPath,

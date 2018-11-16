@@ -15,20 +15,34 @@ namespace Symfony\Component\HttpKernel\CacheClearer;
  * ChainCacheClearer.
  *
  * @author Dustin Dobervich <ddobervich@gmail.com>
+<<<<<<< HEAD
  */
 class ChainCacheClearer implements CacheClearerInterface
 {
     /**
      * @var array
      */
+=======
+ *
+ * @final since version 3.4
+ */
+class ChainCacheClearer implements CacheClearerInterface
+{
+>>>>>>> git-aline/master/master
     protected $clearers;
 
     /**
      * Constructs a new instance of ChainCacheClearer.
      *
+<<<<<<< HEAD
      * @param array $clearers The initial clearers.
      */
     public function __construct(array $clearers = array())
+=======
+     * @param array $clearers The initial clearers
+     */
+    public function __construct($clearers = array())
+>>>>>>> git-aline/master/master
     {
         $this->clearers = $clearers;
     }
@@ -46,10 +60,19 @@ class ChainCacheClearer implements CacheClearerInterface
     /**
      * Adds a cache clearer to the aggregate.
      *
+<<<<<<< HEAD
      * @param CacheClearerInterface $clearer
      */
     public function add(CacheClearerInterface $clearer)
     {
+=======
+     * @deprecated since version 3.4, to be removed in 4.0, inject the list of clearers as a constructor argument instead.
+     */
+    public function add(CacheClearerInterface $clearer)
+    {
+        @trigger_error(sprintf('The "%s()" method is deprecated since Symfony 3.4 and will be removed in 4.0, inject the list of clearers as a constructor argument instead.', __METHOD__), E_USER_DEPRECATED);
+
+>>>>>>> git-aline/master/master
         $this->clearers[] = $clearer;
     }
 }

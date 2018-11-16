@@ -11,7 +11,11 @@
 
 namespace Symfony\Component\Serializer\Encoder;
 
+<<<<<<< HEAD
 use Symfony\Component\Serializer\Exception\UnexpectedValueException;
+=======
+use Symfony\Component\Serializer\Exception\NotEncodableValueException;
+>>>>>>> git-aline/master/master
 
 /**
  * Encodes JSON data.
@@ -21,7 +25,10 @@ use Symfony\Component\Serializer\Exception\UnexpectedValueException;
 class JsonEncode implements EncoderInterface
 {
     private $options;
+<<<<<<< HEAD
     private $lastError = JSON_ERROR_NONE;
+=======
+>>>>>>> git-aline/master/master
 
     public function __construct($bitmask = 0)
     {
@@ -29,6 +36,7 @@ class JsonEncode implements EncoderInterface
     }
 
     /**
+<<<<<<< HEAD
      * Returns the last encoding error (if any).
      *
      * @return int
@@ -45,6 +53,8 @@ class JsonEncode implements EncoderInterface
     }
 
     /**
+=======
+>>>>>>> git-aline/master/master
      * Encodes PHP data to a JSON string.
      *
      * {@inheritdoc}
@@ -55,8 +65,13 @@ class JsonEncode implements EncoderInterface
 
         $encodedJson = json_encode($data, $context['json_encode_options']);
 
+<<<<<<< HEAD
         if (JSON_ERROR_NONE !== $this->lastError = json_last_error()) {
             throw new UnexpectedValueException(JsonEncoder::getLastErrorMessage());
+=======
+        if (JSON_ERROR_NONE !== json_last_error() && (false === $encodedJson || !($context['json_encode_options'] & JSON_PARTIAL_OUTPUT_ON_ERROR))) {
+            throw new NotEncodableValueException(json_last_error_msg());
+>>>>>>> git-aline/master/master
         }
 
         return $encodedJson;
@@ -73,8 +88,11 @@ class JsonEncode implements EncoderInterface
     /**
      * Merge default json encode options with context.
      *
+<<<<<<< HEAD
      * @param array $context
      *
+=======
+>>>>>>> git-aline/master/master
      * @return array
      */
     private function resolveContext(array $context = array())

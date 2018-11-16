@@ -17,8 +17,11 @@ use Symfony\Component\Validator\ConstraintViolationListInterface;
 /**
  * A validator in a specific execution context.
  *
+<<<<<<< HEAD
  * @since  2.5
  *
+=======
+>>>>>>> git-aline/master/master
  * @author Bernhard Schussek <bschussek@gmail.com>
  */
 interface ContextualValidatorInterface
@@ -31,7 +34,11 @@ interface ContextualValidatorInterface
      *
      * @param string $path The path to append
      *
+<<<<<<< HEAD
      * @return ContextualValidatorInterface This validator
+=======
+     * @return $this
+>>>>>>> git-aline/master/master
      */
     public function atPath($path);
 
@@ -48,7 +55,11 @@ interface ContextualValidatorInterface
      *                                             validate. If none is given,
      *                                             "Default" is assumed
      *
+<<<<<<< HEAD
      * @return ContextualValidatorInterface This validator
+=======
+     * @return $this
+>>>>>>> git-aline/master/master
      */
     public function validate($value, $constraints = null, $groups = null);
 
@@ -61,7 +72,11 @@ interface ContextualValidatorInterface
      * @param array|null $groups       The validation groups to validate. If
      *                                 none is given, "Default" is assumed
      *
+<<<<<<< HEAD
      * @return ContextualValidatorInterface This validator
+=======
+     * @return $this
+>>>>>>> git-aline/master/master
      */
     public function validateProperty($object, $propertyName, $groups = null);
 
@@ -76,7 +91,11 @@ interface ContextualValidatorInterface
      * @param array|null    $groups        The validation groups to validate. If
      *                                     none is given, "Default" is assumed
      *
+<<<<<<< HEAD
      * @return ContextualValidatorInterface This validator
+=======
+     * @return $this
+>>>>>>> git-aline/master/master
      */
     public function validatePropertyValue($objectOrClass, $propertyName, $value, $groups = null);
 

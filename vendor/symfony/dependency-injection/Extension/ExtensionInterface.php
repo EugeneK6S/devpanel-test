@@ -23,12 +23,18 @@ interface ExtensionInterface
     /**
      * Loads a specific configuration.
      *
+<<<<<<< HEAD
      * @param array            $config    An array of configuration values
      * @param ContainerBuilder $container A ContainerBuilder instance
      *
      * @throws \InvalidArgumentException When provided tag is not defined in this extension
      */
     public function load(array $config, ContainerBuilder $container);
+=======
+     * @throws \InvalidArgumentException When provided tag is not defined in this extension
+     */
+    public function load(array $configs, ContainerBuilder $container);
+>>>>>>> git-aline/master/master
 
     /**
      * Returns the namespace to be used for this extension (XML namespace).

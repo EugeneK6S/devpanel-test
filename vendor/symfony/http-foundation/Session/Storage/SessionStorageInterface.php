@@ -24,23 +24,37 @@ interface SessionStorageInterface
     /**
      * Starts the session.
      *
+<<<<<<< HEAD
      * @throws \RuntimeException If something goes wrong starting the session.
      *
      * @return bool True if started.
+=======
+     * @return bool True if started
+     *
+     * @throws \RuntimeException if something goes wrong starting the session
+>>>>>>> git-aline/master/master
      */
     public function start();
 
     /**
      * Checks if the session is started.
      *
+<<<<<<< HEAD
      * @return bool True if started, false otherwise.
+=======
+     * @return bool True if started, false otherwise
+>>>>>>> git-aline/master/master
      */
     public function isStarted();
 
     /**
      * Returns the session ID.
      *
+<<<<<<< HEAD
      * @return string The session ID or empty.
+=======
+     * @return string The session ID or empty
+>>>>>>> git-aline/master/master
      */
     public function getId();
 
@@ -54,7 +68,11 @@ interface SessionStorageInterface
     /**
      * Returns the session name.
      *
+<<<<<<< HEAD
      * @return mixed The session name.
+=======
+     * @return mixed The session name
+>>>>>>> git-aline/master/master
      */
     public function getName();
 
@@ -76,10 +94,17 @@ interface SessionStorageInterface
      * Note regenerate+destroy should not clear the session data in memory
      * only delete the session data from persistent storage.
      *
+<<<<<<< HEAD
      * Care: When regenerating the session ID no locking is involved in PHPs
      * session design. See https://bugs.php.net/bug.php?id=61470 for a discussion.
      * So you must make sure the regenerated session is saved BEFORE sending the
      * headers with the new ID. Symfonys HttpKernel offers a listener for this.
+=======
+     * Care: When regenerating the session ID no locking is involved in PHP's
+     * session design. See https://bugs.php.net/bug.php?id=61470 for a discussion.
+     * So you must make sure the regenerated session is saved BEFORE sending the
+     * headers with the new ID. Symfony's HttpKernel offers a listener for this.
+>>>>>>> git-aline/master/master
      * See Symfony\Component\HttpKernel\EventListener\SaveSessionListener.
      * Otherwise session data could get lost again for concurrent requests with the
      * new ID. One result could be that you get logged out after just logging in.
@@ -101,11 +126,19 @@ interface SessionStorageInterface
      *
      * This method must invoke session_write_close() unless this interface is
      * used for a storage object design for unit or functional testing where
+<<<<<<< HEAD
      * a real PHP session would interfere with testing, in which case it
      * it should actually persist the session data if required.
      *
      * @throws \RuntimeException If the session is saved without being started, or if the session
      *                           is already closed.
+=======
+     * a real PHP session would interfere with testing, in which case
+     * it should actually persist the session data if required.
+     *
+     * @throws \RuntimeException if the session is saved without being started, or if the session
+     *                           is already closed
+>>>>>>> git-aline/master/master
      */
     public function save();
 
@@ -127,8 +160,11 @@ interface SessionStorageInterface
 
     /**
      * Registers a SessionBagInterface for use.
+<<<<<<< HEAD
      *
      * @param SessionBagInterface $bag
+=======
+>>>>>>> git-aline/master/master
      */
     public function registerBag(SessionBagInterface $bag);
 

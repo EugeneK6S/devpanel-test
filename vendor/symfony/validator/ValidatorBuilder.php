@@ -15,6 +15,7 @@ use Doctrine\Common\Annotations\AnnotationReader;
 use Doctrine\Common\Annotations\CachedReader;
 use Doctrine\Common\Annotations\Reader;
 use Doctrine\Common\Cache\ArrayCache;
+<<<<<<< HEAD
 use Symfony\Component\PropertyAccess\PropertyAccessorInterface;
 use Symfony\Component\Translation\IdentityTranslator;
 use Symfony\Component\Translation\TranslatorInterface;
@@ -30,6 +31,21 @@ use Symfony\Component\Validator\Mapping\Loader\XmlFileLoader;
 use Symfony\Component\Validator\Mapping\Loader\XmlFilesLoader;
 use Symfony\Component\Validator\Mapping\Loader\YamlFileLoader;
 use Symfony\Component\Validator\Mapping\Loader\YamlFilesLoader;
+=======
+use Symfony\Component\Translation\IdentityTranslator;
+use Symfony\Component\Translation\TranslatorInterface;
+use Symfony\Component\Validator\Context\ExecutionContextFactory;
+use Symfony\Component\Validator\Exception\ValidatorException;
+use Symfony\Component\Validator\Mapping\Cache\CacheInterface;
+use Symfony\Component\Validator\Mapping\Factory\LazyLoadingMetadataFactory;
+use Symfony\Component\Validator\Mapping\Factory\MetadataFactoryInterface;
+use Symfony\Component\Validator\Mapping\Loader\AnnotationLoader;
+use Symfony\Component\Validator\Mapping\Loader\LoaderChain;
+use Symfony\Component\Validator\Mapping\Loader\LoaderInterface;
+use Symfony\Component\Validator\Mapping\Loader\StaticMethodLoader;
+use Symfony\Component\Validator\Mapping\Loader\XmlFileLoader;
+use Symfony\Component\Validator\Mapping\Loader\YamlFileLoader;
+>>>>>>> git-aline/master/master
 use Symfony\Component\Validator\Validator\RecursiveValidator;
 
 /**
@@ -39,6 +55,7 @@ use Symfony\Component\Validator\Validator\RecursiveValidator;
  */
 class ValidatorBuilder implements ValidatorBuilderInterface
 {
+<<<<<<< HEAD
     /**
      * @var array
      */
@@ -57,6 +74,11 @@ class ValidatorBuilder implements ValidatorBuilderInterface
     /**
      * @var array
      */
+=======
+    private $initializers = array();
+    private $xmlMappings = array();
+    private $yamlMappings = array();
+>>>>>>> git-aline/master/master
     private $methodMappings = array();
 
     /**
@@ -90,11 +112,14 @@ class ValidatorBuilder implements ValidatorBuilderInterface
     private $translationDomain;
 
     /**
+<<<<<<< HEAD
      * @var PropertyAccessorInterface|null
      */
     private $propertyAccessor;
 
     /**
+=======
+>>>>>>> git-aline/master/master
      * {@inheritdoc}
      */
     public function addObjectInitializer(ObjectInitializerInterface $initializer)
@@ -235,7 +260,11 @@ class ValidatorBuilder implements ValidatorBuilderInterface
      */
     public function setMetadataFactory(MetadataFactoryInterface $metadataFactory)
     {
+<<<<<<< HEAD
         if (count($this->xmlMappings) > 0 || count($this->yamlMappings) > 0 || count($this->methodMappings) > 0 || null !== $this->annotationReader) {
+=======
+        if (\count($this->xmlMappings) > 0 || \count($this->yamlMappings) > 0 || \count($this->methodMappings) > 0 || null !== $this->annotationReader) {
+>>>>>>> git-aline/master/master
             throw new ValidatorException('You cannot set a custom metadata factory after adding custom mappings. You should do either of both.');
         }
 
@@ -263,10 +292,13 @@ class ValidatorBuilder implements ValidatorBuilderInterface
      */
     public function setConstraintValidatorFactory(ConstraintValidatorFactoryInterface $validatorFactory)
     {
+<<<<<<< HEAD
         if (null !== $this->propertyAccessor) {
             throw new ValidatorException('You cannot set a validator factory after setting a custom property accessor. Remove the call to setPropertyAccessor() if you want to call setConstraintValidatorFactory().');
         }
 
+=======
+>>>>>>> git-aline/master/master
         $this->validatorFactory = $validatorFactory;
 
         return $this;
@@ -293,6 +325,7 @@ class ValidatorBuilder implements ValidatorBuilderInterface
     }
 
     /**
+<<<<<<< HEAD
      * {@inheritdoc}
      *
      * @deprecated since version 2.5, to be removed in 3.0.
@@ -325,6 +358,31 @@ class ValidatorBuilder implements ValidatorBuilderInterface
         }
 
         return $this;
+=======
+     * @return LoaderInterface[]
+     */
+    public function getLoaders()
+    {
+        $loaders = array();
+
+        foreach ($this->xmlMappings as $xmlMapping) {
+            $loaders[] = new XmlFileLoader($xmlMapping);
+        }
+
+        foreach ($this->yamlMappings as $yamlMappings) {
+            $loaders[] = new YamlFileLoader($yamlMappings);
+        }
+
+        foreach ($this->methodMappings as $methodName) {
+            $loaders[] = new StaticMethodLoader($methodName);
+        }
+
+        if ($this->annotationReader) {
+            $loaders[] = new AnnotationLoader($this->annotationReader);
+        }
+
+        return $loaders;
+>>>>>>> git-aline/master/master
     }
 
     /**
@@ -335,6 +393,7 @@ class ValidatorBuilder implements ValidatorBuilderInterface
         $metadataFactory = $this->metadataFactory;
 
         if (!$metadataFactory) {
+<<<<<<< HEAD
             $loaders = array();
 
             if (count($this->xmlMappings) > 1) {
@@ -362,13 +421,25 @@ class ValidatorBuilder implements ValidatorBuilderInterface
             if (count($loaders) > 1) {
                 $loader = new LoaderChain($loaders);
             } elseif (1 === count($loaders)) {
+=======
+            $loaders = $this->getLoaders();
+            $loader = null;
+
+            if (\count($loaders) > 1) {
+                $loader = new LoaderChain($loaders);
+            } elseif (1 === \count($loaders)) {
+>>>>>>> git-aline/master/master
                 $loader = $loaders[0];
             }
 
             $metadataFactory = new LazyLoadingMetadataFactory($loader, $this->metadataCache);
         }
 
+<<<<<<< HEAD
         $validatorFactory = $this->validatorFactory ?: new ConstraintValidatorFactory($this->propertyAccessor);
+=======
+        $validatorFactory = $this->validatorFactory ?: new ConstraintValidatorFactory();
+>>>>>>> git-aline/master/master
         $translator = $this->translator;
 
         if (null === $translator) {

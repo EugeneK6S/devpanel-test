@@ -21,6 +21,15 @@ use Symfony\Component\Validator\Constraint;
  */
 class Type extends Constraint
 {
+<<<<<<< HEAD
+=======
+    const INVALID_TYPE_ERROR = 'ba785a8c-82cb-4283-967c-3cf342181b40';
+
+    protected static $errorNames = array(
+        self::INVALID_TYPE_ERROR => 'INVALID_TYPE_ERROR',
+    );
+
+>>>>>>> git-aline/master/master
     public $message = 'This value should be of type {{ type }}.';
     public $type;
 

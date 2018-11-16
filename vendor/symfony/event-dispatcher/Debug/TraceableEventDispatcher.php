@@ -11,11 +11,19 @@
 
 namespace Symfony\Component\EventDispatcher\Debug;
 
+<<<<<<< HEAD
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\EventDispatcher\Event;
 use Symfony\Component\Stopwatch\Stopwatch;
 use Psr\Log\LoggerInterface;
+=======
+use Psr\Log\LoggerInterface;
+use Symfony\Component\EventDispatcher\Event;
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
+use Symfony\Component\EventDispatcher\EventSubscriberInterface;
+use Symfony\Component\Stopwatch\Stopwatch;
+>>>>>>> git-aline/master/master
 
 /**
  * Collects some data about event listeners.
@@ -33,6 +41,7 @@ class TraceableEventDispatcher implements TraceableEventDispatcherInterface
     private $dispatcher;
     private $wrappedListeners;
 
+<<<<<<< HEAD
     /**
      * Constructor.
      *
@@ -40,6 +49,8 @@ class TraceableEventDispatcher implements TraceableEventDispatcherInterface
      * @param Stopwatch                $stopwatch  A Stopwatch instance
      * @param LoggerInterface          $logger     A LoggerInterface instance
      */
+=======
+>>>>>>> git-aline/master/master
     public function __construct(EventDispatcherInterface $dispatcher, Stopwatch $stopwatch, LoggerInterface $logger = null)
     {
         $this->dispatcher = $dispatcher;
@@ -102,6 +113,27 @@ class TraceableEventDispatcher implements TraceableEventDispatcherInterface
     /**
      * {@inheritdoc}
      */
+<<<<<<< HEAD
+=======
+    public function getListenerPriority($eventName, $listener)
+    {
+        // we might have wrapped listeners for the event (if called while dispatching)
+        // in that case get the priority by wrapper
+        if (isset($this->wrappedListeners[$eventName])) {
+            foreach ($this->wrappedListeners[$eventName] as $index => $wrappedListener) {
+                if ($wrappedListener->getWrappedListener() === $listener) {
+                    return $this->dispatcher->getListenerPriority($eventName, $wrappedListener);
+                }
+            }
+        }
+
+        return $this->dispatcher->getListenerPriority($eventName, $listener);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+>>>>>>> git-aline/master/master
     public function hasListeners($eventName = null)
     {
         return $this->dispatcher->hasListeners($eventName);
@@ -116,6 +148,13 @@ class TraceableEventDispatcher implements TraceableEventDispatcherInterface
             $event = new Event();
         }
 
+<<<<<<< HEAD
+=======
+        if (null !== $this->logger && $event->isPropagationStopped()) {
+            $this->logger->debug(sprintf('The "%s" event is already stopped. No listeners have been called.', $eventName));
+        }
+
+>>>>>>> git-aline/master/master
         $this->preProcess($eventName);
         $this->preDispatch($eventName, $event);
 
@@ -141,8 +180,12 @@ class TraceableEventDispatcher implements TraceableEventDispatcherInterface
         $called = array();
         foreach ($this->called as $eventName => $listeners) {
             foreach ($listeners as $listener) {
+<<<<<<< HEAD
                 $info = $this->getListenerInfo($listener->getWrappedListener(), $eventName);
                 $called[$eventName.'.'.$info['pretty']] = $info;
+=======
+                $called[$eventName.'.'.$listener->getPretty()] = $listener->getInfo($eventName);
+>>>>>>> git-aline/master/master
             }
         }
 
@@ -180,15 +223,35 @@ class TraceableEventDispatcher implements TraceableEventDispatcherInterface
                 }
 
                 if (!$called) {
+<<<<<<< HEAD
                     $info = $this->getListenerInfo($listener, $eventName);
                     $notCalled[$eventName.'.'.$info['pretty']] = $info;
+=======
+                    if (!$listener instanceof WrappedListener) {
+                        $listener = new WrappedListener($listener, null, $this->stopwatch, $this);
+                    }
+                    $notCalled[$eventName.'.'.$listener->getPretty()] = $listener->getInfo($eventName);
+>>>>>>> git-aline/master/master
                 }
             }
         }
 
+<<<<<<< HEAD
         return $notCalled;
     }
 
+=======
+        uasort($notCalled, array($this, 'sortListenersByPriority'));
+
+        return $notCalled;
+    }
+
+    public function reset()
+    {
+        $this->called = array();
+    }
+
+>>>>>>> git-aline/master/master
     /**
      * Proxies all method calls to the original event dispatcher.
      *
@@ -199,7 +262,11 @@ class TraceableEventDispatcher implements TraceableEventDispatcherInterface
      */
     public function __call($method, $arguments)
     {
+<<<<<<< HEAD
         return call_user_func_array(array($this->dispatcher, $method), $arguments);
+=======
+        return \call_user_func_array(array($this->dispatcher, $method), $arguments);
+>>>>>>> git-aline/master/master
     }
 
     /**
@@ -225,12 +292,20 @@ class TraceableEventDispatcher implements TraceableEventDispatcherInterface
     private function preProcess($eventName)
     {
         foreach ($this->dispatcher->getListeners($eventName) as $listener) {
+<<<<<<< HEAD
             $this->dispatcher->removeListener($eventName, $listener);
             $info = $this->getListenerInfo($listener, $eventName);
             $name = isset($info['class']) ? $info['class'] : $info['type'];
             $wrappedListener = new WrappedListener($listener, $name, $this->stopwatch, $this);
             $this->wrappedListeners[$eventName][] = $wrappedListener;
             $this->dispatcher->addListener($eventName, $wrappedListener);
+=======
+            $priority = $this->getListenerPriority($eventName, $listener);
+            $wrappedListener = new WrappedListener($listener, null, $this->stopwatch, $this);
+            $this->wrappedListeners[$eventName][] = $wrappedListener;
+            $this->dispatcher->removeListener($eventName, $listener);
+            $this->dispatcher->addListener($eventName, $wrappedListener, $priority);
+>>>>>>> git-aline/master/master
         }
     }
 
@@ -243,6 +318,7 @@ class TraceableEventDispatcher implements TraceableEventDispatcherInterface
                 continue;
             }
             // Unwrap listener
+<<<<<<< HEAD
             $this->dispatcher->removeListener($eventName, $listener);
             $this->dispatcher->addListener($eventName, $listener->getWrappedListener());
 
@@ -250,6 +326,19 @@ class TraceableEventDispatcher implements TraceableEventDispatcherInterface
             if ($listener->wasCalled()) {
                 if (null !== $this->logger) {
                     $this->logger->debug(sprintf('Notified event "%s" to listener "%s".', $eventName, $info['pretty']));
+=======
+            $priority = $this->getListenerPriority($eventName, $listener);
+            $this->dispatcher->removeListener($eventName, $listener);
+            $this->dispatcher->addListener($eventName, $listener->getWrappedListener(), $priority);
+
+            if (null !== $this->logger) {
+                $context = array('event' => $eventName, 'listener' => $listener->getPretty());
+            }
+
+            if ($listener->wasCalled()) {
+                if (null !== $this->logger) {
+                    $this->logger->debug('Notified event "{event}" to listener "{listener}".', $context);
+>>>>>>> git-aline/master/master
                 }
 
                 if (!isset($this->called[$eventName])) {
@@ -260,12 +349,20 @@ class TraceableEventDispatcher implements TraceableEventDispatcherInterface
             }
 
             if (null !== $this->logger && $skipped) {
+<<<<<<< HEAD
                 $this->logger->debug(sprintf('Listener "%s" was not called for event "%s".', $info['pretty'], $eventName));
+=======
+                $this->logger->debug('Listener "{listener}" was not called for event "{event}".', $context);
+>>>>>>> git-aline/master/master
             }
 
             if ($listener->stoppedPropagation()) {
                 if (null !== $this->logger) {
+<<<<<<< HEAD
                     $this->logger->debug(sprintf('Listener "%s" stopped propagation of the event "%s".', $info['pretty'], $eventName));
+=======
+                    $this->logger->debug('Listener "{listener}" stopped propagation of the event "{event}".', $context);
+>>>>>>> git-aline/master/master
                 }
 
                 $skipped = true;
@@ -273,6 +370,7 @@ class TraceableEventDispatcher implements TraceableEventDispatcherInterface
         }
     }
 
+<<<<<<< HEAD
     /**
      * Returns information about the listener.
      *
@@ -331,5 +429,26 @@ class TraceableEventDispatcher implements TraceableEventDispatcherInterface
         }
 
         return $info;
+=======
+    private function sortListenersByPriority($a, $b)
+    {
+        if (\is_int($a['priority']) && !\is_int($b['priority'])) {
+            return 1;
+        }
+
+        if (!\is_int($a['priority']) && \is_int($b['priority'])) {
+            return -1;
+        }
+
+        if ($a['priority'] === $b['priority']) {
+            return 0;
+        }
+
+        if ($a['priority'] > $b['priority']) {
+            return -1;
+        }
+
+        return 1;
+>>>>>>> git-aline/master/master
     }
 }

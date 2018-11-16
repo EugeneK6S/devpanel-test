@@ -11,11 +11,19 @@
 
 namespace Symfony\Component\HttpKernel\Profiler;
 
+<<<<<<< HEAD
+=======
+use Psr\Log\LoggerInterface;
+use Symfony\Component\HttpFoundation\Exception\ConflictingHeadersException;
+>>>>>>> git-aline/master/master
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\DataCollector\DataCollectorInterface;
 use Symfony\Component\HttpKernel\DataCollector\LateDataCollectorInterface;
+<<<<<<< HEAD
 use Psr\Log\LoggerInterface;
+=======
+>>>>>>> git-aline/master/master
 
 /**
  * Profiler.
@@ -24,9 +32,12 @@ use Psr\Log\LoggerInterface;
  */
 class Profiler
 {
+<<<<<<< HEAD
     /**
      * @var ProfilerStorageInterface
      */
+=======
+>>>>>>> git-aline/master/master
     private $storage;
 
     /**
@@ -34,6 +45,7 @@ class Profiler
      */
     private $collectors = array();
 
+<<<<<<< HEAD
     /**
      * @var LoggerInterface
      */
@@ -54,6 +66,20 @@ class Profiler
     {
         $this->storage = $storage;
         $this->logger = $logger;
+=======
+    private $logger;
+    private $initiallyEnabled = true;
+    private $enabled = true;
+
+    /**
+     * @param bool $enable The initial enabled state
+     */
+    public function __construct(ProfilerStorageInterface $storage, LoggerInterface $logger = null, $enable = true)
+    {
+        $this->storage = $storage;
+        $this->logger = $logger;
+        $this->initiallyEnabled = $this->enabled = (bool) $enable;
+>>>>>>> git-aline/master/master
     }
 
     /**
@@ -75,9 +101,13 @@ class Profiler
     /**
      * Loads the Profile for the given Response.
      *
+<<<<<<< HEAD
      * @param Response $response A Response instance
      *
      * @return Profile A Profile instance
+=======
+     * @return Profile|false A Profile instance
+>>>>>>> git-aline/master/master
      */
     public function loadProfileFromResponse(Response $response)
     {
@@ -103,8 +133,11 @@ class Profiler
     /**
      * Saves a Profile.
      *
+<<<<<<< HEAD
      * @param Profile $profile A Profile instance
      *
+=======
+>>>>>>> git-aline/master/master
      * @return bool
      */
     public function saveProfile(Profile $profile)
@@ -117,7 +150,11 @@ class Profiler
         }
 
         if (!($ret = $this->storage->write($profile)) && null !== $this->logger) {
+<<<<<<< HEAD
             $this->logger->warning('Unable to store the profiler information.', array('configured_storage' => get_class($this->storage)));
+=======
+            $this->logger->warning('Unable to store the profiler information.', array('configured_storage' => \get_class($this->storage)));
+>>>>>>> git-aline/master/master
         }
 
         return $ret;
@@ -132,6 +169,7 @@ class Profiler
     }
 
     /**
+<<<<<<< HEAD
      * Exports the current profiler data.
      *
      * @param Profile $profile A Profile instance
@@ -172,23 +210,43 @@ class Profiler
      * @param string $method The request method
      * @param string $start  The start date to search from
      * @param string $end    The end date to search to
+=======
+     * Finds profiler tokens for the given criteria.
+     *
+     * @param string $ip         The IP
+     * @param string $url        The URL
+     * @param string $limit      The maximum number of tokens to return
+     * @param string $method     The request method
+     * @param string $start      The start date to search from
+     * @param string $end        The end date to search to
+     * @param string $statusCode The request status code
+>>>>>>> git-aline/master/master
      *
      * @return array An array of tokens
      *
      * @see http://php.net/manual/en/datetime.formats.php for the supported date/time formats
      */
+<<<<<<< HEAD
     public function find($ip, $url, $limit, $method, $start, $end)
     {
         return $this->storage->find($ip, $url, $limit, $method, $this->getTimestamp($start), $this->getTimestamp($end));
+=======
+    public function find($ip, $url, $limit, $method, $start, $end, $statusCode = null)
+    {
+        return $this->storage->find($ip, $url, $limit, $method, $this->getTimestamp($start), $this->getTimestamp($end), $statusCode);
+>>>>>>> git-aline/master/master
     }
 
     /**
      * Collects data for the given Response.
      *
+<<<<<<< HEAD
      * @param Request    $request   A Request instance
      * @param Response   $response  A Response instance
      * @param \Exception $exception An exception instance if the request threw one
      *
+=======
+>>>>>>> git-aline/master/master
      * @return Profile|null A Profile instance or null if the profiler is disabled
      */
     public function collect(Request $request, Response $response, \Exception $exception = null)
@@ -200,9 +258,19 @@ class Profiler
         $profile = new Profile(substr(hash('sha256', uniqid(mt_rand(), true)), 0, 6));
         $profile->setTime(time());
         $profile->setUrl($request->getUri());
+<<<<<<< HEAD
         $profile->setIp($request->getClientIp());
         $profile->setMethod($request->getMethod());
         $profile->setStatusCode($response->getStatusCode());
+=======
+        $profile->setMethod($request->getMethod());
+        $profile->setStatusCode($response->getStatusCode());
+        try {
+            $profile->setIp($request->getClientIp());
+        } catch (ConflictingHeadersException $e) {
+            $profile->setIp('Unknown');
+        }
+>>>>>>> git-aline/master/master
 
         $response->headers->set('X-Debug-Token', $profile->getToken());
 
@@ -216,6 +284,21 @@ class Profiler
         return $profile;
     }
 
+<<<<<<< HEAD
+=======
+    public function reset()
+    {
+        foreach ($this->collectors as $collector) {
+            if (!method_exists($collector, 'reset')) {
+                continue;
+            }
+
+            $collector->reset();
+        }
+        $this->enabled = $this->initiallyEnabled;
+    }
+
+>>>>>>> git-aline/master/master
     /**
      * Gets the Collectors associated with this profiler.
      *
@@ -241,11 +324,21 @@ class Profiler
 
     /**
      * Adds a Collector.
+<<<<<<< HEAD
      *
      * @param DataCollectorInterface $collector A DataCollectorInterface instance
      */
     public function add(DataCollectorInterface $collector)
     {
+=======
+     */
+    public function add(DataCollectorInterface $collector)
+    {
+        if (!method_exists($collector, 'reset')) {
+            @trigger_error(sprintf('Implementing "%s" without the "reset()" method is deprecated since Symfony 3.4 and will be unsupported in 4.0 for class "%s".', DataCollectorInterface::class, \get_class($collector)), E_USER_DEPRECATED);
+        }
+
+>>>>>>> git-aline/master/master
         $this->collectors[$collector->getName()] = $collector;
     }
 

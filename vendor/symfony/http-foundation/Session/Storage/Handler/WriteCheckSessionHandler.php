@@ -15,12 +15,20 @@ namespace Symfony\Component\HttpFoundation\Session\Storage\Handler;
  * Wraps another SessionHandlerInterface to only write the session when it has been modified.
  *
  * @author Adrien Brault <adrien.brault@gmail.com>
+<<<<<<< HEAD
  */
 class WriteCheckSessionHandler implements \SessionHandlerInterface
 {
     /**
      * @var \SessionHandlerInterface
      */
+=======
+ *
+ * @deprecated since version 3.4, to be removed in 4.0. Implement `SessionUpdateTimestampHandlerInterface` or extend `AbstractSessionHandler` instead.
+ */
+class WriteCheckSessionHandler implements \SessionHandlerInterface
+{
+>>>>>>> git-aline/master/master
     private $wrappedSessionHandler;
 
     /**
@@ -30,6 +38,11 @@ class WriteCheckSessionHandler implements \SessionHandlerInterface
 
     public function __construct(\SessionHandlerInterface $wrappedSessionHandler)
     {
+<<<<<<< HEAD
+=======
+        @trigger_error(sprintf('The %s class is deprecated since Symfony 3.4 and will be removed in 4.0. Implement `SessionUpdateTimestampHandlerInterface` or extend `AbstractSessionHandler` instead.', self::class), E_USER_DEPRECATED);
+
+>>>>>>> git-aline/master/master
         $this->wrappedSessionHandler = $wrappedSessionHandler;
     }
 

@@ -11,14 +11,19 @@
 
 namespace Symfony\Component\HttpKernel\DependencyInjection;
 
+<<<<<<< HEAD
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
 use Symfony\Component\HttpKernel\Kernel;
+=======
+@trigger_error('The '.__NAMESPACE__.'\AddClassesToCachePass class is deprecated since Symfony 3.3 and will be removed in 4.0.', E_USER_DEPRECATED);
+>>>>>>> git-aline/master/master
 
 /**
  * Sets the classes to compile in the cache for the container.
  *
  * @author Fabien Potencier <fabien@symfony.com>
+<<<<<<< HEAD
  */
 class AddClassesToCachePass implements CompilerPassInterface
 {
@@ -43,4 +48,11 @@ class AddClassesToCachePass implements CompilerPassInterface
 
         $this->kernel->setClassCache(array_unique($container->getParameterBag()->resolveValue($classes)));
     }
+=======
+ *
+ * @deprecated since version 3.3, to be removed in 4.0.
+ */
+class AddClassesToCachePass extends AddAnnotatedClassesToCachePass
+{
+>>>>>>> git-aline/master/master
 }

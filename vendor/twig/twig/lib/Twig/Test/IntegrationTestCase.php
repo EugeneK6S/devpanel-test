@@ -3,19 +3,32 @@
 /*
  * This file is part of Twig.
  *
+<<<<<<< HEAD
  * (c) 2010 Fabien Potencier
+=======
+ * (c) Fabien Potencier
+>>>>>>> git-aline/master/master
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
 
+<<<<<<< HEAD
+=======
+use PHPUnit\Framework\TestCase;
+
+>>>>>>> git-aline/master/master
 /**
  * Integration test helper.
  *
  * @author Fabien Potencier <fabien@symfony.com>
  * @author Karma Dordrak <drak@zikula.org>
  */
+<<<<<<< HEAD
 abstract class Twig_Test_IntegrationTestCase extends PHPUnit_Framework_TestCase
+=======
+abstract class Twig_Test_IntegrationTestCase extends TestCase
+>>>>>>> git-aline/master/master
 {
     /**
      * @return string
@@ -23,6 +36,17 @@ abstract class Twig_Test_IntegrationTestCase extends PHPUnit_Framework_TestCase
     abstract protected function getFixturesDir();
 
     /**
+<<<<<<< HEAD
+=======
+     * @return Twig_RuntimeLoaderInterface[]
+     */
+    protected function getRuntimeLoaders()
+    {
+        return array();
+    }
+
+    /**
+>>>>>>> git-aline/master/master
      * @return Twig_ExtensionInterface[]
      */
     protected function getExtensions()
@@ -121,6 +145,13 @@ abstract class Twig_Test_IntegrationTestCase extends PHPUnit_Framework_TestCase
 
     protected function doIntegrationTest($file, $message, $condition, $templates, $exception, $outputs)
     {
+<<<<<<< HEAD
+=======
+        if (!$outputs) {
+            $this->markTestSkipped('no tests to run');
+        }
+
+>>>>>>> git-aline/master/master
         if ($condition) {
             eval('$ret = '.$condition.';');
             if (!$ret) {
@@ -137,6 +168,13 @@ abstract class Twig_Test_IntegrationTestCase extends PHPUnit_Framework_TestCase
             ), $match[2] ? eval($match[2].';') : array());
             $twig = new Twig_Environment($loader, $config);
             $twig->addGlobal('global', 'global');
+<<<<<<< HEAD
+=======
+            foreach ($this->getRuntimeLoaders() as $runtimeLoader) {
+                $twig->addRuntimeLoader($runtimeLoader);
+            }
+
+>>>>>>> git-aline/master/master
             foreach ($this->getExtensions() as $extension) {
                 $twig->addExtension($extension);
             }
@@ -167,17 +205,25 @@ abstract class Twig_Test_IntegrationTestCase extends PHPUnit_Framework_TestCase
                 if (false !== $exception) {
                     $message = $e->getMessage();
                     $this->assertSame(trim($exception), trim(sprintf('%s: %s', get_class($e), $message)));
+<<<<<<< HEAD
                     $this->assertSame('.', substr($message, strlen($message) - 1), $message, 'Exception message must end with a dot.');
+=======
+                    $last = substr($message, strlen($message) - 1);
+                    $this->assertTrue('.' === $last || '?' === $last, $message, 'Exception message must end with a dot or a question mark.');
+>>>>>>> git-aline/master/master
 
                     return;
                 }
 
+<<<<<<< HEAD
                 if ($e instanceof Twig_Error_Syntax) {
                     $e->setTemplateFile($file);
 
                     throw $e;
                 }
 
+=======
+>>>>>>> git-aline/master/master
                 throw new Twig_Error(sprintf('%s: %s', get_class($e), $e->getMessage()), -1, $file, $e);
             }
 
@@ -190,18 +236,27 @@ abstract class Twig_Test_IntegrationTestCase extends PHPUnit_Framework_TestCase
                     return;
                 }
 
+<<<<<<< HEAD
                 if ($e instanceof Twig_Error_Syntax) {
                     $e->setTemplateFile($file);
                 } else {
                     $e = new Twig_Error(sprintf('%s: %s', get_class($e), $e->getMessage()), -1, $file, $e);
                 }
+=======
+                $e = new Twig_Error(sprintf('%s: %s', get_class($e), $e->getMessage()), -1, $file, $e);
+>>>>>>> git-aline/master/master
 
                 $output = trim(sprintf('%s: %s', get_class($e), $e->getMessage()));
             }
 
             if (false !== $exception) {
                 list($class) = explode(':', $exception);
+<<<<<<< HEAD
                 $this->assertThat(null, new PHPUnit_Framework_Constraint_Exception($class));
+=======
+                $constraintClass = class_exists('PHPUnit\Framework\Constraint\Exception') ? 'PHPUnit\Framework\Constraint\Exception' : 'PHPUnit_Framework_Constraint_Exception';
+                $this->assertThat(null, new $constraintClass($class));
+>>>>>>> git-aline/master/master
             }
 
             $expected = trim($match[3], "\n ");
@@ -211,8 +266,18 @@ abstract class Twig_Test_IntegrationTestCase extends PHPUnit_Framework_TestCase
 
                 foreach (array_keys($templates) as $name) {
                     echo "Template: $name\n";
+<<<<<<< HEAD
                     $source = $loader->getSource($name);
                     echo $twig->compile($twig->parse($twig->tokenize($source, $name)));
+=======
+                    $loader = $twig->getLoader();
+                    if (!$loader instanceof Twig_SourceContextLoaderInterface) {
+                        $source = new Twig_Source($loader->getSource($name), $name);
+                    } else {
+                        $source = $loader->getSourceContext($name);
+                    }
+                    echo $twig->compile($twig->parse($twig->tokenize($source)));
+>>>>>>> git-aline/master/master
                 }
             }
             $this->assertEquals($expected, $output, $message.' (in '.$file.')');
@@ -230,3 +295,8 @@ abstract class Twig_Test_IntegrationTestCase extends PHPUnit_Framework_TestCase
         return $templates;
     }
 }
+<<<<<<< HEAD
+=======
+
+class_alias('Twig_Test_IntegrationTestCase', 'Twig\Test\IntegrationTestCase', false);
+>>>>>>> git-aline/master/master

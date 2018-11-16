@@ -11,15 +11,22 @@
 
 namespace Symfony\Component\Validator\Constraints;
 
+<<<<<<< HEAD
 use Symfony\Component\Validator\Exception\OutOfBoundsException;
 
+=======
+>>>>>>> git-aline/master/master
 /**
  * A sequence of validation groups.
  *
  * When validating a group sequence, each group will only be validated if all
  * of the previous groups in the sequence succeeded. For example:
  *
+<<<<<<< HEAD
  *     $validator->validate($address, null, new GroupSequence('Basic', 'Strict'));
+=======
+ *     $validator->validate($address, null, new GroupSequence(array('Basic', 'Strict')));
+>>>>>>> git-aline/master/master
  *
  * In the first step, all constraints that belong to the group "Basic" will be
  * validated. If none of the constraints fail, the validator will then validate
@@ -53,15 +60,24 @@ use Symfony\Component\Validator\Exception\OutOfBoundsException;
  * @Target({"CLASS", "ANNOTATION"})
  *
  * @author Bernhard Schussek <bschussek@gmail.com>
+<<<<<<< HEAD
  *
  * Implementing \ArrayAccess, \IteratorAggregate and \Countable is @deprecated since 2.5 and will be removed in 3.0.
  */
 class GroupSequence implements \ArrayAccess, \IteratorAggregate, \Countable
+=======
+ */
+class GroupSequence
+>>>>>>> git-aline/master/master
 {
     /**
      * The groups in the sequence.
      *
+<<<<<<< HEAD
      * @var string[]|GroupSequence[]
+=======
+     * @var string[]|array[]|GroupSequence[]
+>>>>>>> git-aline/master/master
      */
     public $groups;
 
@@ -91,6 +107,7 @@ class GroupSequence implements \ArrayAccess, \IteratorAggregate, \Countable
         // Support for Doctrine annotations
         $this->groups = isset($groups['value']) ? $groups['value'] : $groups;
     }
+<<<<<<< HEAD
 
     /**
      * Returns an iterator for this group.
@@ -208,4 +225,6 @@ class GroupSequence implements \ArrayAccess, \IteratorAggregate, \Countable
 
         return count($this->groups);
     }
+=======
+>>>>>>> git-aline/master/master
 }

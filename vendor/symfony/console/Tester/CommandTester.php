@@ -13,20 +13,31 @@ namespace Symfony\Component\Console\Tester;
 
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\ArrayInput;
+<<<<<<< HEAD
 use Symfony\Component\Console\Output\StreamOutput;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
+=======
+use Symfony\Component\Console\Input\InputInterface;
+use Symfony\Component\Console\Output\OutputInterface;
+use Symfony\Component\Console\Output\StreamOutput;
+>>>>>>> git-aline/master/master
 
 /**
  * Eases the testing of console commands.
  *
  * @author Fabien Potencier <fabien@symfony.com>
+<<<<<<< HEAD
+=======
+ * @author Robin Chalas <robin.chalas@gmail.com>
+>>>>>>> git-aline/master/master
  */
 class CommandTester
 {
     private $command;
     private $input;
     private $output;
+<<<<<<< HEAD
     private $statusCode;
 
     /**
@@ -34,6 +45,11 @@ class CommandTester
      *
      * @param Command $command A Command instance to test.
      */
+=======
+    private $inputs = array();
+    private $statusCode;
+
+>>>>>>> git-aline/master/master
     public function __construct(Command $command)
     {
         $this->command = $command;
@@ -65,14 +81,25 @@ class CommandTester
         }
 
         $this->input = new ArrayInput($input);
+<<<<<<< HEAD
+=======
+        if ($this->inputs) {
+            $this->input->setStream(self::createStream($this->inputs));
+        }
+
+>>>>>>> git-aline/master/master
         if (isset($options['interactive'])) {
             $this->input->setInteractive($options['interactive']);
         }
 
         $this->output = new StreamOutput(fopen('php://memory', 'w', false));
+<<<<<<< HEAD
         if (isset($options['decorated'])) {
             $this->output->setDecorated($options['decorated']);
         }
+=======
+        $this->output->setDecorated(isset($options['decorated']) ? $options['decorated'] : false);
+>>>>>>> git-aline/master/master
         if (isset($options['verbosity'])) {
             $this->output->setVerbosity($options['verbosity']);
         }
@@ -129,4 +156,32 @@ class CommandTester
     {
         return $this->statusCode;
     }
+<<<<<<< HEAD
+=======
+
+    /**
+     * Sets the user inputs.
+     *
+     * @param array $inputs An array of strings representing each input
+     *                      passed to the command input stream
+     *
+     * @return CommandTester
+     */
+    public function setInputs(array $inputs)
+    {
+        $this->inputs = $inputs;
+
+        return $this;
+    }
+
+    private static function createStream(array $inputs)
+    {
+        $stream = fopen('php://memory', 'r+', false);
+
+        fwrite($stream, implode(PHP_EOL, $inputs));
+        rewind($stream);
+
+        return $stream;
+    }
+>>>>>>> git-aline/master/master
 }

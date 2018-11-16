@@ -11,12 +11,21 @@
 
 namespace Symfony\Component\Routing\Generator;
 
+<<<<<<< HEAD
 use Symfony\Component\Routing\RouteCollection;
 use Symfony\Component\Routing\RequestContext;
 use Symfony\Component\Routing\Exception\InvalidParameterException;
 use Symfony\Component\Routing\Exception\RouteNotFoundException;
 use Symfony\Component\Routing\Exception\MissingMandatoryParametersException;
 use Psr\Log\LoggerInterface;
+=======
+use Psr\Log\LoggerInterface;
+use Symfony\Component\Routing\Exception\InvalidParameterException;
+use Symfony\Component\Routing\Exception\MissingMandatoryParametersException;
+use Symfony\Component\Routing\Exception\RouteNotFoundException;
+use Symfony\Component\Routing\RequestContext;
+use Symfony\Component\Routing\RouteCollection;
+>>>>>>> git-aline/master/master
 
 /**
  * UrlGenerator can generate a URL or a path for any route in the RouteCollection
@@ -27,6 +36,7 @@ use Psr\Log\LoggerInterface;
  */
 class UrlGenerator implements UrlGeneratorInterface, ConfigurableRequirementsInterface
 {
+<<<<<<< HEAD
     /**
      * @var RouteCollection
      */
@@ -35,6 +45,9 @@ class UrlGenerator implements UrlGeneratorInterface, ConfigurableRequirementsInt
     /**
      * @var RequestContext
      */
+=======
+    protected $routes;
+>>>>>>> git-aline/master/master
     protected $context;
 
     /**
@@ -42,9 +55,12 @@ class UrlGenerator implements UrlGeneratorInterface, ConfigurableRequirementsInt
      */
     protected $strictRequirements = true;
 
+<<<<<<< HEAD
     /**
      * @var LoggerInterface|null
      */
+=======
+>>>>>>> git-aline/master/master
     protected $logger;
 
     /**
@@ -75,6 +91,7 @@ class UrlGenerator implements UrlGeneratorInterface, ConfigurableRequirementsInt
         '%7C' => '|',
     );
 
+<<<<<<< HEAD
     /**
      * Constructor.
      *
@@ -82,6 +99,8 @@ class UrlGenerator implements UrlGeneratorInterface, ConfigurableRequirementsInt
      * @param RequestContext       $context The context
      * @param LoggerInterface|null $logger  A logger instance
      */
+=======
+>>>>>>> git-aline/master/master
     public function __construct(RouteCollection $routes, RequestContext $context, LoggerInterface $logger = null)
     {
         $this->routes = $routes;
@@ -153,10 +172,15 @@ class UrlGenerator implements UrlGeneratorInterface, ConfigurableRequirementsInt
 
         $url = '';
         $optional = true;
+<<<<<<< HEAD
+=======
+        $message = 'Parameter "{parameter}" for route "{route}" must match "{expected}" ("{given}" given) to generate a corresponding URL.';
+>>>>>>> git-aline/master/master
         foreach ($tokens as $token) {
             if ('variable' === $token[0]) {
                 if (!$optional || !array_key_exists($token[3], $defaults) || null !== $mergedParams[$token[3]] && (string) $mergedParams[$token[3]] !== (string) $defaults[$token[3]]) {
                     // check requirement
+<<<<<<< HEAD
                     if (null !== $this->strictRequirements && !preg_match('#^'.$token[2].'$#', $mergedParams[$token[3]])) {
                         $message = sprintf('Parameter "%s" for route "%s" must match "%s" ("%s" given) to generate a corresponding URL.', $token[3], $name, $token[2], $mergedParams[$token[3]]);
                         if ($this->strictRequirements) {
@@ -165,6 +189,15 @@ class UrlGenerator implements UrlGeneratorInterface, ConfigurableRequirementsInt
 
                         if ($this->logger) {
                             $this->logger->error($message);
+=======
+                    if (null !== $this->strictRequirements && !preg_match('#^'.$token[2].'$#'.(empty($token[4]) ? '' : 'u'), $mergedParams[$token[3]])) {
+                        if ($this->strictRequirements) {
+                            throw new InvalidParameterException(strtr($message, array('{parameter}' => $token[3], '{route}' => $name, '{expected}' => $token[2], '{given}' => $mergedParams[$token[3]])));
+                        }
+
+                        if ($this->logger) {
+                            $this->logger->error($message, array('parameter' => $token[3], 'route' => $name, 'expected' => $token[2], 'given' => $mergedParams[$token[3]]));
+>>>>>>> git-aline/master/master
                         }
 
                         return;
@@ -198,6 +231,7 @@ class UrlGenerator implements UrlGeneratorInterface, ConfigurableRequirementsInt
         }
 
         $schemeAuthority = '';
+<<<<<<< HEAD
         if ($host = $this->context->getHost()) {
             $scheme = $this->context->getScheme();
 
@@ -264,6 +298,58 @@ class UrlGenerator implements UrlGeneratorInterface, ConfigurableRequirementsInt
                 $schemeAuthority = self::NETWORK_PATH === $referenceType ? '//' : "$scheme://";
                 $schemeAuthority .= $host.$port;
             }
+=======
+        $host = $this->context->getHost();
+        $scheme = $this->context->getScheme();
+
+        if ($requiredSchemes) {
+            if (!\in_array($scheme, $requiredSchemes, true)) {
+                $referenceType = self::ABSOLUTE_URL;
+                $scheme = current($requiredSchemes);
+            }
+        }
+
+        if ($hostTokens) {
+            $routeHost = '';
+            foreach ($hostTokens as $token) {
+                if ('variable' === $token[0]) {
+                    if (null !== $this->strictRequirements && !preg_match('#^'.$token[2].'$#i'.(empty($token[4]) ? '' : 'u'), $mergedParams[$token[3]])) {
+                        if ($this->strictRequirements) {
+                            throw new InvalidParameterException(strtr($message, array('{parameter}' => $token[3], '{route}' => $name, '{expected}' => $token[2], '{given}' => $mergedParams[$token[3]])));
+                        }
+
+                        if ($this->logger) {
+                            $this->logger->error($message, array('parameter' => $token[3], 'route' => $name, 'expected' => $token[2], 'given' => $mergedParams[$token[3]]));
+                        }
+
+                        return;
+                    }
+
+                    $routeHost = $token[1].$mergedParams[$token[3]].$routeHost;
+                } else {
+                    $routeHost = $token[1].$routeHost;
+                }
+            }
+
+            if ($routeHost !== $host) {
+                $host = $routeHost;
+                if (self::ABSOLUTE_URL !== $referenceType) {
+                    $referenceType = self::NETWORK_PATH;
+                }
+            }
+        }
+
+        if ((self::ABSOLUTE_URL === $referenceType || self::NETWORK_PATH === $referenceType) && !empty($host)) {
+            $port = '';
+            if ('http' === $scheme && 80 != $this->context->getHttpPort()) {
+                $port = ':'.$this->context->getHttpPort();
+            } elseif ('https' === $scheme && 443 != $this->context->getHttpsPort()) {
+                $port = ':'.$this->context->getHttpsPort();
+            }
+
+            $schemeAuthority = self::NETWORK_PATH === $referenceType ? '//' : "$scheme://";
+            $schemeAuthority .= $host.$port;
+>>>>>>> git-aline/master/master
         }
 
         if (self::RELATIVE_PATH === $referenceType) {
@@ -273,13 +359,39 @@ class UrlGenerator implements UrlGeneratorInterface, ConfigurableRequirementsInt
         }
 
         // add a query string if needed
+<<<<<<< HEAD
         $extra = array_diff_key($parameters, $variables, $defaults);
         if ($extra && $query = http_build_query($extra, '', '&')) {
+=======
+        $extra = array_udiff_assoc(array_diff_key($parameters, $variables), $defaults, function ($a, $b) {
+            return $a == $b ? 0 : 1;
+        });
+
+        // extract fragment
+        $fragment = '';
+        if (isset($defaults['_fragment'])) {
+            $fragment = $defaults['_fragment'];
+        }
+
+        if (isset($extra['_fragment'])) {
+            $fragment = $extra['_fragment'];
+            unset($extra['_fragment']);
+        }
+
+        if ($extra && $query = http_build_query($extra, '', '&', PHP_QUERY_RFC3986)) {
+>>>>>>> git-aline/master/master
             // "/" and "?" can be left decoded for better user experience, see
             // http://tools.ietf.org/html/rfc3986#section-3.4
             $url .= '?'.strtr($query, array('%2F' => '/'));
         }
 
+<<<<<<< HEAD
+=======
+        if ('' !== $fragment) {
+            $url .= '#'.strtr(rawurlencode($fragment), array('%2F' => '/', '%3F' => '?'));
+        }
+
+>>>>>>> git-aline/master/master
         return $url;
     }
 
@@ -323,7 +435,11 @@ class UrlGenerator implements UrlGeneratorInterface, ConfigurableRequirementsInt
         }
 
         $targetDirs[] = $targetFile;
+<<<<<<< HEAD
         $path = str_repeat('../', count($sourceDirs)).implode('/', $targetDirs);
+=======
+        $path = str_repeat('../', \count($sourceDirs)).implode('/', $targetDirs);
+>>>>>>> git-aline/master/master
 
         // A reference to the same base directory or an empty subdirectory must be prefixed with "./".
         // This also applies to a segment with a colon character (e.g., "file:colon") that cannot be used

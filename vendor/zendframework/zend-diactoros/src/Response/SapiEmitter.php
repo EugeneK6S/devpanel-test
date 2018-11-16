@@ -3,7 +3,11 @@
  * Zend Framework (http://framework.zend.com/)
  *
  * @see       http://github.com/zendframework/zend-diactoros for the canonical source repository
+<<<<<<< HEAD
  * @copyright Copyright (c) 2015 Zend Technologies USA Inc. (http://www.zend.com)
+=======
+ * @copyright Copyright (c) 2015-2016 Zend Technologies USA Inc. (http://www.zend.com)
+>>>>>>> git-aline/master/master
  * @license   https://github.com/zendframework/zend-diactoros/blob/master/LICENSE.md New BSD License
  */
 
@@ -14,6 +18,11 @@ use RuntimeException;
 
 class SapiEmitter implements EmitterInterface
 {
+<<<<<<< HEAD
+=======
+    use SapiEmitterTrait;
+
+>>>>>>> git-aline/master/master
     /**
      * Emits a response for a PHP SAPI environment.
      *
@@ -29,6 +38,7 @@ class SapiEmitter implements EmitterInterface
             throw new RuntimeException('Unable to emit response; headers already sent');
         }
 
+<<<<<<< HEAD
         $this->emitStatusLine($response);
         $this->emitHeaders($response);
         $this->emitBody($response, $maxBufferLevel);
@@ -77,11 +87,20 @@ class SapiEmitter implements EmitterInterface
                 $first = false;
             }
         }
+=======
+        $response = $this->injectContentLength($response);
+
+        $this->emitStatusLine($response);
+        $this->emitHeaders($response);
+        $this->flush($maxBufferLevel);
+        $this->emitBody($response);
+>>>>>>> git-aline/master/master
     }
 
     /**
      * Emit the message body.
      *
+<<<<<<< HEAD
      * Loops through the output buffer, flushing each, before emitting
      * the response body using `echo()`.
      *
@@ -113,4 +132,12 @@ class SapiEmitter implements EmitterInterface
         $filtered = ucwords($filtered);
         return str_replace(' ', '-', $filtered);
     }
+=======
+     * @param ResponseInterface $response
+     */
+    private function emitBody(ResponseInterface $response)
+    {
+        echo $response->getBody();
+    }
+>>>>>>> git-aline/master/master
 }

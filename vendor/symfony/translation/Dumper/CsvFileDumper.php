@@ -26,7 +26,11 @@ class CsvFileDumper extends FileDumper
     /**
      * {@inheritdoc}
      */
+<<<<<<< HEAD
     public function format(MessageCatalogue $messages, $domain = 'messages')
+=======
+    public function formatCatalogue(MessageCatalogue $messages, $domain, array $options = array())
+>>>>>>> git-aline/master/master
     {
         $handle = fopen('php://memory', 'rb+');
 
@@ -44,8 +48,13 @@ class CsvFileDumper extends FileDumper
     /**
      * Sets the delimiter and escape character for CSV.
      *
+<<<<<<< HEAD
      * @param string $delimiter delimiter character
      * @param string $enclosure enclosure character
+=======
+     * @param string $delimiter Delimiter character
+     * @param string $enclosure Enclosure character
+>>>>>>> git-aline/master/master
      */
     public function setCsvControl($delimiter = ';', $enclosure = '"')
     {

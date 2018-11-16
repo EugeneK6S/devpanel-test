@@ -55,6 +55,14 @@ class PluginState
     protected $replace = false;
 
     /**
+<<<<<<< HEAD
+=======
+     * @var bool $ignore
+     */
+    protected $ignore = false;
+
+    /**
+>>>>>>> git-aline/master/master
      * Whether to merge the -dev sections.
      * @var bool $mergeDev
      */
@@ -75,6 +83,34 @@ class PluginState
     protected $mergeExtra = false;
 
     /**
+<<<<<<< HEAD
+=======
+     * Whether to merge the extra section in a deep / recursive way.
+     *
+     * By default the extra section is merged with array_merge() and duplicate
+     * keys are ignored. When enabled this allows to merge the arrays recursively
+     * using the following rule: Integer keys are merged, while array values are
+     * replaced where the later values overwrite the former.
+     *
+     * This is useful especially for the extra section when plugins use larger
+     * structures like a 'patches' key with the packages as sub-keys and the
+     * patches as values.
+     *
+     * When 'replace' mode is activated the order of array merges is exchanged.
+     *
+     * @var bool $mergeExtraDeep
+     */
+    protected $mergeExtraDeep = false;
+
+    /**
+     * Whether to merge the scripts section.
+     *
+     * @var bool $mergeScripts
+     */
+    protected $mergeScripts = false;
+
+    /**
+>>>>>>> git-aline/master/master
      * @var bool $firstInstall
      */
     protected $firstInstall = false;
@@ -114,8 +150,16 @@ class PluginState
                 'require' => array(),
                 'recurse' => true,
                 'replace' => false,
+<<<<<<< HEAD
                 'merge-dev' => true,
                 'merge-extra' => false,
+=======
+                'ignore-duplicates' => false,
+                'merge-dev' => true,
+                'merge-extra' => false,
+                'merge-extra-deep' => false,
+                'merge-scripts' => false,
+>>>>>>> git-aline/master/master
             ),
             isset($extra['merge-plugin']) ? $extra['merge-plugin'] : array()
         );
@@ -126,8 +170,16 @@ class PluginState
             $config['require'] : array($config['require']);
         $this->recurse = (bool)$config['recurse'];
         $this->replace = (bool)$config['replace'];
+<<<<<<< HEAD
         $this->mergeDev = (bool)$config['merge-dev'];
         $this->mergeExtra = (bool)$config['merge-extra'];
+=======
+        $this->ignore = (bool)$config['ignore-duplicates'];
+        $this->mergeDev = (bool)$config['merge-dev'];
+        $this->mergeExtra = (bool)$config['merge-extra'];
+        $this->mergeExtraDeep = (bool)$config['merge-extra-deep'];
+        $this->mergeScripts = (bool)$config['merge-scripts'];
+>>>>>>> git-aline/master/master
     }
 
     /**
@@ -217,7 +269,21 @@ class PluginState
      */
     public function isDevMode()
     {
+<<<<<<< HEAD
         return $this->mergeDev && $this->devMode;
+=======
+        return $this->shouldMergeDev() && $this->devMode;
+    }
+
+    /**
+     * Should devMode settings be merged?
+     *
+     * @return bool
+     */
+    public function shouldMergeDev()
+    {
+        return $this->mergeDev;
+>>>>>>> git-aline/master/master
     }
 
     /**
@@ -308,6 +374,19 @@ class PluginState
     }
 
     /**
+<<<<<<< HEAD
+=======
+     * Should duplicate links be ignored?
+     *
+     * @return bool
+     */
+    public function ignoreDuplicateLinks()
+    {
+        return $this->ignore;
+    }
+
+    /**
+>>>>>>> git-aline/master/master
      * Should the extra section be merged?
      *
      * By default, the extra section is not merged and there will be many
@@ -323,5 +402,42 @@ class PluginState
     {
         return $this->mergeExtra;
     }
+<<<<<<< HEAD
+=======
+
+    /**
+     * Should the extra section be merged deep / recursively?
+     *
+     * By default the extra section is merged with array_merge() and duplicate
+     * keys are ignored. When enabled this allows to merge the arrays recursively
+     * using the following rule: Integer keys are merged, while array values are
+     * replaced where the later values overwrite the former.
+     *
+     * This is useful especially for the extra section when plugins use larger
+     * structures like a 'patches' key with the packages as sub-keys and the
+     * patches as values.
+     *
+     * When 'replace' mode is activated the order of array merges is exchanged.
+     *
+     * @return bool
+     */
+    public function shouldMergeExtraDeep()
+    {
+        return $this->mergeExtraDeep;
+    }
+
+
+    /**
+     * Should the scripts section be merged?
+     *
+     * By default, the scripts section is not merged.
+     *
+     * @return bool
+     */
+    public function shouldMergeScripts()
+    {
+        return $this->mergeScripts;
+    }
+>>>>>>> git-aline/master/master
 }
 // vim:sw=4:ts=4:sts=4:et:

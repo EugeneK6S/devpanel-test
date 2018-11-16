@@ -26,8 +26,13 @@ interface EventDispatcherInterface
      * @param string $eventName The name of the event to dispatch. The name of
      *                          the event is the name of the method that is
      *                          invoked on listeners.
+<<<<<<< HEAD
      * @param Event  $event     The event to pass to the event handlers/listeners.
      *                          If not supplied, an empty Event instance is created.
+=======
+     * @param Event  $event     The event to pass to the event handlers/listeners
+     *                          If not supplied, an empty Event instance is created
+>>>>>>> git-aline/master/master
      *
      * @return Event
      */
@@ -48,8 +53,11 @@ interface EventDispatcherInterface
      *
      * The subscriber is asked for all the events he is
      * interested in and added as a listener for these events.
+<<<<<<< HEAD
      *
      * @param EventSubscriberInterface $subscriber The subscriber.
+=======
+>>>>>>> git-aline/master/master
      */
     public function addSubscriber(EventSubscriberInterface $subscriber);
 
@@ -61,11 +69,14 @@ interface EventDispatcherInterface
      */
     public function removeListener($eventName, $listener);
 
+<<<<<<< HEAD
     /**
      * Removes an event subscriber.
      *
      * @param EventSubscriberInterface $subscriber The subscriber
      */
+=======
+>>>>>>> git-aline/master/master
     public function removeSubscriber(EventSubscriberInterface $subscriber);
 
     /**
@@ -78,6 +89,21 @@ interface EventDispatcherInterface
     public function getListeners($eventName = null);
 
     /**
+<<<<<<< HEAD
+=======
+     * Gets the listener priority for a specific event.
+     *
+     * Returns null if the event or the listener does not exist.
+     *
+     * @param string   $eventName The name of the event
+     * @param callable $listener  The listener
+     *
+     * @return int|null The event listener priority
+     */
+    public function getListenerPriority($eventName, $listener);
+
+    /**
+>>>>>>> git-aline/master/master
      * Checks whether an event has any registered listeners.
      *
      * @param string $eventName The name of the event

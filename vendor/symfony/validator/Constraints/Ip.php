@@ -44,6 +44,11 @@ class Ip extends Constraint
     const V6_ONLY_PUBLIC = '6_public';
     const ALL_ONLY_PUBLIC = 'all_public';
 
+<<<<<<< HEAD
+=======
+    const INVALID_IP_ERROR = 'b1b427ae-9f6f-41b0-aa9b-84511fbb3c5b';
+
+>>>>>>> git-aline/master/master
     protected static $versions = array(
         self::V4,
         self::V6,
@@ -62,6 +67,13 @@ class Ip extends Constraint
         self::ALL_ONLY_PUBLIC,
     );
 
+<<<<<<< HEAD
+=======
+    protected static $errorNames = array(
+        self::INVALID_IP_ERROR => 'INVALID_IP_ERROR',
+    );
+
+>>>>>>> git-aline/master/master
     public $version = self::V4;
 
     public $message = 'This is not a valid IP address.';
@@ -73,7 +85,11 @@ class Ip extends Constraint
     {
         parent::__construct($options);
 
+<<<<<<< HEAD
         if (!in_array($this->version, self::$versions)) {
+=======
+        if (!\in_array($this->version, self::$versions)) {
+>>>>>>> git-aline/master/master
             throw new ConstraintDefinitionException(sprintf('The option "version" must be one of "%s"', implode('", "', self::$versions)));
         }
     }

@@ -11,9 +11,13 @@
 
 namespace Symfony\Component\Validator;
 
+<<<<<<< HEAD
 use Symfony\Component\Validator\Context\ExecutionContextInterface as ExecutionContextInterface2Dot5;
 use Symfony\Component\Validator\Violation\ConstraintViolationBuilderInterface;
 use Symfony\Component\Validator\Violation\LegacyConstraintViolationBuilder;
+=======
+use Symfony\Component\Validator\Context\ExecutionContextInterface;
+>>>>>>> git-aline/master/master
 
 /**
  * Base class for constraint validators.
@@ -25,15 +29,21 @@ abstract class ConstraintValidator implements ConstraintValidatorInterface
     /**
      * Whether to format {@link \DateTime} objects as RFC-3339 dates
      * ("Y-m-d H:i:s").
+<<<<<<< HEAD
      *
      * @var int
+=======
+>>>>>>> git-aline/master/master
      */
     const PRETTY_DATE = 1;
 
     /**
      * Whether to cast objects with a "__toString()" method to strings.
+<<<<<<< HEAD
      *
      * @var int
+=======
+>>>>>>> git-aline/master/master
      */
     const OBJECT_TO_STRING = 2;
 
@@ -51,6 +61,7 @@ abstract class ConstraintValidator implements ConstraintValidatorInterface
     }
 
     /**
+<<<<<<< HEAD
      * Wrapper for {@link ExecutionContextInterface::buildViolation} that
      * supports the 2.4 context API.
      *
@@ -96,6 +107,8 @@ abstract class ConstraintValidator implements ConstraintValidatorInterface
     }
 
     /**
+=======
+>>>>>>> git-aline/master/master
      * Returns a string representation of the type of the value.
      *
      * This method should be used if you pass the type of a value as
@@ -109,7 +122,11 @@ abstract class ConstraintValidator implements ConstraintValidatorInterface
      */
     protected function formatTypeOf($value)
     {
+<<<<<<< HEAD
         return is_object($value) ? get_class($value) : gettype($value);
+=======
+        return \is_object($value) ? \get_class($value) : \gettype($value);
+>>>>>>> git-aline/master/master
     }
 
     /**
@@ -118,9 +135,15 @@ abstract class ConstraintValidator implements ConstraintValidatorInterface
      * This method returns the equivalent PHP tokens for most scalar types
      * (i.e. "false" for false, "1" for 1 etc.). Strings are always wrapped
      * in double quotes ("). Objects, arrays and resources are formatted as
+<<<<<<< HEAD
      * "object", "array" and "resource". If the parameter $prettyDateTime
      * is set to true, {@link \DateTime} objects will be formatted as
      * RFC-3339 dates ("Y-m-d H:i:s").
+=======
+     * "object", "array" and "resource". If the $format bitmask contains
+     * the PRETTY_DATE bit, then {@link \DateTime} objects will be formatted
+     * as RFC-3339 dates ("Y-m-d H:i:s").
+>>>>>>> git-aline/master/master
      *
      * Be careful when passing message parameters to a constraint violation
      * that (may) contain objects, arrays or resources. These parameters
@@ -136,7 +159,11 @@ abstract class ConstraintValidator implements ConstraintValidatorInterface
      */
     protected function formatValue($value, $format = 0)
     {
+<<<<<<< HEAD
         $isDateTime = $value instanceof \DateTime || $value instanceof \DateTimeInterface;
+=======
+        $isDateTime = $value instanceof \DateTimeInterface;
+>>>>>>> git-aline/master/master
 
         if (($format & self::PRETTY_DATE) && $isDateTime) {
             if (class_exists('IntlDateFormatter')) {
@@ -158,14 +185,20 @@ abstract class ConstraintValidator implements ConstraintValidatorInterface
             return $value->format('Y-m-d H:i:s');
         }
 
+<<<<<<< HEAD
         if (is_object($value)) {
             if ($format & self::OBJECT_TO_STRING && method_exists($value, '__toString')) {
+=======
+        if (\is_object($value)) {
+            if (($format & self::OBJECT_TO_STRING) && method_exists($value, '__toString')) {
+>>>>>>> git-aline/master/master
                 return $value->__toString();
             }
 
             return 'object';
         }
 
+<<<<<<< HEAD
         if (is_array($value)) {
             return 'array';
         }
@@ -175,6 +208,17 @@ abstract class ConstraintValidator implements ConstraintValidatorInterface
         }
 
         if (is_resource($value)) {
+=======
+        if (\is_array($value)) {
+            return 'array';
+        }
+
+        if (\is_string($value)) {
+            return '"'.$value.'"';
+        }
+
+        if (\is_resource($value)) {
+>>>>>>> git-aline/master/master
             return 'resource';
         }
 

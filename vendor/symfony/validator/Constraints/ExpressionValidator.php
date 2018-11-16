@@ -12,12 +12,17 @@
 namespace Symfony\Component\Validator\Constraints;
 
 use Symfony\Component\ExpressionLanguage\ExpressionLanguage;
+<<<<<<< HEAD
 use Symfony\Component\PropertyAccess\PropertyAccess;
 use Symfony\Component\PropertyAccess\PropertyAccessorInterface;
 use Symfony\Component\PropertyAccess\PropertyPath;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\ConstraintValidator;
 use Symfony\Component\Validator\Context\ExecutionContextInterface;
+=======
+use Symfony\Component\Validator\Constraint;
+use Symfony\Component\Validator\ConstraintValidator;
+>>>>>>> git-aline/master/master
 use Symfony\Component\Validator\Exception\RuntimeException;
 use Symfony\Component\Validator\Exception\UnexpectedTypeException;
 
@@ -27,6 +32,7 @@ use Symfony\Component\Validator\Exception\UnexpectedTypeException;
  */
 class ExpressionValidator extends ConstraintValidator
 {
+<<<<<<< HEAD
     /**
      * @var PropertyAccessorInterface
      */
@@ -49,6 +55,13 @@ class ExpressionValidator extends ConstraintValidator
         }
 
         $this->propertyAccessor = $propertyAccessor;
+=======
+    private $expressionLanguage;
+
+    public function __construct($propertyAccessor = null, ExpressionLanguage $expressionLanguage = null)
+    {
+        $this->expressionLanguage = $expressionLanguage;
+>>>>>>> git-aline/master/master
     }
 
     /**
@@ -61,6 +74,7 @@ class ExpressionValidator extends ConstraintValidator
         }
 
         $variables = array();
+<<<<<<< HEAD
 
         // Symfony 2.5+
         if ($this->context instanceof ExecutionContextInterface) {
@@ -94,6 +108,16 @@ class ExpressionValidator extends ConstraintValidator
                     ->setParameter('{{ value }}', $this->formatValue($value))
                     ->addViolation();
             }
+=======
+        $variables['value'] = $value;
+        $variables['this'] = $this->context->getObject();
+
+        if (!$this->getExpressionLanguage()->evaluate($constraint->expression, $variables)) {
+            $this->context->buildViolation($constraint->message)
+                ->setParameter('{{ value }}', $this->formatValue($value, self::OBJECT_TO_STRING))
+                ->setCode(Expression::EXPRESSION_FAILED_ERROR)
+                ->addViolation();
+>>>>>>> git-aline/master/master
         }
     }
 
@@ -108,6 +132,7 @@ class ExpressionValidator extends ConstraintValidator
 
         return $this->expressionLanguage;
     }
+<<<<<<< HEAD
 
     private function getPropertyAccessor()
     {
@@ -120,4 +145,6 @@ class ExpressionValidator extends ConstraintValidator
 
         return $this->propertyAccessor;
     }
+=======
+>>>>>>> git-aline/master/master
 }

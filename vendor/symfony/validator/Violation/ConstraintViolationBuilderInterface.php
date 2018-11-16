@@ -19,8 +19,11 @@ namespace Symfony\Component\Validator\Violation;
  * Finally, call {@link addViolation()} to add the violation to the current
  * execution context.
  *
+<<<<<<< HEAD
  * @since  2.5
  *
+=======
+>>>>>>> git-aline/master/master
  * @author Bernhard Schussek <bschussek@gmail.com>
  */
 interface ConstraintViolationBuilderInterface
@@ -33,7 +36,11 @@ interface ConstraintViolationBuilderInterface
      *
      * @param string $path The property path
      *
+<<<<<<< HEAD
      * @return ConstraintViolationBuilderInterface This builder
+=======
+     * @return $this
+>>>>>>> git-aline/master/master
      */
     public function atPath($path);
 
@@ -43,7 +50,11 @@ interface ConstraintViolationBuilderInterface
      * @param string $key   The name of the parameter
      * @param string $value The value to be inserted in the parameter's place
      *
+<<<<<<< HEAD
      * @return ConstraintViolationBuilderInterface This builder
+=======
+     * @return $this
+>>>>>>> git-aline/master/master
      */
     public function setParameter($key, $value);
 
@@ -54,7 +65,11 @@ interface ConstraintViolationBuilderInterface
      *                          the values to be inserted in their place as
      *                          values
      *
+<<<<<<< HEAD
      * @return ConstraintViolationBuilderInterface This builder
+=======
+     * @return $this
+>>>>>>> git-aline/master/master
      */
     public function setParameters(array $parameters);
 
@@ -64,7 +79,11 @@ interface ConstraintViolationBuilderInterface
      *
      * @param string $translationDomain The translation domain
      *
+<<<<<<< HEAD
      * @return ConstraintViolationBuilderInterface This builder
+=======
+     * @return $this
+>>>>>>> git-aline/master/master
      *
      * @see \Symfony\Component\Translation\TranslatorInterface
      */
@@ -75,7 +94,11 @@ interface ConstraintViolationBuilderInterface
      *
      * @param mixed $invalidValue The invalid value
      *
+<<<<<<< HEAD
      * @return ConstraintViolationBuilderInterface This builder
+=======
+     * @return $this
+>>>>>>> git-aline/master/master
      */
     public function setInvalidValue($invalidValue);
 
@@ -85,7 +108,11 @@ interface ConstraintViolationBuilderInterface
      *
      * @param int $number The number for determining the plural form
      *
+<<<<<<< HEAD
      * @return ConstraintViolationBuilderInterface This builder
+=======
+     * @return $this
+>>>>>>> git-aline/master/master
      *
      * @see \Symfony\Component\Translation\TranslatorInterface::transChoice()
      */
@@ -94,9 +121,15 @@ interface ConstraintViolationBuilderInterface
     /**
      * Sets the violation code.
      *
+<<<<<<< HEAD
      * @param int $code The violation code
      *
      * @return ConstraintViolationBuilderInterface This builder
+=======
+     * @param string|null $code The violation code
+     *
+     * @return $this
+>>>>>>> git-aline/master/master
      */
     public function setCode($code);
 
@@ -105,7 +138,11 @@ interface ConstraintViolationBuilderInterface
      *
      * @param mixed $cause The cause of the violation
      *
+<<<<<<< HEAD
      * @return ConstraintViolationBuilderInterface This builder
+=======
+     * @return $this
+>>>>>>> git-aline/master/master
      */
     public function setCause($cause);
 

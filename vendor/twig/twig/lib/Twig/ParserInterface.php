@@ -3,7 +3,11 @@
 /*
  * This file is part of Twig.
  *
+<<<<<<< HEAD
  * (c) 2009 Fabien Potencier
+=======
+ * (c) Fabien Potencier
+>>>>>>> git-aline/master/master
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
@@ -21,9 +25,13 @@ interface Twig_ParserInterface
     /**
      * Converts a token stream to a node tree.
      *
+<<<<<<< HEAD
      * @param Twig_TokenStream $stream A token stream instance
      *
      * @return Twig_Node_Module A node tree
+=======
+     * @return Twig_Node_Module
+>>>>>>> git-aline/master/master
      *
      * @throws Twig_Error_Syntax When the token stream is syntactically or semantically wrong
      */

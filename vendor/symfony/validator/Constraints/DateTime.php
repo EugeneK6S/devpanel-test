@@ -21,9 +21,15 @@ use Symfony\Component\Validator\Constraint;
  */
 class DateTime extends Constraint
 {
+<<<<<<< HEAD
     const INVALID_FORMAT_ERROR = 1;
     const INVALID_DATE_ERROR = 2;
     const INVALID_TIME_ERROR = 3;
+=======
+    const INVALID_FORMAT_ERROR = '1a9da513-2640-4f84-9b6a-4d99dcddc628';
+    const INVALID_DATE_ERROR = 'd52afa47-620d-4d99-9f08-f4d85b36e33c';
+    const INVALID_TIME_ERROR = '5e797c9d-74f7-4098-baa3-94390c447b27';
+>>>>>>> git-aline/master/master
 
     protected static $errorNames = array(
         self::INVALID_FORMAT_ERROR => 'INVALID_FORMAT_ERROR',
@@ -31,5 +37,9 @@ class DateTime extends Constraint
         self::INVALID_TIME_ERROR => 'INVALID_TIME_ERROR',
     );
 
+<<<<<<< HEAD
+=======
+    public $format = 'Y-m-d H:i:s';
+>>>>>>> git-aline/master/master
     public $message = 'This value is not a valid datetime.';
 }

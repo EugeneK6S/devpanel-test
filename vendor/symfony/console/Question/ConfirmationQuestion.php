@@ -21,8 +21,11 @@ class ConfirmationQuestion extends Question
     private $trueAnswerRegex;
 
     /**
+<<<<<<< HEAD
      * Constructor.
      *
+=======
+>>>>>>> git-aline/master/master
      * @param string $question        The question to ask to the user
      * @param bool   $default         The default answer to return, true or false
      * @param string $trueAnswerRegex A regex to match the "yes" answer
@@ -46,7 +49,11 @@ class ConfirmationQuestion extends Question
         $regex = $this->trueAnswerRegex;
 
         return function ($answer) use ($default, $regex) {
+<<<<<<< HEAD
             if (is_bool($answer)) {
+=======
+            if (\is_bool($answer)) {
+>>>>>>> git-aline/master/master
                 return $answer;
             }
 

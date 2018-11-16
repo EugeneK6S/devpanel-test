@@ -26,7 +26,11 @@ class DumperCollection implements \IteratorAggregate
     private $parent;
 
     /**
+<<<<<<< HEAD
      * @var (DumperCollection|DumperRoute)[]
+=======
+     * @var DumperCollection[]|DumperRoute[]
+>>>>>>> git-aline/master/master
      */
     private $children = array();
 
@@ -38,7 +42,11 @@ class DumperCollection implements \IteratorAggregate
     /**
      * Returns the children routes and collections.
      *
+<<<<<<< HEAD
      * @return (DumperCollection|DumperRoute)[] Array of DumperCollection|DumperRoute
+=======
+     * @return self[]|DumperRoute[]
+>>>>>>> git-aline/master/master
      */
     public function all()
     {
@@ -76,7 +84,11 @@ class DumperCollection implements \IteratorAggregate
     /**
      * Returns an iterator over the children.
      *
+<<<<<<< HEAD
      * @return \Iterator The iterator
+=======
+     * @return \Iterator|DumperCollection[]|DumperRoute[] The iterator
+>>>>>>> git-aline/master/master
      */
     public function getIterator()
     {
@@ -86,7 +98,11 @@ class DumperCollection implements \IteratorAggregate
     /**
      * Returns the root of the collection.
      *
+<<<<<<< HEAD
      * @return DumperCollection The root collection
+=======
+     * @return self The root collection
+>>>>>>> git-aline/master/master
      */
     public function getRoot()
     {
@@ -96,7 +112,11 @@ class DumperCollection implements \IteratorAggregate
     /**
      * Returns the parent collection.
      *
+<<<<<<< HEAD
      * @return DumperCollection|null The parent collection or null if the collection has no parent
+=======
+     * @return self|null The parent collection or null if the collection has no parent
+>>>>>>> git-aline/master/master
      */
     protected function getParent()
     {
@@ -105,10 +125,15 @@ class DumperCollection implements \IteratorAggregate
 
     /**
      * Sets the parent collection.
+<<<<<<< HEAD
      *
      * @param DumperCollection $parent The parent collection
      */
     protected function setParent(DumperCollection $parent)
+=======
+     */
+    protected function setParent(self $parent)
+>>>>>>> git-aline/master/master
     {
         $this->parent = $parent;
     }

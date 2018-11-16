@@ -11,8 +11,13 @@
 
 namespace Symfony\Component\DependencyInjection\Compiler;
 
+<<<<<<< HEAD
 use Symfony\Component\DependencyInjection\Definition;
 use Symfony\Component\DependencyInjection\Alias;
+=======
+use Symfony\Component\DependencyInjection\Alias;
+use Symfony\Component\DependencyInjection\Definition;
+>>>>>>> git-aline/master/master
 
 /**
  * Represents a node in your service graph.
@@ -29,8 +34,11 @@ class ServiceReferenceGraphNode
     private $value;
 
     /**
+<<<<<<< HEAD
      * Constructor.
      *
+=======
+>>>>>>> git-aline/master/master
      * @param string $id    The node identifier
      * @param mixed  $value The node value
      */
@@ -40,21 +48,27 @@ class ServiceReferenceGraphNode
         $this->value = $value;
     }
 
+<<<<<<< HEAD
     /**
      * Adds an in edge to this node.
      *
      * @param ServiceReferenceGraphEdge $edge
      */
+=======
+>>>>>>> git-aline/master/master
     public function addInEdge(ServiceReferenceGraphEdge $edge)
     {
         $this->inEdges[] = $edge;
     }
 
+<<<<<<< HEAD
     /**
      * Adds an out edge to this node.
      *
      * @param ServiceReferenceGraphEdge $edge
      */
+=======
+>>>>>>> git-aline/master/master
     public function addOutEdge(ServiceReferenceGraphEdge $edge)
     {
         $this->outEdges[] = $edge;
@@ -119,4 +133,15 @@ class ServiceReferenceGraphNode
     {
         return $this->value;
     }
+<<<<<<< HEAD
+=======
+
+    /**
+     * Clears all edges.
+     */
+    public function clear()
+    {
+        $this->inEdges = $this->outEdges = array();
+    }
+>>>>>>> git-aline/master/master
 }

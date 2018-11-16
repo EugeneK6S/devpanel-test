@@ -38,7 +38,11 @@ interface EventSubscriberInterface
      *
      *  * array('eventName' => 'methodName')
      *  * array('eventName' => array('methodName', $priority))
+<<<<<<< HEAD
      *  * array('eventName' => array(array('methodName1', $priority), array('methodName2'))
+=======
+     *  * array('eventName' => array(array('methodName1', $priority), array('methodName2')))
+>>>>>>> git-aline/master/master
      *
      * @return array The event names to listen to
      */

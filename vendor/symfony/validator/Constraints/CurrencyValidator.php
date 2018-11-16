@@ -12,7 +12,10 @@
 namespace Symfony\Component\Validator\Constraints;
 
 use Symfony\Component\Intl\Intl;
+<<<<<<< HEAD
 use Symfony\Component\Validator\Context\ExecutionContextInterface;
+=======
+>>>>>>> git-aline/master/master
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\ConstraintValidator;
 use Symfony\Component\Validator\Exception\UnexpectedTypeException;
@@ -21,6 +24,10 @@ use Symfony\Component\Validator\Exception\UnexpectedTypeException;
  * Validates whether a value is a valid currency.
  *
  * @author Miha Vrhovnik <miha.vrhovnik@pagein.si>
+<<<<<<< HEAD
+=======
+ * @author Bernhard Schussek <bschussek@gmail.com>
+>>>>>>> git-aline/master/master
  */
 class CurrencyValidator extends ConstraintValidator
 {
@@ -37,7 +44,11 @@ class CurrencyValidator extends ConstraintValidator
             return;
         }
 
+<<<<<<< HEAD
         if (!is_scalar($value) && !(is_object($value) && method_exists($value, '__toString'))) {
+=======
+        if (!is_scalar($value) && !(\is_object($value) && method_exists($value, '__toString'))) {
+>>>>>>> git-aline/master/master
             throw new UnexpectedTypeException($value, 'string');
         }
 
@@ -45,6 +56,7 @@ class CurrencyValidator extends ConstraintValidator
         $currencies = Intl::getCurrencyBundle()->getCurrencyNames();
 
         if (!isset($currencies[$value])) {
+<<<<<<< HEAD
             if ($this->context instanceof ExecutionContextInterface) {
                 $this->context->buildViolation($constraint->message)
                     ->setParameter('{{ value }}', $this->formatValue($value))
@@ -54,6 +66,12 @@ class CurrencyValidator extends ConstraintValidator
                     ->setParameter('{{ value }}', $this->formatValue($value))
                     ->addViolation();
             }
+=======
+            $this->context->buildViolation($constraint->message)
+                ->setParameter('{{ value }}', $this->formatValue($value))
+                ->setCode(Currency::NO_SUCH_CURRENCY_ERROR)
+                ->addViolation();
+>>>>>>> git-aline/master/master
         }
     }
 }

@@ -12,4 +12,8 @@ More Information
 
 Read the `documentation`_ for more information.
 
+<<<<<<< HEAD
 .. _documentation: http://twig.sensiolabs.org/documentation
+=======
+.. _documentation: https://twig.symfony.com/documentation
+>>>>>>> git-aline/master/master

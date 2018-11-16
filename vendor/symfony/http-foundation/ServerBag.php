@@ -68,7 +68,11 @@ class ServerBag extends ParameterBag
                 if (0 === stripos($authorizationHeader, 'basic ')) {
                     // Decode AUTHORIZATION header into PHP_AUTH_USER and PHP_AUTH_PW when authorization header is basic
                     $exploded = explode(':', base64_decode(substr($authorizationHeader, 6)), 2);
+<<<<<<< HEAD
                     if (count($exploded) == 2) {
+=======
+                    if (2 == \count($exploded)) {
+>>>>>>> git-aline/master/master
                         list($headers['PHP_AUTH_USER'], $headers['PHP_AUTH_PW']) = $exploded;
                     }
                 } elseif (empty($this->parameters['PHP_AUTH_DIGEST']) && (0 === stripos($authorizationHeader, 'digest '))) {
@@ -86,6 +90,13 @@ class ServerBag extends ParameterBag
             }
         }
 
+<<<<<<< HEAD
+=======
+        if (isset($headers['AUTHORIZATION'])) {
+            return $headers;
+        }
+
+>>>>>>> git-aline/master/master
         // PHP_AUTH_USER/PHP_AUTH_PW
         if (isset($headers['PHP_AUTH_USER'])) {
             $headers['AUTHORIZATION'] = 'Basic '.base64_encode($headers['PHP_AUTH_USER'].':'.$headers['PHP_AUTH_PW']);

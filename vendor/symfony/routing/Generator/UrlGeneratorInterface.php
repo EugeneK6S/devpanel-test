@@ -34,25 +34,41 @@ interface UrlGeneratorInterface extends RequestContextAwareInterface
     /**
      * Generates an absolute URL, e.g. "http://example.com/dir/file".
      */
+<<<<<<< HEAD
     const ABSOLUTE_URL = true;
+=======
+    const ABSOLUTE_URL = 0;
+>>>>>>> git-aline/master/master
 
     /**
      * Generates an absolute path, e.g. "/dir/file".
      */
+<<<<<<< HEAD
     const ABSOLUTE_PATH = false;
+=======
+    const ABSOLUTE_PATH = 1;
+>>>>>>> git-aline/master/master
 
     /**
      * Generates a relative path based on the current request path, e.g. "../parent-file".
      *
      * @see UrlGenerator::getRelativePath()
      */
+<<<<<<< HEAD
     const RELATIVE_PATH = 'relative';
+=======
+    const RELATIVE_PATH = 2;
+>>>>>>> git-aline/master/master
 
     /**
      * Generates a network path, e.g. "//example.com/dir/file".
      * Such reference reuses the current scheme but specifies the host.
      */
+<<<<<<< HEAD
     const NETWORK_PATH = 'network';
+=======
+    const NETWORK_PATH = 3;
+>>>>>>> git-aline/master/master
 
     /**
      * Generates a URL or path for a specific route based on the given parameters.
@@ -69,9 +85,17 @@ interface UrlGeneratorInterface extends RequestContextAwareInterface
      *
      * If there is no route with the given name, the generator must throw the RouteNotFoundException.
      *
+<<<<<<< HEAD
      * @param string      $name          The name of the route
      * @param mixed       $parameters    An array of parameters
      * @param bool|string $referenceType The type of reference to be generated (one of the constants)
+=======
+     * The special parameter _fragment will be used as the document fragment suffixed to the final URL.
+     *
+     * @param string $name          The name of the route
+     * @param mixed  $parameters    An array of parameters
+     * @param int    $referenceType The type of reference to be generated (one of the constants)
+>>>>>>> git-aline/master/master
      *
      * @return string The generated URL
      *

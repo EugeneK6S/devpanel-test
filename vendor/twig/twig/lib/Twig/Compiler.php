@@ -3,8 +3,13 @@
 /*
  * This file is part of Twig.
  *
+<<<<<<< HEAD
  * (c) 2009 Fabien Potencier
  * (c) 2009 Armin Ronacher
+=======
+ * (c) Fabien Potencier
+ * (c) Armin Ronacher
+>>>>>>> git-aline/master/master
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
@@ -25,26 +30,45 @@ class Twig_Compiler implements Twig_CompilerInterface
     protected $sourceOffset;
     protected $sourceLine;
     protected $filename;
+<<<<<<< HEAD
 
     /**
      * Constructor.
      *
      * @param Twig_Environment $env The twig environment instance
      */
+=======
+    private $varNameSalt = 0;
+
+>>>>>>> git-aline/master/master
     public function __construct(Twig_Environment $env)
     {
         $this->env = $env;
     }
 
+<<<<<<< HEAD
     public function getFilename()
     {
+=======
+    /**
+     * @deprecated since 1.25 (to be removed in 2.0)
+     */
+    public function getFilename()
+    {
+        @trigger_error(sprintf('The %s() method is deprecated since version 1.25 and will be removed in 2.0.', __FUNCTION__), E_USER_DEPRECATED);
+
+>>>>>>> git-aline/master/master
         return $this->filename;
     }
 
     /**
      * Returns the environment instance related to this compiler.
      *
+<<<<<<< HEAD
      * @return Twig_Environment The environment instance
+=======
+     * @return Twig_Environment
+>>>>>>> git-aline/master/master
      */
     public function getEnvironment()
     {
@@ -67,7 +91,11 @@ class Twig_Compiler implements Twig_CompilerInterface
      * @param Twig_NodeInterface $node        The node to compile
      * @param int                $indentation The current indentation
      *
+<<<<<<< HEAD
      * @return Twig_Compiler The current compiler instance
+=======
+     * @return $this
+>>>>>>> git-aline/master/master
      */
     public function compile(Twig_NodeInterface $node, $indentation = 0)
     {
@@ -78,9 +106,17 @@ class Twig_Compiler implements Twig_CompilerInterface
         // source code starts at 1 (as we then increment it when we encounter new lines)
         $this->sourceLine = 1;
         $this->indentation = $indentation;
+<<<<<<< HEAD
 
         if ($node instanceof Twig_Node_Module) {
             $this->filename = $node->getAttribute('filename');
+=======
+        $this->varNameSalt = 0;
+
+        if ($node instanceof Twig_Node_Module) {
+            // to be removed in 2.0
+            $this->filename = $node->getTemplateName();
+>>>>>>> git-aline/master/master
         }
 
         $node->compile($this);
@@ -91,7 +127,11 @@ class Twig_Compiler implements Twig_CompilerInterface
     public function subcompile(Twig_NodeInterface $node, $raw = true)
     {
         if (false === $raw) {
+<<<<<<< HEAD
             $this->addIndentation();
+=======
+            $this->source .= str_repeat(' ', $this->indentation * 4);
+>>>>>>> git-aline/master/master
         }
 
         $node->compile($this);
@@ -104,7 +144,11 @@ class Twig_Compiler implements Twig_CompilerInterface
      *
      * @param string $string The string
      *
+<<<<<<< HEAD
      * @return Twig_Compiler The current compiler instance
+=======
+     * @return $this
+>>>>>>> git-aline/master/master
      */
     public function raw($string)
     {
@@ -116,14 +160,22 @@ class Twig_Compiler implements Twig_CompilerInterface
     /**
      * Writes a string to the compiled code by adding indentation.
      *
+<<<<<<< HEAD
      * @return Twig_Compiler The current compiler instance
+=======
+     * @return $this
+>>>>>>> git-aline/master/master
      */
     public function write()
     {
         $strings = func_get_args();
         foreach ($strings as $string) {
+<<<<<<< HEAD
             $this->addIndentation();
             $this->source .= $string;
+=======
+            $this->source .= str_repeat(' ', $this->indentation * 4).$string;
+>>>>>>> git-aline/master/master
         }
 
         return $this;
@@ -132,10 +184,21 @@ class Twig_Compiler implements Twig_CompilerInterface
     /**
      * Appends an indentation to the current PHP code after compilation.
      *
+<<<<<<< HEAD
      * @return Twig_Compiler The current compiler instance
      */
     public function addIndentation()
     {
+=======
+     * @return $this
+     *
+     * @deprecated since 1.27 (to be removed in 2.0).
+     */
+    public function addIndentation()
+    {
+        @trigger_error('The '.__METHOD__.' method is deprecated since version 1.27 and will be removed in 2.0. Use write(\'\') instead.', E_USER_DEPRECATED);
+
+>>>>>>> git-aline/master/master
         $this->source .= str_repeat(' ', $this->indentation * 4);
 
         return $this;
@@ -146,7 +209,11 @@ class Twig_Compiler implements Twig_CompilerInterface
      *
      * @param string $value The string
      *
+<<<<<<< HEAD
      * @return Twig_Compiler The current compiler instance
+=======
+     * @return $this
+>>>>>>> git-aline/master/master
      */
     public function string($value)
     {
@@ -160,12 +227,20 @@ class Twig_Compiler implements Twig_CompilerInterface
      *
      * @param mixed $value The value to convert
      *
+<<<<<<< HEAD
      * @return Twig_Compiler The current compiler instance
+=======
+     * @return $this
+>>>>>>> git-aline/master/master
      */
     public function repr($value)
     {
         if (is_int($value) || is_float($value)) {
+<<<<<<< HEAD
             if (false !== $locale = setlocale(LC_NUMERIC, 0)) {
+=======
+            if (false !== $locale = setlocale(LC_NUMERIC, '0')) {
+>>>>>>> git-aline/master/master
                 setlocale(LC_NUMERIC, 'C');
             }
 
@@ -201,6 +276,7 @@ class Twig_Compiler implements Twig_CompilerInterface
     /**
      * Adds debugging information.
      *
+<<<<<<< HEAD
      * @param Twig_NodeInterface $node The related twig node
      *
      * @return Twig_Compiler The current compiler instance
@@ -209,20 +285,39 @@ class Twig_Compiler implements Twig_CompilerInterface
     {
         if ($node->getLine() != $this->lastLine) {
             $this->write(sprintf("// line %d\n", $node->getLine()));
+=======
+     * @return $this
+     */
+    public function addDebugInfo(Twig_NodeInterface $node)
+    {
+        if ($node->getTemplateLine() != $this->lastLine) {
+            $this->write(sprintf("// line %d\n", $node->getTemplateLine()));
+>>>>>>> git-aline/master/master
 
             // when mbstring.func_overload is set to 2
             // mb_substr_count() replaces substr_count()
             // but they have different signatures!
             if (((int) ini_get('mbstring.func_overload')) & 2) {
+<<<<<<< HEAD
+=======
+                @trigger_error('Support for having "mbstring.func_overload" different from 0 is deprecated version 1.29 and will be removed in 2.0.', E_USER_DEPRECATED);
+
+>>>>>>> git-aline/master/master
                 // this is much slower than the "right" version
                 $this->sourceLine += mb_substr_count(mb_substr($this->source, $this->sourceOffset), "\n");
             } else {
                 $this->sourceLine += substr_count($this->source, "\n", $this->sourceOffset);
             }
             $this->sourceOffset = strlen($this->source);
+<<<<<<< HEAD
             $this->debugInfo[$this->sourceLine] = $node->getLine();
 
             $this->lastLine = $node->getLine();
+=======
+            $this->debugInfo[$this->sourceLine] = $node->getTemplateLine();
+
+            $this->lastLine = $node->getTemplateLine();
+>>>>>>> git-aline/master/master
         }
 
         return $this;
@@ -240,7 +335,11 @@ class Twig_Compiler implements Twig_CompilerInterface
      *
      * @param int $step The number of indentation to add
      *
+<<<<<<< HEAD
      * @return Twig_Compiler The current compiler instance
+=======
+     * @return $this
+>>>>>>> git-aline/master/master
      */
     public function indent($step = 1)
     {
@@ -254,7 +353,11 @@ class Twig_Compiler implements Twig_CompilerInterface
      *
      * @param int $step The number of indentation to remove
      *
+<<<<<<< HEAD
      * @return Twig_Compiler The current compiler instance
+=======
+     * @return $this
+>>>>>>> git-aline/master/master
      *
      * @throws LogicException When trying to outdent too much so the indentation would become negative
      */
@@ -262,7 +365,11 @@ class Twig_Compiler implements Twig_CompilerInterface
     {
         // can't outdent by more steps than the current indentation level
         if ($this->indentation < $step) {
+<<<<<<< HEAD
             throw new LogicException('Unable to call outdent() as the indentation would become negative');
+=======
+            throw new LogicException('Unable to call outdent() as the indentation would become negative.');
+>>>>>>> git-aline/master/master
         }
 
         $this->indentation -= $step;
@@ -272,6 +379,15 @@ class Twig_Compiler implements Twig_CompilerInterface
 
     public function getVarName()
     {
+<<<<<<< HEAD
         return sprintf('__internal_%s', hash('sha256', uniqid(mt_rand(), true), false));
     }
 }
+=======
+        return sprintf('__internal_%s', hash('sha256', __METHOD__.$this->varNameSalt++));
+    }
+}
+
+class_alias('Twig_Compiler', 'Twig\Compiler', false);
+class_exists('Twig_Node');
+>>>>>>> git-aline/master/master

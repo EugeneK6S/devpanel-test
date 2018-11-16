@@ -11,6 +11,12 @@
 
 namespace Symfony\Component\Console\Question;
 
+<<<<<<< HEAD
+=======
+use Symfony\Component\Console\Exception\InvalidArgumentException;
+use Symfony\Component\Console\Exception\LogicException;
+
+>>>>>>> git-aline/master/master
 /**
  * Represents a Question.
  *
@@ -28,8 +34,11 @@ class Question
     private $normalizer;
 
     /**
+<<<<<<< HEAD
      * Constructor.
      *
+=======
+>>>>>>> git-aline/master/master
      * @param string $question The question to ask to the user
      * @param mixed  $default  The default answer to return if the user enters nothing
      */
@@ -74,14 +83,24 @@ class Question
      *
      * @param bool $hidden
      *
+<<<<<<< HEAD
      * @return Question The current instance
      *
      * @throws \LogicException In case the autocompleter is also used
+=======
+     * @return $this
+     *
+     * @throws LogicException In case the autocompleter is also used
+>>>>>>> git-aline/master/master
      */
     public function setHidden($hidden)
     {
         if ($this->autocompleterValues) {
+<<<<<<< HEAD
             throw new \LogicException('A hidden question cannot use the autocompleter.');
+=======
+            throw new LogicException('A hidden question cannot use the autocompleter.');
+>>>>>>> git-aline/master/master
         }
 
         $this->hidden = (bool) $hidden;
@@ -104,7 +123,11 @@ class Question
      *
      * @param bool $fallback
      *
+<<<<<<< HEAD
      * @return Question The current instance
+=======
+     * @return $this
+>>>>>>> git-aline/master/master
      */
     public function setHiddenFallback($fallback)
     {
@@ -116,7 +139,11 @@ class Question
     /**
      * Gets values for the autocompleter.
      *
+<<<<<<< HEAD
      * @return null|array|\Traversable
+=======
+     * @return null|iterable
+>>>>>>> git-aline/master/master
      */
     public function getAutocompleterValues()
     {
@@ -126,6 +153,7 @@ class Question
     /**
      * Sets values for the autocompleter.
      *
+<<<<<<< HEAD
      * @param null|array|\Traversable $values
      *
      * @return Question The current instance
@@ -147,6 +175,27 @@ class Question
 
         if ($this->hidden) {
             throw new \LogicException('A hidden question cannot use the autocompleter.');
+=======
+     * @param null|iterable $values
+     *
+     * @return $this
+     *
+     * @throws InvalidArgumentException
+     * @throws LogicException
+     */
+    public function setAutocompleterValues($values)
+    {
+        if (\is_array($values)) {
+            $values = $this->isAssoc($values) ? array_merge(array_keys($values), array_values($values)) : array_values($values);
+        }
+
+        if (null !== $values && !\is_array($values) && !$values instanceof \Traversable) {
+            throw new InvalidArgumentException('Autocompleter values can be either an array, `null` or a `Traversable` object.');
+        }
+
+        if ($this->hidden) {
+            throw new LogicException('A hidden question cannot use the autocompleter.');
+>>>>>>> git-aline/master/master
         }
 
         $this->autocompleterValues = $values;
@@ -159,9 +208,15 @@ class Question
      *
      * @param null|callable $validator
      *
+<<<<<<< HEAD
      * @return Question The current instance
      */
     public function setValidator($validator)
+=======
+     * @return $this
+     */
+    public function setValidator(callable $validator = null)
+>>>>>>> git-aline/master/master
     {
         $this->validator = $validator;
 
@@ -185,14 +240,24 @@ class Question
      *
      * @param null|int $attempts
      *
+<<<<<<< HEAD
      * @return Question The current instance
      *
      * @throws \InvalidArgumentException In case the number of attempts is invalid.
+=======
+     * @return $this
+     *
+     * @throws InvalidArgumentException in case the number of attempts is invalid
+>>>>>>> git-aline/master/master
      */
     public function setMaxAttempts($attempts)
     {
         if (null !== $attempts && $attempts < 1) {
+<<<<<<< HEAD
             throw new \InvalidArgumentException('Maximum number of attempts must be a positive value.');
+=======
+            throw new InvalidArgumentException('Maximum number of attempts must be a positive value.');
+>>>>>>> git-aline/master/master
         }
 
         $this->attempts = $attempts;
@@ -219,9 +284,15 @@ class Question
      *
      * @param callable $normalizer
      *
+<<<<<<< HEAD
      * @return Question The current instance
      */
     public function setNormalizer($normalizer)
+=======
+     * @return $this
+     */
+    public function setNormalizer(callable $normalizer)
+>>>>>>> git-aline/master/master
     {
         $this->normalizer = $normalizer;
 
@@ -242,6 +313,10 @@ class Question
 
     protected function isAssoc($array)
     {
+<<<<<<< HEAD
         return (bool) count(array_filter(array_keys($array), 'is_string'));
+=======
+        return (bool) \count(array_filter(array_keys($array), 'is_string'));
+>>>>>>> git-aline/master/master
     }
 }

@@ -12,8 +12,11 @@
 namespace Symfony\Component\HttpFoundation\Session\Storage\Handler;
 
 /**
+<<<<<<< HEAD
  * MemcachedSessionHandler.
  *
+=======
+>>>>>>> git-aline/master/master
  * Memcached based session storage handler based on the Memcached class
  * provided by the PHP memcached extension.
  *
@@ -21,11 +24,16 @@ namespace Symfony\Component\HttpFoundation\Session\Storage\Handler;
  *
  * @author Drak <drak@zikula.org>
  */
+<<<<<<< HEAD
 class MemcachedSessionHandler implements \SessionHandlerInterface
 {
     /**
      * @var \Memcached Memcached driver.
      */
+=======
+class MemcachedSessionHandler extends AbstractSessionHandler
+{
+>>>>>>> git-aline/master/master
     private $memcached;
 
     /**
@@ -34,7 +42,11 @@ class MemcachedSessionHandler implements \SessionHandlerInterface
     private $ttl;
 
     /**
+<<<<<<< HEAD
      * @var string Key prefix for shared environments.
+=======
+     * @var string Key prefix for shared environments
+>>>>>>> git-aline/master/master
      */
     private $prefix;
 
@@ -43,7 +55,11 @@ class MemcachedSessionHandler implements \SessionHandlerInterface
      *
      * List of available options:
      *  * prefix: The prefix to use for the memcached keys in order to avoid collision
+<<<<<<< HEAD
      *  * expiretime: The time to live in seconds
+=======
+     *  * expiretime: The time to live in seconds.
+>>>>>>> git-aline/master/master
      *
      * @param \Memcached $memcached A \Memcached instance
      * @param array      $options   An associative array of Memcached options
@@ -67,7 +83,11 @@ class MemcachedSessionHandler implements \SessionHandlerInterface
     /**
      * {@inheritdoc}
      */
+<<<<<<< HEAD
     public function open($savePath, $sessionName)
+=======
+    public function close()
+>>>>>>> git-aline/master/master
     {
         return true;
     }
@@ -75,23 +95,41 @@ class MemcachedSessionHandler implements \SessionHandlerInterface
     /**
      * {@inheritdoc}
      */
+<<<<<<< HEAD
     public function close()
     {
         return true;
+=======
+    protected function doRead($sessionId)
+    {
+        return $this->memcached->get($this->prefix.$sessionId) ?: '';
+>>>>>>> git-aline/master/master
     }
 
     /**
      * {@inheritdoc}
      */
+<<<<<<< HEAD
     public function read($sessionId)
     {
         return $this->memcached->get($this->prefix.$sessionId) ?: '';
+=======
+    public function updateTimestamp($sessionId, $data)
+    {
+        $this->memcached->touch($this->prefix.$sessionId, time() + $this->ttl);
+
+        return true;
+>>>>>>> git-aline/master/master
     }
 
     /**
      * {@inheritdoc}
      */
+<<<<<<< HEAD
     public function write($sessionId, $data)
+=======
+    protected function doWrite($sessionId, $data)
+>>>>>>> git-aline/master/master
     {
         return $this->memcached->set($this->prefix.$sessionId, $data, time() + $this->ttl);
     }
@@ -99,9 +137,17 @@ class MemcachedSessionHandler implements \SessionHandlerInterface
     /**
      * {@inheritdoc}
      */
+<<<<<<< HEAD
     public function destroy($sessionId)
     {
         return $this->memcached->delete($this->prefix.$sessionId);
+=======
+    protected function doDestroy($sessionId)
+    {
+        $result = $this->memcached->delete($this->prefix.$sessionId);
+
+        return $result || \Memcached::RES_NOTFOUND == $this->memcached->getResultCode();
+>>>>>>> git-aline/master/master
     }
 
     /**

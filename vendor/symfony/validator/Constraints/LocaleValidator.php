@@ -12,7 +12,10 @@
 namespace Symfony\Component\Validator\Constraints;
 
 use Symfony\Component\Intl\Intl;
+<<<<<<< HEAD
 use Symfony\Component\Validator\Context\ExecutionContextInterface;
+=======
+>>>>>>> git-aline/master/master
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\ConstraintValidator;
 use Symfony\Component\Validator\Exception\UnexpectedTypeException;
@@ -37,12 +40,17 @@ class LocaleValidator extends ConstraintValidator
             return;
         }
 
+<<<<<<< HEAD
         if (!is_scalar($value) && !(is_object($value) && method_exists($value, '__toString'))) {
+=======
+        if (!is_scalar($value) && !(\is_object($value) && method_exists($value, '__toString'))) {
+>>>>>>> git-aline/master/master
             throw new UnexpectedTypeException($value, 'string');
         }
 
         $value = (string) $value;
         $locales = Intl::getLocaleBundle()->getLocaleNames();
+<<<<<<< HEAD
 
         if (!isset($locales[$value])) {
             if ($this->context instanceof ExecutionContextInterface) {
@@ -54,6 +62,15 @@ class LocaleValidator extends ConstraintValidator
                     ->setParameter('{{ value }}', $this->formatValue($value))
                     ->addViolation();
             }
+=======
+        $aliases = Intl::getLocaleBundle()->getAliases();
+
+        if (!isset($locales[$value]) && !\in_array($value, $aliases)) {
+            $this->context->buildViolation($constraint->message)
+                ->setParameter('{{ value }}', $this->formatValue($value))
+                ->setCode(Locale::NO_SUCH_LOCALE_ERROR)
+                ->addViolation();
+>>>>>>> git-aline/master/master
         }
     }
 }

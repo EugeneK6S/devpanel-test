@@ -14,6 +14,7 @@ namespace Symfony\Component\HttpFoundation\Session\Flash;
 /**
  * FlashBag flash message container.
  *
+<<<<<<< HEAD
  * \IteratorAggregate implementation is deprecated and will be removed in 3.0.
  *
  * @author Drak <drak@zikula.org>
@@ -42,6 +43,20 @@ class FlashBag implements FlashBagInterface, \IteratorAggregate
      * @param string $storageKey The key used to store flashes in the session.
      */
     public function __construct($storageKey = '_sf2_flashes')
+=======
+ * @author Drak <drak@zikula.org>
+ */
+class FlashBag implements FlashBagInterface
+{
+    private $name = 'flashes';
+    private $flashes = array();
+    private $storageKey;
+
+    /**
+     * @param string $storageKey The key used to store flashes in the session
+     */
+    public function __construct($storageKey = '_symfony_flashes')
+>>>>>>> git-aline/master/master
     {
         $this->storageKey = $storageKey;
     }
@@ -165,6 +180,7 @@ class FlashBag implements FlashBagInterface, \IteratorAggregate
     {
         return $this->all();
     }
+<<<<<<< HEAD
 
     /**
      * Returns an iterator for flashes.
@@ -179,4 +195,6 @@ class FlashBag implements FlashBagInterface, \IteratorAggregate
 
         return new \ArrayIterator($this->all());
     }
+=======
+>>>>>>> git-aline/master/master
 }

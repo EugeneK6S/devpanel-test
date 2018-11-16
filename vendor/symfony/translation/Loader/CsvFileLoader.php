@@ -11,16 +11,24 @@
 
 namespace Symfony\Component\Translation\Loader;
 
+<<<<<<< HEAD
 use Symfony\Component\Translation\Exception\InvalidResourceException;
 use Symfony\Component\Translation\Exception\NotFoundResourceException;
 use Symfony\Component\Config\Resource\FileResource;
+=======
+use Symfony\Component\Translation\Exception\NotFoundResourceException;
+>>>>>>> git-aline/master/master
 
 /**
  * CsvFileLoader loads translations from CSV files.
  *
  * @author Saša Stamenković <umpirsky@gmail.com>
  */
+<<<<<<< HEAD
 class CsvFileLoader extends ArrayLoader
+=======
+class CsvFileLoader extends FileLoader
+>>>>>>> git-aline/master/master
 {
     private $delimiter = ';';
     private $enclosure = '"';
@@ -29,6 +37,7 @@ class CsvFileLoader extends ArrayLoader
     /**
      * {@inheritdoc}
      */
+<<<<<<< HEAD
     public function load($resource, $locale, $domain = 'messages')
     {
         if (!stream_is_local($resource)) {
@@ -39,6 +48,10 @@ class CsvFileLoader extends ArrayLoader
             throw new NotFoundResourceException(sprintf('File "%s" not found.', $resource));
         }
 
+=======
+    protected function loadResource($resource)
+    {
+>>>>>>> git-aline/master/master
         $messages = array();
 
         try {
@@ -51,11 +64,16 @@ class CsvFileLoader extends ArrayLoader
         $file->setCsvControl($this->delimiter, $this->enclosure, $this->escape);
 
         foreach ($file as $data) {
+<<<<<<< HEAD
             if ('#' !== substr($data[0], 0, 1) && isset($data[1]) && 2 === count($data)) {
+=======
+            if ('#' !== substr($data[0], 0, 1) && isset($data[1]) && 2 === \count($data)) {
+>>>>>>> git-aline/master/master
                 $messages[$data[0]] = $data[1];
             }
         }
 
+<<<<<<< HEAD
         $catalogue = parent::load($messages, $locale, $domain);
 
         if (class_exists('Symfony\Component\Config\Resource\FileResource')) {
@@ -63,14 +81,23 @@ class CsvFileLoader extends ArrayLoader
         }
 
         return $catalogue;
+=======
+        return $messages;
+>>>>>>> git-aline/master/master
     }
 
     /**
      * Sets the delimiter, enclosure, and escape character for CSV.
      *
+<<<<<<< HEAD
      * @param string $delimiter delimiter character
      * @param string $enclosure enclosure character
      * @param string $escape    escape character
+=======
+     * @param string $delimiter Delimiter character
+     * @param string $enclosure Enclosure character
+     * @param string $escape    Escape character
+>>>>>>> git-aline/master/master
      */
     public function setCsvControl($delimiter = ';', $enclosure = '"', $escape = '\\')
     {

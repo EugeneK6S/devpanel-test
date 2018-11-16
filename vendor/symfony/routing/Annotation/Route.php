@@ -32,9 +32,13 @@ class Route
     private $condition;
 
     /**
+<<<<<<< HEAD
      * Constructor.
      *
      * @param array $data An array of key/value parameters.
+=======
+     * @param array $data An array of key/value parameters
+>>>>>>> git-aline/master/master
      *
      * @throws \BadMethodCallException
      */
@@ -48,12 +52,17 @@ class Route
         foreach ($data as $key => $value) {
             $method = 'set'.str_replace('_', '', $key);
             if (!method_exists($this, $method)) {
+<<<<<<< HEAD
                 throw new \BadMethodCallException(sprintf('Unknown property "%s" on annotation "%s".', $key, get_class($this)));
+=======
+                throw new \BadMethodCallException(sprintf('Unknown property "%s" on annotation "%s".', $key, \get_class($this)));
+>>>>>>> git-aline/master/master
             }
             $this->$method($value);
         }
     }
 
+<<<<<<< HEAD
     /**
      * @deprecated since version 2.2, to be removed in 3.0. Use setPath instead.
      */
@@ -74,6 +83,8 @@ class Route
         return $this->path;
     }
 
+=======
+>>>>>>> git-aline/master/master
     public function setPath($path)
     {
         $this->path = $path;
@@ -106,6 +117,7 @@ class Route
 
     public function setRequirements($requirements)
     {
+<<<<<<< HEAD
         if (isset($requirements['_method'])) {
             if (0 === count($this->methods)) {
                 $this->methods = explode('|', $requirements['_method']);
@@ -122,6 +134,8 @@ class Route
             @trigger_error('The "_scheme" requirement is deprecated since version 2.2 and will be removed in 3.0. Use the "schemes" option instead.', E_USER_DEPRECATED);
         }
 
+=======
+>>>>>>> git-aline/master/master
         $this->requirements = $requirements;
     }
 
@@ -152,7 +166,11 @@ class Route
 
     public function setSchemes($schemes)
     {
+<<<<<<< HEAD
         $this->schemes = is_array($schemes) ? $schemes : array($schemes);
+=======
+        $this->schemes = \is_array($schemes) ? $schemes : array($schemes);
+>>>>>>> git-aline/master/master
     }
 
     public function getSchemes()
@@ -162,7 +180,11 @@ class Route
 
     public function setMethods($methods)
     {
+<<<<<<< HEAD
         $this->methods = is_array($methods) ? $methods : array($methods);
+=======
+        $this->methods = \is_array($methods) ? $methods : array($methods);
+>>>>>>> git-aline/master/master
     }
 
     public function getMethods()

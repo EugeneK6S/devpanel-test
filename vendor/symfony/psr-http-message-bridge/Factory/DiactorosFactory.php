@@ -11,6 +11,10 @@
 
 namespace Symfony\Bridge\PsrHttpMessage\Factory;
 
+<<<<<<< HEAD
+=======
+use Psr\Http\Message\UploadedFileInterface;
+>>>>>>> git-aline/master/master
 use Symfony\Bridge\PsrHttpMessage\HttpMessageFactoryInterface;
 use Symfony\Component\HttpFoundation\BinaryFileResponse;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
@@ -45,17 +49,29 @@ class DiactorosFactory implements HttpMessageFactoryInterface
         $server = DiactorosRequestFactory::normalizeServer($symfonyRequest->server->all());
         $headers = $symfonyRequest->headers->all();
 
+<<<<<<< HEAD
         try {
             $body = new DiactorosStream($symfonyRequest->getContent(true));
         } catch (\LogicException $e) {
             $body = new DiactorosStream('php://temp', 'wb+');
             $body->write($symfonyRequest->getContent());
+=======
+        if (PHP_VERSION_ID < 50600) {
+            $body = new DiactorosStream('php://temp', 'wb+');
+            $body->write($symfonyRequest->getContent());
+        } else {
+            $body = new DiactorosStream($symfonyRequest->getContent(true));
+>>>>>>> git-aline/master/master
         }
 
         $request = new ServerRequest(
             $server,
             DiactorosRequestFactory::normalizeFiles($this->getFiles($symfonyRequest->files->all())),
+<<<<<<< HEAD
             $symfonyRequest->getUri(),
+=======
+            $symfonyRequest->getSchemeAndHttpHost().$symfonyRequest->getRequestUri(),
+>>>>>>> git-aline/master/master
             $symfonyRequest->getMethod(),
             $body,
             $headers
@@ -65,6 +81,10 @@ class DiactorosFactory implements HttpMessageFactoryInterface
             ->withCookieParams($symfonyRequest->cookies->all())
             ->withQueryParams($symfonyRequest->query->all())
             ->withParsedBody($symfonyRequest->request->all())
+<<<<<<< HEAD
+=======
+            ->withRequestTarget($symfonyRequest->getRequestUri())
+>>>>>>> git-aline/master/master
         ;
 
         foreach ($symfonyRequest->attributes->all() as $key => $value) {
@@ -86,6 +106,13 @@ class DiactorosFactory implements HttpMessageFactoryInterface
         $files = array();
 
         foreach ($uploadedFiles as $key => $value) {
+<<<<<<< HEAD
+=======
+            if (null === $value) {
+                $files[$key] = new DiactorosUploadedFile(null, 0, UPLOAD_ERR_NO_FILE, null, null);
+                continue;
+            }
+>>>>>>> git-aline/master/master
             if ($value instanceof UploadedFile) {
                 $files[$key] = $this->createUploadedFile($value);
             } else {
@@ -107,7 +134,11 @@ class DiactorosFactory implements HttpMessageFactoryInterface
     {
         return new DiactorosUploadedFile(
             $symfonyUploadedFile->getRealPath(),
+<<<<<<< HEAD
             $symfonyUploadedFile->getSize(),
+=======
+            (int) $symfonyUploadedFile->getSize(),
+>>>>>>> git-aline/master/master
             $symfonyUploadedFile->getError(),
             $symfonyUploadedFile->getClientOriginalName(),
             $symfonyUploadedFile->getClientMimeType()
@@ -127,7 +158,11 @@ class DiactorosFactory implements HttpMessageFactoryInterface
                 ob_start(function ($buffer) use ($stream) {
                     $stream->write($buffer);
 
+<<<<<<< HEAD
                     return false;
+=======
+                    return '';
+>>>>>>> git-aline/master/master
                 });
 
                 $symfonyResponse->sendContent();
@@ -138,6 +173,7 @@ class DiactorosFactory implements HttpMessageFactoryInterface
         }
 
         $headers = $symfonyResponse->headers->all();
+<<<<<<< HEAD
 
         $cookies = $symfonyResponse->headers->getCookies();
         if (!empty($cookies)) {
@@ -145,6 +181,15 @@ class DiactorosFactory implements HttpMessageFactoryInterface
 
             foreach ($cookies as $cookie) {
                 $headers['Set-Cookie'][] = $cookie->__toString();
+=======
+        if (!isset($headers['Set-Cookie']) && !isset($headers['set-sookie'])) {
+            $cookies = $symfonyResponse->headers->getCookies();
+            if (!empty($cookies)) {
+                $headers['Set-Cookie'] = array();
+                foreach ($cookies as $cookie) {
+                    $headers['Set-Cookie'][] = $cookie->__toString();
+                }
+>>>>>>> git-aline/master/master
             }
         }
 

@@ -16,6 +16,11 @@ namespace Symfony\Component\Yaml;
  * YAML strings.
  *
  * @author Matthew Lewinski <matthew@lewinski.org>
+<<<<<<< HEAD
+=======
+ *
+ * @internal
+>>>>>>> git-aline/master/master
  */
 class Escaper
 {
@@ -31,24 +36,42 @@ class Escaper
                                      "\x08",  "\x09",  "\x0a",  "\x0b",  "\x0c",  "\x0d",  "\x0e",  "\x0f",
                                      "\x10",  "\x11",  "\x12",  "\x13",  "\x14",  "\x15",  "\x16",  "\x17",
                                      "\x18",  "\x19",  "\x1a",  "\x1b",  "\x1c",  "\x1d",  "\x1e",  "\x1f",
+<<<<<<< HEAD
                                      "\xc2\x85", "\xc2\xa0", "\xe2\x80\xa8", "\xe2\x80\xa9",);
+=======
+                                     "\xc2\x85", "\xc2\xa0", "\xe2\x80\xa8", "\xe2\x80\xa9",
+                               );
+>>>>>>> git-aline/master/master
     private static $escaped = array('\\\\', '\\"', '\\\\', '\\"',
                                      '\\0',   '\\x01', '\\x02', '\\x03', '\\x04', '\\x05', '\\x06', '\\a',
                                      '\\b',   '\\t',   '\\n',   '\\v',   '\\f',   '\\r',   '\\x0e', '\\x0f',
                                      '\\x10', '\\x11', '\\x12', '\\x13', '\\x14', '\\x15', '\\x16', '\\x17',
                                      '\\x18', '\\x19', '\\x1a', '\\e',   '\\x1c', '\\x1d', '\\x1e', '\\x1f',
+<<<<<<< HEAD
                                      '\\N', '\\_', '\\L', '\\P',);
+=======
+                                     '\\N', '\\_', '\\L', '\\P',
+                              );
+>>>>>>> git-aline/master/master
 
     /**
      * Determines if a PHP value would require double quoting in YAML.
      *
      * @param string $value A PHP value
      *
+<<<<<<< HEAD
      * @return bool True if the value would require double quotes.
      */
     public static function requiresDoubleQuoting($value)
     {
         return preg_match('/'.self::REGEX_CHARACTER_TO_ESCAPE.'/u', $value);
+=======
+     * @return bool True if the value would require double quotes
+     */
+    public static function requiresDoubleQuoting($value)
+    {
+        return 0 < preg_match('/'.self::REGEX_CHARACTER_TO_ESCAPE.'/u', $value);
+>>>>>>> git-aline/master/master
     }
 
     /**
@@ -68,19 +91,31 @@ class Escaper
      *
      * @param string $value A PHP value
      *
+<<<<<<< HEAD
      * @return bool True if the value would require single quotes.
+=======
+     * @return bool True if the value would require single quotes
+>>>>>>> git-aline/master/master
      */
     public static function requiresSingleQuoting($value)
     {
         // Determines if a PHP value is entirely composed of a value that would
         // require single quoting in YAML.
+<<<<<<< HEAD
         if (in_array(strtolower($value), array('null', '~', 'true', 'false', 'y', 'n', 'yes', 'no', 'on', 'off'))) {
+=======
+        if (\in_array(strtolower($value), array('null', '~', 'true', 'false', 'y', 'n', 'yes', 'no', 'on', 'off'))) {
+>>>>>>> git-aline/master/master
             return true;
         }
 
         // Determines if the PHP value contains any single characters that would
         // cause it to require single quoting in YAML.
+<<<<<<< HEAD
         return preg_match('/[ \s \' " \: \{ \} \[ \] , & \* \# \?] | \A[ \- ? | < > = ! % @ ` ]/x', $value);
+=======
+        return 0 < preg_match('/[ \s \' " \: \{ \} \[ \] , & \* \# \?] | \A[ \- ? | < > = ! % @ ` ]/x', $value);
+>>>>>>> git-aline/master/master
     }
 
     /**

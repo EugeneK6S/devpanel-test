@@ -11,8 +11,13 @@
 
 namespace Symfony\Component\HttpKernel\Event;
 
+<<<<<<< HEAD
 use Symfony\Component\HttpKernel\HttpKernelInterface;
 use Symfony\Component\HttpFoundation\Request;
+=======
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpKernel\HttpKernelInterface;
+>>>>>>> git-aline/master/master
 
 /**
  * Allows filtering of a controller callable.
@@ -27,12 +32,18 @@ use Symfony\Component\HttpFoundation\Request;
  */
 class FilterControllerEvent extends KernelEvent
 {
+<<<<<<< HEAD
     /**
      * The current controller.
      */
     private $controller;
 
     public function __construct(HttpKernelInterface $kernel, $controller, Request $request, $requestType)
+=======
+    private $controller;
+
+    public function __construct(HttpKernelInterface $kernel, callable $controller, Request $request, $requestType)
+>>>>>>> git-aline/master/master
     {
         parent::__construct($kernel, $request, $requestType);
 
@@ -49,6 +60,7 @@ class FilterControllerEvent extends KernelEvent
         return $this->controller;
     }
 
+<<<<<<< HEAD
     /**
      * Sets a new controller.
      *
@@ -99,4 +111,10 @@ class FilterControllerEvent extends KernelEvent
 
         return (string) $var;
     }
+=======
+    public function setController(callable $controller)
+    {
+        $this->controller = $controller;
+    }
+>>>>>>> git-aline/master/master
 }

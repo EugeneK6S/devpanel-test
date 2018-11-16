@@ -12,9 +12,14 @@
 namespace Symfony\Component\HttpKernel\Debug;
 
 use Symfony\Component\EventDispatcher\Debug\TraceableEventDispatcher as BaseTraceableEventDispatcher;
+<<<<<<< HEAD
 use Symfony\Component\HttpKernel\Profiler\Profiler;
 use Symfony\Component\HttpKernel\KernelEvents;
 use Symfony\Component\EventDispatcher\Event;
+=======
+use Symfony\Component\EventDispatcher\Event;
+use Symfony\Component\HttpKernel\KernelEvents;
+>>>>>>> git-aline/master/master
 
 /**
  * Collects some data about event listeners.
@@ -26,6 +31,7 @@ use Symfony\Component\EventDispatcher\Event;
 class TraceableEventDispatcher extends BaseTraceableEventDispatcher
 {
     /**
+<<<<<<< HEAD
      * Sets the profiler.
      *
      * The traceable event dispatcher does not use the profiler anymore.
@@ -42,6 +48,8 @@ class TraceableEventDispatcher extends BaseTraceableEventDispatcher
     }
 
     /**
+=======
+>>>>>>> git-aline/master/master
      * {@inheritdoc}
      */
     protected function preDispatch($eventName, Event $event)
@@ -78,7 +86,11 @@ class TraceableEventDispatcher extends BaseTraceableEventDispatcher
     protected function postDispatch($eventName, Event $event)
     {
         switch ($eventName) {
+<<<<<<< HEAD
             case KernelEvents::CONTROLLER:
+=======
+            case KernelEvents::CONTROLLER_ARGUMENTS:
+>>>>>>> git-aline/master/master
                 $this->stopwatch->start('controller', 'section');
                 break;
             case KernelEvents::RESPONSE:

@@ -3,7 +3,11 @@
 /*
  * This file is part of Twig.
  *
+<<<<<<< HEAD
  * (c) 2015 Fabien Potencier
+=======
+ * (c) Fabien Potencier
+>>>>>>> git-aline/master/master
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
@@ -27,6 +31,7 @@ class Twig_Cache_Filesystem implements Twig_CacheInterface
      */
     public function __construct($directory, $options = 0)
     {
+<<<<<<< HEAD
         $this->directory = $directory;
         $this->options = $options;
     }
@@ -34,10 +39,17 @@ class Twig_Cache_Filesystem implements Twig_CacheInterface
     /**
      * {@inheritdoc}
      */
+=======
+        $this->directory = rtrim($directory, '\/').'/';
+        $this->options = $options;
+    }
+
+>>>>>>> git-aline/master/master
     public function generateKey($name, $className)
     {
         $hash = hash('sha256', $className);
 
+<<<<<<< HEAD
         return $this->directory.'/'.$hash[0].$hash[1].'/'.$hash.'.php';
     }
 
@@ -52,12 +64,34 @@ class Twig_Cache_Filesystem implements Twig_CacheInterface
     /**
      * {@inheritdoc}
      */
+=======
+        return $this->directory.$hash[0].$hash[1].'/'.$hash.'.php';
+    }
+
+    public function load($key)
+    {
+        if (file_exists($key)) {
+            @include_once $key;
+        }
+    }
+
+>>>>>>> git-aline/master/master
     public function write($key, $content)
     {
         $dir = dirname($key);
         if (!is_dir($dir)) {
+<<<<<<< HEAD
             if (false === @mkdir($dir, 0777, true) && !is_dir($dir)) {
                 throw new RuntimeException(sprintf('Unable to create the cache directory (%s).', $dir));
+=======
+            if (false === @mkdir($dir, 0777, true)) {
+                if (PHP_VERSION_ID >= 50300) {
+                    clearstatcache(true, $dir);
+                }
+                if (!is_dir($dir)) {
+                    throw new RuntimeException(sprintf('Unable to create the cache directory (%s).', $dir));
+                }
+>>>>>>> git-aline/master/master
             }
         } elseif (!is_writable($dir)) {
             throw new RuntimeException(sprintf('Unable to write in the cache directory (%s).', $dir));
@@ -82,9 +116,12 @@ class Twig_Cache_Filesystem implements Twig_CacheInterface
         throw new RuntimeException(sprintf('Failed to write cache file "%s".', $key));
     }
 
+<<<<<<< HEAD
     /**
      * {@inheritdoc}
      */
+=======
+>>>>>>> git-aline/master/master
     public function getTimestamp($key)
     {
         if (!file_exists($key)) {
@@ -94,3 +131,8 @@ class Twig_Cache_Filesystem implements Twig_CacheInterface
         return (int) @filemtime($key);
     }
 }
+<<<<<<< HEAD
+=======
+
+class_alias('Twig_Cache_Filesystem', 'Twig\Cache\FilesystemCache', false);
+>>>>>>> git-aline/master/master

@@ -27,8 +27,11 @@ namespace Symfony\Component\Validator\Mapping;
  * Although the constants currently represent a boolean switch, they are
  * implemented as bit mask in order to allow future extensions.
  *
+<<<<<<< HEAD
  * @since  2.5
  *
+=======
+>>>>>>> git-aline/master/master
  * @author Bernhard Schussek <bschussek@gmail.com>
  *
  * @see TraversalStrategy

@@ -38,7 +38,11 @@ interface ConstraintViolationInterface
     /**
      * Returns the violation message.
      *
+<<<<<<< HEAD
      * @return string The violation message.
+=======
+     * @return string The violation message
+>>>>>>> git-aline/master/master
      */
     public function getMessage();
 
@@ -46,16 +50,24 @@ interface ConstraintViolationInterface
      * Returns the raw violation message.
      *
      * The raw violation message contains placeholders for the parameters
+<<<<<<< HEAD
      * returned by {@link getMessageParameters}. Typically you'll pass the
      * message template and parameters to a translation engine.
      *
      * @return string The raw violation message.
+=======
+     * returned by {@link getParameters}. Typically you'll pass the
+     * message template and parameters to a translation engine.
+     *
+     * @return string The raw violation message
+>>>>>>> git-aline/master/master
      */
     public function getMessageTemplate();
 
     /**
      * Returns the parameters to be inserted into the raw violation message.
      *
+<<<<<<< HEAD
      * @return array A possibly empty list of parameters indexed by the names
      *               that appear in the message template.
      *
@@ -64,6 +76,14 @@ interface ConstraintViolationInterface
      * @deprecated since version 2.7, to be replaced by getParameters() in 3.0.
      */
     public function getMessageParameters();
+=======
+     * @return array a possibly empty list of parameters indexed by the names
+     *               that appear in the message template
+     *
+     * @see getMessageTemplate()
+     */
+    public function getParameters();
+>>>>>>> git-aline/master/master
 
     /**
      * Returns a number for pluralizing the violation message.
@@ -79,11 +99,17 @@ interface ConstraintViolationInterface
      * This method returns the value of the parameter for choosing the right
      * pluralization form (in this case "choices").
      *
+<<<<<<< HEAD
      * @return int|null The number to use to pluralize of the message.
      *
      * @deprecated since version 2.7, to be replaced by getPlural() in 3.0.
      */
     public function getMessagePluralization();
+=======
+     * @return int|null The number to use to pluralize of the message
+     */
+    public function getPlural();
+>>>>>>> git-aline/master/master
 
     /**
      * Returns the root element of the validation.
@@ -112,15 +138,24 @@ interface ConstraintViolationInterface
     /**
      * Returns the value that caused the violation.
      *
+<<<<<<< HEAD
      * @return mixed The invalid value that caused the validated constraint to
      *               fail.
+=======
+     * @return mixed the invalid value that caused the validated constraint to
+     *               fail
+>>>>>>> git-aline/master/master
      */
     public function getInvalidValue();
 
     /**
      * Returns a machine-digestible error code for the violation.
      *
+<<<<<<< HEAD
      * @return mixed The error code.
+=======
+     * @return string|null The error code
+>>>>>>> git-aline/master/master
      */
     public function getCode();
 }

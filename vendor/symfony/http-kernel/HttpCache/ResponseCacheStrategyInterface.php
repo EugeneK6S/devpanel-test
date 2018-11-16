@@ -27,15 +27,21 @@ interface ResponseCacheStrategyInterface
 {
     /**
      * Adds a Response.
+<<<<<<< HEAD
      *
      * @param Response $response
+=======
+>>>>>>> git-aline/master/master
      */
     public function add(Response $response);
 
     /**
      * Updates the Response HTTP headers based on the embedded Responses.
+<<<<<<< HEAD
      *
      * @param Response $response
+=======
+>>>>>>> git-aline/master/master
      */
     public function update(Response $response);
 }

@@ -20,6 +20,7 @@ namespace Symfony\Component\EventDispatcher;
  */
 class GenericEvent extends Event implements \ArrayAccess, \IteratorAggregate
 {
+<<<<<<< HEAD
     /**
      * Event subject.
      *
@@ -32,13 +33,21 @@ class GenericEvent extends Event implements \ArrayAccess, \IteratorAggregate
      *
      * @var array
      */
+=======
+    protected $subject;
+>>>>>>> git-aline/master/master
     protected $arguments;
 
     /**
      * Encapsulate an event with $subject and $args.
      *
+<<<<<<< HEAD
      * @param mixed $subject   The subject of the event, usually an object.
      * @param array $arguments Arguments to store in the event.
+=======
+     * @param mixed $subject   The subject of the event, usually an object or a callable
+     * @param array $arguments Arguments to store in the event
+>>>>>>> git-aline/master/master
      */
     public function __construct($subject = null, array $arguments = array())
     {
@@ -49,7 +58,11 @@ class GenericEvent extends Event implements \ArrayAccess, \IteratorAggregate
     /**
      * Getter for subject property.
      *
+<<<<<<< HEAD
      * @return mixed $subject The observer subject.
+=======
+     * @return mixed $subject The observer subject
+>>>>>>> git-aline/master/master
      */
     public function getSubject()
     {
@@ -59,11 +72,19 @@ class GenericEvent extends Event implements \ArrayAccess, \IteratorAggregate
     /**
      * Get argument by key.
      *
+<<<<<<< HEAD
      * @param string $key Key.
      *
      * @throws \InvalidArgumentException If key is not found.
      *
      * @return mixed Contents of array key.
+=======
+     * @param string $key Key
+     *
+     * @return mixed Contents of array key
+     *
+     * @throws \InvalidArgumentException if key is not found
+>>>>>>> git-aline/master/master
      */
     public function getArgument($key)
     {
@@ -77,10 +98,17 @@ class GenericEvent extends Event implements \ArrayAccess, \IteratorAggregate
     /**
      * Add argument to event.
      *
+<<<<<<< HEAD
      * @param string $key   Argument name.
      * @param mixed  $value Value.
      *
      * @return GenericEvent
+=======
+     * @param string $key   Argument name
+     * @param mixed  $value Value
+     *
+     * @return $this
+>>>>>>> git-aline/master/master
      */
     public function setArgument($key, $value)
     {
@@ -102,9 +130,15 @@ class GenericEvent extends Event implements \ArrayAccess, \IteratorAggregate
     /**
      * Set args property.
      *
+<<<<<<< HEAD
      * @param array $args Arguments.
      *
      * @return GenericEvent
+=======
+     * @param array $args Arguments
+     *
+     * @return $this
+>>>>>>> git-aline/master/master
      */
     public function setArguments(array $args = array())
     {
@@ -116,7 +150,11 @@ class GenericEvent extends Event implements \ArrayAccess, \IteratorAggregate
     /**
      * Has argument.
      *
+<<<<<<< HEAD
      * @param string $key Key of arguments array.
+=======
+     * @param string $key Key of arguments array
+>>>>>>> git-aline/master/master
      *
      * @return bool
      */
@@ -128,11 +166,19 @@ class GenericEvent extends Event implements \ArrayAccess, \IteratorAggregate
     /**
      * ArrayAccess for argument getter.
      *
+<<<<<<< HEAD
      * @param string $key Array key.
      *
      * @throws \InvalidArgumentException If key does not exist in $this->args.
      *
      * @return mixed
+=======
+     * @param string $key Array key
+     *
+     * @return mixed
+     *
+     * @throws \InvalidArgumentException if key does not exist in $this->args
+>>>>>>> git-aline/master/master
      */
     public function offsetGet($key)
     {
@@ -142,8 +188,13 @@ class GenericEvent extends Event implements \ArrayAccess, \IteratorAggregate
     /**
      * ArrayAccess for argument setter.
      *
+<<<<<<< HEAD
      * @param string $key   Array key to set.
      * @param mixed  $value Value.
+=======
+     * @param string $key   Array key to set
+     * @param mixed  $value Value
+>>>>>>> git-aline/master/master
      */
     public function offsetSet($key, $value)
     {
@@ -153,7 +204,11 @@ class GenericEvent extends Event implements \ArrayAccess, \IteratorAggregate
     /**
      * ArrayAccess for unset argument.
      *
+<<<<<<< HEAD
      * @param string $key Array key.
+=======
+     * @param string $key Array key
+>>>>>>> git-aline/master/master
      */
     public function offsetUnset($key)
     {
@@ -165,7 +220,11 @@ class GenericEvent extends Event implements \ArrayAccess, \IteratorAggregate
     /**
      * ArrayAccess has argument.
      *
+<<<<<<< HEAD
      * @param string $key Array key.
+=======
+     * @param string $key Array key
+>>>>>>> git-aline/master/master
      *
      * @return bool
      */

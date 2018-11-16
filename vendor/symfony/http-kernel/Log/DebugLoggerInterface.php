@@ -15,6 +15,11 @@ namespace Symfony\Component\HttpKernel\Log;
  * DebugLoggerInterface.
  *
  * @author Fabien Potencier <fabien@symfony.com>
+<<<<<<< HEAD
+=======
+ *
+ * @method clear() Removes all log records.
+>>>>>>> git-aline/master/master
  */
 interface DebugLoggerInterface
 {

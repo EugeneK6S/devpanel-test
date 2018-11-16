@@ -11,13 +11,19 @@
 
 namespace Symfony\Component\Serializer\Normalizer;
 
+<<<<<<< HEAD
 use Symfony\Component\Serializer\SerializerInterface;
 use Symfony\Component\Serializer\SerializerAwareInterface;
+=======
+use Symfony\Component\Serializer\SerializerAwareInterface;
+use Symfony\Component\Serializer\SerializerAwareTrait;
+>>>>>>> git-aline/master/master
 
 /**
  * SerializerAware Normalizer implementation.
  *
  * @author Jordi Boggiano <j.boggiano@seld.be>
+<<<<<<< HEAD
  */
 abstract class SerializerAwareNormalizer implements SerializerAwareInterface
 {
@@ -33,4 +39,12 @@ abstract class SerializerAwareNormalizer implements SerializerAwareInterface
     {
         $this->serializer = $serializer;
     }
+=======
+ *
+ * @deprecated since version 3.1, to be removed in 4.0. Use the SerializerAwareTrait instead.
+ */
+abstract class SerializerAwareNormalizer implements SerializerAwareInterface
+{
+    use SerializerAwareTrait;
+>>>>>>> git-aline/master/master
 }

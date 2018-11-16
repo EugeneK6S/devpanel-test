@@ -11,8 +11,13 @@
 
 namespace Symfony\Component\Translation\Dumper;
 
+<<<<<<< HEAD
 use Symfony\Component\Translation\MessageCatalogue;
 use Symfony\Component\Translation\Loader\MoFileLoader;
+=======
+use Symfony\Component\Translation\Loader\MoFileLoader;
+use Symfony\Component\Translation\MessageCatalogue;
+>>>>>>> git-aline/master/master
 
 /**
  * MoFileDumper generates a gettext formatted string representation of a message catalogue.
@@ -24,9 +29,15 @@ class MoFileDumper extends FileDumper
     /**
      * {@inheritdoc}
      */
+<<<<<<< HEAD
     public function format(MessageCatalogue $messages, $domain = 'messages')
     {
         $output = $sources = $targets = $sourceOffsets = $targetOffsets = '';
+=======
+    public function formatCatalogue(MessageCatalogue $messages, $domain, array $options = array())
+    {
+        $sources = $targets = $sourceOffsets = $targetOffsets = '';
+>>>>>>> git-aline/master/master
         $offsets = array();
         $size = 0;
 
@@ -47,7 +58,11 @@ class MoFileDumper extends FileDumper
             'offsetHashes' => MoFileLoader::MO_HEADER_SIZE + (16 * $size),
         );
 
+<<<<<<< HEAD
         $sourcesSize = strlen($sources);
+=======
+        $sourcesSize = \strlen($sources);
+>>>>>>> git-aline/master/master
         $sourcesStart = $header['offsetHashes'] + 1;
 
         foreach ($offsets as $offset) {

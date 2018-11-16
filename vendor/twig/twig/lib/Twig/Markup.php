@@ -3,7 +3,11 @@
 /*
  * This file is part of Twig.
  *
+<<<<<<< HEAD
  * (c) 2010 Fabien Potencier
+=======
+ * (c) Fabien Potencier
+>>>>>>> git-aline/master/master
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
@@ -35,3 +39,8 @@ class Twig_Markup implements Countable
         return function_exists('mb_get_info') ? mb_strlen($this->content, $this->charset) : strlen($this->content);
     }
 }
+<<<<<<< HEAD
+=======
+
+class_alias('Twig_Markup', 'Twig\Markup', false);
+>>>>>>> git-aline/master/master

@@ -20,3 +20,8 @@
 interface Twig_Extension_InitRuntimeInterface
 {
 }
+<<<<<<< HEAD
+=======
+
+class_alias('Twig_Extension_InitRuntimeInterface', 'Twig\Extension\InitRuntimeInterface', false);
+>>>>>>> git-aline/master/master

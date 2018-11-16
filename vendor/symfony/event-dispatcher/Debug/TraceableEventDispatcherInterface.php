@@ -15,6 +15,11 @@ use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
 /**
  * @author Fabien Potencier <fabien@symfony.com>
+<<<<<<< HEAD
+=======
+ *
+ * @method reset() Resets the trace.
+>>>>>>> git-aline/master/master
  */
 interface TraceableEventDispatcherInterface extends EventDispatcherInterface
 {

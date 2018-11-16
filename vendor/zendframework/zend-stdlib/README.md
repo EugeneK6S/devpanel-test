@@ -7,7 +7,10 @@
 class for different scopes like:
 
 - array utilities functions;
+<<<<<<< HEAD
 - hydrators;
+=======
+>>>>>>> git-aline/master/master
 - json serializable interfaces;
 - general messaging systems;
 - string wrappers;

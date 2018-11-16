@@ -21,6 +21,15 @@ use Symfony\Component\Validator\Constraint;
  */
 class Regex extends Constraint
 {
+<<<<<<< HEAD
+=======
+    const REGEX_FAILED_ERROR = 'de1e3db3-5ed4-4941-aae4-59f3667cc3a3';
+
+    protected static $errorNames = array(
+        self::REGEX_FAILED_ERROR => 'REGEX_FAILED_ERROR',
+    );
+
+>>>>>>> git-aline/master/master
     public $message = 'This value is not valid.';
     public $pattern;
     public $htmlPattern;
@@ -50,7 +59,11 @@ class Regex extends Constraint
      * Pattern is also ignored if match=false since the pattern should
      * then be reversed before application.
      *
+<<<<<<< HEAD
      * @link http://dev.w3.org/html5/spec/single-page.html#the-pattern-attribute
+=======
+     * @see http://dev.w3.org/html5/spec/single-page.html#the-pattern-attribute
+>>>>>>> git-aline/master/master
      *
      * @return string|null
      */
@@ -64,7 +77,11 @@ class Regex extends Constraint
         }
 
         // Quit if delimiters not at very beginning/end (e.g. when options are passed)
+<<<<<<< HEAD
         if ($this->pattern[0] !== $this->pattern[strlen($this->pattern) - 1]) {
+=======
+        if ($this->pattern[0] !== $this->pattern[\strlen($this->pattern) - 1]) {
+>>>>>>> git-aline/master/master
             return;
         }
 
@@ -89,7 +106,11 @@ class Regex extends Constraint
         $pattern = '^' === $pattern[0] ? substr($pattern, 1) : '.*'.$pattern;
 
         // Trim trailing $, otherwise append .*
+<<<<<<< HEAD
         $pattern = '$' === $pattern[strlen($pattern) - 1] ? substr($pattern, 0, -1) : $pattern.'.*';
+=======
+        $pattern = '$' === $pattern[\strlen($pattern) - 1] ? substr($pattern, 0, -1) : $pattern.'.*';
+>>>>>>> git-aline/master/master
 
         return $pattern;
     }

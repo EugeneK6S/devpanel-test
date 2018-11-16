@@ -24,12 +24,20 @@ class Escaper
      *
      * @var array
      */
+<<<<<<< HEAD
     protected static $htmlNamedEntityMap = array(
+=======
+    protected static $htmlNamedEntityMap = [
+>>>>>>> git-aline/master/master
         34 => 'quot',         // quotation mark
         38 => 'amp',          // ampersand
         60 => 'lt',           // less-than sign
         62 => 'gt',           // greater-than sign
+<<<<<<< HEAD
     );
+=======
+    ];
+>>>>>>> git-aline/master/master
 
     /**
      * Current encoding for escaping. If not UTF-8, we convert strings from this encoding
@@ -41,6 +49,7 @@ class Escaper
 
     /**
      * Holds the value of the special flags passed as second parameter to
+<<<<<<< HEAD
      * htmlspecialchars(). We modify these for PHP 5.4 to take advantage
      * of the new ENT_SUBSTITUTE flag for correctly dealing with invalid
      * UTF-8 sequences.
@@ -48,6 +57,13 @@ class Escaper
      * @var string
      */
     protected $htmlSpecialCharsFlags = ENT_QUOTES;
+=======
+     * htmlspecialchars().
+     *
+     * @var int
+     */
+    protected $htmlSpecialCharsFlags;
+>>>>>>> git-aline/master/master
 
     /**
      * Static Matcher which escapes characters for HTML Attribute contexts
@@ -75,7 +91,11 @@ class Escaper
      *
      * @var array
      */
+<<<<<<< HEAD
     protected $supportedEncodings = array(
+=======
+    protected $supportedEncodings = [
+>>>>>>> git-aline/master/master
         'iso-8859-1',   'iso8859-1',    'iso-8859-5',   'iso8859-5',
         'iso-8859-15',  'iso8859-15',   'utf-8',        'cp866',
         'ibm866',       '866',          'cp1251',       'windows-1251',
@@ -85,12 +105,20 @@ class Escaper
         'big5-hkscs',   'shift_jis',    'sjis',         'sjis-win',
         'cp932',        '932',          'euc-jp',       'eucjp',
         'eucjp-win',    'macroman'
+<<<<<<< HEAD
     );
 
     /**
      * Constructor: Single parameter allows setting of global encoding for use by
      * the current object. If PHP 5.4 is detected, additional ENT_SUBSTITUTE flag
      * is set for htmlspecialchars() calls.
+=======
+    ];
+
+    /**
+     * Constructor: Single parameter allows setting of global encoding for use by
+     * the current object.
+>>>>>>> git-aline/master/master
      *
      * @param string $encoding
      * @throws Exception\InvalidArgumentException
@@ -116,6 +144,7 @@ class Escaper
             $this->encoding = $encoding;
         }
 
+<<<<<<< HEAD
         if (defined('ENT_SUBSTITUTE')) {
             $this->htmlSpecialCharsFlags|= ENT_SUBSTITUTE;
         }
@@ -124,6 +153,15 @@ class Escaper
         $this->htmlAttrMatcher = array($this, 'htmlAttrMatcher');
         $this->jsMatcher       = array($this, 'jsMatcher');
         $this->cssMatcher      = array($this, 'cssMatcher');
+=======
+        // We take advantage of ENT_SUBSTITUTE flag to correctly deal with invalid UTF-8 sequences.
+        $this->htmlSpecialCharsFlags = ENT_QUOTES | ENT_SUBSTITUTE;
+
+        // set matcher callbacks
+        $this->htmlAttrMatcher = [$this, 'htmlAttrMatcher'];
+        $this->jsMatcher       = [$this, 'jsMatcher'];
+        $this->cssMatcher      = [$this, 'cssMatcher'];
+>>>>>>> git-aline/master/master
     }
 
     /**
@@ -248,7 +286,11 @@ class Escaper
          * replace it with while grabbing the integer value of the character.
          */
         if (strlen($chr) > 1) {
+<<<<<<< HEAD
             $chr = $this->convertEncoding($chr, 'UTF-16BE', 'UTF-8');
+=======
+            $chr = $this->convertEncoding($chr, 'UTF-32BE', 'UTF-8');
+>>>>>>> git-aline/master/master
         }
 
         $hex = bin2hex($chr);
@@ -281,7 +323,17 @@ class Escaper
             return sprintf('\\x%02X', ord($chr));
         }
         $chr = $this->convertEncoding($chr, 'UTF-16BE', 'UTF-8');
+<<<<<<< HEAD
         return sprintf('\\u%04s', strtoupper(bin2hex($chr)));
+=======
+        $hex = strtoupper(bin2hex($chr));
+        if (strlen($hex) <= 4) {
+            return sprintf('\\u%04s', $hex);
+        }
+        $highSurrogate = substr($hex, 0, 4);
+        $lowSurrogate = substr($hex, 4, 4);
+        return sprintf('\\u%04s\\u%04s', $highSurrogate, $lowSurrogate);
+>>>>>>> git-aline/master/master
     }
 
     /**
@@ -297,7 +349,11 @@ class Escaper
         if (strlen($chr) == 1) {
             $ord = ord($chr);
         } else {
+<<<<<<< HEAD
             $chr = $this->convertEncoding($chr, 'UTF-16BE', 'UTF-8');
+=======
+            $chr = $this->convertEncoding($chr, 'UTF-32BE', 'UTF-8');
+>>>>>>> git-aline/master/master
             $ord = hexdec(bin2hex($chr));
         }
         return sprintf('\\%X ', $ord);

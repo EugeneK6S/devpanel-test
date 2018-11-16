@@ -32,9 +32,12 @@ abstract class AbstractLoader implements LoaderInterface
      */
     const DEFAULT_NAMESPACE = '\\Symfony\\Component\\Validator\\Constraints\\';
 
+<<<<<<< HEAD
     /**
      * @var array
      */
+=======
+>>>>>>> git-aline/master/master
     protected $namespaces = array();
 
     /**
@@ -72,9 +75,15 @@ abstract class AbstractLoader implements LoaderInterface
      */
     protected function newConstraint($name, $options = null)
     {
+<<<<<<< HEAD
         if (strpos($name, '\\') !== false && class_exists($name)) {
             $className = (string) $name;
         } elseif (strpos($name, ':') !== false) {
+=======
+        if (false !== strpos($name, '\\') && class_exists($name)) {
+            $className = (string) $name;
+        } elseif (false !== strpos($name, ':')) {
+>>>>>>> git-aline/master/master
             list($prefix, $className) = explode(':', $name, 2);
 
             if (!isset($this->namespaces[$prefix])) {

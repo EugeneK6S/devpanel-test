@@ -24,7 +24,11 @@ interface FlashBagInterface extends SessionBagInterface
      * Adds a flash message for type.
      *
      * @param string $type
+<<<<<<< HEAD
      * @param string $message
+=======
+     * @param mixed  $message
+>>>>>>> git-aline/master/master
      */
     public function add($type, $message);
 
@@ -39,8 +43,13 @@ interface FlashBagInterface extends SessionBagInterface
     /**
      * Gets flash messages for a given type.
      *
+<<<<<<< HEAD
      * @param string $type    Message category type.
      * @param array  $default Default value if $type does not exist.
+=======
+     * @param string $type    Message category type
+     * @param array  $default Default value if $type does not exist
+>>>>>>> git-aline/master/master
      *
      * @return array
      */
@@ -57,7 +66,11 @@ interface FlashBagInterface extends SessionBagInterface
      * Gets and clears flash from the stack.
      *
      * @param string $type
+<<<<<<< HEAD
      * @param array  $default Default value if $type does not exist.
+=======
+     * @param array  $default Default value if $type does not exist
+>>>>>>> git-aline/master/master
      *
      * @return array
      */

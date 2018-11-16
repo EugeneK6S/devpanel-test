@@ -58,6 +58,7 @@ class MockArraySessionStorage implements SessionStorageInterface
     protected $metadataBag;
 
     /**
+<<<<<<< HEAD
      * @var array
      */
     protected $bags;
@@ -67,6 +68,15 @@ class MockArraySessionStorage implements SessionStorageInterface
      *
      * @param string      $name    Session name
      * @param MetadataBag $metaBag MetadataBag instance.
+=======
+     * @var array|SessionBagInterface[]
+     */
+    protected $bags = array();
+
+    /**
+     * @param string      $name    Session name
+     * @param MetadataBag $metaBag MetadataBag instance
+>>>>>>> git-aline/master/master
      */
     public function __construct($name = 'MOCKSESSID', MetadataBag $metaBag = null)
     {
@@ -74,11 +84,14 @@ class MockArraySessionStorage implements SessionStorageInterface
         $this->setMetadataBag($metaBag);
     }
 
+<<<<<<< HEAD
     /**
      * Sets the session data.
      *
      * @param array $array
      */
+=======
+>>>>>>> git-aline/master/master
     public function setSessionData(array $array)
     {
         $this->data = $array;
@@ -215,11 +228,14 @@ class MockArraySessionStorage implements SessionStorageInterface
         return $this->started;
     }
 
+<<<<<<< HEAD
     /**
      * Sets the MetadataBag.
      *
      * @param MetadataBag $bag
      */
+=======
+>>>>>>> git-aline/master/master
     public function setMetadataBag(MetadataBag $bag = null)
     {
         if (null === $bag) {

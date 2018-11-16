@@ -11,8 +11,13 @@
 
 namespace Symfony\Component\HttpFoundation\File\MimeType;
 
+<<<<<<< HEAD
 use Symfony\Component\HttpFoundation\File\Exception\FileNotFoundException;
 use Symfony\Component\HttpFoundation\File\Exception\AccessDeniedException;
+=======
+use Symfony\Component\HttpFoundation\File\Exception\AccessDeniedException;
+use Symfony\Component\HttpFoundation\File\Exception\FileNotFoundException;
+>>>>>>> git-aline/master/master
 
 /**
  * Guesses the mime type of a file.

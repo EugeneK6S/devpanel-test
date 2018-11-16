@@ -21,8 +21,11 @@ use Symfony\Component\DependencyInjection\Exception\LogicException;
 class FrozenParameterBag extends ParameterBag
 {
     /**
+<<<<<<< HEAD
      * Constructor.
      *
+=======
+>>>>>>> git-aline/master/master
      * For performance reasons, the constructor assumes that
      * all keys are already lowercased.
      *

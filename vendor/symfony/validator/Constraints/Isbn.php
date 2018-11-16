@@ -23,11 +23,19 @@ use Symfony\Component\Validator\Constraint;
  */
 class Isbn extends Constraint
 {
+<<<<<<< HEAD
     const TOO_SHORT_ERROR = 1;
     const TOO_LONG_ERROR = 2;
     const INVALID_CHARACTERS_ERROR = 3;
     const CHECKSUM_FAILED_ERROR = 4;
     const TYPE_NOT_RECOGNIZED_ERROR = 5;
+=======
+    const TOO_SHORT_ERROR = '949acbb0-8ef5-43ed-a0e9-032dfd08ae45';
+    const TOO_LONG_ERROR = '3171387d-f80a-47b3-bd6e-60598545316a';
+    const INVALID_CHARACTERS_ERROR = '23d21cea-da99-453d-98b1-a7d916fbb339';
+    const CHECKSUM_FAILED_ERROR = '2881c032-660f-46b6-8153-d352d9706640';
+    const TYPE_NOT_RECOGNIZED_ERROR = 'fa54a457-f042-441f-89c4-066ee5bdd3e1';
+>>>>>>> git-aline/master/master
 
     protected static $errorNames = array(
         self::TOO_SHORT_ERROR => 'TOO_SHORT_ERROR',
@@ -44,6 +52,7 @@ class Isbn extends Constraint
     public $message;
 
     /**
+<<<<<<< HEAD
      * @deprecated since version 2.5, to be removed in 3.0. Use option "type" instead.
      *
      * @var bool
@@ -58,6 +67,8 @@ class Isbn extends Constraint
     public $isbn13 = false;
 
     /**
+=======
+>>>>>>> git-aline/master/master
      * {@inheritdoc}
      */
     public function getDefaultOption()

@@ -44,8 +44,11 @@ class Profile
     private $children = array();
 
     /**
+<<<<<<< HEAD
      * Constructor.
      *
+=======
+>>>>>>> git-aline/master/master
      * @param string $token The token
      */
     public function __construct($token)
@@ -75,8 +78,11 @@ class Profile
 
     /**
      * Sets the parent token.
+<<<<<<< HEAD
      *
      * @param Profile $parent The parent Profile
+=======
+>>>>>>> git-aline/master/master
      */
     public function setParent(Profile $parent)
     {
@@ -86,7 +92,11 @@ class Profile
     /**
      * Returns the parent profile.
      *
+<<<<<<< HEAD
      * @return Profile The parent profile
+=======
+     * @return self
+>>>>>>> git-aline/master/master
      */
     public function getParent()
     {
@@ -156,7 +166,11 @@ class Profile
     /**
      * Returns the time.
      *
+<<<<<<< HEAD
      * @return string The time
+=======
+     * @return int The time
+>>>>>>> git-aline/master/master
      */
     public function getTime()
     {
@@ -167,6 +181,12 @@ class Profile
         return $this->time;
     }
 
+<<<<<<< HEAD
+=======
+    /**
+     * @param int $time The time
+     */
+>>>>>>> git-aline/master/master
     public function setTime($time)
     {
         $this->time = $time;
@@ -191,7 +211,11 @@ class Profile
     /**
      * Finds children profilers.
      *
+<<<<<<< HEAD
      * @return Profile[] An array of Profile
+=======
+     * @return self[]
+>>>>>>> git-aline/master/master
      */
     public function getChildren()
     {
@@ -201,7 +225,11 @@ class Profile
     /**
      * Sets children profiler.
      *
+<<<<<<< HEAD
      * @param Profile[] $children An array of Profile
+=======
+     * @param Profile[] $children
+>>>>>>> git-aline/master/master
      */
     public function setChildren(array $children)
     {
@@ -213,8 +241,11 @@ class Profile
 
     /**
      * Adds the child token.
+<<<<<<< HEAD
      *
      * @param Profile $child The child Profile
+=======
+>>>>>>> git-aline/master/master
      */
     public function addChild(Profile $child)
     {
@@ -265,8 +296,11 @@ class Profile
 
     /**
      * Adds a Collector.
+<<<<<<< HEAD
      *
      * @param DataCollectorInterface $collector A DataCollectorInterface instance
+=======
+>>>>>>> git-aline/master/master
      */
     public function addCollector(DataCollectorInterface $collector)
     {
@@ -287,6 +321,10 @@ class Profile
 
     public function __sleep()
     {
+<<<<<<< HEAD
         return array('token', 'parent', 'children', 'collectors', 'ip', 'method', 'url', 'time');
+=======
+        return array('token', 'parent', 'children', 'collectors', 'ip', 'method', 'url', 'time', 'statusCode');
+>>>>>>> git-aline/master/master
     }
 }

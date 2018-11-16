@@ -16,6 +16,11 @@ namespace Symfony\Component\Serializer\Mapping;
  *
  * Primarily, the metadata stores serialization groups.
  *
+<<<<<<< HEAD
+=======
+ * @internal
+ *
+>>>>>>> git-aline/master/master
  * @author Kévin Dunglas <dunglas@gmail.com>
  */
 interface AttributeMetadataInterface
@@ -42,9 +47,27 @@ interface AttributeMetadataInterface
     public function getGroups();
 
     /**
+<<<<<<< HEAD
      * Merges an {@see AttributeMetadataInterface} with in the current one.
      *
      * @param AttributeMetadataInterface $attributeMetadata
+=======
+     * Sets the serialization max depth for this attribute.
+     *
+     * @param int|null $maxDepth
+     */
+    public function setMaxDepth($maxDepth);
+
+    /**
+     * Gets the serialization max depth for this attribute.
+     *
+     * @return int|null
+     */
+    public function getMaxDepth();
+
+    /**
+     * Merges an {@see AttributeMetadataInterface} with in the current one.
+>>>>>>> git-aline/master/master
      */
     public function merge(AttributeMetadataInterface $attributeMetadata);
 }

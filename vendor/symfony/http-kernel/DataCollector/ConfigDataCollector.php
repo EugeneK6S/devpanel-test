@@ -11,6 +11,7 @@
 
 namespace Symfony\Component\HttpKernel\DataCollector;
 
+<<<<<<< HEAD
 use Symfony\Component\HttpKernel\KernelInterface;
 use Symfony\Component\HttpKernel\Kernel;
 use Symfony\Component\HttpFoundation\Request;
@@ -22,6 +23,18 @@ use Symfony\Component\HttpFoundation\Response;
  * @author Fabien Potencier <fabien@symfony.com>
  */
 class ConfigDataCollector extends DataCollector
+=======
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpKernel\Kernel;
+use Symfony\Component\HttpKernel\KernelInterface;
+use Symfony\Component\VarDumper\Caster\LinkStub;
+
+/**
+ * @author Fabien Potencier <fabien@symfony.com>
+ */
+class ConfigDataCollector extends DataCollector implements LateDataCollectorInterface
+>>>>>>> git-aline/master/master
 {
     /**
      * @var KernelInterface
@@ -29,11 +42,17 @@ class ConfigDataCollector extends DataCollector
     private $kernel;
     private $name;
     private $version;
+<<<<<<< HEAD
     private $cacheVersionInfo = true;
 
     /**
      * Constructor.
      *
+=======
+    private $hasVarDumper;
+
+    /**
+>>>>>>> git-aline/master/master
      * @param string $name    The name of the application using the web profiler
      * @param string $version The version of the application using the web profiler
      */
@@ -41,12 +60,19 @@ class ConfigDataCollector extends DataCollector
     {
         $this->name = $name;
         $this->version = $version;
+<<<<<<< HEAD
+=======
+        $this->hasVarDumper = class_exists(LinkStub::class);
+>>>>>>> git-aline/master/master
     }
 
     /**
      * Sets the Kernel associated with this Request.
+<<<<<<< HEAD
      *
      * @param KernelInterface $kernel A KernelInterface instance
+=======
+>>>>>>> git-aline/master/master
      */
     public function setKernel(KernelInterface $kernel = null)
     {
@@ -68,6 +94,7 @@ class ConfigDataCollector extends DataCollector
             'env' => isset($this->kernel) ? $this->kernel->getEnvironment() : 'n/a',
             'debug' => isset($this->kernel) ? $this->kernel->isDebug() : 'n/a',
             'php_version' => PHP_VERSION,
+<<<<<<< HEAD
             'xdebug_enabled' => extension_loaded('xdebug'),
             'eaccel_enabled' => extension_loaded('eaccelerator') && ini_get('eaccelerator.enable'),
             'apc_enabled' => extension_loaded('apc') && ini_get('apc.enabled'),
@@ -76,10 +103,21 @@ class ConfigDataCollector extends DataCollector
             'zend_opcache_enabled' => extension_loaded('Zend OPcache') && ini_get('opcache.enable'),
             'bundles' => array(),
             'sapi_name' => php_sapi_name(),
+=======
+            'php_architecture' => PHP_INT_SIZE * 8,
+            'php_intl_locale' => class_exists('Locale', false) && \Locale::getDefault() ? \Locale::getDefault() : 'n/a',
+            'php_timezone' => date_default_timezone_get(),
+            'xdebug_enabled' => \extension_loaded('xdebug'),
+            'apcu_enabled' => \extension_loaded('apcu') && ini_get('apc.enabled'),
+            'zend_opcache_enabled' => \extension_loaded('Zend OPcache') && ini_get('opcache.enable'),
+            'bundles' => array(),
+            'sapi_name' => \PHP_SAPI,
+>>>>>>> git-aline/master/master
         );
 
         if (isset($this->kernel)) {
             foreach ($this->kernel->getBundles() as $name => $bundle) {
+<<<<<<< HEAD
                 $this->data['bundles'][$name] = $bundle->getPath();
             }
 
@@ -87,6 +125,38 @@ class ConfigDataCollector extends DataCollector
         }
     }
 
+=======
+                $this->data['bundles'][$name] = $this->hasVarDumper ? new LinkStub($bundle->getPath()) : $bundle->getPath();
+            }
+
+            $this->data['symfony_state'] = $this->determineSymfonyState();
+            $this->data['symfony_minor_version'] = sprintf('%s.%s', Kernel::MAJOR_VERSION, Kernel::MINOR_VERSION);
+            $eom = \DateTime::createFromFormat('m/Y', Kernel::END_OF_MAINTENANCE);
+            $eol = \DateTime::createFromFormat('m/Y', Kernel::END_OF_LIFE);
+            $this->data['symfony_eom'] = $eom->format('F Y');
+            $this->data['symfony_eol'] = $eol->format('F Y');
+        }
+
+        if (preg_match('~^(\d+(?:\.\d+)*)(.+)?$~', $this->data['php_version'], $matches) && isset($matches[2])) {
+            $this->data['php_version'] = $matches[1];
+            $this->data['php_version_extra'] = $matches[2];
+        }
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function reset()
+    {
+        $this->data = array();
+    }
+
+    public function lateCollect()
+    {
+        $this->data = $this->cloneVar($this->data);
+    }
+
+>>>>>>> git-aline/master/master
     public function getApplicationName()
     {
         return $this->data['app_name'];
@@ -127,9 +197,43 @@ class ConfigDataCollector extends DataCollector
         return $this->data['symfony_state'];
     }
 
+<<<<<<< HEAD
     public function setCacheVersionInfo($cacheVersionInfo)
     {
         $this->cacheVersionInfo = $cacheVersionInfo;
+=======
+    /**
+     * Returns the minor Symfony version used (without patch numbers of extra
+     * suffix like "RC", "beta", etc.).
+     *
+     * @return string
+     */
+    public function getSymfonyMinorVersion()
+    {
+        return $this->data['symfony_minor_version'];
+    }
+
+    /**
+     * Returns the human redable date when this Symfony version ends its
+     * maintenance period.
+     *
+     * @return string
+     */
+    public function getSymfonyEom()
+    {
+        return $this->data['symfony_eom'];
+    }
+
+    /**
+     * Returns the human redable date when this Symfony version reaches its
+     * "end of life" and won't receive bugs or security fixes.
+     *
+     * @return string
+     */
+    public function getSymfonyEol()
+    {
+        return $this->data['symfony_eol'];
+>>>>>>> git-aline/master/master
     }
 
     /**
@@ -143,6 +247,7 @@ class ConfigDataCollector extends DataCollector
     }
 
     /**
+<<<<<<< HEAD
      * Gets the application name.
      *
      * @return string The application name
@@ -240,6 +345,99 @@ class ConfigDataCollector extends DataCollector
     public function hasAccelerator()
     {
         return $this->hasApc() || $this->hasZendOpcache() || $this->hasEAccelerator() || $this->hasXCache() || $this->hasWinCache();
+=======
+     * Gets the PHP version extra part.
+     *
+     * @return string|null The extra part
+     */
+    public function getPhpVersionExtra()
+    {
+        return isset($this->data['php_version_extra']) ? $this->data['php_version_extra'] : null;
+    }
+
+    /**
+     * @return int The PHP architecture as number of bits (e.g. 32 or 64)
+     */
+    public function getPhpArchitecture()
+    {
+        return $this->data['php_architecture'];
+    }
+
+    /**
+     * @return string
+     */
+    public function getPhpIntlLocale()
+    {
+        return $this->data['php_intl_locale'];
+    }
+
+    /**
+     * @return string
+     */
+    public function getPhpTimezone()
+    {
+        return $this->data['php_timezone'];
+    }
+
+    /**
+     * Gets the application name.
+     *
+     * @return string The application name
+     */
+    public function getAppName()
+    {
+        return $this->data['name'];
+    }
+
+    /**
+     * Gets the environment.
+     *
+     * @return string The environment
+     */
+    public function getEnv()
+    {
+        return $this->data['env'];
+    }
+
+    /**
+     * Returns true if the debug is enabled.
+     *
+     * @return bool true if debug is enabled, false otherwise
+     */
+    public function isDebug()
+    {
+        return $this->data['debug'];
+    }
+
+    /**
+     * Returns true if the XDebug is enabled.
+     *
+     * @return bool true if XDebug is enabled, false otherwise
+     */
+    public function hasXDebug()
+    {
+        return $this->data['xdebug_enabled'];
+    }
+
+    /**
+     * Returns true if APCu is enabled.
+     *
+     * @return bool true if APCu is enabled, false otherwise
+     */
+    public function hasApcu()
+    {
+        return $this->data['apcu_enabled'];
+    }
+
+    /**
+     * Returns true if Zend OPcache is enabled.
+     *
+     * @return bool true if Zend OPcache is enabled, false otherwise
+     */
+    public function hasZendOpcache()
+    {
+        return $this->data['zend_opcache_enabled'];
+>>>>>>> git-aline/master/master
     }
 
     public function getBundles()

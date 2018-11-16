@@ -19,22 +19,38 @@ namespace Symfony\Component\HttpFoundation;
 class RequestMatcher implements RequestMatcherInterface
 {
     /**
+<<<<<<< HEAD
      * @var string
+=======
+     * @var string|null
+>>>>>>> git-aline/master/master
      */
     private $path;
 
     /**
+<<<<<<< HEAD
      * @var string
+=======
+     * @var string|null
+>>>>>>> git-aline/master/master
      */
     private $host;
 
     /**
+<<<<<<< HEAD
      * @var array
+=======
+     * @var string[]
+>>>>>>> git-aline/master/master
      */
     private $methods = array();
 
     /**
+<<<<<<< HEAD
      * @var string
+=======
+     * @var string[]
+>>>>>>> git-aline/master/master
      */
     private $ips = array();
 
@@ -76,13 +92,21 @@ class RequestMatcher implements RequestMatcherInterface
      */
     public function matchScheme($scheme)
     {
+<<<<<<< HEAD
         $this->schemes = array_map('strtolower', (array) $scheme);
+=======
+        $this->schemes = null !== $scheme ? array_map('strtolower', (array) $scheme) : array();
+>>>>>>> git-aline/master/master
     }
 
     /**
      * Adds a check for the URL host name.
      *
+<<<<<<< HEAD
      * @param string $regexp A Regexp
+=======
+     * @param string|null $regexp A Regexp
+>>>>>>> git-aline/master/master
      */
     public function matchHost($regexp)
     {
@@ -92,7 +116,11 @@ class RequestMatcher implements RequestMatcherInterface
     /**
      * Adds a check for the URL path info.
      *
+<<<<<<< HEAD
      * @param string $regexp A Regexp
+=======
+     * @param string|null $regexp A Regexp
+>>>>>>> git-aline/master/master
      */
     public function matchPath($regexp)
     {
@@ -112,21 +140,37 @@ class RequestMatcher implements RequestMatcherInterface
     /**
      * Adds a check for the client IP.
      *
+<<<<<<< HEAD
      * @param string|string[] $ips A specific IP address or a range specified using IP/netmask like 192.168.1.0/24
      */
     public function matchIps($ips)
     {
         $this->ips = (array) $ips;
+=======
+     * @param string|string[]|null $ips A specific IP address or a range specified using IP/netmask like 192.168.1.0/24
+     */
+    public function matchIps($ips)
+    {
+        $this->ips = null !== $ips ? (array) $ips : array();
+>>>>>>> git-aline/master/master
     }
 
     /**
      * Adds a check for the HTTP method.
      *
+<<<<<<< HEAD
      * @param string|string[] $method An HTTP method or an array of HTTP methods
      */
     public function matchMethod($method)
     {
         $this->methods = array_map('strtoupper', (array) $method);
+=======
+     * @param string|string[]|null $method An HTTP method or an array of HTTP methods
+     */
+    public function matchMethod($method)
+    {
+        $this->methods = null !== $method ? array_map('strtoupper', (array) $method) : array();
+>>>>>>> git-aline/master/master
     }
 
     /**
@@ -145,11 +189,19 @@ class RequestMatcher implements RequestMatcherInterface
      */
     public function matches(Request $request)
     {
+<<<<<<< HEAD
         if ($this->schemes && !in_array($request->getScheme(), $this->schemes)) {
             return false;
         }
 
         if ($this->methods && !in_array($request->getMethod(), $this->methods)) {
+=======
+        if ($this->schemes && !\in_array($request->getScheme(), $this->schemes, true)) {
+            return false;
+        }
+
+        if ($this->methods && !\in_array($request->getMethod(), $this->methods, true)) {
+>>>>>>> git-aline/master/master
             return false;
         }
 
@@ -173,6 +225,10 @@ class RequestMatcher implements RequestMatcherInterface
 
         // Note to future implementors: add additional checks above the
         // foreach above or else your check might not be run!
+<<<<<<< HEAD
         return count($this->ips) === 0;
+=======
+        return 0 === \count($this->ips);
+>>>>>>> git-aline/master/master
     }
 }

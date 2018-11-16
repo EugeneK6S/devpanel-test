@@ -13,7 +13,10 @@ namespace Symfony\Component\Validator\Constraints;
 
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\ConstraintValidator;
+<<<<<<< HEAD
 use Symfony\Component\Validator\Context\ExecutionContextInterface;
+=======
+>>>>>>> git-aline/master/master
 use Symfony\Component\Validator\Exception\UnexpectedTypeException;
 
 /**
@@ -34,12 +37,17 @@ class AllValidator extends ConstraintValidator
             return;
         }
 
+<<<<<<< HEAD
         if (!is_array($value) && !$value instanceof \Traversable) {
+=======
+        if (!\is_array($value) && !$value instanceof \Traversable) {
+>>>>>>> git-aline/master/master
             throw new UnexpectedTypeException($value, 'array or Traversable');
         }
 
         $context = $this->context;
 
+<<<<<<< HEAD
         if ($context instanceof ExecutionContextInterface) {
             $validator = $context->getValidator()->inContext($context);
 
@@ -51,6 +59,12 @@ class AllValidator extends ConstraintValidator
             foreach ($value as $key => $element) {
                 $context->validateValue($element, $constraint->constraints, '['.$key.']');
             }
+=======
+        $validator = $context->getValidator()->inContext($context);
+
+        foreach ($value as $key => $element) {
+            $validator->atPath('['.$key.']')->validate($element, $constraint->constraints);
+>>>>>>> git-aline/master/master
         }
     }
 }

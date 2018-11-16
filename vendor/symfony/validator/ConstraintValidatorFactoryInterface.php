@@ -21,8 +21,11 @@ interface ConstraintValidatorFactoryInterface
      * Given a Constraint, this returns the ConstraintValidatorInterface
      * object that should be used to verify its validity.
      *
+<<<<<<< HEAD
      * @param Constraint $constraint The source constraint
      *
+=======
+>>>>>>> git-aline/master/master
      * @return ConstraintValidatorInterface
      */
     public function getInstance(Constraint $constraint);

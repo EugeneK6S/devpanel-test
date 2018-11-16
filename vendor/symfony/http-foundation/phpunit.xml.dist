@@ -5,6 +5,11 @@
          backupGlobals="false"
          colors="true"
          bootstrap="vendor/autoload.php"
+<<<<<<< HEAD
+=======
+         failOnRisky="true"
+         failOnWarning="true"
+>>>>>>> git-aline/master/master
 >
     <php>
         <ini name="error_reporting" value="-1" />

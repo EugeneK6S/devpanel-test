@@ -11,9 +11,21 @@
 
 namespace Symfony\Component\HttpKernel;
 
+<<<<<<< HEAD
 use Symfony\Component\HttpKernel\Controller\ControllerResolverInterface;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\HttpKernel\Exception\HttpExceptionInterface;
+=======
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
+use Symfony\Component\HttpFoundation\Exception\RequestExceptionInterface;
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\RequestStack;
+use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpKernel\Controller\ArgumentResolver;
+use Symfony\Component\HttpKernel\Controller\ArgumentResolverInterface;
+use Symfony\Component\HttpKernel\Controller\ControllerResolverInterface;
+use Symfony\Component\HttpKernel\Event\FilterControllerArgumentsEvent;
+>>>>>>> git-aline/master/master
 use Symfony\Component\HttpKernel\Event\FilterControllerEvent;
 use Symfony\Component\HttpKernel\Event\FilterResponseEvent;
 use Symfony\Component\HttpKernel\Event\FinishRequestEvent;
@@ -21,10 +33,16 @@ use Symfony\Component\HttpKernel\Event\GetResponseEvent;
 use Symfony\Component\HttpKernel\Event\GetResponseForControllerResultEvent;
 use Symfony\Component\HttpKernel\Event\GetResponseForExceptionEvent;
 use Symfony\Component\HttpKernel\Event\PostResponseEvent;
+<<<<<<< HEAD
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
+=======
+use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
+use Symfony\Component\HttpKernel\Exception\HttpExceptionInterface;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
+>>>>>>> git-aline/master/master
 
 /**
  * HttpKernel notifies events to convert a Request object to a Response one.
@@ -36,6 +54,7 @@ class HttpKernel implements HttpKernelInterface, TerminableInterface
     protected $dispatcher;
     protected $resolver;
     protected $requestStack;
+<<<<<<< HEAD
 
     /**
      * Constructor.
@@ -45,10 +64,25 @@ class HttpKernel implements HttpKernelInterface, TerminableInterface
      * @param RequestStack                $requestStack A stack for master/sub requests
      */
     public function __construct(EventDispatcherInterface $dispatcher, ControllerResolverInterface $resolver, RequestStack $requestStack = null)
+=======
+    private $argumentResolver;
+
+    public function __construct(EventDispatcherInterface $dispatcher, ControllerResolverInterface $resolver, RequestStack $requestStack = null, ArgumentResolverInterface $argumentResolver = null)
+>>>>>>> git-aline/master/master
     {
         $this->dispatcher = $dispatcher;
         $this->resolver = $resolver;
         $this->requestStack = $requestStack ?: new RequestStack();
+<<<<<<< HEAD
+=======
+        $this->argumentResolver = $argumentResolver;
+
+        if (null === $this->argumentResolver) {
+            @trigger_error(sprintf('As of 3.1 an %s is used to resolve arguments. In 4.0 the $argumentResolver becomes the %s if no other is provided instead of using the $resolver argument.', ArgumentResolverInterface::class, ArgumentResolver::class), E_USER_DEPRECATED);
+            // fallback in case of deprecations
+            $this->argumentResolver = $resolver;
+        }
+>>>>>>> git-aline/master/master
     }
 
     /**
@@ -61,6 +95,12 @@ class HttpKernel implements HttpKernelInterface, TerminableInterface
         try {
             return $this->handleRaw($request, $type);
         } catch (\Exception $e) {
+<<<<<<< HEAD
+=======
+            if ($e instanceof RequestExceptionInterface) {
+                $e = new BadRequestHttpException($e->getMessage(), $e);
+            }
+>>>>>>> git-aline/master/master
             if (false === $catch) {
                 $this->finishRequest($request, $type);
 
@@ -80,6 +120,7 @@ class HttpKernel implements HttpKernelInterface, TerminableInterface
     }
 
     /**
+<<<<<<< HEAD
      * @throws \LogicException If the request stack is empty
      *
      * @internal
@@ -88,6 +129,14 @@ class HttpKernel implements HttpKernelInterface, TerminableInterface
     {
         if (!$request = $this->requestStack->getMasterRequest()) {
             throw new \LogicException('Request stack is empty', 0, $exception);
+=======
+     * @internal
+     */
+    public function terminateWithException(\Exception $exception, Request $request = null)
+    {
+        if (!$request = $request ?: $this->requestStack->getMasterRequest()) {
+            throw $exception;
+>>>>>>> git-aline/master/master
         }
 
         $response = $this->handleException($exception, $request, self::MASTER_REQUEST);
@@ -133,10 +182,22 @@ class HttpKernel implements HttpKernelInterface, TerminableInterface
         $controller = $event->getController();
 
         // controller arguments
+<<<<<<< HEAD
         $arguments = $this->resolver->getArguments($request, $controller);
 
         // call controller
         $response = call_user_func_array($controller, $arguments);
+=======
+        $arguments = $this->argumentResolver->getArguments($request, $controller);
+
+        $event = new FilterControllerArgumentsEvent($this, $controller, $arguments, $request, $type);
+        $this->dispatcher->dispatch(KernelEvents::CONTROLLER_ARGUMENTS, $event);
+        $controller = $event->getController();
+        $arguments = $event->getArguments();
+
+        // call controller
+        $response = \call_user_func_array($controller, $arguments);
+>>>>>>> git-aline/master/master
 
         // view
         if (!$response instanceof Response) {
@@ -228,10 +289,19 @@ class HttpKernel implements HttpKernelInterface, TerminableInterface
 
         // the developer asked for a specific status code
         if ($response->headers->has('X-Status-Code')) {
+<<<<<<< HEAD
             $response->setStatusCode($response->headers->get('X-Status-Code'));
 
             $response->headers->remove('X-Status-Code');
         } elseif (!$response->isClientError() && !$response->isServerError() && !$response->isRedirect()) {
+=======
+            @trigger_error(sprintf('Using the X-Status-Code header is deprecated since Symfony 3.3 and will be removed in 4.0. Use %s::allowCustomResponseCode() instead.', GetResponseForExceptionEvent::class), E_USER_DEPRECATED);
+
+            $response->setStatusCode($response->headers->get('X-Status-Code'));
+
+            $response->headers->remove('X-Status-Code');
+        } elseif (!$event->isAllowingCustomResponseCode() && !$response->isClientError() && !$response->isServerError() && !$response->isRedirect()) {
+>>>>>>> git-aline/master/master
             // ensure that we actually have an error response
             if ($e instanceof HttpExceptionInterface) {
                 // keep the HTTP status code and headers
@@ -251,11 +321,19 @@ class HttpKernel implements HttpKernelInterface, TerminableInterface
 
     private function varToString($var)
     {
+<<<<<<< HEAD
         if (is_object($var)) {
             return sprintf('Object(%s)', get_class($var));
         }
 
         if (is_array($var)) {
+=======
+        if (\is_object($var)) {
+            return sprintf('Object(%s)', \get_class($var));
+        }
+
+        if (\is_array($var)) {
+>>>>>>> git-aline/master/master
             $a = array();
             foreach ($var as $k => $v) {
                 $a[] = sprintf('%s => %s', $k, $this->varToString($v));
@@ -264,7 +342,11 @@ class HttpKernel implements HttpKernelInterface, TerminableInterface
             return sprintf('Array(%s)', implode(', ', $a));
         }
 
+<<<<<<< HEAD
         if (is_resource($var)) {
+=======
+        if (\is_resource($var)) {
+>>>>>>> git-aline/master/master
             return sprintf('Resource(%s)', get_resource_type($var));
         }
 

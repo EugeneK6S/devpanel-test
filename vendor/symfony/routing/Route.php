@@ -19,6 +19,7 @@ namespace Symfony\Component\Routing;
  */
 class Route implements \Serializable
 {
+<<<<<<< HEAD
     /**
      * @var string
      */
@@ -53,6 +54,16 @@ class Route implements \Serializable
      * @var array
      */
     private $options = array();
+=======
+    private $path = '/';
+    private $host = '';
+    private $schemes = array();
+    private $methods = array();
+    private $defaults = array();
+    private $requirements = array();
+    private $options = array();
+    private $condition = '';
+>>>>>>> git-aline/master/master
 
     /**
      * @var null|CompiledRoute
@@ -60,16 +71,20 @@ class Route implements \Serializable
     private $compiled;
 
     /**
+<<<<<<< HEAD
      * @var string
      */
     private $condition = '';
 
     /**
+=======
+>>>>>>> git-aline/master/master
      * Constructor.
      *
      * Available options:
      *
      *  * compiler_class: A class name able to compile this route instance (RouteCompiler by default)
+<<<<<<< HEAD
      *
      * @param string       $path         The path pattern to match
      * @param array        $defaults     An array of default parameter values
@@ -79,6 +94,18 @@ class Route implements \Serializable
      * @param string|array $schemes      A required URI scheme or an array of restricted schemes
      * @param string|array $methods      A required HTTP method or an array of restricted methods
      * @param string       $condition    A condition that should evaluate to true for the route to match
+=======
+     *  * utf8:           Whether UTF-8 matching is enforced ot not
+     *
+     * @param string          $path         The path pattern to match
+     * @param array           $defaults     An array of default parameter values
+     * @param array           $requirements An array of requirements for parameters (regexes)
+     * @param array           $options      An array of options
+     * @param string          $host         The host pattern to match
+     * @param string|string[] $schemes      A required URI scheme or an array of restricted schemes
+     * @param string|string[] $methods      A required HTTP method or an array of restricted methods
+     * @param string          $condition    A condition that should evaluate to true for the route to match
+>>>>>>> git-aline/master/master
      */
     public function __construct($path, array $defaults = array(), array $requirements = array(), array $options = array(), $host = '', $schemes = array(), $methods = array(), $condition = '')
     {
@@ -87,6 +114,7 @@ class Route implements \Serializable
         $this->setRequirements($requirements);
         $this->setOptions($options);
         $this->setHost($host);
+<<<<<<< HEAD
         // The conditions make sure that an initial empty $schemes/$methods does not override the corresponding requirement.
         // They can be removed when the BC layer is removed.
         if ($schemes) {
@@ -95,6 +123,10 @@ class Route implements \Serializable
         if ($methods) {
             $this->setMethods($methods);
         }
+=======
+        $this->setSchemes($schemes);
+        $this->setMethods($methods);
+>>>>>>> git-aline/master/master
         $this->setCondition($condition);
     }
 
@@ -141,6 +173,7 @@ class Route implements \Serializable
     /**
      * Returns the pattern for the path.
      *
+<<<<<<< HEAD
      * @return string The pattern
      *
      * @deprecated since version 2.2, to be removed in 3.0. Use getPath instead.
@@ -173,6 +206,8 @@ class Route implements \Serializable
     /**
      * Returns the pattern for the path.
      *
+=======
+>>>>>>> git-aline/master/master
      * @return string The path pattern
      */
     public function getPath()
@@ -187,7 +222,11 @@ class Route implements \Serializable
      *
      * @param string $pattern The path pattern
      *
+<<<<<<< HEAD
      * @return Route The current Route instance
+=======
+     * @return $this
+>>>>>>> git-aline/master/master
      */
     public function setPath($pattern)
     {
@@ -216,7 +255,11 @@ class Route implements \Serializable
      *
      * @param string $pattern The host pattern
      *
+<<<<<<< HEAD
      * @return Route The current Route instance
+=======
+     * @return $this
+>>>>>>> git-aline/master/master
      */
     public function setHost($pattern)
     {
@@ -230,7 +273,11 @@ class Route implements \Serializable
      * Returns the lowercased schemes this route is restricted to.
      * So an empty array means that any scheme is allowed.
      *
+<<<<<<< HEAD
      * @return array The schemes
+=======
+     * @return string[] The schemes
+>>>>>>> git-aline/master/master
      */
     public function getSchemes()
     {
@@ -243,13 +290,20 @@ class Route implements \Serializable
      *
      * This method implements a fluent interface.
      *
+<<<<<<< HEAD
      * @param string|array $schemes The scheme or an array of schemes
      *
      * @return Route The current Route instance
+=======
+     * @param string|string[] $schemes The scheme or an array of schemes
+     *
+     * @return $this
+>>>>>>> git-aline/master/master
      */
     public function setSchemes($schemes)
     {
         $this->schemes = array_map('strtolower', (array) $schemes);
+<<<<<<< HEAD
 
         // this is to keep BC and will be removed in a future version
         if ($this->schemes) {
@@ -258,6 +312,8 @@ class Route implements \Serializable
             unset($this->requirements['_scheme']);
         }
 
+=======
+>>>>>>> git-aline/master/master
         $this->compiled = null;
 
         return $this;
@@ -272,14 +328,22 @@ class Route implements \Serializable
      */
     public function hasScheme($scheme)
     {
+<<<<<<< HEAD
         return in_array(strtolower($scheme), $this->schemes, true);
+=======
+        return \in_array(strtolower($scheme), $this->schemes, true);
+>>>>>>> git-aline/master/master
     }
 
     /**
      * Returns the uppercased HTTP methods this route is restricted to.
      * So an empty array means that any method is allowed.
      *
+<<<<<<< HEAD
      * @return array The methods
+=======
+     * @return string[] The methods
+>>>>>>> git-aline/master/master
      */
     public function getMethods()
     {
@@ -292,13 +356,20 @@ class Route implements \Serializable
      *
      * This method implements a fluent interface.
      *
+<<<<<<< HEAD
      * @param string|array $methods The method or an array of methods
      *
      * @return Route The current Route instance
+=======
+     * @param string|string[] $methods The method or an array of methods
+     *
+     * @return $this
+>>>>>>> git-aline/master/master
      */
     public function setMethods($methods)
     {
         $this->methods = array_map('strtoupper', (array) $methods);
+<<<<<<< HEAD
 
         // this is to keep BC and will be removed in a future version
         if ($this->methods) {
@@ -307,6 +378,8 @@ class Route implements \Serializable
             unset($this->requirements['_method']);
         }
 
+=======
+>>>>>>> git-aline/master/master
         $this->compiled = null;
 
         return $this;
@@ -329,7 +402,11 @@ class Route implements \Serializable
      *
      * @param array $options The options
      *
+<<<<<<< HEAD
      * @return Route The current Route instance
+=======
+     * @return $this
+>>>>>>> git-aline/master/master
      */
     public function setOptions(array $options)
     {
@@ -347,7 +424,11 @@ class Route implements \Serializable
      *
      * @param array $options The options
      *
+<<<<<<< HEAD
      * @return Route The current Route instance
+=======
+     * @return $this
+>>>>>>> git-aline/master/master
      */
     public function addOptions(array $options)
     {
@@ -367,7 +448,11 @@ class Route implements \Serializable
      * @param string $name  An option name
      * @param mixed  $value The option value
      *
+<<<<<<< HEAD
      * @return Route The current Route instance
+=======
+     * @return $this
+>>>>>>> git-aline/master/master
      */
     public function setOption($name, $value)
     {
@@ -418,7 +503,11 @@ class Route implements \Serializable
      *
      * @param array $defaults The defaults
      *
+<<<<<<< HEAD
      * @return Route The current Route instance
+=======
+     * @return $this
+>>>>>>> git-aline/master/master
      */
     public function setDefaults(array $defaults)
     {
@@ -434,7 +523,11 @@ class Route implements \Serializable
      *
      * @param array $defaults The defaults
      *
+<<<<<<< HEAD
      * @return Route The current Route instance
+=======
+     * @return $this
+>>>>>>> git-aline/master/master
      */
     public function addDefaults(array $defaults)
     {
@@ -476,7 +569,11 @@ class Route implements \Serializable
      * @param string $name    A variable name
      * @param mixed  $default The default value
      *
+<<<<<<< HEAD
      * @return Route The current Route instance
+=======
+     * @return $this
+>>>>>>> git-aline/master/master
      */
     public function setDefault($name, $default)
     {
@@ -503,7 +600,11 @@ class Route implements \Serializable
      *
      * @param array $requirements The requirements
      *
+<<<<<<< HEAD
      * @return Route The current Route instance
+=======
+     * @return $this
+>>>>>>> git-aline/master/master
      */
     public function setRequirements(array $requirements)
     {
@@ -519,7 +620,11 @@ class Route implements \Serializable
      *
      * @param array $requirements The requirements
      *
+<<<<<<< HEAD
      * @return Route The current Route instance
+=======
+     * @return $this
+>>>>>>> git-aline/master/master
      */
     public function addRequirements(array $requirements)
     {
@@ -540,12 +645,15 @@ class Route implements \Serializable
      */
     public function getRequirement($key)
     {
+<<<<<<< HEAD
         if ('_scheme' === $key) {
             @trigger_error('The "_scheme" requirement is deprecated since version 2.2 and will be removed in 3.0. Use getSchemes() instead.', E_USER_DEPRECATED);
         } elseif ('_method' === $key) {
             @trigger_error('The "_method" requirement is deprecated since version 2.2 and will be removed in 3.0. Use getMethods() instead.', E_USER_DEPRECATED);
         }
 
+=======
+>>>>>>> git-aline/master/master
         return isset($this->requirements[$key]) ? $this->requirements[$key] : null;
     }
 
@@ -567,7 +675,11 @@ class Route implements \Serializable
      * @param string $key   The key
      * @param string $regex The regex
      *
+<<<<<<< HEAD
      * @return Route The current Route instance
+=======
+     * @return $this
+>>>>>>> git-aline/master/master
      */
     public function setRequirement($key, $regex)
     {
@@ -594,7 +706,11 @@ class Route implements \Serializable
      *
      * @param string $condition The condition
      *
+<<<<<<< HEAD
      * @return Route The current Route instance
+=======
+     * @return $this
+>>>>>>> git-aline/master/master
      */
     public function setCondition($condition)
     {
@@ -627,7 +743,11 @@ class Route implements \Serializable
 
     private function sanitizeRequirement($key, $regex)
     {
+<<<<<<< HEAD
         if (!is_string($regex)) {
+=======
+        if (!\is_string($regex)) {
+>>>>>>> git-aline/master/master
             throw new \InvalidArgumentException(sprintf('Routing requirement for "%s" must be a string.', $key));
         }
 
@@ -643,6 +763,7 @@ class Route implements \Serializable
             throw new \InvalidArgumentException(sprintf('Routing requirement for "%s" cannot be empty.', $key));
         }
 
+<<<<<<< HEAD
         // this is to keep BC and will be removed in a future version
         if ('_scheme' === $key) {
             @trigger_error('The "_scheme" requirement is deprecated since version 2.2 and will be removed in 3.0. Use the setSchemes() method instead.', E_USER_DEPRECATED);
@@ -654,6 +775,8 @@ class Route implements \Serializable
             $this->setMethods(explode('|', $regex));
         }
 
+=======
+>>>>>>> git-aline/master/master
         return $regex;
     }
 }

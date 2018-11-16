@@ -22,8 +22,13 @@ use Symfony\Component\Validator\Exception\MissingOptionsException;
  */
 class Count extends Constraint
 {
+<<<<<<< HEAD
     const TOO_FEW_ERROR = 1;
     const TOO_MANY_ERROR = 2;
+=======
+    const TOO_FEW_ERROR = 'bef8e338-6ae5-4caf-b8e2-50e7b0579e69';
+    const TOO_MANY_ERROR = '756b1212-697c-468d-a9ad-50dd783bb169';
+>>>>>>> git-aline/master/master
 
     protected static $errorNames = array(
         self::TOO_FEW_ERROR => 'TOO_FEW_ERROR',
@@ -38,7 +43,11 @@ class Count extends Constraint
 
     public function __construct($options = null)
     {
+<<<<<<< HEAD
         if (null !== $options && !is_array($options)) {
+=======
+        if (null !== $options && !\is_array($options)) {
+>>>>>>> git-aline/master/master
             $options = array(
                 'min' => $options,
                 'max' => $options,

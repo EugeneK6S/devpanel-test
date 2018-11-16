@@ -21,11 +21,14 @@ use Symfony\Component\Validator\Mapping\ClassMetadata;
  */
 class StaticMethodLoader implements LoaderInterface
 {
+<<<<<<< HEAD
     /**
      * The name of the method to call.
      *
      * @var string
      */
+=======
+>>>>>>> git-aline/master/master
     protected $methodName;
 
     /**

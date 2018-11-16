@@ -20,6 +20,11 @@ use Symfony\Component\DependencyInjection\Exception\InvalidArgumentException;
  * it themselves which improves performance quite a lot.
  *
  * @author Johannes M. Schmitt <schmittjoh@gmail.com>
+<<<<<<< HEAD
+=======
+ *
+ * @final since version 3.4
+>>>>>>> git-aline/master/master
  */
 class ServiceReferenceGraph
 {
@@ -45,7 +50,11 @@ class ServiceReferenceGraph
      *
      * @param string $id The id to retrieve
      *
+<<<<<<< HEAD
      * @return ServiceReferenceGraphNode The node matching the supplied identifier
+=======
+     * @return ServiceReferenceGraphNode
+>>>>>>> git-aline/master/master
      *
      * @throws InvalidArgumentException if no node matches the supplied identifier
      */
@@ -61,7 +70,11 @@ class ServiceReferenceGraph
     /**
      * Returns all nodes.
      *
+<<<<<<< HEAD
      * @return ServiceReferenceGraphNode[] An array of all ServiceReferenceGraphNode objects
+=======
+     * @return ServiceReferenceGraphNode[]
+>>>>>>> git-aline/master/master
      */
     public function getNodes()
     {
@@ -73,6 +86,12 @@ class ServiceReferenceGraph
      */
     public function clear()
     {
+<<<<<<< HEAD
+=======
+        foreach ($this->nodes as $node) {
+            $node->clear();
+        }
+>>>>>>> git-aline/master/master
         $this->nodes = array();
     }
 
@@ -80,6 +99,7 @@ class ServiceReferenceGraph
      * Connects 2 nodes together in the Graph.
      *
      * @param string $sourceId
+<<<<<<< HEAD
      * @param string $sourceValue
      * @param string $destId
      * @param string $destValue
@@ -90,6 +110,27 @@ class ServiceReferenceGraph
         $sourceNode = $this->createNode($sourceId, $sourceValue);
         $destNode = $this->createNode($destId, $destValue);
         $edge = new ServiceReferenceGraphEdge($sourceNode, $destNode, $reference);
+=======
+     * @param mixed  $sourceValue
+     * @param string $destId
+     * @param mixed  $destValue
+     * @param string $reference
+     * @param bool   $lazy
+     * @param bool   $weak
+     */
+    public function connect($sourceId, $sourceValue, $destId, $destValue = null, $reference = null/*, bool $lazy = false, bool $weak = false*/)
+    {
+        $lazy = \func_num_args() >= 6 ? func_get_arg(5) : false;
+        $weak = \func_num_args() >= 7 ? func_get_arg(6) : false;
+
+        if (null === $sourceId || null === $destId) {
+            return;
+        }
+
+        $sourceNode = $this->createNode($sourceId, $sourceValue);
+        $destNode = $this->createNode($destId, $destValue);
+        $edge = new ServiceReferenceGraphEdge($sourceNode, $destNode, $reference, $lazy, $weak);
+>>>>>>> git-aline/master/master
 
         $sourceNode->addOutEdge($edge);
         $destNode->addInEdge($edge);
@@ -99,7 +140,11 @@ class ServiceReferenceGraph
      * Creates a graph node.
      *
      * @param string $id
+<<<<<<< HEAD
      * @param string $value
+=======
+     * @param mixed  $value
+>>>>>>> git-aline/master/master
      *
      * @return ServiceReferenceGraphNode
      */

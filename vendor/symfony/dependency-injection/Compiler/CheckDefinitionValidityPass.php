@@ -11,8 +11,13 @@
 
 namespace Symfony\Component\DependencyInjection\Compiler;
 
+<<<<<<< HEAD
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
+=======
+use Symfony\Component\DependencyInjection\ContainerBuilder;
+use Symfony\Component\DependencyInjection\Exception\EnvParameterException;
+>>>>>>> git-aline/master/master
 use Symfony\Component\DependencyInjection\Exception\RuntimeException;
 
 /**
@@ -24,7 +29,10 @@ use Symfony\Component\DependencyInjection\Exception\RuntimeException;
  *
  * - non synthetic, non abstract services always have a class set
  * - synthetic services are always public
+<<<<<<< HEAD
  * - synthetic services are always of non-prototype scope
+=======
+>>>>>>> git-aline/master/master
  *
  * @author Johannes M. Schmitt <schmittjoh@gmail.com>
  */
@@ -33,14 +41,18 @@ class CheckDefinitionValidityPass implements CompilerPassInterface
     /**
      * Processes the ContainerBuilder to validate the Definition.
      *
+<<<<<<< HEAD
      * @param ContainerBuilder $container
      *
+=======
+>>>>>>> git-aline/master/master
      * @throws RuntimeException When the Definition is invalid
      */
     public function process(ContainerBuilder $container)
     {
         foreach ($container->getDefinitions() as $id => $definition) {
             // synthetic service is public
+<<<<<<< HEAD
             if ($definition->isSynthetic() && !$definition->isPublic()) {
                 throw new RuntimeException(sprintf('A synthetic service ("%s") must be public.', $id));
             }
@@ -59,6 +71,35 @@ class CheckDefinitionValidityPass implements CompilerPassInterface
                 if ($definition->getFactory() || $definition->getFactoryClass(false) || $definition->getFactoryService(false)) {
                     throw new RuntimeException(sprintf('Please add the class to service "%s" even if it is constructed by a factory since we might need to add method calls based on compile-time checks.', $id));
                 }
+=======
+            if ($definition->isSynthetic() && !($definition->isPublic() || $definition->isPrivate())) {
+                throw new RuntimeException(sprintf('A synthetic service ("%s") must be public.', $id));
+            }
+
+            // non-synthetic, non-abstract service has class
+            if (!$definition->isAbstract() && !$definition->isSynthetic() && !$definition->getClass()) {
+                if ($definition->getFactory()) {
+                    throw new RuntimeException(sprintf('Please add the class to service "%s" even if it is constructed by a factory since we might need to add method calls based on compile-time checks.', $id));
+                }
+                if (class_exists($id) || interface_exists($id, false)) {
+                    if (0 === strpos($id, '\\') && 1 < substr_count($id, '\\')) {
+                        throw new RuntimeException(sprintf(
+                            'The definition for "%s" has no class attribute, and appears to reference a class or interface. '
+                            .'Please specify the class attribute explicitly or remove the leading backslash by renaming '
+                            .'the service to "%s" to get rid of this error.',
+                            $id, substr($id, 1)
+                        ));
+                    }
+
+                    throw new RuntimeException(sprintf(
+                         'The definition for "%s" has no class attribute, and appears to reference a '
+                        .'class or interface in the global namespace. Leaving out the "class" attribute '
+                        .'is only allowed for namespaced classes. Please specify the class attribute '
+                        .'explicitly to get rid of this error.',
+                        $id
+                    ));
+                }
+>>>>>>> git-aline/master/master
 
                 throw new RuntimeException(sprintf(
                     'The definition for "%s" has no class. If you intend to inject '
@@ -79,6 +120,25 @@ class CheckDefinitionValidityPass implements CompilerPassInterface
                     }
                 }
             }
+<<<<<<< HEAD
+=======
+
+            if ($definition->isPublic() && !$definition->isPrivate()) {
+                $resolvedId = $container->resolveEnvPlaceholders($id, null, $usedEnvs);
+                if (null !== $usedEnvs) {
+                    throw new EnvParameterException(array($resolvedId), null, 'A service name ("%s") cannot contain dynamic values.');
+                }
+            }
+        }
+
+        foreach ($container->getAliases() as $id => $alias) {
+            if ($alias->isPublic() && !$alias->isPrivate()) {
+                $resolvedId = $container->resolveEnvPlaceholders($id, null, $usedEnvs);
+                if (null !== $usedEnvs) {
+                    throw new EnvParameterException(array($resolvedId), null, 'An alias name ("%s") cannot contain dynamic values.');
+                }
+            }
+>>>>>>> git-aline/master/master
         }
     }
 }

@@ -12,29 +12,47 @@
 namespace Symfony\Component\Validator\Context;
 
 use Symfony\Component\Translation\TranslatorInterface;
+<<<<<<< HEAD
 use Symfony\Component\Validator\ClassBasedInterface;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\Constraints\Valid;
 use Symfony\Component\Validator\ConstraintViolation;
 use Symfony\Component\Validator\ConstraintViolationList;
+=======
+use Symfony\Component\Validator\Constraint;
+use Symfony\Component\Validator\ConstraintViolation;
+use Symfony\Component\Validator\ConstraintViolationList;
+use Symfony\Component\Validator\Mapping\ClassMetadataInterface;
+use Symfony\Component\Validator\Mapping\MemberMetadata;
+>>>>>>> git-aline/master/master
 use Symfony\Component\Validator\Mapping\MetadataInterface;
 use Symfony\Component\Validator\Mapping\PropertyMetadataInterface;
 use Symfony\Component\Validator\Util\PropertyPath;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
+<<<<<<< HEAD
 use Symfony\Component\Validator\ValidatorInterface as LegacyValidatorInterface;
+=======
+>>>>>>> git-aline/master/master
 use Symfony\Component\Validator\Violation\ConstraintViolationBuilder;
 
 /**
  * The context used and created by {@link ExecutionContextFactory}.
  *
+<<<<<<< HEAD
  * @since  2.5
  *
+=======
+>>>>>>> git-aline/master/master
  * @author Bernhard Schussek <bschussek@gmail.com>
  *
  * @see ExecutionContextInterface
  *
+<<<<<<< HEAD
  * @internal You should not instantiate or use this class. Code against
  *           {@link ExecutionContextInterface} instead.
+=======
+ * @internal since version 2.5. Code against ExecutionContextInterface instead.
+>>>>>>> git-aline/master/master
  */
 class ExecutionContext implements ExecutionContextInterface
 {
@@ -183,6 +201,7 @@ class ExecutionContext implements ExecutionContextInterface
     /**
      * {@inheritdoc}
      */
+<<<<<<< HEAD
     public function addViolation($message, array $parameters = array(), $invalidValue = null, $plural = null, $code = null)
     {
         // The parameters $invalidValue and following are ignored by the new
@@ -202,6 +221,10 @@ class ExecutionContext implements ExecutionContextInterface
             return;
         }
 
+=======
+    public function addViolation($message, array $parameters = array())
+    {
+>>>>>>> git-aline/master/master
         $this->violations->add(new ConstraintViolation(
             $this->translator->trans($message, $parameters, $this->translationDomain),
             $message,
@@ -289,12 +312,24 @@ class ExecutionContext implements ExecutionContextInterface
         return $this->group;
     }
 
+<<<<<<< HEAD
+=======
+    public function getConstraint()
+    {
+        return $this->constraint;
+    }
+
+>>>>>>> git-aline/master/master
     /**
      * {@inheritdoc}
      */
     public function getClassName()
     {
+<<<<<<< HEAD
         return $this->metadata instanceof ClassBasedInterface ? $this->metadata->getClassName() : null;
+=======
+        return $this->metadata instanceof MemberMetadata || $this->metadata instanceof ClassMetadataInterface ? $this->metadata->getClassName() : null;
+>>>>>>> git-aline/master/master
     }
 
     /**
@@ -316,6 +351,7 @@ class ExecutionContext implements ExecutionContextInterface
     /**
      * {@inheritdoc}
      */
+<<<<<<< HEAD
     public function addViolationAt($subPath, $message, array $parameters = array(), $invalidValue = null, $plural = null, $code = null)
     {
         @trigger_error('The '.__METHOD__.' method is deprecated since version 2.5 and will be removed in 3.0. Use the '.__CLASS__.'::buildViolation method instead.', E_USER_DEPRECATED);
@@ -413,6 +449,8 @@ class ExecutionContext implements ExecutionContextInterface
     /**
      * {@inheritdoc}
      */
+=======
+>>>>>>> git-aline/master/master
     public function markGroupAsValidated($cacheKey, $groupHash)
     {
         if (!isset($this->validatedObjects[$cacheKey])) {

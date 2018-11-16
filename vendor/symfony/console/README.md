@@ -1,6 +1,7 @@
 Console Component
 =================
 
+<<<<<<< HEAD
 Console eases the creation of beautiful and testable command line interfaces.
 
 The Application object manages the CLI application:
@@ -65,3 +66,22 @@ Resources
 [The Console Component](https://symfony.com/doc/current/components/console.html)
 
 [How to create a Console Command](https://symfony.com/doc/current/cookbook/console/console_command.html)
+=======
+The Console component eases the creation of beautiful and testable command line
+interfaces.
+
+Resources
+---------
+
+  * [Documentation](https://symfony.com/doc/current/components/console/index.html)
+  * [Contributing](https://symfony.com/doc/current/contributing/index.html)
+  * [Report issues](https://github.com/symfony/symfony/issues) and
+    [send Pull Requests](https://github.com/symfony/symfony/pulls)
+    in the [main Symfony repository](https://github.com/symfony/symfony)
+
+Credits
+-------
+
+`Resources/bin/hiddeninput.exe` is a third party binary provided within this
+component. Find sources and license at https://github.com/Seldaek/hidden-input.
+>>>>>>> git-aline/master/master

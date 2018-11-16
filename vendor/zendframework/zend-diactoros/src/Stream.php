@@ -3,7 +3,11 @@
  * Zend Framework (http://framework.zend.com/)
  *
  * @see       http://github.com/zendframework/zend-diactoros for the canonical source repository
+<<<<<<< HEAD
  * @copyright Copyright (c) 2015 Zend Technologies USA Inc. (http://www.zend.com)
+=======
+ * @copyright Copyright (c) 2015-2016 Zend Technologies USA Inc. (http://www.zend.com)
+>>>>>>> git-aline/master/master
  * @license   https://github.com/zendframework/zend-diactoros/blob/master/LICENSE.md New BSD License
  */
 
@@ -19,7 +23,11 @@ use Psr\Http\Message\StreamInterface;
 class Stream implements StreamInterface
 {
     /**
+<<<<<<< HEAD
      * @var resource
+=======
+     * @var resource|null
+>>>>>>> git-aline/master/master
      */
     protected $resource;
 
@@ -48,7 +56,14 @@ class Stream implements StreamInterface
         }
 
         try {
+<<<<<<< HEAD
             $this->rewind();
+=======
+            if ($this->isSeekable()) {
+                $this->rewind();
+            }
+
+>>>>>>> git-aline/master/master
             return $this->getContents();
         } catch (RuntimeException $e) {
             return '';

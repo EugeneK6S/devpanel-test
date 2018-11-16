@@ -11,9 +11,15 @@
 
 namespace Symfony\Component\HttpKernel;
 
+<<<<<<< HEAD
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\HttpKernel\Bundle\BundleInterface;
 use Symfony\Component\Config\Loader\LoaderInterface;
+=======
+use Symfony\Component\Config\Loader\LoaderInterface;
+use Symfony\Component\DependencyInjection\ContainerInterface;
+use Symfony\Component\HttpKernel\Bundle\BundleInterface;
+>>>>>>> git-aline/master/master
 
 /**
  * The Kernel is the heart of the Symfony system.
@@ -27,14 +33,21 @@ interface KernelInterface extends HttpKernelInterface, \Serializable
     /**
      * Returns an array of bundles to register.
      *
+<<<<<<< HEAD
      * @return BundleInterface[] An array of bundle instances.
+=======
+     * @return iterable|BundleInterface[] An iterable of bundle instances
+>>>>>>> git-aline/master/master
      */
     public function registerBundles();
 
     /**
      * Loads the container configuration.
+<<<<<<< HEAD
      *
      * @param LoaderInterface $loader A LoaderInterface instance
+=======
+>>>>>>> git-aline/master/master
      */
     public function registerContainerConfiguration(LoaderInterface $loader);
 
@@ -58,6 +71,7 @@ interface KernelInterface extends HttpKernelInterface, \Serializable
     public function getBundles();
 
     /**
+<<<<<<< HEAD
      * Checks if a given class name belongs to an active bundle.
      *
      * @param string $class A class name
@@ -71,6 +85,13 @@ interface KernelInterface extends HttpKernelInterface, \Serializable
     /**
      * Returns a bundle and optionally its descendants by its name.
      *
+=======
+     * Returns a bundle and optionally its descendants by its name.
+     *
+     * The second argument is deprecated as of 3.4 and will be removed in 4.0. This method
+     * will always return an instance of BundleInterface in 4.0.
+     *
+>>>>>>> git-aline/master/master
      * @param string $name  Bundle name
      * @param bool   $first Whether to return the first bundle only or together with its descendants
      *
@@ -132,9 +153,15 @@ interface KernelInterface extends HttpKernelInterface, \Serializable
     public function isDebug();
 
     /**
+<<<<<<< HEAD
      * Gets the application root dir.
      *
      * @return string The application root dir
+=======
+     * Gets the application root dir (path of the project's Kernel class).
+     *
+     * @return string The Kernel root dir
+>>>>>>> git-aline/master/master
      */
     public function getRootDir();
 

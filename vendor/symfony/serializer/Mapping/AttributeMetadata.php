@@ -19,8 +19,11 @@ namespace Symfony\Component\Serializer\Mapping;
 class AttributeMetadata implements AttributeMetadataInterface
 {
     /**
+<<<<<<< HEAD
      * @var string
      *
+=======
+>>>>>>> git-aline/master/master
      * @internal This property is public in order to reduce the size of the
      *           class' serialized representation. Do not access it. Use
      *           {@link getName()} instead.
@@ -28,8 +31,11 @@ class AttributeMetadata implements AttributeMetadataInterface
     public $name;
 
     /**
+<<<<<<< HEAD
      * @var array
      *
+=======
+>>>>>>> git-aline/master/master
      * @internal This property is public in order to reduce the size of the
      *           class' serialized representation. Do not access it. Use
      *           {@link getGroups()} instead.
@@ -37,6 +43,18 @@ class AttributeMetadata implements AttributeMetadataInterface
     public $groups = array();
 
     /**
+<<<<<<< HEAD
+=======
+     * @var int|null
+     *
+     * @internal This property is public in order to reduce the size of the
+     *           class' serialized representation. Do not access it. Use
+     *           {@link getMaxDepth()} instead.
+     */
+    public $maxDepth;
+
+    /**
+>>>>>>> git-aline/master/master
      * Constructs a metadata for the given attribute.
      *
      * @param string $name
@@ -59,7 +77,11 @@ class AttributeMetadata implements AttributeMetadataInterface
      */
     public function addGroup($group)
     {
+<<<<<<< HEAD
         if (!in_array($group, $this->groups)) {
+=======
+        if (!\in_array($group, $this->groups)) {
+>>>>>>> git-aline/master/master
             $this->groups[] = $group;
         }
     }
@@ -75,11 +97,38 @@ class AttributeMetadata implements AttributeMetadataInterface
     /**
      * {@inheritdoc}
      */
+<<<<<<< HEAD
+=======
+    public function setMaxDepth($maxDepth)
+    {
+        $this->maxDepth = $maxDepth;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getMaxDepth()
+    {
+        return $this->maxDepth;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+>>>>>>> git-aline/master/master
     public function merge(AttributeMetadataInterface $attributeMetadata)
     {
         foreach ($attributeMetadata->getGroups() as $group) {
             $this->addGroup($group);
         }
+<<<<<<< HEAD
+=======
+
+        // Overwrite only if not defined
+        if (null === $this->maxDepth) {
+            $this->maxDepth = $attributeMetadata->getMaxDepth();
+        }
+>>>>>>> git-aline/master/master
     }
 
     /**
@@ -89,6 +138,10 @@ class AttributeMetadata implements AttributeMetadataInterface
      */
     public function __sleep()
     {
+<<<<<<< HEAD
         return array('name', 'groups');
+=======
+        return array('name', 'groups', 'maxDepth');
+>>>>>>> git-aline/master/master
     }
 }

@@ -25,9 +25,12 @@ use Symfony\Component\Validator\Mapping\ClassMetadata;
  */
 class LoaderChain implements LoaderInterface
 {
+<<<<<<< HEAD
     /**
      * @var LoaderInterface[]
      */
+=======
+>>>>>>> git-aline/master/master
     protected $loaders;
 
     /**
@@ -39,7 +42,11 @@ class LoaderChain implements LoaderInterface
     {
         foreach ($loaders as $loader) {
             if (!$loader instanceof LoaderInterface) {
+<<<<<<< HEAD
                 throw new MappingException(sprintf('Class %s is expected to implement LoaderInterface', get_class($loader)));
+=======
+                throw new MappingException(sprintf('Class %s is expected to implement LoaderInterface', \get_class($loader)));
+>>>>>>> git-aline/master/master
             }
         }
 
@@ -59,4 +66,15 @@ class LoaderChain implements LoaderInterface
 
         return $success;
     }
+<<<<<<< HEAD
+=======
+
+    /**
+     * @return LoaderInterface[]
+     */
+    public function getLoaders()
+    {
+        return $this->loaders;
+    }
+>>>>>>> git-aline/master/master
 }

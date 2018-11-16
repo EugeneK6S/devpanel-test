@@ -12,7 +12,10 @@
 namespace Symfony\Component\Validator\Mapping;
 
 use Symfony\Component\Validator\Constraint;
+<<<<<<< HEAD
 use Symfony\Component\Validator\MetadataInterface as LegacyMetadataInterface;
+=======
+>>>>>>> git-aline/master/master
 
 /**
  * A container for validation metadata.
@@ -24,14 +27,21 @@ use Symfony\Component\Validator\MetadataInterface as LegacyMetadataInterface;
  * against their class' metadata and whether traversable objects should be
  * traversed or not.
  *
+<<<<<<< HEAD
  * @since  2.5
  *
+=======
+>>>>>>> git-aline/master/master
  * @author Bernhard Schussek <bschussek@gmail.com>
  *
  * @see CascadingStrategy
  * @see TraversalStrategy
  */
+<<<<<<< HEAD
 interface MetadataInterface extends LegacyMetadataInterface
+=======
+interface MetadataInterface
+>>>>>>> git-aline/master/master
 {
     /**
      * Returns the strategy for cascading objects.
@@ -57,4 +67,16 @@ interface MetadataInterface extends LegacyMetadataInterface
      * @return Constraint[] A list of Constraint instances
      */
     public function getConstraints();
+<<<<<<< HEAD
+=======
+
+    /**
+     * Returns all constraints for a given validation group.
+     *
+     * @param string $group The validation group
+     *
+     * @return Constraint[] A list of constraint instances
+     */
+    public function findConstraints($group);
+>>>>>>> git-aline/master/master
 }

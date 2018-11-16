@@ -11,12 +11,20 @@
 
 namespace Symfony\Component\Debug\FatalErrorHandler;
 
+<<<<<<< HEAD
 use Symfony\Component\Debug\Exception\ClassNotFoundException;
 use Symfony\Component\Debug\Exception\FatalErrorException;
 use Symfony\Component\Debug\DebugClassLoader;
 use Composer\Autoload\ClassLoader as ComposerClassLoader;
 use Symfony\Component\ClassLoader\ClassLoader as SymfonyClassLoader;
 use Symfony\Component\ClassLoader\UniversalClassLoader as SymfonyUniversalClassLoader;
+=======
+use Composer\Autoload\ClassLoader as ComposerClassLoader;
+use Symfony\Component\ClassLoader\ClassLoader as SymfonyClassLoader;
+use Symfony\Component\Debug\DebugClassLoader;
+use Symfony\Component\Debug\Exception\ClassNotFoundException;
+use Symfony\Component\Debug\Exception\FatalErrorException;
+>>>>>>> git-aline/master/master
 
 /**
  * ErrorHandler for classes that do not exist.
@@ -30,9 +38,15 @@ class ClassNotFoundFatalErrorHandler implements FatalErrorHandlerInterface
      */
     public function handleError(array $error, FatalErrorException $exception)
     {
+<<<<<<< HEAD
         $messageLen = strlen($error['message']);
         $notFoundSuffix = '\' not found';
         $notFoundSuffixLen = strlen($notFoundSuffix);
+=======
+        $messageLen = \strlen($error['message']);
+        $notFoundSuffix = '\' not found';
+        $notFoundSuffixLen = \strlen($notFoundSuffix);
+>>>>>>> git-aline/master/master
         if ($notFoundSuffixLen > $messageLen) {
             return;
         }
@@ -43,7 +57,11 @@ class ClassNotFoundFatalErrorHandler implements FatalErrorHandlerInterface
 
         foreach (array('class', 'interface', 'trait') as $typeName) {
             $prefix = ucfirst($typeName).' \'';
+<<<<<<< HEAD
             $prefixLen = strlen($prefix);
+=======
+            $prefixLen = \strlen($prefix);
+>>>>>>> git-aline/master/master
             if (0 !== strpos($error['message'], $prefix)) {
                 continue;
             }
@@ -86,7 +104,11 @@ class ClassNotFoundFatalErrorHandler implements FatalErrorHandlerInterface
      */
     private function getClassCandidates($class)
     {
+<<<<<<< HEAD
         if (!is_array($functions = spl_autoload_functions())) {
+=======
+        if (!\is_array($functions = spl_autoload_functions())) {
+>>>>>>> git-aline/master/master
             return array();
         }
 
@@ -94,24 +116,36 @@ class ClassNotFoundFatalErrorHandler implements FatalErrorHandlerInterface
         $classes = array();
 
         foreach ($functions as $function) {
+<<<<<<< HEAD
             if (!is_array($function)) {
+=======
+            if (!\is_array($function)) {
+>>>>>>> git-aline/master/master
                 continue;
             }
             // get class loaders wrapped by DebugClassLoader
             if ($function[0] instanceof DebugClassLoader) {
                 $function = $function[0]->getClassLoader();
 
+<<<<<<< HEAD
                 // @deprecated since version 2.5. Returning an object from DebugClassLoader::getClassLoader() is deprecated.
                 if (is_object($function)) {
                     $function = array($function);
                 }
 
                 if (!is_array($function)) {
+=======
+                if (!\is_array($function)) {
+>>>>>>> git-aline/master/master
                     continue;
                 }
             }
 
+<<<<<<< HEAD
             if ($function[0] instanceof ComposerClassLoader || $function[0] instanceof SymfonyClassLoader || $function[0] instanceof SymfonyUniversalClassLoader) {
+=======
+            if ($function[0] instanceof ComposerClassLoader || $function[0] instanceof SymfonyClassLoader) {
+>>>>>>> git-aline/master/master
                 foreach ($function[0]->getPrefixes() as $prefix => $paths) {
                     foreach ($paths as $path) {
                         $classes = array_merge($classes, $this->findClassInPath($path, $class, $prefix));
@@ -139,7 +173,11 @@ class ClassNotFoundFatalErrorHandler implements FatalErrorHandlerInterface
      */
     private function findClassInPath($path, $class, $prefix)
     {
+<<<<<<< HEAD
         if (!$path = realpath($path.'/'.strtr($prefix, '\\_', '//')) ?: realpath($path.'/'.dirname(strtr($prefix, '\\_', '//'))) ?: realpath($path)) {
+=======
+        if (!$path = realpath($path.'/'.strtr($prefix, '\\_', '//')) ?: realpath($path.'/'.\dirname(strtr($prefix, '\\_', '//'))) ?: realpath($path)) {
+>>>>>>> git-aline/master/master
             return array();
         }
 
@@ -165,7 +203,11 @@ class ClassNotFoundFatalErrorHandler implements FatalErrorHandlerInterface
     {
         $candidates = array(
             // namespaced class
+<<<<<<< HEAD
             $namespacedClass = str_replace(array($path.DIRECTORY_SEPARATOR, '.php', '/'), array('', '', '\\'), $file),
+=======
+            $namespacedClass = str_replace(array($path.\DIRECTORY_SEPARATOR, '.php', '/'), array('', '', '\\'), $file),
+>>>>>>> git-aline/master/master
             // namespaced class (with target dir)
             $prefix.$namespacedClass,
             // namespaced class (with target dir and separator)
@@ -179,7 +221,11 @@ class ClassNotFoundFatalErrorHandler implements FatalErrorHandlerInterface
         );
 
         if ($prefix) {
+<<<<<<< HEAD
             $candidates = array_filter($candidates, function ($candidate) use ($prefix) {return 0 === strpos($candidate, $prefix);});
+=======
+            $candidates = array_filter($candidates, function ($candidate) use ($prefix) { return 0 === strpos($candidate, $prefix); });
+>>>>>>> git-aline/master/master
         }
 
         // We cannot use the autoloader here as most of them use require; but if the class
@@ -207,6 +253,10 @@ class ClassNotFoundFatalErrorHandler implements FatalErrorHandlerInterface
      */
     private function classExists($class)
     {
+<<<<<<< HEAD
         return class_exists($class, false) || interface_exists($class, false) || (function_exists('trait_exists') && trait_exists($class, false));
+=======
+        return class_exists($class, false) || interface_exists($class, false) || trait_exists($class, false);
+>>>>>>> git-aline/master/master
     }
 }

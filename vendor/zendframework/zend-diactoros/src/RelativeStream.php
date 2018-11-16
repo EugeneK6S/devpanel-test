@@ -3,13 +3,21 @@
  * Zend Framework (http://framework.zend.com/)
  *
  * @see       http://github.com/zendframework/zend-diactoros for the canonical source repository
+<<<<<<< HEAD
  * @copyright Copyright (c) 2015 Zend Technologies USA Inc. (http://www.zend.com)
+=======
+ * @copyright Copyright (c) 2015-2016 Zend Technologies USA Inc. (http://www.zend.com)
+>>>>>>> git-aline/master/master
  * @license   https://github.com/zendframework/zend-diactoros/blob/master/LICENSE.md New BSD License
  */
 
 namespace Zend\Diactoros;
 
 use Psr\Http\Message\StreamInterface;
+<<<<<<< HEAD
+=======
+use RuntimeException;
+>>>>>>> git-aline/master/master
 
 /**
  * Class RelativeStream
@@ -47,7 +55,13 @@ final class RelativeStream implements StreamInterface
      */
     public function __toString()
     {
+<<<<<<< HEAD
         $this->seek(0);
+=======
+        if ($this->isSeekable()) {
+            $this->seek(0);
+        }
+>>>>>>> git-aline/master/master
         return $this->getContents();
     }
 
@@ -131,6 +145,12 @@ final class RelativeStream implements StreamInterface
      */
     public function write($string)
     {
+<<<<<<< HEAD
+=======
+        if ($this->tell() < 0) {
+            throw new RuntimeException('Invalid pointer position');
+        }
+>>>>>>> git-aline/master/master
         return $this->decoratedStream->write($string);
     }
 
@@ -147,6 +167,12 @@ final class RelativeStream implements StreamInterface
      */
     public function read($length)
     {
+<<<<<<< HEAD
+=======
+        if ($this->tell() < 0) {
+            throw new RuntimeException('Invalid pointer position');
+        }
+>>>>>>> git-aline/master/master
         return $this->decoratedStream->read($length);
     }
 
@@ -155,6 +181,12 @@ final class RelativeStream implements StreamInterface
      */
     public function getContents()
     {
+<<<<<<< HEAD
+=======
+        if ($this->tell() < 0) {
+            throw new RuntimeException('Invalid pointer position');
+        }
+>>>>>>> git-aline/master/master
         return $this->decoratedStream->getContents();
     }
 

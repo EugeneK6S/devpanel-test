@@ -73,21 +73,45 @@ class NullOutput implements OutputInterface
         return self::VERBOSITY_QUIET;
     }
 
+<<<<<<< HEAD
+=======
+    /**
+     * {@inheritdoc}
+     */
+>>>>>>> git-aline/master/master
     public function isQuiet()
     {
         return true;
     }
 
+<<<<<<< HEAD
+=======
+    /**
+     * {@inheritdoc}
+     */
+>>>>>>> git-aline/master/master
     public function isVerbose()
     {
         return false;
     }
 
+<<<<<<< HEAD
+=======
+    /**
+     * {@inheritdoc}
+     */
+>>>>>>> git-aline/master/master
     public function isVeryVerbose()
     {
         return false;
     }
 
+<<<<<<< HEAD
+=======
+    /**
+     * {@inheritdoc}
+     */
+>>>>>>> git-aline/master/master
     public function isDebug()
     {
         return false;
@@ -96,7 +120,11 @@ class NullOutput implements OutputInterface
     /**
      * {@inheritdoc}
      */
+<<<<<<< HEAD
     public function writeln($messages, $type = self::OUTPUT_NORMAL)
+=======
+    public function writeln($messages, $options = self::OUTPUT_NORMAL)
+>>>>>>> git-aline/master/master
     {
         // do nothing
     }
@@ -104,7 +132,11 @@ class NullOutput implements OutputInterface
     /**
      * {@inheritdoc}
      */
+<<<<<<< HEAD
     public function write($messages, $newline = false, $type = self::OUTPUT_NORMAL)
+=======
+    public function write($messages, $newline = false, $options = self::OUTPUT_NORMAL)
+>>>>>>> git-aline/master/master
     {
         // do nothing
     }

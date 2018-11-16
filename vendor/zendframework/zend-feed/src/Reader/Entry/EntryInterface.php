@@ -38,14 +38,22 @@ interface EntryInterface
     /**
      * Get the entry creation date
      *
+<<<<<<< HEAD
      * @return string
+=======
+     * @return \DateTime
+>>>>>>> git-aline/master/master
      */
     public function getDateCreated();
 
     /**
      * Get the entry modification date
      *
+<<<<<<< HEAD
      * @return string
+=======
+     * @return \DateTime
+>>>>>>> git-aline/master/master
      */
     public function getDateModified();
 

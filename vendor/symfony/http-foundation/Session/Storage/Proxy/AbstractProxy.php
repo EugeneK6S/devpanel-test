@@ -12,8 +12,11 @@
 namespace Symfony\Component\HttpFoundation\Session\Storage\Proxy;
 
 /**
+<<<<<<< HEAD
  * AbstractProxy.
  *
+=======
+>>>>>>> git-aline/master/master
  * @author Drak <drak@zikula.org>
  */
 abstract class AbstractProxy
@@ -26,11 +29,14 @@ abstract class AbstractProxy
     protected $wrapper = false;
 
     /**
+<<<<<<< HEAD
      * @var bool
      */
     protected $active = false;
 
     /**
+=======
+>>>>>>> git-aline/master/master
      * @var string
      */
     protected $saveHandlerName;
@@ -52,7 +58,11 @@ abstract class AbstractProxy
      */
     public function isSessionHandlerInterface()
     {
+<<<<<<< HEAD
         return ($this instanceof \SessionHandlerInterface);
+=======
+        return $this instanceof \SessionHandlerInterface;
+>>>>>>> git-aline/master/master
     }
 
     /**
@@ -72,6 +82,7 @@ abstract class AbstractProxy
      */
     public function isActive()
     {
+<<<<<<< HEAD
         if (PHP_VERSION_ID >= 50400) {
             return $this->active = \PHP_SESSION_ACTIVE === session_status();
         }
@@ -98,6 +109,9 @@ abstract class AbstractProxy
         }
 
         $this->active = (bool) $flag;
+=======
+        return \PHP_SESSION_ACTIVE === session_status();
+>>>>>>> git-aline/master/master
     }
 
     /**

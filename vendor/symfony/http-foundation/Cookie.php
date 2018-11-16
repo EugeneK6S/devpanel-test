@@ -25,6 +25,7 @@ class Cookie
     protected $path;
     protected $secure;
     protected $httpOnly;
+<<<<<<< HEAD
 
     /**
      * Constructor.
@@ -40,6 +41,77 @@ class Cookie
      * @throws \InvalidArgumentException
      */
     public function __construct($name, $value = null, $expire = 0, $path = '/', $domain = null, $secure = false, $httpOnly = true)
+=======
+    private $raw;
+    private $sameSite;
+
+    const SAMESITE_LAX = 'lax';
+    const SAMESITE_STRICT = 'strict';
+
+    /**
+     * Creates cookie from raw header string.
+     *
+     * @param string $cookie
+     * @param bool   $decode
+     *
+     * @return static
+     */
+    public static function fromString($cookie, $decode = false)
+    {
+        $data = array(
+            'expires' => 0,
+            'path' => '/',
+            'domain' => null,
+            'secure' => false,
+            'httponly' => false,
+            'raw' => !$decode,
+            'samesite' => null,
+        );
+        foreach (explode(';', $cookie) as $part) {
+            if (false === strpos($part, '=')) {
+                $key = trim($part);
+                $value = true;
+            } else {
+                list($key, $value) = explode('=', trim($part), 2);
+                $key = trim($key);
+                $value = trim($value);
+            }
+            if (!isset($data['name'])) {
+                $data['name'] = $decode ? urldecode($key) : $key;
+                $data['value'] = true === $value ? null : ($decode ? urldecode($value) : $value);
+                continue;
+            }
+            switch ($key = strtolower($key)) {
+                case 'name':
+                case 'value':
+                    break;
+                case 'max-age':
+                    $data['expires'] = time() + (int) $value;
+                    break;
+                default:
+                    $data[$key] = $value;
+                    break;
+            }
+        }
+
+        return new static($data['name'], $data['value'], $data['expires'], $data['path'], $data['domain'], $data['secure'], $data['httponly'], $data['raw'], $data['samesite']);
+    }
+
+    /**
+     * @param string                        $name     The name of the cookie
+     * @param string|null                   $value    The value of the cookie
+     * @param int|string|\DateTimeInterface $expire   The time the cookie expires
+     * @param string                        $path     The path on the server in which the cookie will be available on
+     * @param string|null                   $domain   The domain that the cookie is available to
+     * @param bool                          $secure   Whether the cookie should only be transmitted over a secure HTTPS connection from the client
+     * @param bool                          $httpOnly Whether the cookie will be made accessible only through the HTTP protocol
+     * @param bool                          $raw      Whether the cookie value should be sent with no url encoding
+     * @param string|null                   $sameSite Whether the cookie will be available for cross-site requests
+     *
+     * @throws \InvalidArgumentException
+     */
+    public function __construct($name, $value = null, $expire = 0, $path = '/', $domain = null, $secure = false, $httpOnly = true, $raw = false, $sameSite = null)
+>>>>>>> git-aline/master/master
     {
         // from PHP source code
         if (preg_match("/[=,; \t\r\n\013\014]/", $name)) {
@@ -51,12 +123,20 @@ class Cookie
         }
 
         // convert expiration time to a Unix timestamp
+<<<<<<< HEAD
         if ($expire instanceof \DateTime) {
+=======
+        if ($expire instanceof \DateTimeInterface) {
+>>>>>>> git-aline/master/master
             $expire = $expire->format('U');
         } elseif (!is_numeric($expire)) {
             $expire = strtotime($expire);
 
+<<<<<<< HEAD
             if (false === $expire || -1 === $expire) {
+=======
+            if (false === $expire) {
+>>>>>>> git-aline/master/master
                 throw new \InvalidArgumentException('The cookie expiration time is not valid.');
             }
         }
@@ -64,10 +144,28 @@ class Cookie
         $this->name = $name;
         $this->value = $value;
         $this->domain = $domain;
+<<<<<<< HEAD
         $this->expire = $expire;
         $this->path = empty($path) ? '/' : $path;
         $this->secure = (bool) $secure;
         $this->httpOnly = (bool) $httpOnly;
+=======
+        $this->expire = 0 < $expire ? (int) $expire : 0;
+        $this->path = empty($path) ? '/' : $path;
+        $this->secure = (bool) $secure;
+        $this->httpOnly = (bool) $httpOnly;
+        $this->raw = (bool) $raw;
+
+        if (null !== $sameSite) {
+            $sameSite = strtolower($sameSite);
+        }
+
+        if (!\in_array($sameSite, array(self::SAMESITE_LAX, self::SAMESITE_STRICT, null), true)) {
+            throw new \InvalidArgumentException('The "sameSite" parameter value is not valid.');
+        }
+
+        $this->sameSite = $sameSite;
+>>>>>>> git-aline/master/master
     }
 
     /**
@@ -77,6 +175,7 @@ class Cookie
      */
     public function __toString()
     {
+<<<<<<< HEAD
         $str = urlencode($this->getName()).'=';
 
         if ('' === (string) $this->getValue()) {
@@ -91,6 +190,22 @@ class Cookie
 
         if ($this->path) {
             $str .= '; path='.$this->path;
+=======
+        $str = ($this->isRaw() ? $this->getName() : urlencode($this->getName())).'=';
+
+        if ('' === (string) $this->getValue()) {
+            $str .= 'deleted; expires='.gmdate('D, d-M-Y H:i:s T', time() - 31536001).'; Max-Age=0';
+        } else {
+            $str .= $this->isRaw() ? $this->getValue() : rawurlencode($this->getValue());
+
+            if (0 !== $this->getExpiresTime()) {
+                $str .= '; expires='.gmdate('D, d-M-Y H:i:s T', $this->getExpiresTime()).'; Max-Age='.$this->getMaxAge();
+            }
+        }
+
+        if ($this->getPath()) {
+            $str .= '; path='.$this->getPath();
+>>>>>>> git-aline/master/master
         }
 
         if ($this->getDomain()) {
@@ -105,6 +220,13 @@ class Cookie
             $str .= '; httponly';
         }
 
+<<<<<<< HEAD
+=======
+        if (null !== $this->getSameSite()) {
+            $str .= '; samesite='.$this->getSameSite();
+        }
+
+>>>>>>> git-aline/master/master
         return $str;
     }
 
@@ -121,7 +243,11 @@ class Cookie
     /**
      * Gets the value of the cookie.
      *
+<<<<<<< HEAD
      * @return string
+=======
+     * @return string|null
+>>>>>>> git-aline/master/master
      */
     public function getValue()
     {
@@ -131,7 +257,11 @@ class Cookie
     /**
      * Gets the domain that the cookie is available to.
      *
+<<<<<<< HEAD
      * @return string
+=======
+     * @return string|null
+>>>>>>> git-aline/master/master
      */
     public function getDomain()
     {
@@ -149,6 +279,21 @@ class Cookie
     }
 
     /**
+<<<<<<< HEAD
+=======
+     * Gets the max-age attribute.
+     *
+     * @return int
+     */
+    public function getMaxAge()
+    {
+        $maxAge = $this->expire - time();
+
+        return 0 >= $maxAge ? 0 : $maxAge;
+    }
+
+    /**
+>>>>>>> git-aline/master/master
      * Gets the path on the server in which the cookie will be available on.
      *
      * @return string
@@ -185,6 +330,30 @@ class Cookie
      */
     public function isCleared()
     {
+<<<<<<< HEAD
         return $this->expire < time();
+=======
+        return 0 !== $this->expire && $this->expire < time();
+    }
+
+    /**
+     * Checks if the cookie value should be sent with no url encoding.
+     *
+     * @return bool
+     */
+    public function isRaw()
+    {
+        return $this->raw;
+    }
+
+    /**
+     * Gets the SameSite attribute.
+     *
+     * @return string|null
+     */
+    public function getSameSite()
+    {
+        return $this->sameSite;
+>>>>>>> git-aline/master/master
     }
 }

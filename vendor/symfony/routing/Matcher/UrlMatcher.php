@@ -11,6 +11,7 @@
 
 namespace Symfony\Component\Routing\Matcher;
 
+<<<<<<< HEAD
 use Symfony\Component\Routing\Exception\MethodNotAllowedException;
 use Symfony\Component\Routing\Exception\ResourceNotFoundException;
 use Symfony\Component\Routing\RouteCollection;
@@ -19,6 +20,17 @@ use Symfony\Component\Routing\Route;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\ExpressionLanguage\ExpressionLanguage;
 use Symfony\Component\ExpressionLanguage\ExpressionFunctionProviderInterface;
+=======
+use Symfony\Component\ExpressionLanguage\ExpressionFunctionProviderInterface;
+use Symfony\Component\ExpressionLanguage\ExpressionLanguage;
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\Routing\Exception\MethodNotAllowedException;
+use Symfony\Component\Routing\Exception\NoConfigurationException;
+use Symfony\Component\Routing\Exception\ResourceNotFoundException;
+use Symfony\Component\Routing\RequestContext;
+use Symfony\Component\Routing\Route;
+use Symfony\Component\Routing\RouteCollection;
+>>>>>>> git-aline/master/master
 
 /**
  * UrlMatcher matches URL based on a set of routes.
@@ -31,6 +43,7 @@ class UrlMatcher implements UrlMatcherInterface, RequestMatcherInterface
     const REQUIREMENT_MISMATCH = 1;
     const ROUTE_MATCH = 2;
 
+<<<<<<< HEAD
     /**
      * @var RequestContext
      */
@@ -46,6 +59,11 @@ class UrlMatcher implements UrlMatcherInterface, RequestMatcherInterface
      */
     protected $routes;
 
+=======
+    protected $context;
+    protected $allow = array();
+    protected $routes;
+>>>>>>> git-aline/master/master
     protected $request;
     protected $expressionLanguage;
 
@@ -54,12 +72,15 @@ class UrlMatcher implements UrlMatcherInterface, RequestMatcherInterface
      */
     protected $expressionLanguageProviders = array();
 
+<<<<<<< HEAD
     /**
      * Constructor.
      *
      * @param RouteCollection $routes  A RouteCollection instance
      * @param RequestContext  $context The context
      */
+=======
+>>>>>>> git-aline/master/master
     public function __construct(RouteCollection $routes, RequestContext $context)
     {
         $this->routes = $routes;
@@ -93,7 +114,15 @@ class UrlMatcher implements UrlMatcherInterface, RequestMatcherInterface
             return $ret;
         }
 
+<<<<<<< HEAD
         throw 0 < count($this->allow)
+=======
+        if ('/' === $pathinfo && !$this->allow) {
+            throw new NoConfigurationException();
+        }
+
+        throw 0 < \count($this->allow)
+>>>>>>> git-aline/master/master
             ? new MethodNotAllowedException(array_unique($this->allow))
             : new ResourceNotFoundException(sprintf('No routes found for "%s".', $pathinfo));
     }
@@ -125,6 +154,10 @@ class UrlMatcher implements UrlMatcherInterface, RequestMatcherInterface
      *
      * @return array An array of parameters
      *
+<<<<<<< HEAD
+=======
+     * @throws NoConfigurationException  If no routing configuration could be found
+>>>>>>> git-aline/master/master
      * @throws ResourceNotFoundException If the resource could not be found
      * @throws MethodNotAllowedException If the resource was found but the request method is not allowed
      */
@@ -147,6 +180,15 @@ class UrlMatcher implements UrlMatcherInterface, RequestMatcherInterface
                 continue;
             }
 
+<<<<<<< HEAD
+=======
+            $status = $this->handleRouteRequirements($pathinfo, $name, $route);
+
+            if (self::REQUIREMENT_MISMATCH === $status[0]) {
+                continue;
+            }
+
+>>>>>>> git-aline/master/master
             // check HTTP method requirement
             if ($requiredMethods = $route->getMethods()) {
                 // HEAD and GET are equivalent as per RFC
@@ -154,13 +196,21 @@ class UrlMatcher implements UrlMatcherInterface, RequestMatcherInterface
                     $method = 'GET';
                 }
 
+<<<<<<< HEAD
                 if (!in_array($method, $requiredMethods)) {
                     $this->allow = array_merge($this->allow, $requiredMethods);
+=======
+                if (!\in_array($method, $requiredMethods)) {
+                    if (self::REQUIREMENT_MATCH === $status[0]) {
+                        $this->allow = array_merge($this->allow, $requiredMethods);
+                    }
+>>>>>>> git-aline/master/master
 
                     continue;
                 }
             }
 
+<<<<<<< HEAD
             $status = $this->handleRouteRequirements($pathinfo, $name, $route);
 
             if (self::ROUTE_MATCH === $status[0]) {
@@ -172,6 +222,9 @@ class UrlMatcher implements UrlMatcherInterface, RequestMatcherInterface
             }
 
             return $this->getAttributes($route, $name, array_replace($matches, $hostMatches));
+=======
+            return $this->getAttributes($route, $name, array_replace($matches, $hostMatches, isset($status[1]) ? $status[1] : array()));
+>>>>>>> git-aline/master/master
         }
     }
 
@@ -207,7 +260,11 @@ class UrlMatcher implements UrlMatcherInterface, RequestMatcherInterface
     protected function handleRouteRequirements($pathinfo, $name, Route $route)
     {
         // expression condition
+<<<<<<< HEAD
         if ($route->getCondition() && !$this->getExpressionLanguage()->evaluate($route->getCondition(), array('context' => $this->context, 'request' => $this->request))) {
+=======
+        if ($route->getCondition() && !$this->getExpressionLanguage()->evaluate($route->getCondition(), array('context' => $this->context, 'request' => $this->request ?: $this->createRequest($pathinfo)))) {
+>>>>>>> git-aline/master/master
             return array(self::REQUIREMENT_MISMATCH, null);
         }
 
@@ -229,7 +286,11 @@ class UrlMatcher implements UrlMatcherInterface, RequestMatcherInterface
     protected function mergeDefaults($params, $defaults)
     {
         foreach ($params as $key => $value) {
+<<<<<<< HEAD
             if (!is_int($key)) {
+=======
+            if (!\is_int($key)) {
+>>>>>>> git-aline/master/master
                 $defaults[$key] = $value;
             }
         }
@@ -248,4 +309,22 @@ class UrlMatcher implements UrlMatcherInterface, RequestMatcherInterface
 
         return $this->expressionLanguage;
     }
+<<<<<<< HEAD
+=======
+
+    /**
+     * @internal
+     */
+    protected function createRequest($pathinfo)
+    {
+        if (!class_exists('Symfony\Component\HttpFoundation\Request')) {
+            return null;
+        }
+
+        return Request::create($this->context->getScheme().'://'.$this->context->getHost().$this->context->getBaseUrl().$pathinfo, $this->context->getMethod(), $this->context->getParameters(), array(), array(), array(
+            'SCRIPT_FILENAME' => $this->context->getBaseUrl(),
+            'SCRIPT_NAME' => $this->context->getBaseUrl(),
+        ));
+    }
+>>>>>>> git-aline/master/master
 }

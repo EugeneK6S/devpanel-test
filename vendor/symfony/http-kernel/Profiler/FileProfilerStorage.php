@@ -41,15 +41,24 @@ class FileProfilerStorage implements ProfilerStorageInterface
         }
         $this->folder = substr($dsn, 5);
 
+<<<<<<< HEAD
         if (!is_dir($this->folder)) {
             mkdir($this->folder, 0777, true);
+=======
+        if (!is_dir($this->folder) && false === @mkdir($this->folder, 0777, true) && !is_dir($this->folder)) {
+            throw new \RuntimeException(sprintf('Unable to create the storage directory (%s).', $this->folder));
+>>>>>>> git-aline/master/master
         }
     }
 
     /**
      * {@inheritdoc}
      */
+<<<<<<< HEAD
     public function find($ip, $url, $limit, $method, $start = null, $end = null)
+=======
+    public function find($ip, $url, $limit, $method, $start = null, $end = null, $statusCode = null)
+>>>>>>> git-aline/master/master
     {
         $file = $this->getIndexFilename();
 
@@ -61,6 +70,7 @@ class FileProfilerStorage implements ProfilerStorageInterface
         fseek($file, 0, SEEK_END);
 
         $result = array();
+<<<<<<< HEAD
         while (count($result) < $limit && $line = $this->readLineFromFile($file)) {
             $values = str_getcsv($line);
             list($csvToken, $csvIp, $csvMethod, $csvUrl, $csvTime, $csvParent) = $values;
@@ -69,6 +79,14 @@ class FileProfilerStorage implements ProfilerStorageInterface
             $csvTime = (int) $csvTime;
 
             if ($ip && false === strpos($csvIp, $ip) || $url && false === strpos($csvUrl, $url) || $method && false === strpos($csvMethod, $method)) {
+=======
+        while (\count($result) < $limit && $line = $this->readLineFromFile($file)) {
+            $values = str_getcsv($line);
+            list($csvToken, $csvIp, $csvMethod, $csvUrl, $csvTime, $csvParent, $csvStatusCode) = $values;
+            $csvTime = (int) $csvTime;
+
+            if ($ip && false === strpos($csvIp, $ip) || $url && false === strpos($csvUrl, $url) || $method && false === strpos($csvMethod, $method) || $statusCode && false === strpos($csvStatusCode, $statusCode)) {
+>>>>>>> git-aline/master/master
                 continue;
             }
 
@@ -128,6 +146,11 @@ class FileProfilerStorage implements ProfilerStorageInterface
 
     /**
      * {@inheritdoc}
+<<<<<<< HEAD
+=======
+     *
+     * @throws \RuntimeException
+>>>>>>> git-aline/master/master
      */
     public function write(Profile $profile)
     {
@@ -136,6 +159,7 @@ class FileProfilerStorage implements ProfilerStorageInterface
         $profileIndexed = is_file($file);
         if (!$profileIndexed) {
             // Create directory
+<<<<<<< HEAD
             $dir = dirname($file);
             if (!is_dir($dir)) {
                 mkdir($dir, 0777, true);
@@ -147,11 +171,36 @@ class FileProfilerStorage implements ProfilerStorageInterface
             'token' => $profile->getToken(),
             'parent' => $profile->getParentToken(),
             'children' => array_map(function ($p) { return $p->getToken(); }, $profile->getChildren()),
+=======
+            $dir = \dirname($file);
+            if (!is_dir($dir) && false === @mkdir($dir, 0777, true) && !is_dir($dir)) {
+                throw new \RuntimeException(sprintf('Unable to create the storage directory (%s).', $dir));
+            }
+        }
+
+        $profileToken = $profile->getToken();
+        // when there are errors in sub-requests, the parent and/or children tokens
+        // may equal the profile token, resulting in infinite loops
+        $parentToken = $profile->getParentToken() !== $profileToken ? $profile->getParentToken() : null;
+        $childrenToken = array_filter(array_map(function ($p) use ($profileToken) {
+            return $profileToken !== $p->getToken() ? $p->getToken() : null;
+        }, $profile->getChildren()));
+
+        // Store profile
+        $data = array(
+            'token' => $profileToken,
+            'parent' => $parentToken,
+            'children' => $childrenToken,
+>>>>>>> git-aline/master/master
             'data' => $profile->getCollectors(),
             'ip' => $profile->getIp(),
             'method' => $profile->getMethod(),
             'url' => $profile->getUrl(),
             'time' => $profile->getTime(),
+<<<<<<< HEAD
+=======
+            'status_code' => $profile->getStatusCode(),
+>>>>>>> git-aline/master/master
         );
 
         if (false === file_put_contents($file, serialize($data))) {
@@ -259,6 +308,10 @@ class FileProfilerStorage implements ProfilerStorageInterface
         $profile->setMethod($data['method']);
         $profile->setUrl($data['url']);
         $profile->setTime($data['time']);
+<<<<<<< HEAD
+=======
+        $profile->setStatusCode($data['status_code']);
+>>>>>>> git-aline/master/master
         $profile->setCollectors($data['data']);
 
         if (!$parent && $data['parent']) {

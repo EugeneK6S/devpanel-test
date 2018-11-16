@@ -3,7 +3,11 @@
 /*
  * This file is part of Twig.
  *
+<<<<<<< HEAD
  * (c) 2009 Fabien Potencier
+=======
+ * (c) Fabien Potencier
+>>>>>>> git-aline/master/master
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
@@ -26,6 +30,11 @@
  *   using the js escaping strategy
  * {% endautoescape %}
  * </pre>
+<<<<<<< HEAD
+=======
+ *
+ * @final
+>>>>>>> git-aline/master/master
  */
 class Twig_TokenParser_AutoEscape extends Twig_TokenParser
 {
@@ -39,7 +48,11 @@ class Twig_TokenParser_AutoEscape extends Twig_TokenParser
         } else {
             $expr = $this->parser->getExpressionParser()->parseExpression();
             if (!$expr instanceof Twig_Node_Expression_Constant) {
+<<<<<<< HEAD
                 throw new Twig_Error_Syntax('An escaping strategy must be a string or a bool.', $stream->getCurrent()->getLine(), $stream->getFilename());
+=======
+                throw new Twig_Error_Syntax('An escaping strategy must be a string or a bool.', $stream->getCurrent()->getLine(), $stream->getSourceContext());
+>>>>>>> git-aline/master/master
             }
             $value = $expr->getAttribute('value');
 
@@ -50,10 +63,17 @@ class Twig_TokenParser_AutoEscape extends Twig_TokenParser
             }
 
             if ($compat && $stream->test(Twig_Token::NAME_TYPE)) {
+<<<<<<< HEAD
                 @trigger_error('Using the autoescape tag with "true" or "false" before the strategy name is deprecated.', E_USER_DEPRECATED);
 
                 if (false === $value) {
                     throw new Twig_Error_Syntax('Unexpected escaping strategy as you set autoescaping to false.', $stream->getCurrent()->getLine(), $stream->getFilename());
+=======
+                @trigger_error('Using the autoescape tag with "true" or "false" before the strategy name is deprecated since version 1.21.', E_USER_DEPRECATED);
+
+                if (false === $value) {
+                    throw new Twig_Error_Syntax('Unexpected escaping strategy as you set autoescaping to false.', $stream->getCurrent()->getLine(), $stream->getSourceContext());
+>>>>>>> git-aline/master/master
                 }
 
                 $value = $stream->next()->getValue();
@@ -77,3 +97,8 @@ class Twig_TokenParser_AutoEscape extends Twig_TokenParser
         return 'autoescape';
     }
 }
+<<<<<<< HEAD
+=======
+
+class_alias('Twig_TokenParser_AutoEscape', 'Twig\TokenParser\AutoEscapeTokenParser', false);
+>>>>>>> git-aline/master/master

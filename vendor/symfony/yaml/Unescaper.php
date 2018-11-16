@@ -11,15 +11,26 @@
 
 namespace Symfony\Component\Yaml;
 
+<<<<<<< HEAD
+=======
+use Symfony\Component\Yaml\Exception\ParseException;
+
+>>>>>>> git-aline/master/master
 /**
  * Unescaper encapsulates unescaping rules for single and double-quoted
  * YAML strings.
  *
  * @author Matthew Lewinski <matthew@lewinski.org>
+<<<<<<< HEAD
+=======
+ *
+ * @internal
+>>>>>>> git-aline/master/master
  */
 class Unescaper
 {
     /**
+<<<<<<< HEAD
      * Parser and Inline assume UTF-8 encoding, so escaped Unicode characters
      * must be converted to that encoding.
      *
@@ -33,13 +44,24 @@ class Unescaper
      * Regex fragment that matches an escaped character in a double quoted string.
      */
     const REGEX_ESCAPED_CHARACTER = "\\\\([0abt\tnvfre \\\"\\/\\\\N_LP]|x[0-9a-fA-F]{2}|u[0-9a-fA-F]{4}|U[0-9a-fA-F]{8})";
+=======
+     * Regex fragment that matches an escaped character in a double quoted string.
+     */
+    const REGEX_ESCAPED_CHARACTER = '\\\\(x[0-9a-fA-F]{2}|u[0-9a-fA-F]{4}|U[0-9a-fA-F]{8}|.)';
+>>>>>>> git-aline/master/master
 
     /**
      * Unescapes a single quoted string.
      *
+<<<<<<< HEAD
      * @param string $value A single quoted string.
      *
      * @return string The unescaped string.
+=======
+     * @param string $value A single quoted string
+     *
+     * @return string The unescaped string
+>>>>>>> git-aline/master/master
      */
     public function unescapeSingleQuotedString($value)
     {
@@ -49,6 +71,7 @@ class Unescaper
     /**
      * Unescapes a double quoted string.
      *
+<<<<<<< HEAD
      * @param string $value A double quoted string.
      *
      * @return string The unescaped string.
@@ -58,6 +81,16 @@ class Unescaper
         $self = $this;
         $callback = function ($match) use ($self) {
             return $self->unescapeCharacter($match[0]);
+=======
+     * @param string $value A double quoted string
+     *
+     * @return string The unescaped string
+     */
+    public function unescapeDoubleQuotedString($value)
+    {
+        $callback = function ($match) {
+            return $this->unescapeCharacter($match[0]);
+>>>>>>> git-aline/master/master
         };
 
         // evaluate the string
@@ -71,9 +104,15 @@ class Unescaper
      *
      * @return string The unescaped character
      */
+<<<<<<< HEAD
     public function unescapeCharacter($value)
     {
         switch ($value{1}) {
+=======
+    private function unescapeCharacter($value)
+    {
+        switch ($value[1]) {
+>>>>>>> git-aline/master/master
             case '0':
                 return "\x0";
             case 'a':
@@ -120,6 +159,11 @@ class Unescaper
                 return self::utf8chr(hexdec(substr($value, 2, 4)));
             case 'U':
                 return self::utf8chr(hexdec(substr($value, 2, 8)));
+<<<<<<< HEAD
+=======
+            default:
+                throw new ParseException(sprintf('Found unknown escape character "%s".', $value));
+>>>>>>> git-aline/master/master
         }
     }
 
@@ -133,6 +177,7 @@ class Unescaper
     private static function utf8chr($c)
     {
         if (0x80 > $c %= 0x200000) {
+<<<<<<< HEAD
             return chr($c);
         }
         if (0x800 > $c) {
@@ -143,5 +188,17 @@ class Unescaper
         }
 
         return chr(0xF0 | $c >> 18).chr(0x80 | $c >> 12 & 0x3F).chr(0x80 | $c >> 6 & 0x3F).chr(0x80 | $c & 0x3F);
+=======
+            return \chr($c);
+        }
+        if (0x800 > $c) {
+            return \chr(0xC0 | $c >> 6).\chr(0x80 | $c & 0x3F);
+        }
+        if (0x10000 > $c) {
+            return \chr(0xE0 | $c >> 12).\chr(0x80 | $c >> 6 & 0x3F).\chr(0x80 | $c & 0x3F);
+        }
+
+        return \chr(0xF0 | $c >> 18).\chr(0x80 | $c >> 12 & 0x3F).\chr(0x80 | $c >> 6 & 0x3F).\chr(0x80 | $c & 0x3F);
+>>>>>>> git-aline/master/master
     }
 }

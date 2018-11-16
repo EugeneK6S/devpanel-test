@@ -26,6 +26,12 @@ class ClassNotFoundException extends FatalErrorException
             $previous->getSeverity(),
             $previous->getFile(),
             $previous->getLine(),
+<<<<<<< HEAD
+=======
+            null,
+            true,
+            null,
+>>>>>>> git-aline/master/master
             $previous->getPrevious()
         );
         $this->setTrace($previous->getTrace());

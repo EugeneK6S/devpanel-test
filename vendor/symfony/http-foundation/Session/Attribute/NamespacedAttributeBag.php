@@ -19,6 +19,7 @@ namespace Symfony\Component\HttpFoundation\Session\Attribute;
  */
 class NamespacedAttributeBag extends AttributeBag
 {
+<<<<<<< HEAD
     /**
      * Namespace character.
      *
@@ -31,6 +32,13 @@ class NamespacedAttributeBag extends AttributeBag
      *
      * @param string $storageKey         Session storage key.
      * @param string $namespaceCharacter Namespace character to use in keys.
+=======
+    private $namespaceCharacter;
+
+    /**
+     * @param string $storageKey         Session storage key
+     * @param string $namespaceCharacter Namespace character to use in keys
+>>>>>>> git-aline/master/master
      */
     public function __construct($storageKey = '_sf2_attributes', $namespaceCharacter = '/')
     {
@@ -109,7 +117,11 @@ class NamespacedAttributeBag extends AttributeBag
     protected function &resolveAttributePath($name, $writeContext = false)
     {
         $array = &$this->attributes;
+<<<<<<< HEAD
         $name = (strpos($name, $this->namespaceCharacter) === 0) ? substr($name, 1) : $name;
+=======
+        $name = (0 === strpos($name, $this->namespaceCharacter)) ? substr($name, 1) : $name;
+>>>>>>> git-aline/master/master
 
         // Check if there is anything to do, else return
         if (!$name) {
@@ -117,7 +129,11 @@ class NamespacedAttributeBag extends AttributeBag
         }
 
         $parts = explode($this->namespaceCharacter, $name);
+<<<<<<< HEAD
         if (count($parts) < 2) {
+=======
+        if (\count($parts) < 2) {
+>>>>>>> git-aline/master/master
             if (!$writeContext) {
                 return $array;
             }
@@ -127,11 +143,25 @@ class NamespacedAttributeBag extends AttributeBag
             return $array;
         }
 
+<<<<<<< HEAD
         unset($parts[count($parts) - 1]);
 
         foreach ($parts as $part) {
             if (null !== $array && !array_key_exists($part, $array)) {
                 $array[$part] = $writeContext ? array() : null;
+=======
+        unset($parts[\count($parts) - 1]);
+
+        foreach ($parts as $part) {
+            if (null !== $array && !array_key_exists($part, $array)) {
+                if (!$writeContext) {
+                    $null = null;
+
+                    return $null;
+                }
+
+                $array[$part] = array();
+>>>>>>> git-aline/master/master
             }
 
             $array = &$array[$part];

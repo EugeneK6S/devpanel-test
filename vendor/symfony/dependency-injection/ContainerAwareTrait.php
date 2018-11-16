@@ -23,11 +23,14 @@ trait ContainerAwareTrait
      */
     protected $container;
 
+<<<<<<< HEAD
     /**
      * Sets the Container associated with this Controller.
      *
      * @param ContainerInterface $container A ContainerInterface instance
      */
+=======
+>>>>>>> git-aline/master/master
     public function setContainer(ContainerInterface $container = null)
     {
         $this->container = $container;

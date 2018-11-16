@@ -5,6 +5,11 @@
          backupGlobals="false"
          colors="true"
          bootstrap="vendor/autoload.php"
+<<<<<<< HEAD
+=======
+         failOnRisky="true"
+         failOnWarning="true"
+>>>>>>> git-aline/master/master
 >
     <php>
         <ini name="error_reporting" value="-1" />
@@ -21,6 +26,10 @@
             <directory>./</directory>
             <exclude>
                 <directory>./Tests</directory>
+<<<<<<< HEAD
+=======
+                <directory>./vendor</directory>
+>>>>>>> git-aline/master/master
             </exclude>
         </whitelist>
     </filter>

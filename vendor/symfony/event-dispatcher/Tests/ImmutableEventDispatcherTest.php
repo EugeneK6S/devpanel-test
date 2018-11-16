@@ -11,13 +11,21 @@
 
 namespace Symfony\Component\EventDispatcher\Tests;
 
+<<<<<<< HEAD
+=======
+use PHPUnit\Framework\TestCase;
+>>>>>>> git-aline/master/master
 use Symfony\Component\EventDispatcher\Event;
 use Symfony\Component\EventDispatcher\ImmutableEventDispatcher;
 
 /**
  * @author Bernhard Schussek <bschussek@gmail.com>
  */
+<<<<<<< HEAD
 class ImmutableEventDispatcherTest extends \PHPUnit_Framework_TestCase
+=======
+class ImmutableEventDispatcherTest extends TestCase
+>>>>>>> git-aline/master/master
 {
     /**
      * @var \PHPUnit_Framework_MockObject_MockObject
@@ -31,7 +39,11 @@ class ImmutableEventDispatcherTest extends \PHPUnit_Framework_TestCase
 
     protected function setUp()
     {
+<<<<<<< HEAD
         $this->innerDispatcher = $this->getMock('Symfony\Component\EventDispatcher\EventDispatcherInterface');
+=======
+        $this->innerDispatcher = $this->getMockBuilder('Symfony\Component\EventDispatcher\EventDispatcherInterface')->getMock();
+>>>>>>> git-aline/master/master
         $this->dispatcher = new ImmutableEventDispatcher($this->innerDispatcher);
     }
 
@@ -80,7 +92,11 @@ class ImmutableEventDispatcherTest extends \PHPUnit_Framework_TestCase
      */
     public function testAddSubscriberDisallowed()
     {
+<<<<<<< HEAD
         $subscriber = $this->getMock('Symfony\Component\EventDispatcher\EventSubscriberInterface');
+=======
+        $subscriber = $this->getMockBuilder('Symfony\Component\EventDispatcher\EventSubscriberInterface')->getMock();
+>>>>>>> git-aline/master/master
 
         $this->dispatcher->addSubscriber($subscriber);
     }
@@ -98,7 +114,11 @@ class ImmutableEventDispatcherTest extends \PHPUnit_Framework_TestCase
      */
     public function testRemoveSubscriberDisallowed()
     {
+<<<<<<< HEAD
         $subscriber = $this->getMock('Symfony\Component\EventDispatcher\EventSubscriberInterface');
+=======
+        $subscriber = $this->getMockBuilder('Symfony\Component\EventDispatcher\EventSubscriberInterface')->getMock();
+>>>>>>> git-aline/master/master
 
         $this->dispatcher->removeSubscriber($subscriber);
     }
